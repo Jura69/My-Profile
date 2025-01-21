@@ -1,9 +1,11 @@
-import { Container, Box, Heading, useColorModeValue } from "@chakra-ui/react";
+import { Container, Box, Heading, useColorModeValue, Button} from "@chakra-ui/react";
+import { ChevronRightIcon } from '@chakra-ui/icons'
 import Image from "next/image";
 import Layout from "../../components/layouts/article";
 import Section from "../../components/section";
 import Paragraph from "../../components/paragraph";
 import { WorkSection, WorkTimes } from "../../components/work";
+import NextLink from 'next/link'
 
 export default function Home() {
   return (
@@ -60,6 +62,17 @@ export default function Home() {
         <Paragraph>
         A technology enthusiast on the path to becoming a programmer, with quick adaptability and flexibility. In addition to my programming experience, I also have a background in graphic design and video editing. I am always looking for opportunities to explore and learn new technologies, applying them to launch products—from planning and design to solving real-world problems with code.
         </Paragraph>
+        <Box align="center" my={4}>
+          <Button
+            as={NextLink}
+            href="/projects"
+            scroll={false}
+            rightIcon={<ChevronRightIcon />}
+            colorScheme="teal"
+          >
+            My Projects
+          </Button>
+        </Box>
         </Section>
 
         <Section delay={0.2}>
