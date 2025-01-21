@@ -4,7 +4,7 @@ import Navbar from "../navbar";
 import Footer from "../footer";
 
 
-export default function Main({ children, router }) {
+export default function Main({ children }) {
     return (
         <Box as="main" pb={8}>
             <Head>
