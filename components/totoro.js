@@ -12,7 +12,7 @@ const Totoro = () => {
   const refContainer = useRef()
   const [loading, setLoading] = useState(true)
   const refRenderer = useRef()
-  const urlTotoroGLB = 'https://jura69.vercel.app/public' + '/totoro.glb'
+  const urlTotoroGLB = '/totoro.glb'
 
   const handleWindowResize = useCallback(() => {
     const { current: renderer } = refRenderer
