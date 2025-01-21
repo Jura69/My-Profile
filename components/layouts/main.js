@@ -2,7 +2,13 @@ import { Box, Container } from "@chakra-ui/react";
 import Head from "next/head";
 import Navbar from "../navbar";
 import Footer from "../footer";
+import dynamic from 'next/dynamic'
+import TotoroLoader from "../totoro-loader";
 
+const LazyTotoro = dynamic(() => import('../totoro'), {
+    ssr: false,
+    loading: () => <TotoroLoader />
+})
 
 export default function Main({ children }) {
     return (
@@ -18,6 +24,7 @@ export default function Main({ children }) {
             </Head>
             <Navbar/>
             <Container maxW="container.md" pt={16}>
+            <LazyTotoro />
                 {children}
                 <Footer/>
             </Container>
