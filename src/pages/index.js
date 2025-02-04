@@ -84,7 +84,7 @@ export default function Home() {
             Work Experience 💼
           </Heading>
           <br />
-          <WorkTimes>✎ VNPT Software Nha Trang | 6 months (06/2024 - 11/2024)</WorkTimes>
+          <WorkTimes>✎ VNPT Software Nha Trang | 4 months (06/2024 - 9/2024)</WorkTimes>
           <WorkSection>
             React and Dotnet internship, up to fresher at VNPT software Nha Trang.
           </WorkSection>
