@@ -64,16 +64,13 @@ export default function Navbar(props) {
           flexGrow={1}
           mt={{ base: 4, md: 0 }}
         >
-          <LinkItem href="/projects" path={path}>
-            Projects
+          <LinkItem href="/works" path={path}>
+            Works
           </LinkItem>
-          <LinkItem href="#" path={path}>
-            My Youth
+          <LinkItem href="/activities" path={path}>
+            Activities
           </LinkItem>
-          <LinkItem href="#" path={path}>
-            Tech Blogs
-          </LinkItem>
-          <LinkItem href="#">Audiophile</LinkItem>
+          <LinkItem href="/audiophile">Audiophile</LinkItem>
           <LinkItem
             target="_blank"
             href="https://github.com/Jura69"
@@ -103,16 +100,13 @@ export default function Navbar(props) {
                 <MenuItem as={MenuLink} href="/">
                   About
                 </MenuItem>
-                <MenuItem as={MenuLink} href="/">
+                <MenuItem as={MenuLink} href="/works">
                   Works
                 </MenuItem>
-                <MenuItem as={MenuLink} href="/">
+                <MenuItem as={MenuLink} href="/activities">
                   My Youth
                 </MenuItem>
-                <MenuItem as={MenuLink} href="/">
-                  Tech Blogs
-                </MenuItem>
-                <MenuItem as={MenuLink} href="/">
+                <MenuItem as={MenuLink} href="/audiophile">
                   Audiophile
                 </MenuItem>
                 <MenuItem
