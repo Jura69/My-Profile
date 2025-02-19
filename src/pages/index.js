@@ -12,6 +12,14 @@ import { WorkSection, WorkTimes } from "../../components/bio";
 import NextLink from 'next/link'
 
 export default function Home() {
+  const downloadFile = () => {
+    const link = document.createElement('a');
+    link.href = '/files/CV.pdf'; // Đường dẫn đến tệp PDF
+    link.setAttribute('download', 'CV.pdf'); // Tên tệp khi tải xuống
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return (
     <Layout>
       <Container>
@@ -104,65 +112,75 @@ export default function Home() {
             Graduated from Nha Trang University with a degree in Information Technology.
           </WorkSection>
           <br />
+          <Box align="center" my={4}>
+
+            <Button
+              onClick={downloadFile} // Gọi hàm tải xuống khi nhấp
+              rightIcon={<ChevronRightIcon />}
+              colorScheme="green"
+            >
+              My Text CV
+            </Button>
+          </Box>
         </Section>
         <Section delay={0.3}>
-        <Heading as="h3" variant="section-title">
-          I ♥️
-        </Heading>
-        <Paragraph>
-          Music, Photography, Machine Learning, Manga, Anime.
-        </Paragraph>
-        <br />
-        <Heading as="h3" variant="section-title">
-          On the web
-        </Heading>
-        <List>
-          <ListItem>
-            <Link href="https://github.com/Jura69" target="_blank">
-              <Button
-                variant="ghost"
-                colorScheme="teal"
-                leftIcon={<IoLogoGithub />}
-              >
-                @Jura69
-              </Button>
-            </Link>
-          </ListItem>
-          <ListItem>
-            <Link href="https://www.facebook.com/loc.truongtuanMT" target="_blank">
-              <Button
-                variant="ghost"
-                colorScheme="teal"
-                leftIcon={<IoLogoFacebook />}
-              >
-                @Trương Tuấn Lộc
-              </Button>
-            </Link>
-          </ListItem>
-          <ListItem>
-            <Link href="https://www.instagram.com/_midori_neko_/" target="_blank">
-              <Button
-                variant="ghost"
-                colorScheme="teal"
-                leftIcon={<IoLogoInstagram />}
-              >
-                @_midori_neko_
-              </Button>
-            </Link>
-          </ListItem>
-          <ListItem>
-          <Link href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=CllgCJfrtHTLFVhThklSMBvJhvNJDkFfVzfZXghfRXlDMvWgzCKMZqZsBdBhxnRvPsjZdcdFjXB" target="_blank">
-              <Button
-                variant="ghost"
-                colorScheme="teal"
-                leftIcon={<IoLogoGoogle/>}
-              >
-                Loctruongtuan@gmail.com
-              </Button>
+          <Heading as="h3" variant="section-title">
+            I ♥️
+          </Heading>
+          <Paragraph>
+            Music, Photography, Machine Learning, Manga, Anime.
+          </Paragraph>
+          <br />
+          <Heading as="h3" variant="section-title">
+            On the web
+          </Heading>
+          <List>
+            <ListItem>
+              <Link href="https://github.com/Jura69" target="_blank">
+                <Button
+                  variant="ghost"
+                  colorScheme="teal"
+                  leftIcon={<IoLogoGithub />}
+                >
+                  @Jura69
+                </Button>
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link href="https://www.facebook.com/loc.truongtuanMT" target="_blank">
+                <Button
+                  variant="ghost"
+                  colorScheme="teal"
+                  leftIcon={<IoLogoFacebook />}
+                >
+                  @Trương Tuấn Lộc
+                </Button>
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link href="https://www.instagram.com/_midori_neko_/" target="_blank">
+                <Button
+                  variant="ghost"
+                  colorScheme="teal"
+                  leftIcon={<IoLogoInstagram />}
+                >
+                  @_midori_neko_
+                </Button>
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=CllgCJfrtHTLFVhThklSMBvJhvNJDkFfVzfZXghfRXlDMvWgzCKMZqZsBdBhxnRvPsjZdcdFjXB" target="_blank">
+                <Button
+                  variant="ghost"
+                  colorScheme="teal"
+                  leftIcon={<IoLogoGoogle />}
+                >
+                  Loctruongtuan@gmail.com
+                </Button>
 
-            </Link>
-          </ListItem>
-        </List>
+              </Link>
+            </ListItem>
+          </List>
         </Section>
       </Container>
     </Layout>
