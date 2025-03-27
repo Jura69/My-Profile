@@ -14,8 +14,8 @@ import NextLink from 'next/link'
 export default function Home() {
   const downloadFile = () => {
     const link = document.createElement('a');
-    link.href = '/files/CV.pdf'; // Đường dẫn đến tệp PDF
-    link.setAttribute('download', 'CV.pdf'); // Tên tệp khi tải xuống
+    link.href = '/files/CV.pdf'; 
+    link.setAttribute('download', 'TuanLoc_CV.pdf'); 
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -82,7 +82,7 @@ export default function Home() {
               rightIcon={<ChevronRightIcon />}
               colorScheme="green"
             >
-              My Projects
+              My Persional Projects
             </Button>
           </Box>
         </Section>
@@ -92,19 +92,14 @@ export default function Home() {
             Work Experience 💼
           </Heading>
           <br />
-          <WorkTimes>✎ VNPT Software Nha Trang | 4 months (06/2024 - 9/2024)</WorkTimes>
+          <WorkTimes>✎ Infordation Vietnam | 1+ years (12/2023 - 2/2025)</WorkTimes>
           <WorkSection>
-            React and Dotnet internship, up to fresher at VNPT software Nha Trang.
+            Junior NodeJS Backend Developer at Infordation Vietnam.
           </WorkSection>
           <br />
-          <WorkTimes>✎ FPT Software Nha Trang | 3 months (03/2024 - 05/2024)</WorkTimes>
+          <WorkTimes>✎ VNPT Khánh Hoà | 2 months (05/2023 - 07/2023)</WorkTimes>
           <WorkSection>
-            Low code internship at FPT Software Nha Trang.
-          </WorkSection>
-          <br />
-          <WorkTimes>✎ Infordation Vietnam | 3 months (10/2023 - 12/2023)</WorkTimes>
-          <WorkSection>
-            React, Nextjs internship at Infordation Vietnam.
+            React and C# internship at VNPT Khánh Hoà.
           </WorkSection>
           <br />
           <WorkTimes>✎ In 2024</WorkTimes>

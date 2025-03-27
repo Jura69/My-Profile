@@ -26,3 +26,9 @@ export const Meta = ({ children }) => (
     {children}
   </Badge>
 )
+
+export const MetaRed = ({ children }) => (
+  <Badge colorScheme="red" mr={2}>
+    {children}
+  </Badge>
+)
