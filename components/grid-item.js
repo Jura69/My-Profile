@@ -34,12 +34,14 @@ export const WorkGridItem = ({
       href={`/${category}/${id}`}
       scroll={false}
       cursor="pointer"
+      
     >
       <Image
         src={thumbnail}
         alt={title}
         className="grid-item-thumbnail"
         placeholder="blur"
+        loading="lazy"
       />
       <LinkOverlay as="div" href={`/${category}/${id}`}>
         <Text mt={2} fontSize={20}>
@@ -70,6 +72,7 @@ export const AudioGridItem = ({
         alt={title}
         className="grid-item-thumbnail"
         placeholder="blur"
+        loading="lazy"
       />
       <LinkOverlay as="div" href={`/${category}/${id}`}>
         <Text mt={2} fontSize={20}>
@@ -100,6 +103,7 @@ export const ActivitiesGridItem = ({
         alt={title}
         className="grid-item-thumbnail"
         placeholder="blur"
+        loading="lazy"
       />
       <LinkOverlay as="div" href={`/${category}/${id}`}>
         <Text mt={2} fontSize={20}>
