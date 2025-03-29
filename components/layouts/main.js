@@ -18,8 +18,8 @@ export default function Main({ children }) {
                 <meta name="description" content="Jura69's homepage" />
                 <meta name="author" content="Trương Tuấn Lộc" />
                 <meta name="author" content="Jura69" />
-                <link rel="icon" href="/public/favicon.ico" />
-                <link rel="shortcut icon" href="/public/favicon.ico" type="image/x-icon" />
+                <link rel="icon" href="/favicon.ico" />
+                <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
                 <title>Jura69 - Homepage</title>
             </Head>
             <Navbar/>

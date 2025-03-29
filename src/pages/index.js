@@ -48,7 +48,7 @@ export default function Home() {
             textAlign="center"
           >
             <Box
-              borderColor="whiteAlpha.800"
+              borderColor="teal.400"
               borderWidth={2}
               borderStyle="solid"
               w="100px"
