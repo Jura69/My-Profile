@@ -32,4 +32,4 @@ const activities = () => (
 )
 
 export default activities
-export { getServerSideProps } from '../../../components/chakra'
+export { getStaticProps } from '../../../components/chakra'

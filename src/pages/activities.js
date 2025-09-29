@@ -24,4 +24,4 @@ const Activities = () => (
 )
 
 export default Activities
-export { getServerSideProps } from '../../components/chakra'
+export { getStaticProps } from '../../components/chakra'

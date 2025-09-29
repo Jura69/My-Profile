@@ -3,6 +3,10 @@ import Layout from '../../components/layouts/main'
 import Chakra from '../../providers/chakra';
 import Font from './fonts/font';
 import { AnimatePresence } from 'framer-motion'
+import { reportWebVitals } from '../../lib/performance'
+
+// Report web vitals
+export { reportWebVitals }
 
 if (typeof window !== 'undefined') {
   window.history.scrollRestoration = 'manual'

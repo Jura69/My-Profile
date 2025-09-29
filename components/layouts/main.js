@@ -1,10 +1,14 @@
 import { Box, Container } from "@chakra-ui/react";
 import Head from "next/head";
-import Navbar from "../navbar";
-import Footer from "../footer";
 import dynamic from 'next/dynamic'
-import TotoroLoader from "../totoro-loader";
+import { memo } from 'react'
 
+// Import components normally to avoid hydration issues
+import Navbar from "../navbar"
+import Footer from "../footer"
+import TotoroLoader from "../totoro-loader"
+
+// Only Totoro needs to be dynamic (3D content)
 const LazyTotoro = dynamic(() => import('../totoro'), {
     ssr: false,
     loading: () => <TotoroLoader />
@@ -13,7 +17,7 @@ const LazyTotoro = dynamic(() => import('../totoro'), {
 // Cache Totoro component để tránh reload khi chuyển trang
 let cachedTotoro = null
 
-export default function Main({ children }) {
+const Main = memo(function Main({ children }) {
     return (
         <Box as="main" pb={8}>
             <Head>
@@ -33,4 +37,6 @@ export default function Main({ children }) {
             </Container>
         </Box>
     );
-}
+})
+
+export default Main

@@ -2,6 +2,7 @@ import NextLink from 'next/link'
 import Image from 'next/image'
 import { Box, Text, LinkBox, LinkOverlay } from '@chakra-ui/react'
 import { Global } from '@emotion/react'
+import { memo } from 'react'
 
 export const GridItem = ({ children, href, title, thumbnail }) => (
   <Box w="100%" textAlign="center">
@@ -21,7 +22,7 @@ export const GridItem = ({ children, href, title, thumbnail }) => (
   </Box>
 )
 
-export const WorkGridItem = ({
+export const WorkGridItem = memo(({
   children,
   category = 'works',
   id,
@@ -34,15 +35,18 @@ export const WorkGridItem = ({
       href={`/${category}/${id}`}
       scroll={false}
       cursor="pointer"
-      
     >
-      <Image
-        src={thumbnail}
-        alt={title}
-        className="grid-item-thumbnail"
-        placeholder="blur"
-        loading="lazy"
-      />
+      <Box borderRadius="12px" overflow="hidden" mb={2}>
+        <Image
+          src={thumbnail}
+          alt={title}
+          width={400}
+          height={300}
+          style={{ width: '100%', height: 'auto' }}
+          loading="lazy"
+          quality={80}
+        />
+      </Box>
       <LinkOverlay as="div" href={`/${category}/${id}`}>
         <Text mt={2} fontSize={20}>
           {title}
@@ -51,9 +55,9 @@ export const WorkGridItem = ({
       <Text fontSize={14}>{children}</Text>
     </LinkBox>
   </Box>
-)
+))
 
-export const AudioGridItem = ({
+export const AudioGridItem = memo(({
   children,
   category = 'audiophile',
   id,
@@ -67,13 +71,17 @@ export const AudioGridItem = ({
       scroll={false}
       cursor="pointer"
     >
-      <Image
-        src={thumbnail}
-        alt={title}
-        className="grid-item-thumbnail"
-        placeholder="blur"
-        loading="lazy"
-      />
+      <Box borderRadius="12px" overflow="hidden" mb={2}>
+        <Image
+          src={thumbnail}
+          alt={title}
+          width={400}
+          height={300}
+          style={{ width: '100%', height: 'auto' }}
+          loading="lazy"
+          quality={80}
+        />
+      </Box>
       <LinkOverlay as="div" href={`/${category}/${id}`}>
         <Text mt={2} fontSize={20}>
           {title}
@@ -82,9 +90,9 @@ export const AudioGridItem = ({
       <Text fontSize={14}>{children}</Text>
     </LinkBox>
   </Box>
-)
+))
 
-export const ActivitiesGridItem = ({
+export const ActivitiesGridItem = memo(({
   children,
   category = 'activities',
   id,
@@ -98,13 +106,17 @@ export const ActivitiesGridItem = ({
       scroll={false}
       cursor="pointer"
     >
-      <Image
-        src={thumbnail}
-        alt={title}
-        className="grid-item-thumbnail"
-        placeholder="blur"
-        loading="lazy"
-      />
+      <Box borderRadius="12px" overflow="hidden" mb={2}>
+        <Image
+          src={thumbnail}
+          alt={title}
+          width={400}
+          height={300}
+          style={{ width: '100%', height: 'auto' }}
+          loading="lazy"
+          quality={80}
+        />
+      </Box>
       <LinkOverlay as="div" href={`/${category}/${id}`}>
         <Text mt={2} fontSize={20}>
           {title}
@@ -113,7 +125,7 @@ export const ActivitiesGridItem = ({
       <Text fontSize={14}>{children}</Text>
     </LinkBox>
   </Box>
-)
+))
 
 export const GridItemStyle = () => (
   <Global

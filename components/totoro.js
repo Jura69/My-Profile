@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, memo } from 'react'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { loadGLTFModel } from '../lib/model'
@@ -8,7 +8,7 @@ function easeOutCirc(x) {
   return Math.sqrt(1 - Math.pow(x - 1, 4))
 }
 
-const Totoro = () => {
+const Totoro = memo(() => {
   const refContainer = useRef()
   const [loading, setLoading] = useState(true)
   const refRenderer = useRef()
@@ -33,15 +33,22 @@ const Totoro = () => {
       const scH = container.clientHeight
 
       const renderer = new THREE.WebGLRenderer({
-        antialias: true,
+        antialias: typeof window !== 'undefined' ? window.devicePixelRatio < 2 : true, // Safe check
         alpha: true,
-        powerPreference: "high-performance"
+        powerPreference: "high-performance",
+        precision: "mediump", // Giảm precision
+        logarithmicDepthBuffer: false,
+        stencil: false,
+        depth: true
       })
-      // Tối ưu pixel ratio cho mobile
-      const pixelRatio = Math.min(window.devicePixelRatio, 2)
+      // Tối ưu pixel ratio cho mobile - Safe check
+      const pixelRatio = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 2) : 1
       renderer.setPixelRatio(pixelRatio)
       renderer.setSize(scW, scH)
-      renderer.outputEncoding = THREE.sRGBEncoding
+      renderer.outputColorSpace = THREE.SRGBColorSpace
+      // Tối ưu hóa renderer
+      renderer.shadowMap.enabled = false
+      renderer.physicallyCorrectLights = false
       container.appendChild(renderer.domElement)
       refRenderer.current = renderer
       const scene = new THREE.Scene()
@@ -134,6 +141,6 @@ const Totoro = () => {
   return (
     <TotoroContainer ref={refContainer}>{loading && <TotoroSpinner />}</TotoroContainer>
   )
-}
+})
 
 export default Totoro

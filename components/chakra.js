@@ -25,3 +25,11 @@ export async function getServerSideProps({ req }) {
     }
   }
 }
+
+export async function getStaticProps() {
+  return {
+    props: {
+      cookies: ''
+    }
+  }
+}
