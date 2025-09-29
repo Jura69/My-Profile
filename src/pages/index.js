@@ -92,6 +92,10 @@ export default function Home() {
           <Heading as="h3" variant="section-title">
             Work Experience 💼
           </Heading>
+          <WorkTimes>✎ CREASIA | Current (06/2025 - Present)</WorkTimes>
+          <WorkSection>
+            React and C# fullstack developer at CREASIA.
+          </WorkSection>
           <br />
           <WorkTimes>✎ Infordation Vietnam | 1+ years (12/2023 - 2/2025)</WorkTimes>
           <WorkSection>
