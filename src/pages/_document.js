@@ -6,7 +6,9 @@ export default class Document extends NextDocument {
   render() {
     return (
       <Html lang="en">
-        <Head />
+        <Head>
+          <link rel="preload" href="/totoro.glb" as="fetch" crossOrigin="anonymous" />
+        </Head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <body>

@@ -27,12 +27,6 @@ const Work = () => (
           </Link>
         </ListItem>
         <ListItem>
-          <Meta>Website</Meta>
-          <Link href="https://jura-foodlover.vercel.app/">
-            https://jura-foodlover.vercel.app/ <ExternalLinkIcon mx="2px" />
-          </Link>
-        </ListItem>
-        <ListItem>
           <Meta>Platform</Meta>
           <span>Web application</span>
         </ListItem>

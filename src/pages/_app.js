@@ -15,8 +15,8 @@ export default function Website({ Component, pageProps, router }) {
         <Font />
         <Layout router={router}>
           <AnimatePresence
-            mode="wait"
-            initial={true}
+            mode="popLayout"
+            initial={false}
             onExitComplete={() => {
               if (typeof window !== 'undefined') {
                 window.scrollTo({ top: 0 })

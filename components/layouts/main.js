@@ -10,6 +10,9 @@ const LazyTotoro = dynamic(() => import('../totoro'), {
     loading: () => <TotoroLoader />
 })
 
+// Cache Totoro component để tránh reload khi chuyển trang
+let cachedTotoro = null
+
 export default function Main({ children }) {
     return (
         <Box as="main" pb={8}>
@@ -24,7 +27,7 @@ export default function Main({ children }) {
             </Head>
             <Navbar/>
             <Container maxW="container.md" pt={16}>
-            <LazyTotoro />
+                <LazyTotoro />
                 {children}
                 <Footer/>
             </Container>

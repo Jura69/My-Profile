@@ -32,7 +32,7 @@ export default function Home() {
           bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
           css={{ backdropFilter: 'blur(10px)' }}
         >
-          Hello, I&apos;m an web developer based in Việt Nam 🇻🇳
+          Hello, I&apos;m an web developer based in Việt Nam
         </Box>
         <Box display={{ md: 'flex' }}>
           <Box flexGrow={1}>

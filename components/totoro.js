@@ -34,9 +34,12 @@ const Totoro = () => {
 
       const renderer = new THREE.WebGLRenderer({
         antialias: true,
-        alpha: true
+        alpha: true,
+        powerPreference: "high-performance"
       })
-      renderer.setPixelRatio(window.devicePixelRatio)
+      // Tối ưu pixel ratio cho mobile
+      const pixelRatio = Math.min(window.devicePixelRatio, 2)
+      renderer.setPixelRatio(pixelRatio)
       renderer.setSize(scW, scH)
       renderer.outputEncoding = THREE.sRGBEncoding
       container.appendChild(renderer.domElement)
@@ -74,8 +77,18 @@ const Totoro = () => {
       loadGLTFModel(scene, urlTotoroGLB, {
         receiveShadow: false,
         castShadow: false
-      }).then(() => {
+      }).then((model) => {
+        // Tối ưu hóa model sau khi load
+        model.traverse((child) => {
+          if (child.isMesh) {
+            child.geometry.computeBoundingBox()
+            child.geometry.computeBoundingSphere()
+          }
+        })
         animate()
+        setLoading(false)
+      }).catch((error) => {
+        console.error('Failed to load 3D model:', error)
         setLoading(false)
       })
 
