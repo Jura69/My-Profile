@@ -14,9 +14,6 @@ const LazyTotoro = dynamic(() => import('../totoro'), {
     loading: () => <TotoroLoader />
 })
 
-// Cache Totoro component để tránh reload khi chuyển trang
-let cachedTotoro = null
-
 const Main = memo(function Main({ children }) {
     return (
         <Box as="main" pb={8}>

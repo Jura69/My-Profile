@@ -1,4 +1,3 @@
-import Head from 'next/head';
 import Layout from '../../components/layouts/main'
 import Chakra from '../../providers/chakra';
 import Font from './fonts/font';

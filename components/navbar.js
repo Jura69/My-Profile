@@ -10,14 +10,14 @@ import { HamburgerIcon } from '@chakra-ui/icons'
 const LinkItem = ({ href, path, target, children, ...props }) => {
     const active = path === href
     const [mounted, setMounted] = useState(false)
-    
+
+    // Always call hooks unconditionally
+    const inactiveColor = useColorModeValue('gray.800', 'whiteAlpha.900')
+
     useEffect(() => {
       setMounted(true)
     }, [])
-    
-    // Consistent color for SSR
-    const inactiveColor = mounted ? useColorModeValue('gray.800', 'whiteAlpha.900') : 'gray.800'
-    
+
     return (
       <Link
         as={NextLink}
@@ -41,14 +41,14 @@ const LinkItem = ({ href, path, target, children, ...props }) => {
 const Navbar = memo(function Navbar(props) {
     const { path } = props
     const [mounted, setMounted] = useState(false)
-    
+
+    // Always call hooks unconditionally
+    const bgColor = useColorModeValue('#ffffff40', '#20202380')
+
     useEffect(() => {
       setMounted(true)
     }, [])
-    
-    // Consistent background for SSR
-    const bgColor = mounted ? useColorModeValue('#ffffff40', '#20202380') : '#ffffff40'
-    
+
     return (
         <Box
             position="fixed"

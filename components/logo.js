@@ -25,14 +25,14 @@ const LogoBox = styled.span`
 
 const Logo = memo(function Logo() {
     const [mounted, setMounted] = useState(false)
-    
+
+    // Always call hooks unconditionally
+    const textColor = useColorModeValue('gray.800', 'whiteAlpha.900')
+
     useEffect(() => {
       setMounted(true)
     }, [])
-    
-    // Consistent color for SSR
-    const textColor = mounted ? useColorModeValue('gray.800', 'whiteAlpha.900') : 'gray.800'
-    
+
     return (
         (<Link href="/" scroll={false}>
 
