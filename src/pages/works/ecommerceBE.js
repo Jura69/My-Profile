@@ -9,9 +9,34 @@ import { ExternalLinkIcon } from '@chakra-ui/icons'
 import { Title, Meta, MetaRed } from '../../../components/work'
 import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
+import SEO from '../../../components/seo'
+import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
 const Work = () => (
   <Layout title="Ecommerce Backend Shop Service">
+    <SEO
+      title="E-commerce Backend Microservices | Trương Tuấn Lộc"
+      description="A scalable e-commerce backend service built with microservices architecture. Features Node.js, Express, MongoDB, Redis caching, JWT authentication, and RESTful API design."
+      keywords="E-commerce Backend, Microservices, Node.js Backend, Express.js, MongoDB, Redis, REST API, Scalable Backend, Backend Development"
+      image="/images/works/EcommerceBE.png"
+    />
+    <ProjectSchema
+      project={{
+        title: 'Backend Ecommerce Shop Service',
+        description: 'Scalable e-commerce backend with microservices architecture',
+        year: '2024',
+        github: 'https://github.com/Jura69/E-com-NodeBE',
+        image: 'https://my-profile-jura69.vercel.app/images/works/EcommerceBE.png',
+        stack: 'Node.js, Express.js, MongoDB, Redis, Microservices'
+      }}
+    />
+    <BreadcrumbSchema
+      items={[
+        { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
+        { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
+        { name: 'E-commerce Backend', url: 'https://my-profile-jura69.vercel.app/works/ecommerceBE' }
+      ]}
+    />
     <Container>
       <Title>
         Backend Ecommerce Shop Service <Badge>2024</Badge>

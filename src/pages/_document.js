@@ -7,10 +7,22 @@ export default class Document extends NextDocument {
     return (
       <Html lang="en">
         <Head>
+          {/* Preload critical assets */}
           <link rel="preload" href="/totoro.glb" as="fetch" crossOrigin="anonymous" />
+
+          {/* Favicon */}
+          <link rel="icon" href="/favicon.ico" />
+          <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+          <link rel="apple-touch-icon" href="/images/loc.jpeg" />
+
+          {/* DNS Prefetch for external resources */}
+          <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+
+          {/* Global Meta Tags */}
+          <meta charSet="utf-8" />
+          <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         </Head>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Main />
