@@ -7,7 +7,7 @@ import Image from "next/image";
 import Layout from "../../components/layouts/article";
 import Section from "../../components/section";
 import Paragraph from "../../components/paragraph";
-import { IoLogoInstagram, IoLogoGithub, IoLogoFacebook, IoLogoGoogle } from 'react-icons/io5'
+import { IoLogoInstagram, IoLogoGithub, IoLogoFacebook, IoLogoGoogle, IoLogoLinkedin } from 'react-icons/io5'
 import { WorkSection, WorkTimes } from "../../components/bio";
 import NextLink from 'next/link'
 
@@ -186,6 +186,17 @@ export default function Home() {
                   leftIcon={<IoLogoGithub />}
                 >
                   @Jura69
+                </Button>
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link href="https://www.linkedin.com/in/tu%E1%BA%A5n-l%E1%BB%99c-b24b391ab/" target="_blank">
+                <Button
+                  variant="ghost"
+                  colorScheme="teal"
+                  leftIcon={<IoLogoLinkedin />}
+                >
+                  Trương Tuấn Lộc
                 </Button>
               </Link>
             </ListItem>
