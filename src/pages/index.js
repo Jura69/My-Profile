@@ -10,6 +10,8 @@ import Paragraph from "../../components/paragraph";
 import { IoLogoInstagram, IoLogoGithub, IoLogoFacebook, IoLogoGoogle, IoLogoLinkedin } from 'react-icons/io5'
 import { WorkSection, WorkTimes } from "../../components/bio";
 import NextLink from 'next/link'
+import SEO from "../../components/seo";
+import { PersonSchema, WebsiteSchema, ProfilePageSchema } from "../../components/json-ld";
 
 export default function Home() {
   const downloadFile = () => {
@@ -22,6 +24,15 @@ export default function Home() {
   };
   return (
     <Layout>
+      <SEO
+        title="Trương Tuấn Lộc - Full-stack Developer | React, Node.js, C# Expert"
+        description="Full-stack developer with expertise in React, Node.js, and C#. Currently working at CREASIA. Building scalable web applications, backend services, and mobile apps with Flutter. View my portfolio and projects."
+        keywords="Trương Tuấn Lộc, Jura69, Full-stack Developer, React Developer, Node.js Developer, C# Developer, Web Development, Backend Developer, Frontend Developer, Portfolio, CREASIA, Nha Trang University, Vietnam Developer"
+        type="profile"
+      />
+      <PersonSchema />
+      <WebsiteSchema />
+      <ProfilePageSchema />
       <Container>
         <Box
           borderRadius="lg"

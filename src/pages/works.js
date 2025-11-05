@@ -2,6 +2,8 @@ import { Container, Heading, SimpleGrid} from '@chakra-ui/react'
 import Layout from '../../components/layouts/article'
 import Section from '../../components/section'
 import { WorkGridItem } from '../../components/grid-item'
+import SEO from '../../components/seo'
+import { BreadcrumbSchema } from '../../components/json-ld'
 
 import thumbFoodlover from '../../public/images/works/Food1.png'
 import thumbTicketapp from '../../public/images/works/Ticket1.jpeg'
@@ -10,6 +12,17 @@ import thumbEcommerce from '../../public/images/works/EcommerceBE.png'
 
 const Works = () => (
   <Layout title="Works">
+    <SEO
+      title="My Projects & Works | Trương Tuấn Lộc Portfolio"
+      description="Browse my portfolio of web development projects including Food Lover (Next.js food ordering app), Flutter Ticket Booking App, TensorFlow Sign Language Detection, and E-commerce Backend Service."
+      keywords="Portfolio Projects, Web Development Projects, React Projects, Node.js Projects, Flutter Apps, Machine Learning, TensorFlow, E-commerce Backend, Full-stack Projects"
+    />
+    <BreadcrumbSchema
+      items={[
+        { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
+        { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' }
+      ]}
+    />
     <Container>
       <Heading as="h3" fontSize={20} mb={4}>
       My Personal Projects
