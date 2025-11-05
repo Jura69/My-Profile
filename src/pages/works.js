@@ -12,7 +12,7 @@ const Works = () => (
   <Layout title="Works">
     <Container>
       <Heading as="h3" fontSize={20} mb={4}>
-      My Persional Projects
+      My Personal Projects
       </Heading>
       <SimpleGrid columns={[1, 1, 2]} gap={6}>
         <Section>
@@ -35,7 +35,7 @@ const Works = () => (
 
         <Section>
         <WorkGridItem id="ecommerceBE" title="Ecommerce Backend Shop" thumbnail={thumbEcommerce} href={`/works/ecommerceBE`}> 
-            Backend Emcommerce Service using Nodejs, Express, MongoDB, ...
+            Backend Ecommerce Service using Node.js, Express, MongoDB, and more.
         </WorkGridItem>
         </Section>
       </SimpleGrid>

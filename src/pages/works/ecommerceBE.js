@@ -14,10 +14,10 @@ const Work = () => (
   <Layout title="Ecommerce Backend Shop Service">
     <Container>
       <Title>
-        Backend Ecommerce Shop Service<Badge>2024</Badge>
+        Backend Ecommerce Shop Service <Badge>2024</Badge>
       </Title>
       <P>
-        An E-commerce backend service to scale-up Microservice, built with NodeJS, ExpressJS, MongoDB, Redis.
+        A scalable e-commerce backend service built with microservices architecture. Designed to handle high traffic and provide robust API endpoints for product management, user authentication, shopping cart, and order processing. Implements caching with Redis for optimal performance and uses MongoDB for flexible data storage.
       </P>
       <List ml={4} my={4}>
         <ListItem>
@@ -42,7 +42,7 @@ const Work = () => (
     </Container>
 
     <P>
-      This is a personal project that I am working on to build a scalable backend service for E-commerce. The project is built with NodeJS, ExpressJS, MongoDB, and Redis. The goal is to create a microservice architecture that can handle a large number of requests and scale up easily, allowing for future expansion and growth.
+      This ongoing project focuses on building a production-ready backend service for e-commerce platforms. The microservices architecture ensures modularity and scalability, with key features including RESTful API design, JWT authentication, rate limiting, error handling, and database optimization. The system is designed to handle high concurrent requests and can scale horizontally as needed.
     </P>
   </Layout>
 )
