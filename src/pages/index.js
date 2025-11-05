@@ -146,34 +146,113 @@ export default function Home() {
           <Heading as="h3" variant="section-title">
             Work Experience 💼
           </Heading>
-          <WorkTimes>✎ CREASIA | Current (06/2025 - Present)</WorkTimes>
-          <WorkSection>
-            React and C# fullstack developer at CREASIA.
-          </WorkSection>
-          <br />
-          <WorkTimes>✎ Infordation Vietnam | 1+ years (12/2023 - 2/2025)</WorkTimes>
-          <WorkSection>
-            Junior NodeJS Backend Developer at Infordation Vietnam.
-          </WorkSection>
-          <br />
-          <WorkTimes>✎ VNPT Khánh Hoà | 2 months (05/2023 - 07/2023)</WorkTimes>
-          <WorkSection>
-            React and C# internship at VNPT Khánh Hoà.
-          </WorkSection>
-          <br />
-          <WorkTimes>✎ In 2024</WorkTimes>
-          <WorkSection>
-            Graduated from Nha Trang University with a degree in Information Technology.
-          </WorkSection>
-          <br />
-          <Box align="center" my={4}>
 
+          {/* CREASIA */}
+          <Box mb={6}>
+            <WorkTimes>🏢 CREASIA | Full-stack Developer</WorkTimes>
+            <Box fontSize="sm" color="gray.500" mb={2}>
+              June 2025 - Present · Full-time
+            </Box>
+            <WorkSection>
+              Building scalable web applications using React and C# with focus on clean architecture and user experience.
+            </WorkSection>
+            <Box pl="1.5em" mt={2}>
+              <Box as="ul" styleType="disc" pl={4} spacing={1}>
+                <li>Develop and maintain full-stack applications with React frontend and C# backend</li>
+                <li>Collaborate with cross-functional teams to deliver high-quality features</li>
+                <li>Implement responsive UI/UX designs and optimize application performance</li>
+              </Box>
+            </Box>
+            <Box pl="1.5em" mt={2}>
+              <SimpleGrid columns={[2, 3, 4]} gap={2}>
+                <Badge colorScheme="cyan" fontSize="xs">React</Badge>
+                <Badge colorScheme="cyan" fontSize="xs">C#</Badge>
+                <Badge colorScheme="cyan" fontSize="xs">.NET</Badge>
+                <Badge colorScheme="cyan" fontSize="xs">SQL Server</Badge>
+              </SimpleGrid>
+            </Box>
+          </Box>
+
+          {/* Infordation Vietnam */}
+          <Box mb={6}>
+            <WorkTimes>🚀 Infordation Vietnam | Junior Backend Developer</WorkTimes>
+            <Box fontSize="sm" color="gray.500" mb={2}>
+              December 2023 - February 2025 · 1 year 3 months
+            </Box>
+            <WorkSection>
+              Specialized in Node.js backend development, building RESTful APIs and microservices for enterprise applications.
+            </WorkSection>
+            <Box pl="1.5em" mt={2}>
+              <Box as="ul" styleType="disc" pl={4} spacing={1}>
+                <li>Designed and implemented RESTful APIs serving 10,000+ daily active users</li>
+                <li>Optimized database queries reducing response time by 40%</li>
+                <li>Integrated third-party services and payment gateways</li>
+                <li>Collaborated with frontend team to ensure seamless API integration</li>
+              </Box>
+            </Box>
+            <Box pl="1.5em" mt={2}>
+              <SimpleGrid columns={[2, 3, 4]} gap={2}>
+                <Badge colorScheme="green" fontSize="xs">Node.js</Badge>
+                <Badge colorScheme="green" fontSize="xs">Express</Badge>
+                <Badge colorScheme="green" fontSize="xs">MongoDB</Badge>
+                <Badge colorScheme="green" fontSize="xs">Redis</Badge>
+                <Badge colorScheme="green" fontSize="xs">Docker</Badge>
+                <Badge colorScheme="green" fontSize="xs">AWS</Badge>
+              </SimpleGrid>
+            </Box>
+          </Box>
+
+          {/* VNPT Khánh Hoà */}
+          <Box mb={6}>
+            <WorkTimes>📚 VNPT Khánh Hoà | Software Developer Intern</WorkTimes>
+            <Box fontSize="sm" color="gray.500" mb={2}>
+              May 2023 - July 2023 · 3 months
+            </Box>
+            <WorkSection>
+              Internship focused on full-stack development with React and C#, working on internal management systems.
+            </WorkSection>
+            <Box pl="1.5em" mt={2}>
+              <Box as="ul" styleType="disc" pl={4} spacing={1}>
+                <li>Developed internal web applications using React and C#</li>
+                <li>Learned enterprise software development practices</li>
+                <li>Participated in code reviews and agile development processes</li>
+              </Box>
+            </Box>
+            <Box pl="1.5em" mt={2}>
+              <SimpleGrid columns={[2, 3, 4]} gap={2}>
+                <Badge colorScheme="blue" fontSize="xs">React</Badge>
+                <Badge colorScheme="blue" fontSize="xs">C#</Badge>
+                <Badge colorScheme="blue" fontSize="xs">.NET</Badge>
+                <Badge colorScheme="blue" fontSize="xs">SQL</Badge>
+              </SimpleGrid>
+            </Box>
+          </Box>
+
+          {/* Education */}
+          <Box mb={6}>
+            <WorkTimes>🎓 Nha Trang University</WorkTimes>
+            <Box fontSize="sm" color="gray.500" mb={2}>
+              Graduated 2024
+            </Box>
+            <WorkSection>
+              Bachelor&apos;s Degree in Information Technology
+            </WorkSection>
+            <Box pl="1.5em" mt={2}>
+              <Box as="ul" styleType="disc" pl={4} spacing={1}>
+                <li>Focus on Software Engineering and Web Development</li>
+                <li>Completed projects in Machine Learning and Full-stack Development</li>
+              </Box>
+            </Box>
+          </Box>
+
+          <Box align="center" my={6}>
             <Button
-              onClick={downloadFile} // Gọi hàm tải xuống khi nhấp
+              onClick={downloadFile}
               rightIcon={<ChevronRightIcon />}
               colorScheme="green"
+              size="lg"
             >
-              Download CV
+              Download Full CV
             </Button>
           </Box>
         </Section>
