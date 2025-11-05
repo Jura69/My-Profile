@@ -17,7 +17,7 @@ const Work = () => (
         Food Lover <Badge>2023</Badge>
       </Title>
       <P>
-        Next.js Food App, built with Next.js, Node.js, and MongoDB, is a web application that allows users to search for food recipes and order meals online. It also helps stores manage orders, menus, and invoices efficiently.
+        A full-stack food ordering and recipe discovery platform built with Next.js, Node.js, and MongoDB. Users can browse recipes, place orders, and track deliveries. The platform includes a comprehensive admin dashboard for restaurant owners to manage menus, orders, and invoices. Features secure payment processing with Stripe integration and cloud storage with AWS S3.
       </P>
       <List ml={4} my={4}>
         <ListItem>

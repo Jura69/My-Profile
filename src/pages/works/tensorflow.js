@@ -17,7 +17,7 @@ import {
           Tensorflow SignLanguage Detect <Badge>2024</Badge>
         </Title>
         <P>
-          Python application using Tensorflow, machine learning to detect sign language.
+          A machine learning application that uses TensorFlow and computer vision to detect and interpret sign language gestures in real-time. The model is trained on sign language datasets to recognize various hand signs and convert them to text, making communication more accessible for the hearing-impaired community.
         </P>
         <List ml={4} my={4}>
           <ListItem>

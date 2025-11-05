@@ -17,7 +17,7 @@ const Work = () => (
         Flutter Ticket Booking App <Badge>2024</Badge>
       </Title>
       <P>
-        Ticket Booking App to buy tickets for movies, built with Flutter.
+        A modern mobile application for booking movie tickets, built with Flutter for cross-platform compatibility. Features include browsing available movies, selecting seats, and secure ticket booking with a clean, intuitive user interface.
       </P>
       <List ml={4} my={4}>
         <ListItem>

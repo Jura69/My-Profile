@@ -1,13 +1,13 @@
 import {
   Container, Box, Heading, useColorModeValue, Button, List,
-  ListItem, Link
+  ListItem, Link, Badge, SimpleGrid
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import Image from "next/image";
 import Layout from "../../components/layouts/article";
 import Section from "../../components/section";
 import Paragraph from "../../components/paragraph";
-import { IoLogoInstagram, IoLogoGithub, IoLogoFacebook, IoLogoGoogle } from 'react-icons/io5'
+import { IoLogoInstagram, IoLogoGithub, IoLogoFacebook, IoLogoGoogle, IoLogoLinkedin } from 'react-icons/io5'
 import { WorkSection, WorkTimes } from "../../components/bio";
 import NextLink from 'next/link'
 
@@ -32,7 +32,7 @@ export default function Home() {
           bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
           css={{ backdropFilter: 'blur(10px)' }}
         >
-          Hello, I&apos;m an web developer based in Việt Nam
+          Hello, I&apos;m a web developer based in Việt Nam
         </Box>
         <Box display={{ md: 'flex' }}>
           <Box flexGrow={1}>
@@ -70,12 +70,12 @@ export default function Home() {
 
         <Section delay={0.1}>
           <Heading as="h3" variant="section-title">
-            About me ♥️
+            About Me ♥️
           </Heading>
-          <Paragraph>
-            A technology enthusiast on the path to becoming a programmer, with quick adaptability and flexibility. In addition to my programming experience, I also have a background in graphic design and video editing. I am always looking for opportunities to explore and learn new technologies, applying them to launch products—from planning and design to solving real-world problems with code.
+          <Paragraph textAlign="justify" lineHeight="tall">
+            Full-stack developer with expertise in building scalable web applications and backend services. Currently working as a React and C# developer at CREASIA, with over 1+ year of experience in Node.js backend development. Passionate about creating efficient, user-friendly solutions and continuously learning new technologies. Skilled in both frontend and backend development, with additional experience in graphic design and video editing.
           </Paragraph>
-          <Box align="center" my={4}>
+          <Box align="center" my={6}>
             <Button
               as={NextLink}
               href="/works"
@@ -83,12 +83,55 @@ export default function Home() {
               rightIcon={<ChevronRightIcon />}
               colorScheme="green"
             >
-              My Persional Projects
+              My Personal Projects
             </Button>
           </Box>
         </Section>
 
         <Section delay={0.2}>
+          <Heading as="h3" variant="section-title">
+            Skills & Technologies 💻
+          </Heading>
+          <Box mt={4}>
+            <Heading as="h4" fontSize={16} mb={2} mt={3}>
+              Frontend
+            </Heading>
+            <SimpleGrid columns={[2, 3, 4]} gap={3}>
+              <Badge colorScheme="green" p={2} borderRadius="md" textAlign="center">React.js</Badge>
+              <Badge colorScheme="green" p={2} borderRadius="md" textAlign="center">Next.js</Badge>
+              <Badge colorScheme="green" p={2} borderRadius="md" textAlign="center">Flutter</Badge>
+              <Badge colorScheme="green" p={2} borderRadius="md" textAlign="center">Chakra UI</Badge>
+              <Badge colorScheme="green" p={2} borderRadius="md" textAlign="center">HTML/CSS</Badge>
+              <Badge colorScheme="green" p={2} borderRadius="md" textAlign="center">JavaScript</Badge>
+            </SimpleGrid>
+
+            <Heading as="h4" fontSize={16} mb={2} mt={4}>
+              Backend
+            </Heading>
+            <SimpleGrid columns={[2, 3, 4]} gap={3}>
+              <Badge colorScheme="blue" p={2} borderRadius="md" textAlign="center">Node.js</Badge>
+              <Badge colorScheme="blue" p={2} borderRadius="md" textAlign="center">C#</Badge>
+              <Badge colorScheme="blue" p={2} borderRadius="md" textAlign="center">Express.js</Badge>
+              <Badge colorScheme="blue" p={2} borderRadius="md" textAlign="center">MongoDB</Badge>
+              <Badge colorScheme="blue" p={2} borderRadius="md" textAlign="center">SQL</Badge>
+              <Badge colorScheme="blue" p={2} borderRadius="md" textAlign="center">REST API</Badge>
+            </SimpleGrid>
+
+            <Heading as="h4" fontSize={16} mb={2} mt={4}>
+              Tools & Others
+            </Heading>
+            <SimpleGrid columns={[2, 3, 4]} gap={3}>
+              <Badge colorScheme="purple" p={2} borderRadius="md" textAlign="center">Git</Badge>
+              <Badge colorScheme="purple" p={2} borderRadius="md" textAlign="center">Docker</Badge>
+              <Badge colorScheme="purple" p={2} borderRadius="md" textAlign="center">TensorFlow</Badge>
+              <Badge colorScheme="purple" p={2} borderRadius="md" textAlign="center">Machine Learning</Badge>
+              <Badge colorScheme="purple" p={2} borderRadius="md" textAlign="center">Photoshop</Badge>
+              <Badge colorScheme="purple" p={2} borderRadius="md" textAlign="center">Video Editing</Badge>
+            </SimpleGrid>
+          </Box>
+        </Section>
+
+        <Section delay={0.3}>
           <Heading as="h3" variant="section-title">
             Work Experience 💼
           </Heading>
@@ -119,11 +162,11 @@ export default function Home() {
               rightIcon={<ChevronRightIcon />}
               colorScheme="green"
             >
-              My Text CV
+              Download CV
             </Button>
           </Box>
         </Section>
-        <Section delay={0.3}>
+        <Section delay={0.4}>
           <Heading as="h3" variant="section-title">
             I ♥️
           </Heading>
@@ -132,7 +175,7 @@ export default function Home() {
           </Paragraph>
           <br />
           <Heading as="h3" variant="section-title">
-            On the web
+            Contact & Social 📧
           </Heading>
           <List>
             <ListItem>
@@ -143,6 +186,17 @@ export default function Home() {
                   leftIcon={<IoLogoGithub />}
                 >
                   @Jura69
+                </Button>
+              </Link>
+            </ListItem>
+            <ListItem>
+              <Link href="https://www.linkedin.com/in/tu%E1%BA%A5n-l%E1%BB%99c-b24b391ab/" target="_blank">
+                <Button
+                  variant="ghost"
+                  colorScheme="teal"
+                  leftIcon={<IoLogoLinkedin />}
+                >
+                  Trương Tuấn Lộc
                 </Button>
               </Link>
             </ListItem>
@@ -169,7 +223,7 @@ export default function Home() {
               </Link>
             </ListItem>
             <ListItem>
-              <Link href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=CllgCJfrtHTLFVhThklSMBvJhvNJDkFfVzfZXghfRXlDMvWgzCKMZqZsBdBhxnRvPsjZdcdFjXB" target="_blank">
+              <Link href="mailto:Loctruongtuan@gmail.com">
                 <Button
                   variant="ghost"
                   colorScheme="teal"
@@ -177,7 +231,6 @@ export default function Home() {
                 >
                   Loctruongtuan@gmail.com
                 </Button>
-
               </Link>
             </ListItem>
           </List>
