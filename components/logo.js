@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Text, useColorModeValue } from '@chakra-ui/react'
 import styled from '@emotion/styled'
-import { memo } from 'react'
+import { memo, useState, useEffect } from 'react'
 import TotoroIcon from '../components/icons/totoro'
 
 const LogoBox = styled.span`
@@ -24,7 +24,12 @@ const LogoBox = styled.span`
 `
 
 const Logo = memo(function Logo() {
+    const [mounted, setMounted] = useState(false)
     const textColor = useColorModeValue('gray.800', 'whiteAlpha.900')
+
+    useEffect(() => {
+      setMounted(true)
+    }, [])
 
     return (
         (<Link href="/" scroll={false}>
@@ -32,7 +37,7 @@ const Logo = memo(function Logo() {
             <LogoBox>
                 <TotoroIcon />
                 <Text
-                    color={textColor}
+                    color={mounted ? textColor : 'whiteAlpha.900'}
                     fontFamily='M PLUS Rounded 1c", sans-serif'
                     fontWeight="bold"
                     ml={3}

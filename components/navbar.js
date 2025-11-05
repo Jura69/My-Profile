@@ -1,6 +1,6 @@
 import { Box, Container, Flex, Heading, Menu, MenuList, MenuItem, MenuButton, IconButton, Stack, useColorModeValue } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import { forwardRef, memo } from 'react'
+import { forwardRef, memo, useState, useEffect } from 'react'
 import { IoLogoGithub } from 'react-icons/io5'
 import { Link } from '@chakra-ui/next-js';
 import Logo from './logo';
@@ -9,7 +9,30 @@ import { HamburgerIcon } from '@chakra-ui/icons'
 
 const LinkItem = ({ href, path, target, children, ...props }) => {
     const active = path === href
+    const [mounted, setMounted] = useState(false)
     const inactiveColor = useColorModeValue('gray.800', 'whiteAlpha.900')
+
+    useEffect(() => {
+      setMounted(true)
+    }, [])
+
+    // Prevent hydration mismatch by using consistent color until mounted
+    if (!mounted) {
+      return (
+        <Link
+          as={NextLink}
+          href={href}
+          scroll={false}
+          p={2}
+          bg={active ? 'grassTeal' : undefined}
+          color={active ? '#202023' : 'gray.800'}
+          target={target}
+          {...props}
+        >
+          {children}
+        </Link>
+      )
+    }
 
     return (
       <Link
@@ -33,14 +56,19 @@ const LinkItem = ({ href, path, target, children, ...props }) => {
 
 const Navbar = memo(function Navbar(props) {
     const { path } = props
+    const [mounted, setMounted] = useState(false)
     const bgColor = useColorModeValue('#ffffff40', '#20202380')
+
+    useEffect(() => {
+      setMounted(true)
+    }, [])
 
     return (
         <Box
             position="fixed"
             as="nav"
             w="100%"
-            bg={bgColor}
+            bg={mounted ? bgColor : '#20202380'}
             css={{ backdropFilter: 'blur(10px)' }}
             zIndex={2}
             {...props}
