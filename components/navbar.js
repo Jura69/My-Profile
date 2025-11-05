@@ -1,6 +1,6 @@
 import { Box, Container, Flex, Heading, Menu, MenuList, MenuItem, MenuButton, IconButton, Stack, useColorModeValue } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import { forwardRef, memo, useState, useEffect } from 'react'
+import { forwardRef, memo } from 'react'
 import { IoLogoGithub } from 'react-icons/io5'
 import { Link } from '@chakra-ui/next-js';
 import Logo from './logo';
@@ -9,14 +9,7 @@ import { HamburgerIcon } from '@chakra-ui/icons'
 
 const LinkItem = ({ href, path, target, children, ...props }) => {
     const active = path === href
-    const [mounted, setMounted] = useState(false)
-
-    // Always call hooks unconditionally
     const inactiveColor = useColorModeValue('gray.800', 'whiteAlpha.900')
-
-    useEffect(() => {
-      setMounted(true)
-    }, [])
 
     return (
       <Link
@@ -40,14 +33,7 @@ const LinkItem = ({ href, path, target, children, ...props }) => {
 
 const Navbar = memo(function Navbar(props) {
     const { path } = props
-    const [mounted, setMounted] = useState(false)
-
-    // Always call hooks unconditionally
     const bgColor = useColorModeValue('#ffffff40', '#20202380')
-
-    useEffect(() => {
-      setMounted(true)
-    }, [])
 
     return (
         <Box

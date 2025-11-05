@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Text, useColorModeValue } from '@chakra-ui/react'
 import styled from '@emotion/styled'
-import { memo, useState, useEffect } from 'react'
+import { memo } from 'react'
 import TotoroIcon from '../components/icons/totoro'
 
 const LogoBox = styled.span`
@@ -24,14 +24,7 @@ const LogoBox = styled.span`
 `
 
 const Logo = memo(function Logo() {
-    const [mounted, setMounted] = useState(false)
-
-    // Always call hooks unconditionally
     const textColor = useColorModeValue('gray.800', 'whiteAlpha.900')
-
-    useEffect(() => {
-      setMounted(true)
-    }, [])
 
     return (
         (<Link href="/" scroll={false}>
