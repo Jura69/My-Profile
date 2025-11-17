@@ -8,7 +8,7 @@ export default class Document extends NextDocument {
       <Html lang="en">
         <Head>
           {/* Preload critical assets */}
-          <link rel="preload" href="/totoro.glb" as="fetch" crossOrigin="anonymous" />
+          <link rel="preload" href="/totoro-optimized.glb" as="fetch" crossOrigin="anonymous" />
 
           {/* Favicon */}
           <link rel="icon" href="/favicon.ico" />

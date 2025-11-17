@@ -12,7 +12,7 @@ const Totoro = memo(() => {
   const refContainer = useRef()
   const [loading, setLoading] = useState(true)
   const refRenderer = useRef()
-  const urlTotoroGLB = '/totoro.glb'
+  const urlTotoroGLB = '/totoro-optimized.glb'
 
   const handleWindowResize = useCallback(() => {
     const { current: renderer } = refRenderer
