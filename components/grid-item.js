@@ -3,6 +3,9 @@ import Image from 'next/image'
 import { Box, Text, LinkBox, LinkOverlay } from '@chakra-ui/react'
 import { Global } from '@emotion/react'
 import { memo } from 'react'
+import { motion } from 'framer-motion'
+
+const MotionBox = motion(Box)
 
 export const GridItem = ({ children, href, title, thumbnail }) => (
   <Box w="100%" textAlign="center">
@@ -29,14 +32,31 @@ export const WorkGridItem = memo(({
   title,
   thumbnail
 }) => (
-  <Box w="100%" textAlign="center">
+  <MotionBox
+    w="100%"
+    textAlign="center"
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+    whileHover={{ y: -8 }}
+  >
     <LinkBox
       as={NextLink}
       href={`/${category}/${id}`}
       scroll={false}
       cursor="pointer"
     >
-      <Box borderRadius="12px" overflow="hidden" mb={2}>
+      <MotionBox
+        borderRadius="12px"
+        overflow="hidden"
+        mb={2}
+        whileHover={{
+          boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+          scale: 1.02
+        }}
+        transition={{ duration: 0.3 }}
+      >
         <Image
           src={thumbnail}
           alt={title}
@@ -46,7 +66,7 @@ export const WorkGridItem = memo(({
           loading="lazy"
           quality={80}
         />
-      </Box>
+      </MotionBox>
       <LinkOverlay as="div" href={`/${category}/${id}`}>
         <Text mt={2} fontSize={20}>
           {title}
@@ -54,7 +74,7 @@ export const WorkGridItem = memo(({
       </LinkOverlay>
       <Text fontSize={14}>{children}</Text>
     </LinkBox>
-  </Box>
+  </MotionBox>
 ))
 
 export const AudioGridItem = memo(({
@@ -64,14 +84,31 @@ export const AudioGridItem = memo(({
   title,
   thumbnail
 }) => (
-  <Box w="100%" textAlign="center">
+  <MotionBox
+    w="100%"
+    textAlign="center"
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+    whileHover={{ y: -8 }}
+  >
     <LinkBox
       as={NextLink}
       href={`/${category}/${id}`}
       scroll={false}
       cursor="pointer"
     >
-      <Box borderRadius="12px" overflow="hidden" mb={2}>
+      <MotionBox
+        borderRadius="12px"
+        overflow="hidden"
+        mb={2}
+        whileHover={{
+          boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+          scale: 1.02
+        }}
+        transition={{ duration: 0.3 }}
+      >
         <Image
           src={thumbnail}
           alt={title}
@@ -81,7 +118,7 @@ export const AudioGridItem = memo(({
           loading="lazy"
           quality={80}
         />
-      </Box>
+      </MotionBox>
       <LinkOverlay as="div" href={`/${category}/${id}`}>
         <Text mt={2} fontSize={20}>
           {title}
@@ -89,7 +126,7 @@ export const AudioGridItem = memo(({
       </LinkOverlay>
       <Text fontSize={14}>{children}</Text>
     </LinkBox>
-  </Box>
+  </MotionBox>
 ))
 
 export const ActivitiesGridItem = memo(({
@@ -99,14 +136,31 @@ export const ActivitiesGridItem = memo(({
   title,
   thumbnail
 }) => (
-  <Box w="100%" textAlign="center">
+  <MotionBox
+    w="100%"
+    textAlign="center"
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+    whileHover={{ y: -8 }}
+  >
     <LinkBox
       as={NextLink}
       href={`/${category}/${id}`}
       scroll={false}
       cursor="pointer"
     >
-      <Box borderRadius="12px" overflow="hidden" mb={2}>
+      <MotionBox
+        borderRadius="12px"
+        overflow="hidden"
+        mb={2}
+        whileHover={{
+          boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+          scale: 1.02
+        }}
+        transition={{ duration: 0.3 }}
+      >
         <Image
           src={thumbnail}
           alt={title}
@@ -116,7 +170,7 @@ export const ActivitiesGridItem = memo(({
           loading="lazy"
           quality={80}
         />
-      </Box>
+      </MotionBox>
       <LinkOverlay as="div" href={`/${category}/${id}`}>
         <Text mt={2} fontSize={20}>
           {title}
@@ -124,7 +178,7 @@ export const ActivitiesGridItem = memo(({
       </LinkOverlay>
       <Text fontSize={14}>{children}</Text>
     </LinkBox>
-  </Box>
+  </MotionBox>
 ))
 
 export const GridItemStyle = () => (
