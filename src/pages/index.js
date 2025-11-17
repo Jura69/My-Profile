@@ -94,10 +94,13 @@ export default function Home() {
             >
               <Image
                 src="/images/loc.jpeg"
-                alt="Profile image"
-                width="100"
-                height="100"
+                alt="Profile image of Trương Tuấn Lộc"
+                width={100}
+                height={100}
                 priority
+                quality={90}
+                sizes="100px"
+                style={{ objectFit: 'cover' }}
               />
             </MotionBox>
           </Box>

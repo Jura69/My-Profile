@@ -64,7 +64,8 @@ export const WorkGridItem = memo(({
           height={300}
           style={{ width: '100%', height: 'auto' }}
           loading="lazy"
-          quality={80}
+          quality={85}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </MotionBox>
       <LinkOverlay as="div" href={`/${category}/${id}`}>
@@ -116,7 +117,8 @@ export const AudioGridItem = memo(({
           height={300}
           style={{ width: '100%', height: 'auto' }}
           loading="lazy"
-          quality={80}
+          quality={85}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </MotionBox>
       <LinkOverlay as="div" href={`/${category}/${id}`}>
@@ -168,7 +170,8 @@ export const ActivitiesGridItem = memo(({
           height={300}
           style={{ width: '100%', height: 'auto' }}
           loading="lazy"
-          quality={80}
+          quality={85}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </MotionBox>
       <LinkOverlay as="div" href={`/${category}/${id}`}>
