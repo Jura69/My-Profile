@@ -26,20 +26,20 @@ const AnimatedBadge = ({ children, colorScheme, delay = 0, ...props }) => {
         y: -4,
         transition: {
           type: "tween",
-          duration: 0.15,
+          duration: 0.12,
           ease: "easeOut"
         }
       }}
       whileTap={{
         scale: 0.95,
         transition: {
-          duration: 0.1
+          duration: 0.05
         }
       }}
-      // Fast return to normal when hover ends
+      // Ultra-fast instant return to normal when hover ends
       transition={{
         type: "tween",
-        duration: 0.2,
+        duration: 0.1, // Instant snapback!
         ease: "easeOut"
       }}
       cursor="pointer"
