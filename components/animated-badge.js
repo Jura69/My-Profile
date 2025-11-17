@@ -35,9 +35,9 @@ const AnimatedBadge = ({ children, colorScheme, delay = 0, ...props }) => {
         }
       }}
       cursor="pointer"
-      // CSS for instant hover and return
+      // CSS for instant hover and return - 30ms for imperceptible delay
       style={{
-        transition: 'transform 0.1s ease-out',
+        transition: 'transform 0.03s ease-out',
         willChange: 'transform' // Optimize for hover
       }}
       {...props}
