@@ -8,7 +8,7 @@ const AnimatedBadge = ({ children, colorScheme, delay = 0, ...props }) => {
   const controls = useAnimation()
 
   useEffect(() => {
-    // Run entrance animation with delay, then set resting state with NO delay
+    // Run entrance animation, then override with no-delay state
     const runAnimation = async () => {
       // Entrance with delay
       await controls.start({
@@ -17,15 +17,19 @@ const AnimatedBadge = ({ children, colorScheme, delay = 0, ...props }) => {
         y: 0,
         transition: {
           duration: 0.4,
-          delay, // Delay ONLY for entrance
+          delay,
           ease: [0.34, 1.56, 0.64, 1]
         }
       })
-      // After entrance, set resting state with fast transition (for un-hover)
-      controls.set({
+      // Immediately update to same state with NO transition
+      // This clears the delay so un-hover won't re-trigger it
+      controls.start({
         opacity: 1,
         scale: 1,
-        y: 0
+        y: 0,
+        transition: {
+          duration: 0 // Instant update, no delay
+        }
       })
     }
     runAnimation()
@@ -39,18 +43,22 @@ const AnimatedBadge = ({ children, colorScheme, delay = 0, ...props }) => {
       textAlign="center"
       initial={{ opacity: 0, scale: 0.8, y: 20 }}
       animate={controls}
-      // Hover - instant and fast
+      // Hover - instant trigger, fast animation
       whileHover={{
         scale: 1.1,
         y: -4,
         transition: {
+          type: "tween",
           duration: 0.15,
+          delay: 0, // NO delay for hover
           ease: "easeOut"
         }
       }}
-      // Un-hover transition - fast, NO delay
+      // Un-hover transition - fast return, NO delay
       transition={{
+        type: "tween",
         duration: 0.15,
+        delay: 0, // NO delay for un-hover
         ease: "easeOut"
       }}
       whileTap={{ scale: 0.95 }}
