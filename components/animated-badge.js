@@ -10,39 +10,27 @@ const AnimatedBadge = ({ children, colorScheme, delay = 0, ...props }) => {
       p={2}
       borderRadius="md"
       textAlign="center"
+      // Entrance animation with delay
       initial={{ opacity: 0, scale: 0.8, y: 20 }}
-      animate={{
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        transition: {
-          duration: 0.4,
-          delay,
-          ease: [0.34, 1.56, 0.64, 1] // Spring-like easing for entrance
-        }
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{
+        duration: 0.4,
+        delay, // Delay only for initial entrance
+        ease: [0.34, 1.56, 0.64, 1]
       }}
+      // Hover animation
       whileHover={{
         scale: 1.1,
-        y: -4,
-        transition: {
-          type: "tween",
-          duration: 0.12,
-          ease: "easeOut"
-        }
+        y: -4
       }}
       whileTap={{
-        scale: 0.95,
-        transition: {
-          duration: 0.05
-        }
-      }}
-      // Ultra-fast instant return to normal when hover ends
-      transition={{
-        type: "tween",
-        duration: 0.1, // Instant snapback!
-        ease: "easeOut"
+        scale: 0.95
       }}
       cursor="pointer"
+      // CSS transition for instant return (bypasses Framer Motion delay)
+      style={{
+        transition: 'transform 0.1s ease-out'
+      }}
       {...props}
     >
       {children}
