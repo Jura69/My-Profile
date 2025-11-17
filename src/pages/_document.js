@@ -18,6 +18,13 @@ export default class Document extends NextDocument {
           {/* DNS Prefetch for external resources */}
           <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+          {/* Google Fonts */}
+          <link
+            href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;300;400;500;700;800;900&display=swap"
+            rel="stylesheet"
+          />
 
           {/* Global Meta Tags */}
           <meta charSet="utf-8" />
