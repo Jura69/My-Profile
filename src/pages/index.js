@@ -1,9 +1,10 @@
 import {
-  Container, Box, Heading, useColorModeValue, Button, List,
-  ListItem, Link, Badge, SimpleGrid
+  Container, Box, Heading, useColorModeValue, List,
+  ListItem, Link, SimpleGrid, Badge
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import Image from "next/image";
+import { motion } from 'framer-motion'
 import Layout from "../../components/layouts/article";
 import Section from "../../components/section";
 import Paragraph from "../../components/paragraph";
@@ -12,6 +13,11 @@ import { WorkSection, WorkTimes } from "../../components/bio";
 import NextLink from 'next/link'
 import SEO from "../../components/seo";
 import { PersonSchema, WebsiteSchema, ProfilePageSchema } from "../../components/json-ld";
+import AnimatedBadge from "../../components/animated-badge";
+import AnimatedWorkCard from "../../components/animated-work-card";
+import AnimatedButton from "../../components/animated-button";
+
+const MotionBox = motion(Box)
 
 export default function Home() {
   const downloadFile = () => {
@@ -34,7 +40,7 @@ export default function Home() {
       <WebsiteSchema />
       <ProfilePageSchema />
       <Container>
-        <Box
+        <MotionBox
           borderRadius="lg"
           mb={6}
           mt={2}
@@ -42,9 +48,12 @@ export default function Home() {
           textAlign="center"
           bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
           css={{ backdropFilter: 'blur(10px)' }}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
         >
           Hello, I&apos;m a web developer based in Việt Nam
-        </Box>
+        </MotionBox>
         <Box display={{ md: 'flex' }}>
           <Box flexGrow={1}>
             <Heading as="h2" variant="page-title">
@@ -58,7 +67,7 @@ export default function Home() {
             ml={{ md: 6 }}
             textAlign="center"
           >
-            <Box
+            <MotionBox
               borderColor="teal.400"
               borderWidth={2}
               borderStyle="solid"
@@ -67,15 +76,33 @@ export default function Home() {
               display="inline-block"
               borderRadius="full"
               overflow="hidden"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              animate={{
+                boxShadow: [
+                  '0 0 0 0 rgba(56, 178, 172, 0.4)',
+                  '0 0 0 10px rgba(56, 178, 172, 0)',
+                  '0 0 0 0 rgba(56, 178, 172, 0)'
+                ]
+              }}
+              transition={{
+                boxShadow: {
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }
+              }}
             >
               <Image
                 src="/images/loc.jpeg"
-                alt="Profile image"
-                width="100"
-                height="100"
+                alt="Profile image of Trương Tuấn Lộc"
+                width={100}
+                height={100}
                 priority
+                quality={90}
+                sizes="100px"
+                style={{ objectFit: 'cover' }}
               />
-            </Box>
+            </MotionBox>
           </Box>
         </Box>
 
@@ -87,7 +114,7 @@ export default function Home() {
             Full-stack developer with expertise in building scalable web applications and backend services. Currently working as a React and C# developer at CREASIA, with over 1+ year of experience in Node.js backend development. Passionate about creating efficient, user-friendly solutions and continuously learning new technologies. Skilled in both frontend and backend development, with additional experience in graphic design and video editing.
           </Paragraph>
           <Box align="center" my={6}>
-            <Button
+            <AnimatedButton
               as={NextLink}
               href="/works"
               scroll={false}
@@ -95,7 +122,7 @@ export default function Home() {
               colorScheme="green"
             >
               My Personal Projects
-            </Button>
+            </AnimatedButton>
           </Box>
         </Section>
 
@@ -108,36 +135,36 @@ export default function Home() {
               Frontend
             </Heading>
             <SimpleGrid columns={[2, 3, 4]} gap={3}>
-              <Badge colorScheme="green" p={2} borderRadius="md" textAlign="center">React.js</Badge>
-              <Badge colorScheme="green" p={2} borderRadius="md" textAlign="center">Next.js</Badge>
-              <Badge colorScheme="green" p={2} borderRadius="md" textAlign="center">Flutter</Badge>
-              <Badge colorScheme="green" p={2} borderRadius="md" textAlign="center">Chakra UI</Badge>
-              <Badge colorScheme="green" p={2} borderRadius="md" textAlign="center">HTML/CSS</Badge>
-              <Badge colorScheme="green" p={2} borderRadius="md" textAlign="center">JavaScript</Badge>
+              <AnimatedBadge colorScheme="green" delay={0.1}>React.js</AnimatedBadge>
+              <AnimatedBadge colorScheme="green" delay={0.15}>Next.js</AnimatedBadge>
+              <AnimatedBadge colorScheme="green" delay={0.2}>Flutter</AnimatedBadge>
+              <AnimatedBadge colorScheme="green" delay={0.25}>Chakra UI</AnimatedBadge>
+              <AnimatedBadge colorScheme="green" delay={0.3}>HTML/CSS</AnimatedBadge>
+              <AnimatedBadge colorScheme="green" delay={0.35}>JavaScript</AnimatedBadge>
             </SimpleGrid>
 
             <Heading as="h4" fontSize={16} mb={2} mt={4}>
               Backend
             </Heading>
             <SimpleGrid columns={[2, 3, 4]} gap={3}>
-              <Badge colorScheme="blue" p={2} borderRadius="md" textAlign="center">Node.js</Badge>
-              <Badge colorScheme="blue" p={2} borderRadius="md" textAlign="center">C#</Badge>
-              <Badge colorScheme="blue" p={2} borderRadius="md" textAlign="center">Express.js</Badge>
-              <Badge colorScheme="blue" p={2} borderRadius="md" textAlign="center">MongoDB</Badge>
-              <Badge colorScheme="blue" p={2} borderRadius="md" textAlign="center">SQL</Badge>
-              <Badge colorScheme="blue" p={2} borderRadius="md" textAlign="center">REST API</Badge>
+              <AnimatedBadge colorScheme="blue" delay={0.4}>Node.js</AnimatedBadge>
+              <AnimatedBadge colorScheme="blue" delay={0.45}>C#</AnimatedBadge>
+              <AnimatedBadge colorScheme="blue" delay={0.5}>Express.js</AnimatedBadge>
+              <AnimatedBadge colorScheme="blue" delay={0.55}>MongoDB</AnimatedBadge>
+              <AnimatedBadge colorScheme="blue" delay={0.6}>SQL</AnimatedBadge>
+              <AnimatedBadge colorScheme="blue" delay={0.65}>REST API</AnimatedBadge>
             </SimpleGrid>
 
             <Heading as="h4" fontSize={16} mb={2} mt={4}>
               Tools & Others
             </Heading>
             <SimpleGrid columns={[2, 3, 4]} gap={3}>
-              <Badge colorScheme="purple" p={2} borderRadius="md" textAlign="center">Git</Badge>
-              <Badge colorScheme="purple" p={2} borderRadius="md" textAlign="center">Docker</Badge>
-              <Badge colorScheme="purple" p={2} borderRadius="md" textAlign="center">TensorFlow</Badge>
-              <Badge colorScheme="purple" p={2} borderRadius="md" textAlign="center">Machine Learning</Badge>
-              <Badge colorScheme="purple" p={2} borderRadius="md" textAlign="center">Photoshop</Badge>
-              <Badge colorScheme="purple" p={2} borderRadius="md" textAlign="center">Video Editing</Badge>
+              <AnimatedBadge colorScheme="purple" delay={0.7}>Git</AnimatedBadge>
+              <AnimatedBadge colorScheme="purple" delay={0.75}>Docker</AnimatedBadge>
+              <AnimatedBadge colorScheme="purple" delay={0.8}>TensorFlow</AnimatedBadge>
+              <AnimatedBadge colorScheme="purple" delay={0.85}>Machine Learning</AnimatedBadge>
+              <AnimatedBadge colorScheme="purple" delay={0.9}>Photoshop</AnimatedBadge>
+              <AnimatedBadge colorScheme="purple" delay={0.95}>Video Editing</AnimatedBadge>
             </SimpleGrid>
           </Box>
         </Section>
@@ -148,7 +175,7 @@ export default function Home() {
           </Heading>
 
           {/* CREASIA */}
-          <Box mb={6}>
+          <AnimatedWorkCard delay={0.1}>
             <WorkTimes>🏢 CREASIA | Full-stack Developer</WorkTimes>
             <Box fontSize="sm" color="gray.500" mb={2}>
               June 2025 - Present · Full-time
@@ -171,10 +198,10 @@ export default function Home() {
                 <Badge colorScheme="cyan" fontSize="xs">SQL Server</Badge>
               </SimpleGrid>
             </Box>
-          </Box>
+          </AnimatedWorkCard>
 
           {/* Infordation Vietnam */}
-          <Box mb={6}>
+          <AnimatedWorkCard delay={0.2}>
             <WorkTimes>🚀 Infordation Vietnam | Junior Backend Developer</WorkTimes>
             <Box fontSize="sm" color="gray.500" mb={2}>
               December 2023 - February 2025 · 1 year 3 months
@@ -200,10 +227,10 @@ export default function Home() {
                 <Badge colorScheme="green" fontSize="xs">AWS</Badge>
               </SimpleGrid>
             </Box>
-          </Box>
+          </AnimatedWorkCard>
 
           {/* VNPT Khánh Hoà */}
-          <Box mb={6}>
+          <AnimatedWorkCard delay={0.3}>
             <WorkTimes>📚 VNPT Khánh Hoà | Software Developer Intern</WorkTimes>
             <Box fontSize="sm" color="gray.500" mb={2}>
               May 2023 - July 2023 · 3 months
@@ -226,10 +253,10 @@ export default function Home() {
                 <Badge colorScheme="blue" fontSize="xs">SQL</Badge>
               </SimpleGrid>
             </Box>
-          </Box>
+          </AnimatedWorkCard>
 
           {/* Education */}
-          <Box mb={6}>
+          <AnimatedWorkCard delay={0.4}>
             <WorkTimes>🎓 Nha Trang University</WorkTimes>
             <Box fontSize="sm" color="gray.500" mb={2}>
               Graduated 2024
@@ -243,17 +270,17 @@ export default function Home() {
                 <li>Completed projects in Machine Learning and Full-stack Development</li>
               </Box>
             </Box>
-          </Box>
+          </AnimatedWorkCard>
 
           <Box align="center" my={6}>
-            <Button
+            <AnimatedButton
               onClick={downloadFile}
               rightIcon={<ChevronRightIcon />}
               colorScheme="green"
               size="lg"
             >
               Download Full CV
-            </Button>
+            </AnimatedButton>
           </Box>
         </Section>
         <Section delay={0.4}>
@@ -270,57 +297,57 @@ export default function Home() {
           <List>
             <ListItem>
               <Link href="https://github.com/Jura69" target="_blank">
-                <Button
+                <AnimatedButton
                   variant="ghost"
                   colorScheme="teal"
                   leftIcon={<IoLogoGithub />}
                 >
                   @Jura69
-                </Button>
+                </AnimatedButton>
               </Link>
             </ListItem>
             <ListItem>
               <Link href="https://www.linkedin.com/in/tu%E1%BA%A5n-l%E1%BB%99c-b24b391ab/" target="_blank">
-                <Button
+                <AnimatedButton
                   variant="ghost"
                   colorScheme="teal"
                   leftIcon={<IoLogoLinkedin />}
                 >
                   Trương Tuấn Lộc
-                </Button>
+                </AnimatedButton>
               </Link>
             </ListItem>
             <ListItem>
               <Link href="https://www.facebook.com/loc.truongtuanMT" target="_blank">
-                <Button
+                <AnimatedButton
                   variant="ghost"
                   colorScheme="teal"
                   leftIcon={<IoLogoFacebook />}
                 >
                   @Trương Tuấn Lộc
-                </Button>
+                </AnimatedButton>
               </Link>
             </ListItem>
             <ListItem>
               <Link href="https://www.instagram.com/_midori_neko_/" target="_blank">
-                <Button
+                <AnimatedButton
                   variant="ghost"
                   colorScheme="teal"
                   leftIcon={<IoLogoInstagram />}
                 >
                   @_midori_neko_
-                </Button>
+                </AnimatedButton>
               </Link>
             </ListItem>
             <ListItem>
               <Link href="mailto:Loctruongtuan@gmail.com">
-                <Button
+                <AnimatedButton
                   variant="ghost"
                   colorScheme="teal"
                   leftIcon={<IoLogoGoogle />}
                 >
                   Loctruongtuan@gmail.com
-                </Button>
+                </AnimatedButton>
               </Link>
             </ListItem>
           </List>

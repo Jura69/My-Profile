@@ -2,6 +2,8 @@ import Layout from '../../components/layouts/main'
 import Chakra from '../../providers/chakra';
 import Font from './fonts/font';
 import { AnimatePresence } from 'framer-motion'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { reportWebVitals } from '../../lib/performance'
 
 // Report web vitals
@@ -30,6 +32,8 @@ export default function Website({ Component, pageProps, router }) {
           </AnimatePresence>
         </Layout>
       </Chakra>
+      <Analytics />
+      <SpeedInsights />
     </>
   );
 }
