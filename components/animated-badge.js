@@ -1,68 +1,37 @@
 import { Badge } from '@chakra-ui/react'
-import { motion, useAnimation } from 'framer-motion'
-import { useEffect } from 'react'
+import { motion } from 'framer-motion'
 
 const MotionBadge = motion(Badge)
 
 const AnimatedBadge = ({ children, colorScheme, delay = 0, ...props }) => {
-  const controls = useAnimation()
-
-  useEffect(() => {
-    // Run entrance animation, then override with no-delay state
-    const runAnimation = async () => {
-      // Entrance with delay
-      await controls.start({
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        transition: {
-          duration: 0.4,
-          delay,
-          ease: [0.34, 1.56, 0.64, 1]
-        }
-      })
-      // Immediately update to same state with NO transition
-      // This clears the delay so un-hover won't re-trigger it
-      controls.start({
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        transition: {
-          duration: 0 // Instant update, no delay
-        }
-      })
-    }
-    runAnimation()
-  }, [controls, delay])
-
   return (
     <MotionBadge
       colorScheme={colorScheme}
       p={2}
       borderRadius="md"
       textAlign="center"
+      cursor="pointer"
+      // Entrance animation
       initial={{ opacity: 0, scale: 0.8, y: 20 }}
-      animate={controls}
-      // Hover - instant trigger, fast animation
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{
+        opacity: { duration: 0.4, delay, ease: [0.34, 1.56, 0.64, 1] },
+        scale: { duration: 0.4, delay, ease: [0.34, 1.56, 0.64, 1] },
+        y: { duration: 0.4, delay, ease: [0.34, 1.56, 0.64, 1] },
+        default: { duration: 0.2, ease: "easeOut" }
+      }}
+      // Hover state with its own transition
       whileHover={{
         scale: 1.1,
         y: -4,
         transition: {
-          type: "tween",
-          duration: 0.15,
-          delay: 0, // NO delay for hover
+          duration: 0.2,
           ease: "easeOut"
         }
       }}
-      // Un-hover transition - fast return, NO delay
-      transition={{
-        type: "tween",
-        duration: 0.15,
-        delay: 0, // NO delay for un-hover
-        ease: "easeOut"
+      whileTap={{
+        scale: 0.95
       }}
-      whileTap={{ scale: 0.95 }}
-      cursor="pointer"
       {...props}
     >
       {children}
