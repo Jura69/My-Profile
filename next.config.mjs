@@ -85,7 +85,7 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/totoro-optimized.glb',
+        source: '/totoro-compressed.glb',
         headers: [
           {
             key: 'Cache-Control',
