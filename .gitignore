@@ -34,3 +34,48 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# project files
+package-lock.json
+
+# docs
+/docs
+
+# logs
+/logs
+
+# repomix
+/repomix-output.xml
+
+# .repomixignore
+.repomixignore
+
+# .claudeignore
+.claudeignore
+
+# .opencodeignore
+.opencodeignore
+
+# .serenaignore
+.serenaignore
+
+# .githubignore
+.githubignore
+
+# .gitlabignore
+.gitlabignore
+
+# .gitlabignore
+.gitlabignore
+
+# .gitlabignore
+.gitlabignore
+
+# .gitlabignore
+.gitlabignore
+release-manifest.json
+AGENTS.md
+CLAUDE.md
+plans
+.claude
+.opencode
