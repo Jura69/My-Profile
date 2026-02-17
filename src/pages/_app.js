@@ -20,7 +20,7 @@ export default function Website({ Component, pageProps, router }) {
         <Font />
         <Layout router={router}>
           <AnimatePresence
-            mode="popLayout"
+            mode="wait"
             initial={false}
             onExitComplete={() => {
               if (typeof window !== 'undefined') {

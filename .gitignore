@@ -38,9 +38,6 @@ next-env.d.ts
 # project files
 package-lock.json
 
-# docs
-/docs
-
 # logs
 /logs
 
