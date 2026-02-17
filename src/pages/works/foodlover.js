@@ -18,7 +18,7 @@ const Work = () => (
       title="Food Lover - Next.js Food Ordering Platform | Trương Tuấn Lộc"
       description="A full-stack food ordering and recipe discovery platform built with Next.js, Node.js, and MongoDB. Features Stripe payment integration, AWS S3 storage, and comprehensive admin dashboard."
       keywords="Next.js Food App, Food Ordering Platform, React Food App, Node.js Backend, MongoDB, Stripe Payment, AWS S3, Full-stack Project"
-      image="/images/works/Food1.png"
+      image="/images/works/Food1.webp"
     />
     <ProjectSchema
       project={{
@@ -26,7 +26,7 @@ const Work = () => (
         description: 'A full-stack food ordering and recipe discovery platform',
         year: '2023',
         github: 'https://github.com/Jura69/Nextjs-FoodOrder',
-        image: 'https://my-profile-jura69.vercel.app/images/works/Food1.png',
+        image: 'https://my-profile-jura69.vercel.app/images/works/Food1.webp',
         stack: 'Next.js, Node.js, MongoDB, AWS S3, Stripe'
       }}
     />
@@ -61,9 +61,9 @@ const Work = () => (
         </ListItem>
       </List>
 
-      <WorkImage src="/images/works/Food2.png" alt="Foodlover" />
-      <WorkImage src="/images/works/Food3.png" alt="Foodlover" />
-      <WorkImage src="/images/works/Food4.png" alt="Foodlover" />
+      <WorkImage src="/images/works/Food2.webp" alt="Foodlover" />
+      <WorkImage src="/images/works/Food3.webp" alt="Foodlover" />
+      <WorkImage src="/images/works/Food4.webp" alt="Foodlover" />
     </Container>
   </Layout>
 )

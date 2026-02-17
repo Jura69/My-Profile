@@ -48,7 +48,7 @@ const Work = () => (
         <ListItem>
           <Meta>Github</Meta>
           <Link href="https://github.com/Jura69/Flutter-TicketApp">
-          https://github.com/Jura69/Flutter-TicketApp <ExternalLinkIcon mx="2px" />
+            https://github.com/Jura69/Flutter-TicketApp <ExternalLinkIcon mx="2px" />
           </Link>
         </ListItem>
         <ListItem>
@@ -61,9 +61,9 @@ const Work = () => (
         </ListItem>
       </List>
 
-      <WorkImage src="/images/works/Ticket2.png" alt="Ticket" />
-      <WorkImage src="/images/works/Ticket3.png" alt="Ticket" />
-      
+      <WorkImage src="/images/works/Ticket2.webp" alt="Ticket" />
+      <WorkImage src="/images/works/Ticket3.webp" alt="Ticket" />
+
     </Container>
   </Layout>
 )

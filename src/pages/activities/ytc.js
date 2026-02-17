@@ -14,7 +14,7 @@ const activities = () => (
                 YTC Nha Trang University
             </Title>
             <P>
-            Designed media publications and event promotional materials. Captured event photography to document and promote activities.
+                Designed media publications and event promotional materials. Captured event photography to document and promote activities.
             </P>
             <br />
             <List ml={4} my={4}>
@@ -24,7 +24,7 @@ const activities = () => (
                 </ListItem>
             </List>
 
-            <ActivitiesImage src="/images/activities/Ytc2.jpg" alt="YTC" />
+            <ActivitiesImage src="/images/activities/Ytc2.webp" alt="YTC" />
             <ActivitiesImage src="/images/activities/Ytc3.jpg" alt="YTC" />
             <ActivitiesImage src="/images/activities/Ytc4.jpg" alt="YTC" />
         </Container>

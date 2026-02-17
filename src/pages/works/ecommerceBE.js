@@ -18,7 +18,7 @@ const Work = () => (
       title="E-commerce Backend Microservices | Trương Tuấn Lộc"
       description="A scalable e-commerce backend service built with microservices architecture. Features Node.js, Express, MongoDB, Redis caching, JWT authentication, and RESTful API design."
       keywords="E-commerce Backend, Microservices, Node.js Backend, Express.js, MongoDB, Redis, REST API, Scalable Backend, Backend Development"
-      image="/images/works/EcommerceBE.png"
+      image="/images/works/EcommerceBE.webp"
     />
     <ProjectSchema
       project={{
@@ -26,7 +26,7 @@ const Work = () => (
         description: 'Scalable e-commerce backend with microservices architecture',
         year: '2024',
         github: 'https://github.com/Jura69/E-com-NodeBE',
-        image: 'https://my-profile-jura69.vercel.app/images/works/EcommerceBE.png',
+        image: 'https://my-profile-jura69.vercel.app/images/works/EcommerceBE.webp',
         stack: 'Node.js, Express.js, MongoDB, Redis, Microservices'
       }}
     />
