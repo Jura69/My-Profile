@@ -26,6 +26,7 @@ export const WorkImage = memo(({ src, alt }) => (
       alt={alt}
       width={800}
       height={600}
+      sizes="(max-width: 768px) 100vw, 800px"
       style={{ borderRadius: '8px', width: '100%', height: 'auto' }}
       loading="lazy"
       quality={85}
