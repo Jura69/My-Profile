@@ -20,11 +20,24 @@ export default class Document extends NextDocument {
           <link rel="preconnect" href="https://fonts.googleapis.com" crossOrigin="anonymous" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
-          {/* Google Fonts */}
+          {/* Google Fonts - Non-render-blocking with preload + swap */}
           <link
-            href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@100;300;400;500;700;800;900&display=swap"
-            rel="stylesheet"
+            rel="preload"
+            href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800&display=swap"
+            as="style"
           />
+          <link
+            href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800&display=swap"
+            rel="stylesheet"
+            media="print"
+            onLoad="this.media='all'"
+          />
+          <noscript>
+            <link
+              href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800&display=swap"
+              rel="stylesheet"
+            />
+          </noscript>
 
           {/* Global Meta Tags */}
           <meta charSet="utf-8" />
