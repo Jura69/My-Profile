@@ -1,5 +1,12 @@
 import { useState, useEffect, useRef, useCallback, memo } from 'react'
-import * as THREE from 'three'
+import {
+  WebGLRenderer,
+  Scene,
+  OrthographicCamera,
+  Vector3,
+  AmbientLight,
+  SRGBColorSpace,
+} from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { loadGLTFModel } from '../lib/model'
 import { TotoroSpinner, TotoroContainer } from './totoro-loader'
@@ -32,7 +39,7 @@ const Totoro = memo(() => {
       const scW = container.clientWidth
       const scH = container.clientHeight
 
-      const renderer = new THREE.WebGLRenderer({
+      const renderer = new WebGLRenderer({
         antialias: typeof window !== 'undefined' ? window.devicePixelRatio < 2 : true, // Safe check
         alpha: true,
         powerPreference: "high-performance",
@@ -45,16 +52,16 @@ const Totoro = memo(() => {
       const pixelRatio = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 2) : 1
       renderer.setPixelRatio(pixelRatio)
       renderer.setSize(scW, scH)
-      renderer.outputColorSpace = THREE.SRGBColorSpace
+      renderer.outputColorSpace = SRGBColorSpace
       // Tối ưu hóa renderer
       renderer.shadowMap.enabled = false
       renderer.physicallyCorrectLights = false
       container.appendChild(renderer.domElement)
       refRenderer.current = renderer
-      const scene = new THREE.Scene()
+      const scene = new Scene()
 
-      const target = new THREE.Vector3(-0.5, 1.2, 0)
-      const initialCameraPosition = new THREE.Vector3(
+      const target = new Vector3(-0.5, 1.2, 0)
+      const initialCameraPosition = new Vector3(
         20 * Math.sin(0.2 * Math.PI),
         10,
         20 * Math.cos(0.2 * Math.PI)
@@ -63,7 +70,7 @@ const Totoro = memo(() => {
       // 640 -> 240
       // 8   -> 6
       const scale = scH * 0.005 + 4.8
-      const camera = new THREE.OrthographicCamera(
+      const camera = new OrthographicCamera(
         -scale,
         scale,
         scale,
@@ -74,7 +81,7 @@ const Totoro = memo(() => {
       camera.position.copy(initialCameraPosition)
       camera.lookAt(target)
 
-      const ambientLight = new THREE.AmbientLight(0xcccccc, Math.PI)
+      const ambientLight = new AmbientLight(0xcccccc, Math.PI)
       scene.add(ambientLight)
 
       const controls = new OrbitControls(camera, renderer.domElement)
