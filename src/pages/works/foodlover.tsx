@@ -6,7 +6,7 @@ import {
     ListItem,
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
-import { Title, WorkImage, Meta } from '../../../components/work'
+import { DetailTitle, DetailImage, Meta } from '../../../components/detail-components'
 import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
 import SEO from '../../../components/seo'
@@ -38,9 +38,9 @@ const Work = () => (
             ]}
         />
         <Container>
-            <Title>
+            <DetailTitle parentPath="/works" parentLabel="Works">
                 Food Lover <Badge>2023</Badge>
-            </Title>
+            </DetailTitle>
             <P>
                 A full-stack food ordering and recipe discovery platform built with Next.js, Node.js, and MongoDB. Users can browse recipes, place orders, and track deliveries. The platform includes a comprehensive admin dashboard for restaurant owners to manage menus, orders, and invoices. Features secure payment processing with Stripe integration and cloud storage with AWS S3.
             </P>
@@ -61,9 +61,9 @@ const Work = () => (
                 </ListItem>
             </List>
 
-            <WorkImage src="/images/works/Food2.webp" alt="Foodlover" />
-            <WorkImage src="/images/works/Food3.webp" alt="Foodlover" />
-            <WorkImage src="/images/works/Food4.webp" alt="Foodlover" />
+            <DetailImage src="/images/works/Food2.webp" alt="Foodlover" />
+            <DetailImage src="/images/works/Food3.webp" alt="Foodlover" />
+            <DetailImage src="/images/works/Food4.webp" alt="Foodlover" />
         </Container>
     </Layout>
 )

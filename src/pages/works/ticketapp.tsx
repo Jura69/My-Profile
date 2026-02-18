@@ -6,7 +6,7 @@ import {
     ListItem,
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
-import { Title, WorkImage, Meta } from '../../../components/work'
+import { DetailTitle, DetailImage, Meta } from '../../../components/detail-components'
 import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
 import SEO from '../../../components/seo'
@@ -38,9 +38,9 @@ const Work = () => (
             ]}
         />
         <Container>
-            <Title>
+            <DetailTitle parentPath="/works" parentLabel="Works">
                 Flutter Ticket Booking App <Badge>2024</Badge>
-            </Title>
+            </DetailTitle>
             <P>
                 A modern mobile application for booking movie tickets, built with Flutter for cross-platform compatibility. Features include browsing available movies, selecting seats, and secure ticket booking with a clean, intuitive user interface.
             </P>
@@ -61,8 +61,8 @@ const Work = () => (
                 </ListItem>
             </List>
 
-            <WorkImage src="/images/works/Ticket2.webp" alt="Ticket" />
-            <WorkImage src="/images/works/Ticket3.webp" alt="Ticket" />
+            <DetailImage src="/images/works/Ticket2.webp" alt="Ticket" />
+            <DetailImage src="/images/works/Ticket3.webp" alt="Ticket" />
         </Container>
     </Layout>
 )

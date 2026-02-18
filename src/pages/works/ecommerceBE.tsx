@@ -6,7 +6,7 @@ import {
     ListItem,
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
-import { Title, Meta, MetaRed } from '../../../components/work'
+import { DetailTitle, Meta, MetaRed } from '../../../components/detail-components'
 import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
 import SEO from '../../../components/seo'
@@ -38,9 +38,9 @@ const Work = () => (
             ]}
         />
         <Container>
-            <Title>
+            <DetailTitle parentPath="/works" parentLabel="Works">
                 Backend Ecommerce Shop Service <Badge>2024</Badge>
-            </Title>
+            </DetailTitle>
             <P>
                 A scalable e-commerce backend service built with microservices architecture. Designed to handle high traffic and provide robust API endpoints for product management, user authentication, shopping cart, and order processing. Implements caching with Redis for optimal performance and uses MongoDB for flexible data storage.
             </P>

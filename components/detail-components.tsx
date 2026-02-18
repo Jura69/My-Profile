@@ -7,10 +7,16 @@ interface ChildrenProps {
     children: React.ReactNode
 }
 
-export const Title = ({ children }: ChildrenProps) => (
+interface DetailTitleProps {
+    parentPath: string
+    parentLabel: string
+    children: React.ReactNode
+}
+
+export const DetailTitle = ({ parentPath, parentLabel, children }: DetailTitleProps) => (
     <Box>
-        <Link as={RouterLink} to="/works">
-            Works
+        <Link as={RouterLink} to={parentPath}>
+            {parentLabel}
         </Link>
         <span>
             {' '}
@@ -22,7 +28,7 @@ export const Title = ({ children }: ChildrenProps) => (
     </Box>
 )
 
-export const WorkImage = memo(({ src, alt }: { src: string; alt: string }) => (
+export const DetailImage = memo(({ src, alt }: { src: string; alt: string }) => (
     <Box mb={4} borderRadius="lg" overflow="hidden">
         <img
             src={src}

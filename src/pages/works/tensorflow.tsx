@@ -6,7 +6,7 @@ import {
     ListItem,
 } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
-import { Title, WorkImage, Meta } from '../../../components/work'
+import { DetailTitle, DetailImage, Meta } from '../../../components/detail-components'
 import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
 import SEO from '../../../components/seo'
@@ -38,9 +38,9 @@ const Work = () => (
             ]}
         />
         <Container>
-            <Title>
+            <DetailTitle parentPath="/works" parentLabel="Works">
                 Tensorflow SignLanguage Detect <Badge>2024</Badge>
-            </Title>
+            </DetailTitle>
             <P>
                 A machine learning application that uses TensorFlow and computer vision to detect and interpret sign language gestures in real-time. The model is trained on sign language datasets to recognize various hand signs and convert them to text, making communication more accessible for the hearing-impaired community.
             </P>
@@ -61,7 +61,7 @@ const Work = () => (
                 </ListItem>
             </List>
 
-            <WorkImage src="/images/works/Tensorflow1.webp" alt="Tensorflow" />
+            <DetailImage src="/images/works/Tensorflow1.webp" alt="Tensorflow" />
         </Container>
     </Layout>
 )
