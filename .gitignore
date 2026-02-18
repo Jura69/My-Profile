@@ -79,3 +79,4 @@ plans
 .opencode
 .agent
 test
+__tests__
