@@ -104,7 +104,7 @@ interface ProjectData {
     title: string
     description: string
     year: string
-    github: string
+    github?: string
     image: string
     stack: string
 }
@@ -117,7 +117,7 @@ export const ProjectSchema = ({ project }: { project: ProjectData }) => {
         description: project.description,
         author: { '@type': 'Person', name: 'Trương Tuấn Lộc' },
         dateCreated: project.year,
-        url: project.github,
+        ...(project.github && { url: project.github }),
         image: project.image,
         keywords: project.stack
     }

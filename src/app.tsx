@@ -12,6 +12,13 @@ import FoodLoverPage from './pages/works/foodlover'
 import TicketAppPage from './pages/works/ticketapp'
 import EcommerceBEPage from './pages/works/ecommerceBE'
 import TensorflowPage from './pages/works/tensorflow'
+import AssetManagementPage from './pages/works/asset-management'
+import BatLoyaltyPage from './pages/works/bat-loyalty'
+import BatPsaPage from './pages/works/bat-psa'
+import CastrolFleetPage from './pages/works/castrol-fleet'
+import VendingAiAgentPage from './pages/works/vending-ai-agent'
+import WarehouseManagementPage from './pages/works/warehouse-management'
+import CreasiaErpPage from './pages/works/creasia-erp'
 import ActivitiesPage from './pages/activities'
 import YtcPage from './pages/activities/ytc'
 import AudiophilePage from './pages/audiophile'
@@ -40,6 +47,13 @@ function AnimatedRoutes() {
                 <Route path="/works/ticketapp" element={<TicketAppPage />} />
                 <Route path="/works/ecommerceBE" element={<EcommerceBEPage />} />
                 <Route path="/works/tensorflow" element={<TensorflowPage />} />
+                <Route path="/works/asset-management" element={<AssetManagementPage />} />
+                <Route path="/works/bat-loyalty" element={<BatLoyaltyPage />} />
+                <Route path="/works/bat-psa" element={<BatPsaPage />} />
+                <Route path="/works/castrol-fleet" element={<CastrolFleetPage />} />
+                <Route path="/works/vending-ai-agent" element={<VendingAiAgentPage />} />
+                <Route path="/works/warehouse-management" element={<WarehouseManagementPage />} />
+                <Route path="/works/creasia-erp" element={<CreasiaErpPage />} />
                 <Route path="/activities" element={<ActivitiesPage />} />
                 <Route path="/activities/ytc" element={<YtcPage />} />
                 <Route path="/audiophile" element={<AudiophilePage />} />
