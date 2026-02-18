@@ -1,7 +1,7 @@
 import { Container, Heading, SimpleGrid } from '@chakra-ui/react'
 import Layout from '../../components/layouts/article'
 import Section from '../../components/section'
-import { WorkGridItem } from '../../components/grid-item'
+import { CategoryGridItem } from '../../components/grid-item'
 import SEO from '../../components/seo'
 import { BreadcrumbSchema } from '../../components/json-ld'
 
@@ -19,32 +19,34 @@ const Works = () => (
             ]}
         />
         <Container>
-            <Heading as="h3" fontSize={20} mb={4}>
-                My Personal Projects
-            </Heading>
+            <Section delay={0.1}>
+                <Heading as="h3" variant="section-title">
+                    My Personal Projects 💻
+                </Heading>
+            </Section>
             <SimpleGrid columns={[1, 1, 2]} gap={6}>
-                <Section>
-                    <WorkGridItem id="foodlover" title="Foodlover" thumbnail="/images/works/Food1.webp">
+                <Section delay={0.2}>
+                    <CategoryGridItem category="works" id="foodlover" title="Foodlover" thumbnail="/images/works/Food1.webp">
                         A web application that allows users to search for food recipes and order food online, built with Nextjs, MongoDB.
-                    </WorkGridItem>
+                    </CategoryGridItem>
                 </Section>
 
-                <Section>
-                    <WorkGridItem id="ticketapp" title="Flutter Ticket App" thumbnail="/images/works/Ticket1.jpeg">
+                <Section delay={0.3}>
+                    <CategoryGridItem category="works" id="ticketapp" title="Flutter Ticket App" thumbnail="/images/works/Ticket1.jpeg">
                         A Flutter app that allows users to buy tickets for movies, built with Flutter.
-                    </WorkGridItem>
+                    </CategoryGridItem>
                 </Section>
 
-                <Section>
-                    <WorkGridItem id="tensorflow" title="Tensorflow SignLanguage" thumbnail="/images/works/Tensorflow.jpg">
+                <Section delay={0.4}>
+                    <CategoryGridItem category="works" id="tensorflow" title="Tensorflow SignLanguage" thumbnail="/images/works/Tensorflow.jpg">
                         A python app using Tensorflow, machine learning to detect sign language.
-                    </WorkGridItem>
+                    </CategoryGridItem>
                 </Section>
 
-                <Section>
-                    <WorkGridItem id="ecommerceBE" title="Ecommerce Backend Shop" thumbnail="/images/works/EcommerceBE.webp">
+                <Section delay={0.5}>
+                    <CategoryGridItem category="works" id="ecommerceBE" title="Ecommerce Backend Shop" thumbnail="/images/works/EcommerceBE.webp">
                         Backend Ecommerce Service using Node.js, Express, MongoDB, and more.
-                    </WorkGridItem>
+                    </CategoryGridItem>
                 </Section>
             </SimpleGrid>
         </Container>
