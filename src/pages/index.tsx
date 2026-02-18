@@ -1,6 +1,6 @@
 import {
     Container, Box, Heading, useColorModeValue, List, UnorderedList,
-    ListItem, Link, SimpleGrid, Badge
+    ListItem, Link, SimpleGrid, Badge, Text, Flex
 } from "@chakra-ui/react"
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { Link as RouterLink } from 'react-router'
@@ -9,11 +9,19 @@ import Layout from "../../components/layouts/article"
 import Section from "../../components/section"
 import Paragraph from "../../components/paragraph"
 import { IoLogoInstagram, IoLogoGithub, IoLogoFacebook, IoLogoGoogle, IoLogoLinkedin } from 'react-icons/io5'
+import {
+    SiReact, SiNextdotjs, SiFlutter, SiChakraui, SiHtml5, SiJavascript,
+    SiNodedotjs, SiSharp, SiExpress, SiMongodb, SiDotnet,
+    SiTensorflow, SiPytorch, SiOpenai, SiPython,
+    SiGit, SiDocker, SiAdobephotoshop, SiAdobepremierepro, SiTypescript, SiRedis
+} from 'react-icons/si'
+import { DiMsqlServer } from 'react-icons/di'
 import { WorkSection, WorkTimes } from "../../components/bio"
 import SEO from "../../components/seo"
 import { PersonSchema, WebsiteSchema, ProfilePageSchema } from "../../components/json-ld"
-import AnimatedBadge from "../../components/animated-badge"
-import AnimatedWorkCard from "../../components/animated-work-card"
+import SkillCard from "../../components/skill-card"
+import SkillCategory from "../../components/skill-category"
+import TimelineCard from "../../components/timeline-card"
 import AnimatedButton from "../../components/animated-button"
 
 const MotionBox = motion(Box)
@@ -107,7 +115,7 @@ export default function Home() {
                         About Me ♥️
                     </Heading>
                     <Paragraph>
-                        Full-stack developer with expertise in building scalable web applications and backend services. Currently working as a React and C# developer at CREASIA, with over 1+ year of experience in Node.js backend development. Passionate about creating efficient, user-friendly solutions and continuously learning new technologies. Skilled in both frontend and backend development, with additional experience in graphic design and video editing.
+                        Full-stack developer with expertise in building scalable web applications and backend services. Currently working as a React and C# developer at CREASIA, with over 1+ year of experience in Node.js backend development. Passionate about AI/ML technologies and creating efficient, user-friendly solutions. Skilled in both frontend and backend development, with hands-on experience in Machine Learning, TensorFlow, and prompt engineering.
                     </Paragraph>
                     <Box textAlign="center" my={6}>
                         <AnimatedButton
@@ -126,41 +134,39 @@ export default function Home() {
                         Skills & Technologies 💻
                     </Heading>
                     <Box mt={4}>
-                        <Heading as="h4" fontSize={16} mb={2} mt={3}>
-                            Frontend
-                        </Heading>
-                        <SimpleGrid columns={[2, 3, 4]} gap={3}>
-                            <AnimatedBadge colorScheme="green" delay={0.1}>React.js</AnimatedBadge>
-                            <AnimatedBadge colorScheme="green" delay={0.15}>Next.js</AnimatedBadge>
-                            <AnimatedBadge colorScheme="green" delay={0.2}>Flutter</AnimatedBadge>
-                            <AnimatedBadge colorScheme="green" delay={0.25}>Chakra UI</AnimatedBadge>
-                            <AnimatedBadge colorScheme="green" delay={0.3}>HTML/CSS</AnimatedBadge>
-                            <AnimatedBadge colorScheme="green" delay={0.35}>JavaScript</AnimatedBadge>
-                        </SimpleGrid>
+                        <SkillCategory title="Frontend" color="#48BB78" delay={0.1}>
+                            <SkillCard icon={SiReact} label="React.js" color="#61DAFB" delay={0.1} />
+                            <SkillCard icon={SiNextdotjs} label="Next.js" color="#808080" delay={0.15} />
+                            <SkillCard icon={SiFlutter} label="Flutter" color="#02569B" delay={0.2} />
+                            <SkillCard icon={SiTypescript} label="TypeScript" color="#3178C6" delay={0.25} />
+                            <SkillCard icon={SiChakraui} label="Chakra UI" color="#319795" delay={0.3} />
+                            <SkillCard icon={SiJavascript} label="JavaScript" color="#F7DF1E" delay={0.35} />
+                            <SkillCard icon={SiHtml5} label="HTML/CSS" color="#E34F26" delay={0.4} />
+                        </SkillCategory>
 
-                        <Heading as="h4" fontSize={16} mb={2} mt={4}>
-                            Backend
-                        </Heading>
-                        <SimpleGrid columns={[2, 3, 4]} gap={3}>
-                            <AnimatedBadge colorScheme="blue" delay={0.4}>Node.js</AnimatedBadge>
-                            <AnimatedBadge colorScheme="blue" delay={0.45}>C#</AnimatedBadge>
-                            <AnimatedBadge colorScheme="blue" delay={0.5}>Express.js</AnimatedBadge>
-                            <AnimatedBadge colorScheme="blue" delay={0.55}>MongoDB</AnimatedBadge>
-                            <AnimatedBadge colorScheme="blue" delay={0.6}>SQL</AnimatedBadge>
-                            <AnimatedBadge colorScheme="blue" delay={0.65}>REST API</AnimatedBadge>
-                        </SimpleGrid>
+                        <SkillCategory title="Backend" color="#4299E1" delay={0.2}>
+                            <SkillCard icon={SiNodedotjs} label="Node.js" color="#339933" delay={0.15} />
+                            <SkillCard icon={SiSharp} label="C#" color="#512BD4" delay={0.2} />
+                            <SkillCard icon={SiDotnet} label=".NET" color="#512BD4" delay={0.25} />
+                            <SkillCard icon={SiPython} label="Python" color="#3776AB" delay={0.3} />
+                            <SkillCard icon={SiExpress} label="Express.js" color="#808080" delay={0.35} />
+                            <SkillCard icon={SiMongodb} label="MongoDB" color="#47A248" delay={0.4} />
+                            <SkillCard icon={DiMsqlServer} label="SQL Server" color="#CC2927" delay={0.45} />
+                            <SkillCard icon={SiRedis} label="Redis" color="#DC382D" delay={0.5} />
+                        </SkillCategory>
 
-                        <Heading as="h4" fontSize={16} mb={2} mt={4}>
-                            Tools & Others
-                        </Heading>
-                        <SimpleGrid columns={[2, 3, 4]} gap={3}>
-                            <AnimatedBadge colorScheme="purple" delay={0.7}>Git</AnimatedBadge>
-                            <AnimatedBadge colorScheme="purple" delay={0.75}>Docker</AnimatedBadge>
-                            <AnimatedBadge colorScheme="purple" delay={0.8}>TensorFlow</AnimatedBadge>
-                            <AnimatedBadge colorScheme="purple" delay={0.85}>Machine Learning</AnimatedBadge>
-                            <AnimatedBadge colorScheme="purple" delay={0.9}>Photoshop</AnimatedBadge>
-                            <AnimatedBadge colorScheme="purple" delay={0.95}>Video Editing</AnimatedBadge>
-                        </SimpleGrid>
+                        <SkillCategory title="AI & Machine Learning" color="#ED8936" delay={0.3}>
+                            <SkillCard icon={SiTensorflow} label="TensorFlow" color="#FF6F00" delay={0.2} />
+                            <SkillCard icon={SiPytorch} label="PyTorch" color="#EE4C2C" delay={0.25} />
+                            <SkillCard icon={SiOpenai} label="OpenAI API" color="#808080" delay={0.3} />
+                        </SkillCategory>
+
+                        <SkillCategory title="Tools & Others" color="#9F7AEA" delay={0.4}>
+                            <SkillCard icon={SiGit} label="Git" color="#F05032" delay={0.25} />
+                            <SkillCard icon={SiDocker} label="Docker" color="#2496ED" delay={0.3} />
+                            <SkillCard icon={SiAdobephotoshop} label="Photoshop" color="#31A8FF" delay={0.35} />
+                            <SkillCard icon={SiAdobepremierepro} label="Premiere Pro" color="#9999FF" delay={0.4} />
+                        </SkillCategory>
                     </Box>
                 </Section>
 
@@ -169,99 +175,104 @@ export default function Home() {
                         Work Experience 💼
                     </Heading>
 
-                    <AnimatedWorkCard delay={0.1}>
-                        <WorkTimes>🏢 CREASIA | Full-stack Developer</WorkTimes>
-                        <Box fontSize="sm" color="gray.500" mb={2}>
-                            June 2025 - Present · Full-time
-                        </Box>
-                        <WorkSection>
-                            Building scalable web applications using React and C# with focus on clean architecture and user experience.
-                        </WorkSection>
-                        <Box pl="1.5em" mt={2}>
-                            <UnorderedList pl={4} spacing={1}>
-                                <li>Develop and maintain full-stack applications with React frontend and C# backend</li>
-                                <li>Collaborate with cross-functional teams to deliver high-quality features</li>
-                                <li>Implement responsive UI/UX designs and optimize application performance</li>
+                    <Box mt={6}>
+                        <TimelineCard color="#319795" delay={0.1}>
+                            <Heading as="h4" fontSize={16} fontWeight="bold">
+                                🏢 CREASIA
+                            </Heading>
+                            <Text fontSize="sm" fontWeight="semibold" color="teal.400">
+                                Full-stack Developer
+                            </Text>
+                            <Badge colorScheme="teal" fontSize="xs" mt={1} borderRadius="full" px={2}>
+                                June 2025 - Present · Full-time
+                            </Badge>
+                            <Text fontSize="sm" mt={3} lineHeight="tall">
+                                Building scalable web applications using React and C# with focus on clean architecture and user experience.
+                            </Text>
+                            <UnorderedList pl={4} spacing={1} mt={2} fontSize="sm">
+                                <ListItem>Develop and maintain full-stack applications with React frontend and C# backend</ListItem>
+                                <ListItem>Collaborate with cross-functional teams to deliver high-quality features</ListItem>
+                                <ListItem>Implement responsive UI/UX designs and optimize application performance</ListItem>
                             </UnorderedList>
-                        </Box>
-                        <Box pl="1.5em" mt={2}>
-                            <SimpleGrid columns={[2, 3, 4]} gap={2}>
-                                <Badge colorScheme="cyan" fontSize="xs">React</Badge>
-                                <Badge colorScheme="cyan" fontSize="xs">C#</Badge>
-                                <Badge colorScheme="cyan" fontSize="xs">.NET</Badge>
-                                <Badge colorScheme="cyan" fontSize="xs">SQL Server</Badge>
-                            </SimpleGrid>
-                        </Box>
-                    </AnimatedWorkCard>
+                            <Flex gap={2} mt={3} flexWrap="wrap">
+                                <Badge colorScheme="cyan" fontSize="xs" borderRadius="full">React</Badge>
+                                <Badge colorScheme="cyan" fontSize="xs" borderRadius="full">C#</Badge>
+                                <Badge colorScheme="cyan" fontSize="xs" borderRadius="full">.NET</Badge>
+                                <Badge colorScheme="cyan" fontSize="xs" borderRadius="full">SQL Server</Badge>
+                            </Flex>
+                        </TimelineCard>
 
-                    <AnimatedWorkCard delay={0.2}>
-                        <WorkTimes>🚀 Infordation Vietnam | Junior Backend Developer</WorkTimes>
-                        <Box fontSize="sm" color="gray.500" mb={2}>
-                            December 2023 - February 2025 · 1 year 3 months
-                        </Box>
-                        <WorkSection>
-                            Specialized in Node.js backend development, building RESTful APIs and microservices for enterprise applications.
-                        </WorkSection>
-                        <Box pl="1.5em" mt={2}>
-                            <UnorderedList pl={4} spacing={1}>
-                                <li>Designed and implemented RESTful APIs serving 10,000+ daily active users</li>
-                                <li>Optimized database queries reducing response time by 40%</li>
-                                <li>Integrated third-party services and payment gateways</li>
-                                <li>Collaborated with frontend team to ensure seamless API integration</li>
+                        <TimelineCard color="#48BB78" delay={0.2}>
+                            <Heading as="h4" fontSize={16} fontWeight="bold">
+                                🚀 Infordation Vietnam
+                            </Heading>
+                            <Text fontSize="sm" fontWeight="semibold" color="green.400">
+                                Junior Backend Developer
+                            </Text>
+                            <Badge colorScheme="green" fontSize="xs" mt={1} borderRadius="full" px={2}>
+                                Dec 2023 - Feb 2025 · 1 year 3 months
+                            </Badge>
+                            <Text fontSize="sm" mt={3} lineHeight="tall">
+                                Specialized in Node.js backend development, building RESTful APIs and microservices for enterprise applications.
+                            </Text>
+                            <UnorderedList pl={4} spacing={1} mt={2} fontSize="sm">
+                                <ListItem>Designed and implemented RESTful APIs serving 10,000+ daily active users</ListItem>
+                                <ListItem>Optimized database queries reducing response time by 40%</ListItem>
+                                <ListItem>Integrated third-party services and payment gateways</ListItem>
+                                <ListItem>Collaborated with frontend team to ensure seamless API integration</ListItem>
                             </UnorderedList>
-                        </Box>
-                        <Box pl="1.5em" mt={2}>
-                            <SimpleGrid columns={[2, 3, 4]} gap={2}>
-                                <Badge colorScheme="green" fontSize="xs">Node.js</Badge>
-                                <Badge colorScheme="green" fontSize="xs">Express</Badge>
-                                <Badge colorScheme="green" fontSize="xs">MongoDB</Badge>
-                                <Badge colorScheme="green" fontSize="xs">Redis</Badge>
-                                <Badge colorScheme="green" fontSize="xs">Docker</Badge>
-                                <Badge colorScheme="green" fontSize="xs">AWS</Badge>
-                            </SimpleGrid>
-                        </Box>
-                    </AnimatedWorkCard>
+                            <Flex gap={2} mt={3} flexWrap="wrap">
+                                <Badge colorScheme="green" fontSize="xs" borderRadius="full">Node.js</Badge>
+                                <Badge colorScheme="green" fontSize="xs" borderRadius="full">Express</Badge>
+                                <Badge colorScheme="green" fontSize="xs" borderRadius="full">MongoDB</Badge>
+                                <Badge colorScheme="green" fontSize="xs" borderRadius="full">Redis</Badge>
+                                <Badge colorScheme="green" fontSize="xs" borderRadius="full">Docker</Badge>
+                                <Badge colorScheme="green" fontSize="xs" borderRadius="full">AWS</Badge>
+                            </Flex>
+                        </TimelineCard>
 
-                    <AnimatedWorkCard delay={0.3}>
-                        <WorkTimes>📚 VNPT Khánh Hoà | Software Developer Intern</WorkTimes>
-                        <Box fontSize="sm" color="gray.500" mb={2}>
-                            May 2023 - July 2023 · 3 months
-                        </Box>
-                        <WorkSection>
-                            Internship focused on full-stack development with React and C#, working on internal management systems.
-                        </WorkSection>
-                        <Box pl="1.5em" mt={2}>
-                            <UnorderedList pl={4} spacing={1}>
-                                <li>Developed internal web applications using React and C#</li>
-                                <li>Learned enterprise software development practices</li>
-                                <li>Participated in code reviews and agile development processes</li>
+                        <TimelineCard color="#4299E1" delay={0.3}>
+                            <Heading as="h4" fontSize={16} fontWeight="bold">
+                                📚 VNPT Khánh Hoà
+                            </Heading>
+                            <Text fontSize="sm" fontWeight="semibold" color="blue.400">
+                                Software Developer Intern
+                            </Text>
+                            <Badge colorScheme="blue" fontSize="xs" mt={1} borderRadius="full" px={2}>
+                                May 2023 - Jul 2023 · 3 months
+                            </Badge>
+                            <Text fontSize="sm" mt={3} lineHeight="tall">
+                                Internship focused on full-stack development with React and C#, working on internal management systems.
+                            </Text>
+                            <UnorderedList pl={4} spacing={1} mt={2} fontSize="sm">
+                                <ListItem>Developed internal web applications using React and C#</ListItem>
+                                <ListItem>Learned enterprise software development practices</ListItem>
+                                <ListItem>Participated in code reviews and agile development processes</ListItem>
                             </UnorderedList>
-                        </Box>
-                        <Box pl="1.5em" mt={2}>
-                            <SimpleGrid columns={[2, 3, 4]} gap={2}>
-                                <Badge colorScheme="blue" fontSize="xs">React</Badge>
-                                <Badge colorScheme="blue" fontSize="xs">C#</Badge>
-                                <Badge colorScheme="blue" fontSize="xs">.NET</Badge>
-                                <Badge colorScheme="blue" fontSize="xs">SQL</Badge>
-                            </SimpleGrid>
-                        </Box>
-                    </AnimatedWorkCard>
+                            <Flex gap={2} mt={3} flexWrap="wrap">
+                                <Badge colorScheme="blue" fontSize="xs" borderRadius="full">React</Badge>
+                                <Badge colorScheme="blue" fontSize="xs" borderRadius="full">C#</Badge>
+                                <Badge colorScheme="blue" fontSize="xs" borderRadius="full">.NET</Badge>
+                                <Badge colorScheme="blue" fontSize="xs" borderRadius="full">SQL</Badge>
+                            </Flex>
+                        </TimelineCard>
 
-                    <AnimatedWorkCard delay={0.4}>
-                        <WorkTimes>🎓 Nha Trang University</WorkTimes>
-                        <Box fontSize="sm" color="gray.500" mb={2}>
-                            Graduated 2024
-                        </Box>
-                        <WorkSection>
-                            Bachelor&apos;s Degree in Information Technology
-                        </WorkSection>
-                        <Box pl="1.5em" mt={2}>
-                            <UnorderedList pl={4} spacing={1}>
-                                <li>Focus on Software Engineering and Web Development</li>
-                                <li>Completed projects in Machine Learning and Full-stack Development</li>
+                        <TimelineCard color="#9F7AEA" delay={0.4} isLast>
+                            <Heading as="h4" fontSize={16} fontWeight="bold">
+                                🎓 Nha Trang University
+                            </Heading>
+                            <Text fontSize="sm" fontWeight="semibold" color="purple.400">
+                                Bachelor&apos;s Degree in Information Technology
+                            </Text>
+                            <Badge colorScheme="purple" fontSize="xs" mt={1} borderRadius="full" px={2}>
+                                Graduated 2024
+                            </Badge>
+                            <UnorderedList pl={4} spacing={1} mt={3} fontSize="sm">
+                                <ListItem>Focus on Software Engineering and Web Development</ListItem>
+                                <ListItem>Completed projects in Machine Learning and Full-stack Development</ListItem>
                             </UnorderedList>
-                        </Box>
-                    </AnimatedWorkCard>
+                        </TimelineCard>
+                    </Box>
 
                     <Box textAlign="center" my={6}>
                         <AnimatedButton

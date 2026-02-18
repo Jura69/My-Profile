@@ -55,6 +55,18 @@ const colors = {
         creamYellow: '#FFF8DC',
         mintGreen: '#98D8C8',
         lavender: '#E6E6FA'
+    },
+    skill: {
+        frontend: '#48BB78',
+        backend: '#4299E1',
+        ai: '#ED8936',
+        tools: '#9F7AEA'
+    },
+    timeline: {
+        creasia: '#319795',
+        infordation: '#48BB78',
+        vnpt: '#4299E1',
+        university: '#9F7AEA'
     }
 }
 
