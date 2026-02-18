@@ -29,7 +29,7 @@ const LinkItem = ({ href, target, children, ...props }: LinkItemProps) => {
             as={RouterLink}
             to={href}
             p={2}
-            bg={active ? 'grassTeal' : undefined}
+            bg={active ? 'ghibli.forestGreen' : undefined}
             color={active ? '#202023' : mounted ? inactiveColor : 'gray.800'}
             target={target}
             {...props}
@@ -46,7 +46,7 @@ MenuLink.displayName = 'MenuLink'
 
 const Navbar = memo(function Navbar() {
     const [mounted, setMounted] = useState(false)
-    const bgColor = useColorModeValue('#ffffff40', '#20202380')
+    const bgColor = useColorModeValue('#f5f0e8cc', '#1a1e2ecc')
 
     useEffect(() => { setMounted(true) }, [])
 

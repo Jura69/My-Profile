@@ -27,11 +27,12 @@ const SkillCategory = ({ title, color, children, delay = 0 }: SkillCategoryProps
                 mb={4}
             >
                 <Box
-                    w="4px"
-                    h="24px"
-                    borderRadius="full"
+                    w="8px"
+                    h="20px"
                     bg={color}
-                    boxShadow={`0 0 8px ${color}60`}
+                    boxShadow={`0 0 8px ${color}40`}
+                    borderRadius="0 50% 50% 0"
+                    transform="rotate(-15deg)"
                 />
                 <Heading
                     as="h4"

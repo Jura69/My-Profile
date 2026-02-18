@@ -4,6 +4,7 @@ import { useLocation } from 'react-router'
 import Navbar from '../navbar'
 import Footer from '../footer'
 import TotoroLoader from '../totoro-loader'
+import GhibliParticles from '../ghibli-particles'
 
 // Replaces next/dynamic — React.lazy with Suspense
 const LazyTotoro = lazy(() => import('../totoro'))
@@ -17,6 +18,7 @@ const Main = memo(function Main({ children }: MainProps) {
 
     return (
         <Box as="main" pb={8}>
+            <GhibliParticles />
             <Navbar />
             <Container maxW="container.md" pt={16}>
                 <Suspense fallback={<TotoroLoader />}>

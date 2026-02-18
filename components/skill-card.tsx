@@ -13,8 +13,8 @@ interface SkillCardProps {
 
 const SkillCard = ({ icon: Icon, label, color, delay = 0 }: SkillCardProps) => {
     const bg = useColorModeValue('whiteAlpha.700', 'whiteAlpha.100')
-    const borderColor = useColorModeValue(`${color}40`, `${color}30`)
-    const hoverShadow = `0 8px 32px ${color}40, 0 0 0 1px ${color}20`
+    const borderColor = useColorModeValue(`${color}30`, `${color}20`)
+    const hoverShadow = `0 8px 24px ${color}25, 0 0 0 1px ${color}15`
     const iconColor = color
 
     return (
@@ -25,7 +25,7 @@ const SkillCard = ({ icon: Icon, label, color, delay = 0 }: SkillCardProps) => {
             justifyContent="center"
             gap={2}
             p={4}
-            borderRadius="xl"
+            borderRadius="2xl"
             bg={bg}
             border="1px solid"
             borderColor={borderColor}

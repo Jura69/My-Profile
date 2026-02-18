@@ -4,7 +4,8 @@ import { mode } from '@chakra-ui/theme-tools'
 const styles = {
     global: (props: any) => ({
         body: {
-            bg: mode('#f0e7db', '#202023')(props)
+            bg: mode('#f5f0e8', '#1a1e2e')(props),
+            transition: 'background-color 0.3s ease'
         }
     })
 }
@@ -16,7 +17,7 @@ const components = {
                 textDecoration: 'underline',
                 fontSize: 20,
                 textUnderlineOffset: 6,
-                textDecorationColor: '#525252',
+                textDecorationColor: '#7eb77f',
                 textDecorationThickness: 4,
                 marginTop: 3,
                 marginBottom: 4
@@ -29,14 +30,14 @@ const components = {
     },
     Link: {
         baseStyle: (props: any) => ({
-            color: mode('#3d7aed', '#ff63c3')(props),
+            color: mode('#4a7c59', '#98D8C8')(props),
             textUnderlineOffset: 3
         })
     },
     Button: {
         baseStyle: {
             fontWeight: 'semibold',
-            borderRadius: 'lg'
+            borderRadius: 'xl'
         }
     }
 }
@@ -50,23 +51,29 @@ const colors = {
     grassTeal: '#88ccca',
     ghibli: {
         forestGreen: '#7eb77f',
+        deepForest: '#4a7c59',
         skyBlue: '#87CEEB',
-        softPink: '#FFB6C1',
+        softPink: '#e8a0b4',
         creamYellow: '#FFF8DC',
+        warmParchment: '#f5f0e8',
+        nightForest: '#1a1e2e',
         mintGreen: '#98D8C8',
-        lavender: '#E6E6FA'
+        lavender: '#c4b5d8',
+        goldenDust: '#d4a853',
+        leafGreen: '#6db86b',
+        warmBrown: '#8b6f47'
     },
     skill: {
-        frontend: '#48BB78',
-        backend: '#4299E1',
-        ai: '#ED8936',
-        tools: '#9F7AEA'
+        frontend: '#6db86b',
+        backend: '#5a9bd5',
+        ai: '#d4a853',
+        tools: '#b08fd8'
     },
     timeline: {
-        creasia: '#319795',
-        infordation: '#48BB78',
-        vnpt: '#4299E1',
-        university: '#9F7AEA'
+        creasia: '#5a9dab',
+        infordation: '#6db86b',
+        vnpt: '#5a9bd5',
+        university: '#b08fd8'
     }
 }
 

@@ -33,19 +33,21 @@ const TimelineCard = ({ children, color = '#48BB78', delay = 0, isLast = false }
                 minW="20px"
                 pt="6px"
             >
-                {/* Dot */}
+                {/* Timeline dot */}
                 <MotionBox
                     w="12px"
                     h="12px"
                     borderRadius="full"
                     bg={dotBg}
-                    boxShadow={`0 0 0 4px ${color}25`}
+                    border="2.5px solid"
+                    borderColor={useColorModeValue('white', '#202023')}
+                    boxShadow={`0 0 0 2px ${color}60`}
                     flexShrink={0}
                     animate={{
                         boxShadow: [
+                            `0 0 0 2px ${color}60`,
                             `0 0 0 4px ${color}25`,
-                            `0 0 0 8px ${color}15`,
-                            `0 0 0 4px ${color}25`
+                            `0 0 0 2px ${color}60`
                         ]
                     }}
                     transition={{
@@ -54,13 +56,12 @@ const TimelineCard = ({ children, color = '#48BB78', delay = 0, isLast = false }
                         ease: 'easeInOut'
                     }}
                 />
-                {/* Line */}
                 {!isLast && (
                     <Box
                         w="2px"
                         flex="1"
                         mt={2}
-                        bgGradient={`linear(to-b, ${color}, ${lineBg})`}
+                        bgGradient={`linear(to-b, ${color}80, ${color}20)`}
                         borderRadius="full"
                     />
                 )}
@@ -81,7 +82,7 @@ const TimelineCard = ({ children, color = '#48BB78', delay = 0, isLast = false }
                 position="relative"
                 whileHover={{
                     y: -4,
-                    boxShadow: `0 12px 40px ${color}20, 0 0 0 1px ${color}15`,
+                    boxShadow: `0 12px 32px ${color}15, 0 0 0 1px ${color}10`,
                     transition: { duration: 0.25, ease: 'easeOut' }
                 }}
                 _before={{

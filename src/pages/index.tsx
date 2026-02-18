@@ -1,6 +1,6 @@
 import {
     Container, Box, Heading, useColorModeValue, List, UnorderedList,
-    ListItem, Link, SimpleGrid, Badge, Text, Flex
+    ListItem, Link, SimpleGrid, Badge, Text, Flex, Wrap, WrapItem, Icon
 } from "@chakra-ui/react"
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { Link as RouterLink } from 'react-router'
@@ -16,6 +16,7 @@ import {
     SiGit, SiDocker, SiAdobephotoshop, SiAdobepremierepro, SiTypescript, SiRedis
 } from 'react-icons/si'
 import { DiMsqlServer } from 'react-icons/di'
+import { HiOutlineBuildingOffice2, HiOutlineCommandLine, HiOutlineSignal, HiOutlineAcademicCap } from 'react-icons/hi2'
 import { WorkSection, WorkTimes } from "../../components/bio"
 import SEO from "../../components/seo"
 import { PersonSchema, WebsiteSchema, ProfilePageSchema } from "../../components/json-ld"
@@ -23,10 +24,15 @@ import SkillCard from "../../components/skill-card"
 import SkillCategory from "../../components/skill-category"
 import TimelineCard from "../../components/timeline-card"
 import AnimatedButton from "../../components/animated-button"
+import {
+    GhibliLeaf, GhibliSparkle
+} from "../../components/icons/ghibli-icons"
 
 const MotionBox = motion(Box)
 
 export default function Home() {
+    const pillBg = useColorModeValue('rgba(255,255,255,0.6)', 'rgba(255,255,255,0.06)')
+    const pillHoverBg = useColorModeValue('rgba(255,255,255,0.85)', 'rgba(255,255,255,0.12)')
     const downloadFile = () => {
         const link = document.createElement('a')
         link.href = '/files/CV.pdf'
@@ -53,13 +59,15 @@ export default function Home() {
                     mt={2}
                     p={3}
                     textAlign="center"
-                    bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+                    bg={useColorModeValue('rgba(245,240,232,0.8)', 'rgba(26,30,46,0.6)')}
                     css={{ backdropFilter: 'blur(10px)' }}
+                    border="1px solid"
+                    borderColor={useColorModeValue('#7eb77f40', '#98D8C830')}
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                 >
-                    Hello, I&apos;m a web developer based in Việt Nam
+                    🌿 Hello, I&apos;m a web developer based in Việt Nam 🍃
                 </MotionBox>
                 <Box display={{ md: 'flex' }}>
                     <Box flexGrow={1}>
@@ -75,7 +83,7 @@ export default function Home() {
                         textAlign="center"
                     >
                         <MotionBox
-                            borderColor="teal.400"
+                            borderColor={useColorModeValue('#7eb77f', '#98D8C8')}
                             borderWidth={2}
                             borderStyle="solid"
                             w="100px"
@@ -86,9 +94,9 @@ export default function Home() {
                             whileHover={{ scale: 1.1, rotate: 5 }}
                             animate={{
                                 boxShadow: [
-                                    '0 0 0 0 rgba(56, 178, 172, 0.4)',
-                                    '0 0 0 10px rgba(56, 178, 172, 0)',
-                                    '0 0 0 0 rgba(56, 178, 172, 0)'
+                                    '0 0 0 0 rgba(126, 183, 127, 0.4)',
+                                    '0 0 0 10px rgba(126, 183, 127, 0)',
+                                    '0 0 0 0 rgba(126, 183, 127, 0)'
                                 ]
                             }}
                             transition={{
@@ -112,7 +120,7 @@ export default function Home() {
 
                 <Section delay={0.1}>
                     <Heading as="h3" variant="section-title">
-                        About Me ♥️
+                        About Me 🌿
                     </Heading>
                     <Paragraph>
                         Full-stack developer with expertise in building scalable web applications and backend services. Currently working as a React and C# developer at CREASIA, with over 1+ year of experience in Node.js backend development. Passionate about AI/ML technologies and creating efficient, user-friendly solutions. Skilled in both frontend and backend development, with hands-on experience in Machine Learning, TensorFlow, and prompt engineering.
@@ -131,7 +139,7 @@ export default function Home() {
 
                 <Section delay={0.2}>
                     <Heading as="h3" variant="section-title">
-                        Skills & Technologies 💻
+                        Skills & Technologies 🍃
                     </Heading>
                     <Box mt={4}>
                         <SkillCategory title="Frontend" color="#48BB78" delay={0.1}>
@@ -172,13 +180,13 @@ export default function Home() {
 
                 <Section delay={0.3}>
                     <Heading as="h3" variant="section-title">
-                        Work Experience 💼
+                        Work Experience 🌳
                     </Heading>
 
                     <Box mt={6}>
                         <TimelineCard color="#319795" delay={0.1}>
-                            <Heading as="h4" fontSize={16} fontWeight="bold">
-                                🏢 CREASIA
+                            <Heading as="h4" fontSize={16} fontWeight="bold" display="flex" alignItems="center" gap={2}>
+                                <Icon as={HiOutlineBuildingOffice2} boxSize={5} /> CREASIA
                             </Heading>
                             <Text fontSize="sm" fontWeight="semibold" color="teal.400">
                                 Full-stack Developer
@@ -203,8 +211,8 @@ export default function Home() {
                         </TimelineCard>
 
                         <TimelineCard color="#48BB78" delay={0.2}>
-                            <Heading as="h4" fontSize={16} fontWeight="bold">
-                                🚀 Infordation Vietnam
+                            <Heading as="h4" fontSize={16} fontWeight="bold" display="flex" alignItems="center" gap={2}>
+                                <Icon as={HiOutlineCommandLine} boxSize={5} /> Infordation Vietnam
                             </Heading>
                             <Text fontSize="sm" fontWeight="semibold" color="green.400">
                                 Junior Backend Developer
@@ -232,8 +240,8 @@ export default function Home() {
                         </TimelineCard>
 
                         <TimelineCard color="#4299E1" delay={0.3}>
-                            <Heading as="h4" fontSize={16} fontWeight="bold">
-                                📚 VNPT Khánh Hoà
+                            <Heading as="h4" fontSize={16} fontWeight="bold" display="flex" alignItems="center" gap={2}>
+                                <Icon as={HiOutlineSignal} boxSize={5} /> VNPT Khánh Hoà
                             </Heading>
                             <Text fontSize="sm" fontWeight="semibold" color="blue.400">
                                 Software Developer Intern
@@ -258,8 +266,8 @@ export default function Home() {
                         </TimelineCard>
 
                         <TimelineCard color="#9F7AEA" delay={0.4} isLast>
-                            <Heading as="h4" fontSize={16} fontWeight="bold">
-                                🎓 Nha Trang University
+                            <Heading as="h4" fontSize={16} fontWeight="bold" display="flex" alignItems="center" gap={2}>
+                                <Icon as={HiOutlineAcademicCap} boxSize={5} /> Nha Trang University
                             </Heading>
                             <Text fontSize="sm" fontWeight="semibold" color="purple.400">
                                 Bachelor&apos;s Degree in Information Technology
@@ -287,14 +295,54 @@ export default function Home() {
                 </Section>
                 <Section delay={0.4}>
                     <Heading as="h3" variant="section-title">
-                        I ♥️
+                        Things I Love <Text as="span" color="red.400" fontSize="inherit">♥</Text>
                     </Heading>
-                    <Paragraph>
-                        Music, Photography, Machine Learning, Manga, Anime.
-                    </Paragraph>
-                    <br />
+                    <Wrap spacing={3} mt={5} justify="center">
+                        {[
+                            { emoji: '🎵', label: 'Music', color: '#E8A87C' },
+                            { emoji: '📷', label: 'Photography', color: '#95B8D1' },
+                            { emoji: '🤖', label: 'Machine Learning', color: '#B8E0D2' },
+                            { emoji: '📖', label: 'Manga', color: '#D4A5A5' },
+                            { emoji: '🌸', label: 'Anime', color: '#C3AED6' },
+                        ].map((hobby, i) => (
+                            <WrapItem key={hobby.label}>
+                                <MotionBox
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: 0.06 * i, duration: 0.4 }}
+                                    whileHover={{ scale: 1.08, y: -3 }}
+                                >
+                                    <Flex
+                                        align="center"
+                                        gap={2}
+                                        px={5}
+                                        py={3}
+                                        borderRadius="full"
+                                        bg={pillBg}
+                                        border="1px solid"
+                                        borderColor={`${hobby.color}40`}
+                                        boxShadow={`0 2px 12px ${hobby.color}15`}
+                                        _hover={{
+                                            boxShadow: `0 6px 24px ${hobby.color}30`,
+                                            borderColor: `${hobby.color}70`,
+                                            bg: pillHoverBg,
+                                        }}
+                                        transition="all 0.3s ease"
+                                        cursor="default"
+                                        whiteSpace="nowrap"
+                                    >
+                                        <Text fontSize="lg">{hobby.emoji}</Text>
+                                        <Text fontSize="sm" fontWeight="semibold" opacity={0.9}>
+                                            {hobby.label}
+                                        </Text>
+                                    </Flex>
+                                </MotionBox>
+                            </WrapItem>
+                        ))}
+                    </Wrap>
+                    <Box mt={8} />
                     <Heading as="h3" variant="section-title">
-                        Contact & Social 📧
+                        Contact & Social 🌸
                     </Heading>
                     <List>
                         <ListItem>
