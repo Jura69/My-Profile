@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="theme-color" content="#88ccca" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/images/loc.jpeg" />
+
+    <!-- DNS Prefetch -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Google Fonts (non-render-blocking) -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800&display=swap"
+      as="style"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
+    <!-- Preload 3D model -->
+    <link rel="preload" href="/totoro-compressed.glb" as="fetch" crossorigin="anonymous" />
+
+    <!-- Chakra UI color mode script (prevents flash) -->
+    <script>
+      (function () {
+        var stored = localStorage.getItem('chakra-ui-color-mode');
+        var color = stored || 'dark';
+        document.documentElement.setAttribute('data-theme', color);
+        document.body.setAttribute('data-theme', color);
+      })();
+    </script>
+
+    <title>Jura69 - Portfolio</title>
+  </head>
+  <body>
+    <!-- ColorModeScript rendered via ChakraProvider in app.tsx -->
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
