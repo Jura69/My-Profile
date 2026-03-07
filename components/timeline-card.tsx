@@ -10,66 +10,24 @@ interface TimelineCardProps {
     isLast?: boolean
 }
 
+/**
+ * Timeline card — just the content card, without CSS timeline track.
+ * The track is now handled by Timeline3DPath canvas.
+ */
 const TimelineCard = ({ children, color = '#48BB78', delay = 0, isLast = false }: TimelineCardProps) => {
     const cardBg = useColorModeValue('whiteAlpha.700', 'whiteAlpha.100')
-    const dotBg = useColorModeValue(color, color)
-    const lineBg = useColorModeValue('gray.200', 'whiteAlpha.200')
 
     return (
         <MotionBox
-            display="flex"
-            gap={4}
+            data-timeline-card
             mb={isLast ? 0 : 8}
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: 30, rotateY: -3 }}
+            whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+            style={{ perspective: '1000px' }}
         >
-            {/* Timeline Track */}
-            <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                minW="20px"
-                pt="6px"
-            >
-                {/* Timeline dot */}
-                <MotionBox
-                    w="12px"
-                    h="12px"
-                    borderRadius="full"
-                    bg={dotBg}
-                    border="2.5px solid"
-                    borderColor={useColorModeValue('white', '#202023')}
-                    boxShadow={`0 0 0 2px ${color}60`}
-                    flexShrink={0}
-                    animate={{
-                        boxShadow: [
-                            `0 0 0 2px ${color}60`,
-                            `0 0 0 4px ${color}25`,
-                            `0 0 0 2px ${color}60`
-                        ]
-                    }}
-                    transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: 'easeInOut'
-                    }}
-                />
-                {!isLast && (
-                    <Box
-                        w="2px"
-                        flex="1"
-                        mt={2}
-                        bgGradient={`linear(to-b, ${color}80, ${color}20)`}
-                        borderRadius="full"
-                    />
-                )}
-            </Box>
-
-            {/* Card */}
             <MotionBox
-                flex="1"
                 p={5}
                 borderRadius="xl"
                 bg={cardBg}
