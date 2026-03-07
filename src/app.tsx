@@ -10,7 +10,7 @@ import HomePage from './pages/index'
 import WorksPage from './pages/works'
 import FoodLoverPage from './pages/works/foodlover'
 import TicketAppPage from './pages/works/ticketapp'
-import EcommerceBEPage from './pages/works/ecommerceBE'
+import EcommercePage from './pages/works/ecommerce'
 import TensorflowPage from './pages/works/tensorflow'
 import AssetManagementPage from './pages/works/asset-management'
 import BatLoyaltyPage from './pages/works/bat-loyalty'
@@ -45,7 +45,7 @@ function AnimatedRoutes() {
                 <Route path="/works" element={<WorksPage />} />
                 <Route path="/works/foodlover" element={<FoodLoverPage />} />
                 <Route path="/works/ticketapp" element={<TicketAppPage />} />
-                <Route path="/works/ecommerceBE" element={<EcommerceBEPage />} />
+                <Route path="/works/ecommerce" element={<EcommercePage />} />
                 <Route path="/works/tensorflow" element={<TensorflowPage />} />
                 <Route path="/works/asset-management" element={<AssetManagementPage />} />
                 <Route path="/works/bat-loyalty" element={<BatLoyaltyPage />} />

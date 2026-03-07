@@ -54,8 +54,8 @@ const Works = () => (
                 </Section>
 
                 <Section delay={0.5}>
-                    <CategoryGridItem category="works" id="ecommerceBE" title="Ecommerce Backend Shop" thumbnail="/images/works/ecommerceBE-thumb.webp">
-                        Backend Ecommerce Service using Node.js, Express, MongoDB, and more.
+                    <CategoryGridItem category="works" id="ecommerce" title="E-commerce Platform" thumbnail="/images/works/ecommerce-thumb.webp">
+                        Full-stack e-commerce platform with microservices architecture — Backend API, React Storefront, and supporting services.
                     </CategoryGridItem>
                 </Section>
             </SimpleGrid>
