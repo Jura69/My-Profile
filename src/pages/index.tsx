@@ -6,7 +6,8 @@ import { ChevronRightIcon } from '@chakra-ui/icons'
 import { Link as RouterLink } from 'react-router'
 import { motion } from 'framer-motion'
 import Layout from "../../components/layouts/article"
-import Section from "../../components/section"
+import ScrollRevealSection from "../../components/scroll-reveal-section"
+import Timeline3DPath from "../../components/timeline-3d-path"
 import Paragraph from "../../components/paragraph"
 import { IoLogoInstagram, IoLogoGithub, IoLogoFacebook, IoLogoGoogle, IoLogoLinkedin } from 'react-icons/io5'
 import {
@@ -53,72 +54,75 @@ export default function Home() {
             <WebsiteSchema />
             <ProfilePageSchema />
             <Container>
-                <MotionBox
-                    borderRadius="lg"
-                    mb={6}
-                    mt={2}
-                    p={3}
-                    textAlign="center"
-                    bg={useColorModeValue('rgba(245,240,232,0.8)', 'rgba(26,30,46,0.6)')}
-                    css={{ backdropFilter: 'blur(10px)' }}
-                    border="1px solid"
-                    borderColor={useColorModeValue('#7eb77f40', '#98D8C830')}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                >
-                    🌿 Hello, I&apos;m a web developer based in Việt Nam 🍃
-                </MotionBox>
-                <Box display={{ md: 'flex' }}>
-                    <Box flexGrow={1}>
-                        <Heading as="h2" variant="page-title">
-                            Trương Tuấn Lộc
-                        </Heading>
-                        <p>Jura69 ( Developer / Audiophile / Designer )</p>
-                    </Box>
-                    <Box
-                        flexShrink={0}
-                        mt={{ base: 4, md: 0 }}
-                        ml={{ md: 6 }}
+                {/* Hero section for scroll tracking */}
+                <Box data-section="hero">
+                    <MotionBox
+                        borderRadius="lg"
+                        mb={6}
+                        mt={2}
+                        p={3}
                         textAlign="center"
+                        bg={useColorModeValue('rgba(245,240,232,0.8)', 'rgba(26,30,46,0.6)')}
+                        css={{ backdropFilter: 'blur(10px)' }}
+                        border="1px solid"
+                        borderColor={useColorModeValue('#7eb77f40', '#98D8C830')}
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
                     >
-                        <MotionBox
-                            borderColor={useColorModeValue('#7eb77f', '#98D8C8')}
-                            borderWidth={2}
-                            borderStyle="solid"
-                            w="100px"
-                            h="100px"
-                            display="inline-block"
-                            borderRadius="full"
-                            overflow="hidden"
-                            whileHover={{ scale: 1.1, rotate: 5 }}
-                            animate={{
-                                boxShadow: [
-                                    '0 0 0 0 rgba(126, 183, 127, 0.4)',
-                                    '0 0 0 10px rgba(126, 183, 127, 0)',
-                                    '0 0 0 0 rgba(126, 183, 127, 0)'
-                                ]
-                            }}
-                            transition={{
-                                boxShadow: {
-                                    duration: 2,
-                                    repeat: Infinity,
-                                    ease: "easeInOut"
-                                }
-                            }}
+                        🌿 Hello, I&apos;m a web developer based in Việt Nam 🍃
+                    </MotionBox>
+                    <Box display={{ md: 'flex' }}>
+                        <Box flexGrow={1}>
+                            <Heading as="h2" variant="page-title">
+                                Trương Tuấn Lộc
+                            </Heading>
+                            <p>Jura69 ( Developer / Audiophile / Designer )</p>
+                        </Box>
+                        <Box
+                            flexShrink={0}
+                            mt={{ base: 4, md: 0 }}
+                            ml={{ md: 6 }}
+                            textAlign="center"
                         >
-                            <img
-                                src="/images/loc.jpeg"
-                                alt="Profile image of Trương Tuấn Lộc"
-                                width={100}
-                                height={100}
-                                style={{ objectFit: 'cover', width: '100px', height: '100px' }}
-                            />
-                        </MotionBox>
+                            <MotionBox
+                                borderColor={useColorModeValue('#7eb77f', '#98D8C8')}
+                                borderWidth={2}
+                                borderStyle="solid"
+                                w="100px"
+                                h="100px"
+                                display="inline-block"
+                                borderRadius="full"
+                                overflow="hidden"
+                                whileHover={{ scale: 1.1, rotate: 5 }}
+                                animate={{
+                                    boxShadow: [
+                                        '0 0 0 0 rgba(126, 183, 127, 0.4)',
+                                        '0 0 0 10px rgba(126, 183, 127, 0)',
+                                        '0 0 0 0 rgba(126, 183, 127, 0)'
+                                    ]
+                                }}
+                                transition={{
+                                    boxShadow: {
+                                        duration: 2,
+                                        repeat: Infinity,
+                                        ease: "easeInOut"
+                                    }
+                                }}
+                            >
+                                <img
+                                    src="/images/loc.jpeg"
+                                    alt="Profile image of Trương Tuấn Lộc"
+                                    width={100}
+                                    height={100}
+                                    style={{ objectFit: 'cover', width: '100px', height: '100px' }}
+                                />
+                            </MotionBox>
+                        </Box>
                     </Box>
                 </Box>
 
-                <Section delay={0.1}>
+                <ScrollRevealSection sectionName="about" delay={0.1}>
                     <Heading as="h3" variant="section-title">
                         About Me 🌿
                     </Heading>
@@ -135,9 +139,9 @@ export default function Home() {
                             My Personal Projects
                         </AnimatedButton>
                     </Box>
-                </Section>
+                </ScrollRevealSection>
 
-                <Section delay={0.2}>
+                <ScrollRevealSection sectionName="skills" delay={0.2}>
                     <Heading as="h3" variant="section-title">
                         Skills & Technologies 🍃
                     </Heading>
@@ -176,110 +180,112 @@ export default function Home() {
                             <SkillCard icon={SiAdobepremierepro} label="Premiere Pro" color="#9999FF" delay={0.4} />
                         </SkillCategory>
                     </Box>
-                </Section>
+                </ScrollRevealSection>
 
-                <Section delay={0.3}>
+                <ScrollRevealSection sectionName="work" delay={0.3}>
                     <Heading as="h3" variant="section-title">
                         Work Experience 🌳
                     </Heading>
 
                     <Box mt={6}>
-                        <TimelineCard color="#319795" delay={0.1}>
-                            <Heading as="h4" fontSize={16} fontWeight="bold" display="flex" alignItems="center" gap={2}>
-                                <Icon as={HiOutlineBuildingOffice2} boxSize={5} /> CREASIA
-                            </Heading>
-                            <Text fontSize="sm" fontWeight="semibold" color="teal.400">
-                                Full-stack Developer
-                            </Text>
-                            <Badge colorScheme="teal" fontSize="xs" mt={1} borderRadius="full" px={2}>
-                                June 2025 - Present · Full-time
-                            </Badge>
-                            <Text fontSize="sm" mt={3} lineHeight="tall">
-                                Building scalable web applications using React and C# with focus on clean architecture and user experience.
-                            </Text>
-                            <UnorderedList pl={4} spacing={1} mt={2} fontSize="sm">
-                                <ListItem>Develop and maintain full-stack applications with React frontend and C# backend</ListItem>
-                                <ListItem>Collaborate with cross-functional teams to deliver high-quality features</ListItem>
-                                <ListItem>Implement responsive UI/UX designs and optimize application performance</ListItem>
-                            </UnorderedList>
-                            <Flex gap={2} mt={3} flexWrap="wrap">
-                                <Badge colorScheme="cyan" fontSize="xs" borderRadius="full">React</Badge>
-                                <Badge colorScheme="cyan" fontSize="xs" borderRadius="full">C#</Badge>
-                                <Badge colorScheme="cyan" fontSize="xs" borderRadius="full">.NET</Badge>
-                                <Badge colorScheme="cyan" fontSize="xs" borderRadius="full">SQL Server</Badge>
-                            </Flex>
-                        </TimelineCard>
+                        <Timeline3DPath colors={['#319795', '#48BB78', '#4299E1', '#9F7AEA']}>
+                            <TimelineCard color="#319795" delay={0.1}>
+                                <Heading as="h4" fontSize={16} fontWeight="bold" display="flex" alignItems="center" gap={2}>
+                                    <Icon as={HiOutlineBuildingOffice2} boxSize={5} /> CREASIA
+                                </Heading>
+                                <Text fontSize="sm" fontWeight="semibold" color="teal.400">
+                                    Full-stack Developer
+                                </Text>
+                                <Badge colorScheme="teal" fontSize="xs" mt={1} borderRadius="full" px={2}>
+                                    June 2025 - Present · Full-time
+                                </Badge>
+                                <Text fontSize="sm" mt={3} lineHeight="tall">
+                                    Building scalable web applications using React and C# with focus on clean architecture and user experience.
+                                </Text>
+                                <UnorderedList pl={4} spacing={1} mt={2} fontSize="sm">
+                                    <ListItem>Develop and maintain full-stack applications with React frontend and C# backend</ListItem>
+                                    <ListItem>Collaborate with cross-functional teams to deliver high-quality features</ListItem>
+                                    <ListItem>Implement responsive UI/UX designs and optimize application performance</ListItem>
+                                </UnorderedList>
+                                <Flex gap={2} mt={3} flexWrap="wrap">
+                                    <Badge colorScheme="cyan" fontSize="xs" borderRadius="full">React</Badge>
+                                    <Badge colorScheme="cyan" fontSize="xs" borderRadius="full">C#</Badge>
+                                    <Badge colorScheme="cyan" fontSize="xs" borderRadius="full">.NET</Badge>
+                                    <Badge colorScheme="cyan" fontSize="xs" borderRadius="full">SQL Server</Badge>
+                                </Flex>
+                            </TimelineCard>
 
-                        <TimelineCard color="#48BB78" delay={0.2}>
-                            <Heading as="h4" fontSize={16} fontWeight="bold" display="flex" alignItems="center" gap={2}>
-                                <Icon as={HiOutlineCommandLine} boxSize={5} /> Infordation Vietnam
-                            </Heading>
-                            <Text fontSize="sm" fontWeight="semibold" color="green.400">
-                                Junior Backend Developer
-                            </Text>
-                            <Badge colorScheme="green" fontSize="xs" mt={1} borderRadius="full" px={2}>
-                                Dec 2023 - Feb 2025 · 1 year 3 months
-                            </Badge>
-                            <Text fontSize="sm" mt={3} lineHeight="tall">
-                                Specialized in Node.js backend development, building RESTful APIs and microservices for enterprise applications.
-                            </Text>
-                            <UnorderedList pl={4} spacing={1} mt={2} fontSize="sm">
-                                <ListItem>Designed and implemented RESTful APIs serving 10,000+ daily active users</ListItem>
-                                <ListItem>Optimized database queries reducing response time by 40%</ListItem>
-                                <ListItem>Integrated third-party services and payment gateways</ListItem>
-                                <ListItem>Collaborated with frontend team to ensure seamless API integration</ListItem>
-                            </UnorderedList>
-                            <Flex gap={2} mt={3} flexWrap="wrap">
-                                <Badge colorScheme="green" fontSize="xs" borderRadius="full">Node.js</Badge>
-                                <Badge colorScheme="green" fontSize="xs" borderRadius="full">Express</Badge>
-                                <Badge colorScheme="green" fontSize="xs" borderRadius="full">MongoDB</Badge>
-                                <Badge colorScheme="green" fontSize="xs" borderRadius="full">Redis</Badge>
-                                <Badge colorScheme="green" fontSize="xs" borderRadius="full">Docker</Badge>
-                                <Badge colorScheme="green" fontSize="xs" borderRadius="full">AWS</Badge>
-                            </Flex>
-                        </TimelineCard>
+                            <TimelineCard color="#48BB78" delay={0.2}>
+                                <Heading as="h4" fontSize={16} fontWeight="bold" display="flex" alignItems="center" gap={2}>
+                                    <Icon as={HiOutlineCommandLine} boxSize={5} /> Infordation Vietnam
+                                </Heading>
+                                <Text fontSize="sm" fontWeight="semibold" color="green.400">
+                                    Junior Backend Developer
+                                </Text>
+                                <Badge colorScheme="green" fontSize="xs" mt={1} borderRadius="full" px={2}>
+                                    Dec 2023 - Feb 2025 · 1 year 3 months
+                                </Badge>
+                                <Text fontSize="sm" mt={3} lineHeight="tall">
+                                    Specialized in Node.js backend development, building RESTful APIs and microservices for enterprise applications.
+                                </Text>
+                                <UnorderedList pl={4} spacing={1} mt={2} fontSize="sm">
+                                    <ListItem>Designed and implemented RESTful APIs serving 10,000+ daily active users</ListItem>
+                                    <ListItem>Optimized database queries reducing response time by 40%</ListItem>
+                                    <ListItem>Integrated third-party services and payment gateways</ListItem>
+                                    <ListItem>Collaborated with frontend team to ensure seamless API integration</ListItem>
+                                </UnorderedList>
+                                <Flex gap={2} mt={3} flexWrap="wrap">
+                                    <Badge colorScheme="green" fontSize="xs" borderRadius="full">Node.js</Badge>
+                                    <Badge colorScheme="green" fontSize="xs" borderRadius="full">Express</Badge>
+                                    <Badge colorScheme="green" fontSize="xs" borderRadius="full">MongoDB</Badge>
+                                    <Badge colorScheme="green" fontSize="xs" borderRadius="full">Redis</Badge>
+                                    <Badge colorScheme="green" fontSize="xs" borderRadius="full">Docker</Badge>
+                                    <Badge colorScheme="green" fontSize="xs" borderRadius="full">AWS</Badge>
+                                </Flex>
+                            </TimelineCard>
 
-                        <TimelineCard color="#4299E1" delay={0.3}>
-                            <Heading as="h4" fontSize={16} fontWeight="bold" display="flex" alignItems="center" gap={2}>
-                                <Icon as={HiOutlineSignal} boxSize={5} /> VNPT Khánh Hoà
-                            </Heading>
-                            <Text fontSize="sm" fontWeight="semibold" color="blue.400">
-                                Software Developer Intern
-                            </Text>
-                            <Badge colorScheme="blue" fontSize="xs" mt={1} borderRadius="full" px={2}>
-                                May 2023 - Jul 2023 · 3 months
-                            </Badge>
-                            <Text fontSize="sm" mt={3} lineHeight="tall">
-                                Internship focused on full-stack development with React and C#, working on internal management systems.
-                            </Text>
-                            <UnorderedList pl={4} spacing={1} mt={2} fontSize="sm">
-                                <ListItem>Developed internal web applications using React and C#</ListItem>
-                                <ListItem>Learned enterprise software development practices</ListItem>
-                                <ListItem>Participated in code reviews and agile development processes</ListItem>
-                            </UnorderedList>
-                            <Flex gap={2} mt={3} flexWrap="wrap">
-                                <Badge colorScheme="blue" fontSize="xs" borderRadius="full">React</Badge>
-                                <Badge colorScheme="blue" fontSize="xs" borderRadius="full">C#</Badge>
-                                <Badge colorScheme="blue" fontSize="xs" borderRadius="full">.NET</Badge>
-                                <Badge colorScheme="blue" fontSize="xs" borderRadius="full">SQL</Badge>
-                            </Flex>
-                        </TimelineCard>
+                            <TimelineCard color="#4299E1" delay={0.3}>
+                                <Heading as="h4" fontSize={16} fontWeight="bold" display="flex" alignItems="center" gap={2}>
+                                    <Icon as={HiOutlineSignal} boxSize={5} /> VNPT Khánh Hoà
+                                </Heading>
+                                <Text fontSize="sm" fontWeight="semibold" color="blue.400">
+                                    Software Developer Intern
+                                </Text>
+                                <Badge colorScheme="blue" fontSize="xs" mt={1} borderRadius="full" px={2}>
+                                    May 2023 - Jul 2023 · 3 months
+                                </Badge>
+                                <Text fontSize="sm" mt={3} lineHeight="tall">
+                                    Internship focused on full-stack development with React and C#, working on internal management systems.
+                                </Text>
+                                <UnorderedList pl={4} spacing={1} mt={2} fontSize="sm">
+                                    <ListItem>Developed internal web applications using React and C#</ListItem>
+                                    <ListItem>Learned enterprise software development practices</ListItem>
+                                    <ListItem>Participated in code reviews and agile development processes</ListItem>
+                                </UnorderedList>
+                                <Flex gap={2} mt={3} flexWrap="wrap">
+                                    <Badge colorScheme="blue" fontSize="xs" borderRadius="full">React</Badge>
+                                    <Badge colorScheme="blue" fontSize="xs" borderRadius="full">C#</Badge>
+                                    <Badge colorScheme="blue" fontSize="xs" borderRadius="full">.NET</Badge>
+                                    <Badge colorScheme="blue" fontSize="xs" borderRadius="full">SQL</Badge>
+                                </Flex>
+                            </TimelineCard>
 
-                        <TimelineCard color="#9F7AEA" delay={0.4} isLast>
-                            <Heading as="h4" fontSize={16} fontWeight="bold" display="flex" alignItems="center" gap={2}>
-                                <Icon as={HiOutlineAcademicCap} boxSize={5} /> Nha Trang University
-                            </Heading>
-                            <Text fontSize="sm" fontWeight="semibold" color="purple.400">
-                                Bachelor&apos;s Degree in Information Technology
-                            </Text>
-                            <Badge colorScheme="purple" fontSize="xs" mt={1} borderRadius="full" px={2}>
-                                Graduated 2024
-                            </Badge>
-                            <UnorderedList pl={4} spacing={1} mt={3} fontSize="sm">
-                                <ListItem>Focus on Software Engineering and Web Development</ListItem>
-                                <ListItem>Completed projects in Machine Learning and Full-stack Development</ListItem>
-                            </UnorderedList>
-                        </TimelineCard>
+                            <TimelineCard color="#9F7AEA" delay={0.4} isLast>
+                                <Heading as="h4" fontSize={16} fontWeight="bold" display="flex" alignItems="center" gap={2}>
+                                    <Icon as={HiOutlineAcademicCap} boxSize={5} /> Nha Trang University
+                                </Heading>
+                                <Text fontSize="sm" fontWeight="semibold" color="purple.400">
+                                    Bachelor&apos;s Degree in Information Technology
+                                </Text>
+                                <Badge colorScheme="purple" fontSize="xs" mt={1} borderRadius="full" px={2}>
+                                    Graduated 2024
+                                </Badge>
+                                <UnorderedList pl={4} spacing={1} mt={3} fontSize="sm">
+                                    <ListItem>Focus on Software Engineering and Web Development</ListItem>
+                                    <ListItem>Completed projects in Machine Learning and Full-stack Development</ListItem>
+                                </UnorderedList>
+                            </TimelineCard>
+                        </Timeline3DPath>
                     </Box>
 
                     <Box textAlign="center" my={6}>
@@ -292,8 +298,8 @@ export default function Home() {
                             Download Full CV
                         </AnimatedButton>
                     </Box>
-                </Section>
-                <Section delay={0.4}>
+                </ScrollRevealSection>
+                <ScrollRevealSection sectionName="contact" delay={0.4}>
                     <Heading as="h3" variant="section-title">
                         Things I Love <Text as="span" color="red.400" fontSize="inherit">♥</Text>
                     </Heading>
@@ -381,7 +387,7 @@ export default function Home() {
                             </Link>
                         </ListItem>
                     </List>
-                </Section>
+                </ScrollRevealSection>
             </Container>
         </Layout>
     )

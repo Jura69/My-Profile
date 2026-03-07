@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trương Tuấn Lộc — CV</title>
+    <style>
+        /* ── Reset ── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            font-family: 'Times New Roman', 'Georgia', serif;
+            font-size: 10.5pt;
+            color: #000;
+            background: #fff;
+        }
+
+        /* ── A4 Page ── */
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            max-height: 297mm;
+            margin: 0 auto;
+            padding: 10mm 16mm 8mm;
+            overflow: hidden;
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @media print {
+            html { font-size: 10.5pt; }
+            .page { width: 100%; min-height: 100%; max-height: none; padding: 10mm 16mm 8mm; }
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+
+        @media screen {
+            body { background: #d0d0d0; padding: 20px 0; }
+            .page { box-shadow: 0 2px 16px rgba(0,0,0,0.15); background: #fff; }
+        }
+
+        /* ── Header ── */
+        .header {
+            text-align: center;
+            border-top: 2px solid #000;
+            padding-top: 4px;
+            margin-bottom: 2px;
+        }
+        .header h1 {
+            font-size: 13pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+        .header .contact {
+            font-size: 10pt;
+            margin-bottom: 2px;
+        }
+        .header .contact a {
+            color: #0563C1;
+            text-decoration: underline;
+        }
+
+        /* ── Section Header ── */
+        .section-title {
+            text-align: center;
+            font-size: 10.5pt;
+            font-weight: bold;
+            margin-top: 5px;
+            margin-bottom: 3px;
+        }
+
+        /* ── Entry Row (Company left, Location+Date right) ── */
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        .entry-left {
+            font-weight: bold;
+            font-size: 11pt;
+        }
+        .entry-right {
+            text-align: right;
+            font-size: 10pt;
+            white-space: nowrap;
+        }
+        .entry-role {
+            font-weight: bold;
+            font-size: 10.5pt;
+            margin-bottom: 2px;
+        }
+
+        /* ── Bullet List ── */
+        .bullet-list {
+            padding-left: 32px;
+            margin-top: 2px;
+            margin-bottom: 2px;
+        }
+        .bullet-list li {
+            font-size: 10pt;
+            line-height: 1.35;
+            margin-bottom: 0px;
+        }
+
+        /* sub-list with dashes */
+        .dash-list {
+            list-style: none;
+            padding-left: 24px;
+        }
+        .dash-list li::before {
+            content: '–   ';
+        }
+        .dash-list li {
+            font-size: 10pt;
+            line-height: 1.3;
+        }
+
+        /* ── Skills Table ── */
+        .skills-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10pt;
+        }
+        .skills-table td {
+            padding: 1px 6px;
+            vertical-align: top;
+            border-bottom: 0.5px solid #ccc;
+        }
+        .skills-table td:first-child {
+            font-weight: bold;
+            width: 100px;
+            white-space: nowrap;
+        }
+
+        /* ── Spacing helpers ── */
+        .mb-2 { margin-bottom: 2px; }
+        .mb-4 { margin-bottom: 4px; }
+        .mb-6 { margin-bottom: 6px; }
+        .mb-8 { margin-bottom: 8px; }
+        .mt-4 { margin-top: 4px; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- ═══ HEADER ═══ -->
+        <div class="header">
+            <h1>TRUONG TUAN LOC – Full-stack Developer</h1>
+            <div class="contact">
+                Ho Chi Minh City • Loctruongtuan@gmail.com • 0967 089 107
+            </div>
+            <div class="contact">
+                <a href="https://jura69.vercel.app" target="_blank">My Portfolio</a>
+                 •
+                <a href="https://github.com/Jura69" target="_blank">GitHub</a>
+                 •
+                <a href="https://www.linkedin.com/in/tu%E1%BA%A5n-l%E1%BB%99c-b24b391ab/" target="_blank">LinkedIn</a>
+            </div>
+        </div>
+
+        <!-- ═══ SUMMARY ═══ -->
+        <div class="section-title">Summary</div>
+        <div style="font-size: 10pt; line-height: 1.3; margin-bottom: 2px;">Full-stack developer with 2+ years of experience building enterprise web applications. Proficient in React/TypeScript and C#/.NET with a focus on secure, scalable architecture. Experienced in end-to-end development from database design to responsive UI delivery.</div>
+
+        <!-- ═══ EXPERIENCE ═══ -->
+        <div class="section-title">Experience</div>
+
+        <!-- CREASIA -->
+        <div class="entry-header">
+            <div class="entry-left">CREASIA</div>
+            <div class="entry-right">Ho Chi Minh City<br>6/2025 – Present</div>
+        </div>
+        <div class="entry-role">Full-stack Developer</div>
+        <ul class="bullet-list">
+            <li>Develop and maintain enterprise web applications serving 150k+ users using React/TypeScript frontend and C#/.NET backend with clean architecture.</li>
+            <li>Design and implement 50+ RESTful API endpoints and database schemas using SQL Server, optimizing query performance by up to 30%.</li>
+            <li>Build responsive UI components and implement complex business logic across multiple enterprise modules (ERP, loyalty, fleet management).</li>
+            <li>Implement Redis caching for session management, reducing API response time and improving system throughput.</li>
+            <li>Collaborate in Agile/Scrum sprints. Write unit tests and participate in code reviews to maintain code quality.</li>
+        </ul>
+
+        <!-- Infordation Vietnam -->
+        <div class="entry-header mt-4">
+            <div class="entry-left">Infordation Vietnam</div>
+            <div class="entry-right">Nha Trang, Khanh Hoa<br>12/2023 – 2/2025</div>
+        </div>
+        <div class="entry-role">Junior Backend Developer</div>
+        <ul class="bullet-list">
+            <li>Designed and implemented 10+ REST API endpoints with MongoDB and MySQL, ensuring seamless frontend integration.</li>
+            <li>Integrated OAuth/JWT authentication and containerized microservices using Docker for production deployment.</li>
+            <li>Built real-time notification systems using RabbitMQ message queues.</li>
+            <li>Wrote unit tests using Jest achieving 80%+ code coverage. Managed sprints via Jira.</li>
+        </ul>
+
+        <!-- ═══ PROJECTS ═══ -->
+        <div class="section-title">Projects</div>
+
+        <!-- Enterprise Projects -->
+        <div class="entry-header">
+            <div class="entry-left">Creasia ERP (at CREASIA) — Enterprise Resource Planning</div>
+        </div>
+        <ul class="bullet-list">
+            <li>Stack: React 18, TypeScript, MUI, C# .NET, SQL Server, i18next</li>
+            <li>Multi-module ERP (finance, HR, procurement, supply chain) with RBAC, secure API endpoints, data encryption, and multi-language support for 3+ regions.</li>
+        </ul>
+
+        <div class="entry-header mt-4">
+            <div class="entry-left">BAT Loyalty Program (at CREASIA) — Rewards Management</div>
+        </div>
+        <ul class="bullet-list">
+            <li>Stack: React 18, MUI, Redux, C# .NET, RESTful API</li>
+            <li>Points management system for British American Tobacco with OAuth 2.0 auth, anti-fraud validation, and audit logging across multiple partner networks.</li>
+        </ul>
+
+        <!-- Personal Projects -->
+        <div class="entry-header mt-4">
+            <div class="entry-left">E-commerce Webshop (at Infordation) — Microservices Backend</div>
+        </div>
+        <ul class="bullet-list">
+            <li>Stack: Node.js, Express.js, MongoDB, JWT, Docker | Team of 7</li>
+            <li>Scalable e-commerce backend with JWT auth, product/order management APIs, and Docker-based microservices architecture.</li>
+        </ul>
+
+        <div class="entry-header mt-4">
+            <div class="entry-left">Portfolio Website (Personal)</div>
+        </div>
+        <ul class="bullet-list">
+            <li>Technologies: React, TypeScript, Vite, Chakra UI, Three.js — 3D interactive portfolio with custom design system. Deployed on Vercel.</li>
+        </ul>
+
+        <!-- ═══ EDUCATION ═══ -->
+        <div class="section-title">Education</div>
+
+        <div class="entry-header">
+            <div class="entry-left">Nha Trang University</div>
+            <div class="entry-right">Nha Trang, Khanh Hoa<br>Graduated 2024</div>
+        </div>
+        <div class="mb-2">Bachelor of Information Technology</div>
+
+        <!-- ═══ SKILLS & INTERESTS ═══ -->
+        <div class="section-title">Skills & Interests</div>
+
+        <table class="skills-table">
+            <tr>
+                <td>Technical:</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Languages</td>
+                <td>JavaScript, TypeScript, C#, Python, HTML/CSS</td>
+            </tr>
+            <tr>
+                <td>Frameworks</td>
+                <td>React.js, Next.js, .NET, Node.js, Express.js, Flutter</td>
+            </tr>
+            <tr>
+                <td>Database</td>
+                <td>SQL Server, MongoDB, Redis, MySQL</td>
+            </tr>
+            <tr>
+                <td>AI / ML</td>
+                <td>TensorFlow, PyTorch, OpenAI API, Prompt Engineering</td>
+            </tr>
+            <tr>
+                <td>DevOps</td>
+                <td>Git, Docker, AWS (EC2, S3), CI/CD, Vercel, RabbitMQ, Figma</td>
+            </tr>
+            <tr>
+                <td>Interests:</td>
+                <td>Music, Photography, Open-source, Tech Blogging</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
