@@ -1,19 +1,11 @@
-import { Container, Heading, SimpleGrid, Divider } from '@chakra-ui/react'
 import Layout from '../../components/layouts/article'
-import Section from '../../components/section'
-import { CategoryGridItem } from '../../components/grid-item'
 import SEO from '../../components/seo'
 import { BreadcrumbSchema } from '../../components/json-ld'
-
-const enterpriseProjects = [
-    { id: 'asset-management', title: 'Asset Management', thumbnail: '/images/works/asset-management-thumb.webp', description: 'Enterprise asset tracking & lifecycle management platform' },
-    { id: 'bat-loyalty', title: 'BAT Loyalty Program', thumbnail: '/images/works/bat-loyalty-thumb.webp', description: 'Customer loyalty rewards & points management system' },
-    { id: 'bat-psa', title: 'BAT PSA', thumbnail: '/images/works/bat-psa-thumb.webp', description: 'Admin dashboard for problem statement analysis with reporting' },
-    { id: 'castrol-fleet', title: 'Castrol Fleet Management', thumbnail: '/images/works/castrol-fleet-thumb.webp', description: 'Vehicle fleet tracking with geolocation & maintenance scheduling' },
-    { id: 'vending-ai-agent', title: 'Vending Management', thumbnail: '/images/works/vending-ai-agent-thumb.webp', description: 'Vending machine management platform with sales analytics & inventory tracking' },
-    { id: 'warehouse-management', title: 'Warehouse Management', thumbnail: '/images/works/warehouse-management-thumb.webp', description: 'Inventory tracking with barcode scanning & order workflows' },
-    { id: 'creasia-erp', title: 'Creasia ERP', thumbnail: '/images/works/creasia-erp-thumb.webp', description: 'Comprehensive ERP covering finance, HR, procurement & supply chain' },
-]
+import Reveal from '../../components/ui/reveal'
+import SectionHeading from '../../components/ui/section-heading'
+import FeaturedProjectCard from '../../components/works/featured-project-card'
+import ProjectCard from '../../components/works/project-card'
+import { featuredProjects, otherPersonalProjects, enterpriseProjects } from '../../components/works/works-data'
 
 const Works = () => (
     <Layout title="Works">
@@ -28,55 +20,46 @@ const Works = () => (
                 { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' }
             ]}
         />
-        <Container>
-            <Section delay={0.1}>
-                <Heading as="h3" variant="section-title">
-                    My Personal Projects 💻
-                </Heading>
-            </Section>
-            <SimpleGrid columns={[1, 1, 2]} gap={6}>
-                <Section delay={0.2}>
-                    <CategoryGridItem category="works" id="foodlover" title="Foodlover" thumbnail="/images/works/foodlover-thumb.webp">
-                        A web application that allows users to search for food recipes and order food online, built with Nextjs, MongoDB.
-                    </CategoryGridItem>
-                </Section>
 
-                <Section delay={0.3}>
-                    <CategoryGridItem category="works" id="ticketapp" title="Flutter Ticket App" thumbnail="/images/works/ticketapp-thumb.webp">
-                        A Flutter app that allows users to buy tickets for movies, built with Flutter.
-                    </CategoryGridItem>
-                </Section>
+        <section className="w-full px-4 py-8">
+            <div className="mx-auto max-w-[1100px]">
+                <Reveal>
+                    <SectionHeading as="h2">My Personal Projects 💻</SectionHeading>
+                </Reveal>
 
-                <Section delay={0.4}>
-                    <CategoryGridItem category="works" id="tensorflow" title="Tensorflow SignLanguage" thumbnail="/images/works/tensorflow-thumb.webp">
-                        A python app using Tensorflow, machine learning to detect sign language.
-                    </CategoryGridItem>
-                </Section>
+                <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+                    {featuredProjects.map((project, i) => (
+                        <Reveal key={project.id} delay={0.05 + i * 0.05} className="h-full">
+                            <FeaturedProjectCard project={project} />
+                        </Reveal>
+                    ))}
+                </div>
 
-                <Section delay={0.5}>
-                    <CategoryGridItem category="works" id="ecommerce" title="E-commerce Platform" thumbnail="/images/works/ecommerce-thumb.webp">
-                        Full-stack e-commerce platform with microservices architecture — Backend API, React Storefront, and supporting services.
-                    </CategoryGridItem>
-                </Section>
-            </SimpleGrid>
+                {otherPersonalProjects.length > 0 && (
+                    <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                        {otherPersonalProjects.map((project, i) => (
+                            <Reveal key={project.id} delay={0.05 + i * 0.05} className="h-full">
+                                <ProjectCard project={project} />
+                            </Reveal>
+                        ))}
+                    </div>
+                )}
 
-            <Divider my={6} />
+                <hr className="my-12 border-line" />
 
-            <Section delay={0.6}>
-                <Heading as="h3" variant="section-title">
-                    Enterprise Projects @ Creasia 💼
-                </Heading>
-            </Section>
-            <SimpleGrid columns={[1, 1, 2]} gap={6}>
-                {enterpriseProjects.map((p, i) => (
-                    <Section delay={0.7 + i * 0.1} key={p.id}>
-                        <CategoryGridItem category="works" id={p.id} title={p.title} thumbnail={p.thumbnail}>
-                            {p.description}
-                        </CategoryGridItem>
-                    </Section>
-                ))}
-            </SimpleGrid>
-        </Container>
+                <Reveal>
+                    <SectionHeading as="h2">Enterprise Projects @ Creasia 💼</SectionHeading>
+                </Reveal>
+
+                <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                    {enterpriseProjects.map((project, i) => (
+                        <Reveal key={project.id} delay={0.05 + i * 0.04} className="h-full">
+                            <ProjectCard project={project} />
+                        </Reveal>
+                    ))}
+                </div>
+            </div>
+        </section>
     </Layout>
 )
 
