@@ -1,8 +1,10 @@
 # System Architecture Documentation
 
 **Project:** Personal Portfolio Website
-**Architecture Style:** JAMstack (JavaScript, APIs, Markup)
-**Last Updated:** 2026-01-20
+**Architecture Style:** Vite SPA (Single Page Application)
+**Last Updated:** 2026-07-07
+**Build Tool:** Vite 6
+**Runtime:** React 19 + React Router 7 (client-side routing)
 
 ---
 
@@ -29,29 +31,31 @@
 ┌─────────────────────────────────────────────────────────────┐
 │                        User Browser                          │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │   React 18   │  │ Three.js 3D  │  │ Framer Motion│      │
-│  │  Components  │  │   Renderer   │  │  Animations  │      │
+│  │   React 19   │  │ Three.js 3D  │  │  Motion 12   │      │
+│  │  Components  │  │   Renderer   │  │ + GSAP Scroll│      │
 │  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘      │
 │         │                  │                  │               │
 │         └──────────────────┴──────────────────┘               │
 │                            │                                  │
 │                ┌───────────▼───────────┐                     │
-│                │   Chakra UI Theme     │                     │
-│                │   & Color Mode        │                     │
+│                │  Tailwind CSS 4       │                     │
+│                │  + Design Tokens      │                     │
+│                │  (.dark mode)         │                     │
 │                └───────────┬───────────┘                     │
 └────────────────────────────┼──────────────────────────────────┘
                              │
                     ┌────────▼────────┐
-                    │   Next.js 14    │
-                    │  (Pages Router) │
+                    │   Vite 6 SPA    │
+                    │ (React Router 7)│
+                    │ (Client Routes) │
                     └────────┬────────┘
                              │
         ┌────────────────────┼────────────────────┐
         │                    │                    │
   ┌─────▼──────┐      ┌─────▼─────┐      ┌──────▼──────┐
-  │   SSG       │      │    SSR    │      │    CSR      │
-  │ /works      │      │/audiophile│      │  /index.js  │
-  │ /activities │      │/works/*   │      │             │
+  │   Home     │      │   Works   │      │ Activities  │
+  │  + Scene   │      │  (Grid)   │      │  Audiophile │
+  │ (Day→Night)│      │           │      │   (Detail)  │
   └─────┬──────┘      └─────┬─────┘      └──────┬──────┘
         │                    │                    │
         └────────────────────┴────────────────────┘
@@ -64,33 +68,37 @@
                              │
                     ┌────────▼────────┐
                     │  Static Assets  │
-                    │  - Images (11MB)│
+                    │  - Images(2.5MB)│
                     │  - 3D Model     │
-                    │  - Fonts (CDN)  │
+                    │  - JS/CSS chunks│
                     └─────────────────┘
 ```
 
 ### Key Architectural Decisions
 
-**1. Static Site Generation (SSG) First**
-- Default to SSG for fastest load times
-- Use SSR only for color mode cookie persistence
-- No server-side logic, no database
+**1. Client-Side Rendering (SPA) First**
+- All routing handled by React Router (no server needed)
+- Instant navigation (no full page reloads)
+- Content hardcoded (no API calls)
+- Faster local development with Vite
 
-**2. Component-Based Architecture**
-- Functional components only (no classes)
-- React hooks for state management
-- Chakra UI for design system
+**2. TypeScript + Tailwind Foundation**
+- TypeScript for type safety (all .tsx files)
+- Tailwind CSS 4 for utility-first styling
+- Design tokens in global.css (@theme)
+- No Chakra UI or Emotion overhead
 
-**3. Progressive Enhancement**
-- Core content accessible without JavaScript
-- 3D graphics enhance experience, not block it
-- Animations respect `prefers-reduced-motion`
+**3. Animation Architecture**
+- Motion 12 for component-level animations (transitions, hovers)
+- GSAP ScrollTrigger + Lenis for scroll-linked effects
+- GSAP confined to scene components (zero React re-render cost)
+- Respects `prefers-reduced-motion`
 
-**4. Edge Deployment**
-- Vercel Edge Network (global CDN)
-- Automatic HTTPS
-- Instant cache invalidation
+**4. Vercel Edge Deployment**
+- Static SPA served from CDN
+- Automatic HTTPS and git integration
+- 1-year cache headers for assets
+- Instant deployments on git push
 
 ---
 
@@ -98,62 +106,67 @@
 
 ### Frontend Framework
 
-**Next.js 14.2.13 (Pages Router)**
-- **Why:** Production-ready React framework with built-in optimizations
-- **Alternatives Considered:**
-  - App Router (too new, migration complexity)
-  - Gatsby (slower builds, GraphQL overhead)
-  - Vite + React Router (manual SSR setup)
+**Vite 6**
+- **Why:** Lightning-fast SPA build tool (1000x faster than Webpack)
+- **Trade-offs:** No SSR (but not needed for portfolio)
 - **Key Features Used:**
-  - File-based routing
-  - Image optimization
-  - Code splitting
-  - Static generation
-  - Server-side rendering
+  - ESM-based dev server (instant HMR)
+  - SWC transpilation (Rust, very fast)
+  - Manual code splitting (vendor isolation)
+  - TypeScript support out-of-box
+  - Rollup-based production builds
 
-**React 18**
-- **Why:** Industry standard UI library
-- **Hooks Used:** useState, useEffect, useRef, useCallback, useMemo
-- **Not Used:** Suspense, Server Components (Pages Router limitation)
+**React 19 + React Router 7**
+- **React 19:** Latest, with improved hooks and performance
+- **Hooks Used:** useState, useEffect, useRef, useCallback, useMemo, useContext
+- **React Router 7:** Client-side navigation (SPA routing)
+- **Advantages:** No build complexity, all routing in src/app.tsx
 
-### UI Framework
+### Styling Framework
 
-**Chakra UI 2.8.2**
+**Tailwind CSS 4**
 - **Why:**
-  - Accessible by default (ARIA, keyboard nav)
-  - Dark mode out of box
-  - Responsive design utilities
-  - Consistent design tokens
+  - Smallest CSS footprint (only used classes)
+  - Rapid iteration (no context switching to CSS)
+  - Built-in dark mode (class-based)
+  - Excellent TypeScript support in config
+  - @tailwindcss/vite plugin for Vite
 - **Alternatives Considered:**
-  - Tailwind CSS (no built-in components)
-  - Material UI (heavier, opinionated design)
-  - Styled Components (manual accessibility)
+  - CSS Modules (more boilerplate)
+  - Emotion/Styled Components (larger JS bundle)
+  - UnoCSS (less mature ecosystem)
 - **Usage:**
-  - `useColorMode()` for theme switching
-  - `useColorModeValue()` for color adaptations
-  - Component props for responsive design
+  - Utility classes in JSX
+  - Design tokens (@theme in global.css)
+  - Dark mode via `.dark` class on <html>
+  - Semantic color variables for light/dark
 
-**Emotion 11.13.3**
-- **Why:** Chakra UI dependency, CSS-in-JS
-- **Usage:** `styled()` for custom styled components (Paragraph, WorkSection)
+**Radix UI (Optional Primitives)**
+- **Why:** Headless, unstyled components (when Tailwind alone isn't enough)
+- **Current Usage:** Dropdown menu (only dependency when needed)
 
 ### Animation
 
-**Framer Motion 11.5.6**
+**Motion 12 (Framer's successor)**
 - **Why:**
-  - Declarative animation API
-  - Spring physics
-  - Scroll-triggered animations
-  - Page transitions
-- **Alternatives Considered:**
-  - React Spring (more complex API)
-  - GSAP (imperative, licensing)
-  - CSS animations (limited control)
+  - Modern animation primitives
+  - Full React 19 compatibility
+  - Smaller bundle than Framer Motion
+  - `<motion.div>` for declarative animations
 - **Patterns:**
-  - Page transitions (AnimatePresence)
-  - Scroll triggers (whileInView)
+  - Page transitions (enter/exit variants)
+  - Scroll-triggered reveals (whileInView)
   - Hover interactions (whileHover)
-  - Continuous animations (infinite loops)
+  - Staggered children animations
+
+**GSAP 3.15 + ScrollTrigger + Lenis**
+- **Why:**
+  - Advanced scroll-linked animations
+  - Performance optimized (no React re-renders)
+  - Smooth scroll library (Lenis) integration
+  - Used for complex hero/scene animations
+- **Separation:** GSAP confined to `src/components/scene/` (not in main app flow)
+- **Benefit:** Zero React re-render overhead during scroll
 
 ### 3D Graphics
 
@@ -174,19 +187,20 @@
 
 ### Build Tools
 
-**SWC Compiler**
-- **Why:** 20x faster than Babel (Rust-based)
-- **Usage:** Transpilation, minification
+**Vite 6 + Rollup**
+- **Transpiler:** SWC (Rust-based, 20x faster than Babel)
+- **Minifier:** esbuild (production-grade)
+- **Features:**
+  - Instant HMR in dev mode
+  - Manual code splitting (vendor-react, motion, gsap, three)
+  - Tree shaking
+  - Asset inlining
+  - CSS minification
 
-**Webpack (via Next.js)**
-- **Why:** Next.js default bundler
-- **Custom Config:**
-  - Cache groups (Three.js, Chakra, Framer Motion)
-  - Bundle analyzer integration
-
-**Sharp 0.34.5**
-- **Why:** Image optimization (AVIF, WebP conversion)
-- **Auto-installed:** Next.js dependency
+**TypeScript 5.7**
+- **Build Step:** `tsc -b` before Vite build
+- **Type Checking:** Full strict mode
+- **Path Aliases:** @/* → src/*
 
 ---
 
@@ -195,49 +209,37 @@
 ### Application Tree
 
 ```
-App (_app.js)
-├── Chakra Provider (theme + color mode)
-│   └── Font Loader
-│       └── Layout (main.js)
-│           ├── Head (metadata, preloads)
-│           ├── Navbar
-│           │   ├── Logo
-│           │   │   └── TotoroIcon (SVG)
-│           │   ├── Desktop Links
-│           │   ├── Mobile Hamburger Menu
-│           │   └── ThemeToggleButton
-│           │       └── AnimatePresence (icon swap)
-│           ├── Main Content Area
-│           │   └── AnimatePresence (page transitions)
-│           │       └── Page Component
-│           │           ├── Layout (article.js)
-│           │           │   ├── Head (page title, meta)
-│           │           │   ├── GridItemStyle (global CSS)
-│           │           │   └── motion.article (transition wrapper)
-│           │           ├── SEO Component
-│           │           ├── JSON-LD Schemas
-│           │           ├── Section (staggered fade-in)
-│           │           │   ├── Heading
-│           │           │   ├── Paragraph
-│           │           │   ├── AnimatedBadge (skills)
-│           │           │   ├── AnimatedButton (CTA)
-│           │           │   └── AnimatedWorkCard (timeline)
-│           │           └── Grid Components
-│           │               ├── WorkGridItem
-│           │               ├── AudioGridItem
-│           │               └── ActivitiesGridItem
-│           ├── Totoro (lazy loaded)
-│           │   └── TotoroContainer (FloatingBox)
-│           │       ├── TotoroSpinner (loading)
-│           │       └── Canvas (Three.js renderer)
-│           │           ├── Scene
-│           │           ├── Camera (Orthographic)
-│           │           ├── Light (Ambient)
-│           │           └── GLTF Model (Draco compressed)
-│           └── Footer
-│               └── Copyright Text
-└── Vercel Analytics
-    └── SpeedInsights
+App (src/app.tsx with BrowserRouter)
+├── ThemeProvider (theme context + localStorage)
+│   └── MainLayout (components/layout/main.tsx)
+│       ├── Navbar (fixed top)
+│       │   ├── Logo (clickable → home)
+│       │   ├── Desktop Navigation Links
+│       │   ├── Mobile Hamburger Menu
+│       │   └── Theme Toggle Button
+│       │       └── <motion.div> (icon swap animation)
+│       ├── Routes (React Router 7)
+│       │   ├── <Route path="/" element={<HomePage />} />
+│       │   ├── <Route path="/works" element={<WorksPage />} />
+│       │   ├── <Route path="/works/:id" element={<DetailPage />} />
+│       │   ├── <Route path="/activities" element={<ActivitiesPage />} />
+│       │   ├── <Route path="/activities/:id" element={<DetailPage />} />
+│       │   ├── <Route path="/audiophile" element={<AudiophilePage />} />
+│       │   ├── <Route path="/audiophile/:id" element={<DetailPage />} />
+│       │   └── <Route path="*" element={<NotFound />} />
+│       ├── Dynamic Scene Components (lazy loaded)
+│       │   ├── Home Day→Night Scene (GSAP + Lenis)
+│       │   └── Totoro 3D (React.lazy + loading spinner)
+│       │       └── Canvas (Three.js WebGL)
+│       │           ├── Scene, Camera, Lights
+│       │           ├── GLTF Model (Draco decompressed)
+│       │           └── OrbitControls (user interaction)
+│       └── Footer (components/footer.tsx)
+│           └── Copyright + Year
+├── SEO Component (per-page meta tags)
+├── JSON-LD Schemas (per-page structured data)
+├── Vercel Analytics
+└── Vercel Speed Insights
 ```
 
 ### Layout Hierarchy
@@ -337,80 +339,61 @@ Parent Component
 
 ## Rendering Strategy
 
-### Hybrid SSR/SSG Architecture
+### Pure Client-Side Rendering (SPA)
 
-**Strategy Decision Matrix:**
+**All Pages: CSR (Client-Side Rendering)**
 
-| Page | Strategy | Reason |
-|------|----------|--------|
-| `/` (index.js) | CSR | No data fetching, client-only |
-| `/works` | SSG | Static project list |
-| `/works/foodlover` | SSR | Color mode cookie persistence |
-| `/works/ticketapp` | SSR | Color mode cookie persistence |
-| `/works/tensorflow` | SSR | Color mode cookie persistence |
-| `/works/ecommerceBE` | SSR | Color mode cookie persistence |
-| `/activities` | SSG | Static activities list |
-| `/activities/ytc` | SSG | Static activity content |
-| `/audiophile` | SSR | Color mode cookie persistence |
-| `/audiophile/*` (4 pages) | SSR | Color mode cookie persistence |
+| Page | Routing | Data Source | Strategy |
+|------|---------|-------------|----------|
+| `/` | React Router | Hardcoded (src/data) | CSR |
+| `/works` | React Router | Hardcoded (src/data) | CSR |
+| `/works/:id` | React Router | Hardcoded (src/data) | CSR |
+| `/activities` | React Router | Hardcoded (src/data) | CSR |
+| `/activities/:id` | React Router | Hardcoded (src/data) | CSR |
+| `/audiophile` | React Router | Hardcoded (src/data) | CSR |
+| `/audiophile/:id` | React Router | Hardcoded (src/data) | CSR |
 
-**SSG Implementation:**
-```javascript
-// Export from components/chakra.js
-export async function getStaticProps() {
-  return {
-    props: {
-      cookies: ''  // Empty cookies for SSG
-    }
-  }
-}
-```
+**Advantages:**
+- No server logic needed
+- Instant client-side navigation (no reload)
+- Simple Vercel static deployment
+- Lightning-fast development with Vite HMR
 
-**SSR Implementation:**
-```javascript
-// Export from components/chakra.js
-export async function getServerSideProps({ req }) {
-  return {
-    props: {
-      cookies: req.headers.cookie ?? ''  // Color mode cookie
-    }
-  }
-}
-```
+### Color Mode Persistence
 
-**Color Mode Flow:**
-```
-Server:
-  getServerSideProps/getStaticProps → Extract cookies
-    ↓
-  Chakra Provider → cookieStorageManagerSSR(cookies)
-    ↓
-  ColorModeScript in _document.js → Prevent FOUC
-    ↓
-Client (first load):
-  Read from cookie → Set initial color mode
-    ↓
-  User toggles → Update localStorage + cookie
-    ↓
-Client (subsequent loads):
-  Read from localStorage (faster than cookie)
+**localStorage Strategy:**
+```typescript
+// providers/theme.tsx
+useEffect(() => {
+  const saved = localStorage.getItem('theme') ?? 'light'
+  setTheme(saved)
+  document.documentElement.classList.toggle('dark', saved === 'dark')
+}, [])
+
+// HTML pre-paint script (index.html)
+// Runs before React hydration to prevent FOUC
+<script>
+  const theme = localStorage.getItem('theme') ?? 'light'
+  if (theme === 'dark') document.documentElement.classList.add('dark')
+</script>
 ```
 
 ### Build-Time vs Runtime
 
-**Build-Time:**
-- HTML pre-rendering (SSG pages)
-- Image optimization (AVIF, WebP conversion)
-- JavaScript minification (SWC)
-- CSS extraction (Emotion)
-- Bundle splitting (Webpack)
+**Build-Time (Vite):**
+- TypeScript type-checking (tsc -b)
+- SWC transpilation (ES modules)
+- Tailwind CSS JIT compilation
+- Tree-shaking (unused code removal)
+- Manual code splitting (vendor chunks)
+- Asset minification and hashing
 
-**Runtime:**
-- Hydration (React attach to SSR/SSG HTML)
-- Client-side routing (Next.js router)
-- Lazy loading (Totoro component)
-- Animation triggers (Framer Motion)
-- 3D rendering (Three.js)
+**Runtime (Browser):**
+- React hydration (mount to HTML root)
+- React Router navigation (client-side, no reloads)
+- Lazy loading (React.lazy + Suspense)
+- Animation triggers (Motion, GSAP)
+- 3D rendering (Three.js WebGL)
 
 ---
 
@@ -420,13 +403,13 @@ Client (subsequent loads):
 
 ```
 Local Development
-  ├── npm run dev (Next.js dev server)
-  │   ├── Fast Refresh (instant HMR)
-  │   ├── Error overlay
-  │   └── Source maps
+  ├── npm run dev (Vite dev server on :5173)
+  │   ├── ES modules (no bundling)
+  │   ├── Instant HMR (< 100ms)
+  │   └── TypeScript type-checking
   ├── npm run lint (ESLint check)
   ├── npm run prettier (Code formatting)
-  └── npm run analyze (Bundle analysis)
+  └── npm run analyze (Bundle size viz)
 ```
 
 ### Build Process
@@ -435,38 +418,46 @@ Local Development
 npm run build
   ↓
 ┌─────────────────────────────────────────┐
-│ 1. SWC Compilation                       │
-│    - Transpile JSX → JS                  │
-│    - Minify JavaScript                   │
-│    - Remove console.* (production)       │
+│ 1. TypeScript Check                      │
+│    tsc -b (incremental build)            │
+│    - Type errors halt build              │
 └─────────────┬───────────────────────────┘
               ↓
 ┌─────────────────────────────────────────┐
-│ 2. Image Optimization                    │
-│    - Convert to AVIF/WebP                │
-│    - Generate responsive sizes           │
-│    - Quality 85                          │
+│ 2. Vite Build                            │
+│    - SWC transpilation                   │
+│    - JSX compilation                     │
+│    - Tree-shaking                        │
 └─────────────┬───────────────────────────┘
               ↓
 ┌─────────────────────────────────────────┐
 │ 3. Code Splitting                        │
-│    - Three.js chunk (priority 30)        │
-│    - Chakra UI chunk (priority 20)       │
-│    - Framer Motion chunk (priority 15)   │
+│    - vendor-react (~180KB)               │
+│    - vendor-gsap (~150KB)                │
+│    - vendor-three (~200KB)               │
+│    - motion (~45KB)                      │
+│    - main chunk (~120KB)                 │
 └─────────────┬───────────────────────────┘
               ↓
 ┌─────────────────────────────────────────┐
-│ 4. Static Generation                     │
-│    - SSG pages → HTML files              │
-│    - SSR pages → Server functions        │
+│ 4. Tailwind CSS Compilation              │
+│    - JIT generation (only used classes)  │
+│    - Minification                        │
 └─────────────┬───────────────────────────┘
               ↓
 ┌─────────────────────────────────────────┐
-│ 5. Output                                │
-│    .next/                                │
-│    ├── static/ (JS, CSS chunks)          │
-│    ├── server/ (SSR pages)               │
-│    └── cache/ (build cache)              │
+│ 5. Asset Minification & Hashing          │
+│    - JS minification (esbuild)           │
+│    - CSS minification                    │
+│    - Content-hash in filenames           │
+└─────────────┬───────────────────────────┘
+              ↓
+┌─────────────────────────────────────────┐
+│ 6. Output Directory                      │
+│    dist/                                 │
+│    ├── index.html (entry point)          │
+│    ├── assets/ (JS, CSS chunks)          │
+│    └── images/ (static images)           │
 └──────────────────────────────────────────┘
 ```
 
@@ -480,17 +471,19 @@ Vercel Webhook Triggered
 ┌─────────────────────────────────────────┐
 │ Vercel Build Environment                 │
 │ - Node.js 18.x                           │
-│ - Install dependencies (npm install)     │
-│ - Run build (npm run build)              │
-│ - Build time: ~5-7 minutes               │
+│ - npm install (dependencies)             │
+│ - npm run build (Vite build)             │
+│ - Build time: ~2-3 minutes               │
+│ - Output: dist/ (static files)           │
 └─────────────┬───────────────────────────┘
               ↓
 ┌─────────────────────────────────────────┐
 │ Edge Network Deployment                  │
 │ - Global CDN (300+ locations)            │
+│ - Static asset serving (ultra-fast)      │
 │ - Atomic deployment (zero downtime)      │
-│ - Automatic HTTPS                        │
-│ - Cache purge on deploy                  │
+│ - Automatic HTTPS + redirects            │
+│ - Cache headers applied                  │
 └─────────────┬───────────────────────────┘
               ↓
 Production Live

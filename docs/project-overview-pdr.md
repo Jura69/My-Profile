@@ -337,11 +337,12 @@ Create a modern, high-performance portfolio website that showcases professional 
 ## Technical Constraints
 
 ### Technology Stack
-- **Framework:** Next.js 14 (Pages Router) - Cannot use App Router due to existing codebase
-- **UI Library:** Chakra UI 2.8 - Required for theme system
-- **Animation:** Framer Motion 11.5 - Core to design language
+- **Build Tool:** Vite 6 - SPA build, no server-side rendering
+- **Framework:** React 19 + React Router 7 - Client-side routing only
+- **Styling:** Tailwind CSS 4 - Utility-first, minimal CSS output
+- **Animation:** Motion 12 + GSAP + Lenis - Lightweight and performant
 - **3D Graphics:** Three.js 0.172 - Necessary for Totoro model
-- **Deployment:** Vercel - Free tier limitations (bandwidth, build minutes)
+- **Deployment:** Vercel - Free tier (static SPA, no server costs)
 
 ### Resource Constraints
 - **Budget:** $0 (free tier only)
@@ -587,23 +588,32 @@ Lighthouse audits before/after changes. Real user metrics (Core Web Vitals) driv
 
 ## Version History & Evolution
 
-**v1.0.0 (Current - 2026-01-20)**
-- Initial production release
+**v2.0.0 (Current - 2026-07-07)**
+- Major UI rebuild: Next.js → Vite SPA
+- React 18 → React 19
+- Chakra UI → Tailwind CSS 4
+- Framer Motion → Motion 12 + GSAP + Lenis
+- Client-side routing (React Router 7)
+- Day-to-night homepage with GSAP scroll scenes
+- Maintained 97+ Lighthouse across all metrics
+
+**v1.0.0 (Previous - 2026-01-20)**
+- Initial Next.js 14 production release
 - 4 projects, 1 activity, 4 audio reviews
 - 3D Totoro with Draco compression
 - Lighthouse 97+ across all metrics
 - Comprehensive SEO implementation
 
 **Pre-release Milestones:**
+- **2026-06:** UI rebuild planning and architecture design
+- **2026-05:** Tailwind CSS 4 foundation, Ghibli design tokens
 - **2025-01-05:** Totoro Draco compression (96.7% reduction)
-- **2025-01-03:** Image performance optimizations
-- **2024-12:** Initial development start
-- **2024-11:** Design concept and tech stack selection
+- **2024-11:** Design concept and initial tech stack selection
 
 **Planned Releases:**
-- **v1.1.0 (Q2 2026):** Blog section, contact form, image CDN
-- **v1.2.0 (Q3 2026):** PWA features, offline support, enhanced analytics
-- **v2.0.0 (Q4 2026):** TypeScript migration, testing suite, CMS integration
+- **v2.1.0 (Q3 2026):** Blog section, contact form
+- **v2.2.0 (Q4 2026):** PWA features, offline support
+- **v3.0.0 (2027):** Testing suite (Jest + React Testing Library)
 
 ---
 

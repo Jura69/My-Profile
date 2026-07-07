@@ -1,8 +1,10 @@
 # Code Standards & Development Guidelines
 
 **Project:** Personal Portfolio Website
-**Last Updated:** 2026-01-20
-**Enforcement:** ESLint + Prettier
+**Last Updated:** 2026-07-07
+**Framework:** Vite 6 + React 19 + React Router 7
+**Styling:** Tailwind CSS 4
+**Enforcement:** ESLint + Prettier + TypeScript
 
 ---
 
@@ -189,22 +191,26 @@ const useScrollPosition = () => {}
 
 ### CSS Classes
 
-**Chakra UI:**
-```javascript
-// Use Chakra props, avoid custom classes
-<Box bg="gray.100" p={4} borderRadius="md">  // ✅
-<Box className="custom-box">  // ❌ avoid
+**Tailwind Utilities:**
+```typescript
+// Use Tailwind class names, no inline CSS
+<div className="bg-gray-100 p-4 rounded-md">  // ✅
+<div style={{ backgroundColor: 'gray' }}>  // ❌ avoid
 
-// Exception: Global styles (GridItemStyle)
-className="grid-item-thumbnail"  // ✅ for global CSS
+// Compose with clsx + tailwind-merge (cn utility)
+import { cn } from '@/lib/cn'
+className={cn('bg-white', isActive && 'bg-blue-500')}
 ```
 
-**Emotion Styled:**
-```javascript
-// PascalCase for styled components
-const WorkSection = styled(Box)`
-  display: flex;
-`
+**Dark Mode:**
+```typescript
+// Use .dark: prefix for dark mode variants
+<div className="bg-white dark:bg-gray-900 text-black dark:text-white">
+</div>
+
+// Or use semantic CSS variables (src/styles/global.css)
+<div className="bg-background text-foreground">
+</div>
 ```
 
 ---
@@ -445,32 +451,41 @@ const prevCountRef = useRef(0)
 
 ### Context (React Context)
 
-```javascript
-// Global state: Color mode (via Chakra)
-import { useColorMode, useColorModeValue } from '@chakra-ui/react'
+```typescript
+// Global state: Color mode (custom context + localStorage)
+import { useTheme } from '@/providers/theme'
 
-const bg = useColorModeValue('white', 'gray.800')
-const { colorMode, toggleColorMode } = useColorMode()
+const { theme, toggleTheme } = useTheme()
+// theme is 'light' or 'dark'
+// toggleTheme() swaps theme and updates localStorage
+
+// For conditional Tailwind classes
+<div className={theme === 'dark' ? 'dark' : ''}>
+  <span className="text-black dark:text-white">Text</span>
+</div>
 ```
 
 **Current Usage:**
-- Color mode (Chakra context)
-- Theme (Chakra context)
+- Color mode (custom ThemeProvider context)
+- localStorage for persistence
+- No prop drilling needed for theme
 
 **Not Used:**
-- Redux, MobX, Zustand (overkill for static site)
-- Custom contexts (prefer props drilling for small app)
+- Redux, Zustand (overkill for static site)
+- Chakra's useColorMode (removed with Chakra)
 
 ---
 
 ## Animation Patterns
 
-### Framer Motion Standard Patterns
+### Motion 12 Standard Patterns
 
 **1. Page Transitions:**
-```javascript
-// In article layout
-const variants = {
+```typescript
+// In detail-page.tsx
+import { motion } from 'motion/react'
+
+const pageVariants = {
   hidden: { opacity: 0, y: 20 },
   enter: { opacity: 1, y: 0 },
   exit: { opacity: 0, y: 20 }
@@ -480,16 +495,18 @@ const variants = {
   initial="hidden"
   animate="enter"
   exit="exit"
-  variants={variants}
-  transition={{ duration: 0.4, type: 'easeInOut' }}
+  variants={pageVariants}
+  transition={{ duration: 0.3, ease: 'easeOut' }}
 >
   {children}
 </motion.div>
 ```
 
-**2. Scroll-Triggered Animations:**
-```javascript
-// Fade-in on scroll
+**2. Scroll-Triggered Reveals:**
+```typescript
+// Fade-in on scroll (with React component)
+import { useScroll, useTransform } from 'motion/react'
+
 <motion.div
   initial={{ opacity: 0, y: 20 }}
   whileInView={{ opacity: 1, y: 0 }}
@@ -501,29 +518,28 @@ const variants = {
 ```
 
 **3. Hover Interactions:**
-```javascript
+```typescript
 // Lift + scale effect
-<motion.div
-  whileHover={{
-    y: -8,
-    scale: 1.02,
-    boxShadow: '0 12px 24px rgba(0,0,0,0.15)'
-  }}
+<motion.button
+  whileHover={{ y: -8, scale: 1.02 }}
   whileTap={{ scale: 0.95 }}
   transition={{ duration: 0.2 }}
+  className="px-4 py-2 bg-blue-500 rounded"
 >
-  {content}
-</motion.div>
+  Click Me
+</motion.button>
 ```
 
 **4. Staggered Children:**
-```javascript
-// Parent container
+```typescript
+// Sequential reveals with motion
 <motion.div
   initial="hidden"
   animate="visible"
   variants={{
+    hidden: { opacity: 0 },
     visible: {
+      opacity: 1,
       transition: { staggerChildren: 0.1 }
     }
   }}
@@ -542,20 +558,27 @@ const variants = {
 </motion.div>
 ```
 
-**5. Continuous Animations:**
-```javascript
-// Infinite loop
-<motion.div
-  animate={{ y: [0, -10, 0] }}
-  transition={{
-    duration: 4,
-    repeat: Infinity,
-    ease: "easeInOut"
-  }}
->
-  {content}
-</motion.div>
-```
+**5. GSAP Scroll Animations (Scene Components Only):**
+```typescript
+// For complex scroll-linked animations (not regular Motion)
+// Use GSAP ScrollTrigger + Lenis (confined to src/components/scene/)
+import gsap from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
+
+useEffect(() => {
+  const tween = gsap.to(elementRef.current, {
+    scrollTrigger: {
+      trigger: elementRef.current,
+      onEnter: () => {},
+      markers: false
+    },
+    y: 50,
+    duration: 1
+  })
+  return () => tween.kill()
+}, [])
 
 ### Animation Timing Standards
 
@@ -586,30 +609,28 @@ const prefersReducedMotion = useReducedMotion()
 
 ### Image Optimization
 
-**Next.js Image Component:**
-```javascript
-import Image from 'next/image'
-
-// ✅ Correct usage
-<Image
+**Standard HTML img Element:**
+```typescript
+// ✅ Correct usage with lazy loading
+<img
   src="/images/project.png"
   alt="Project screenshot"
-  width={800}
-  height={600}
-  quality={85}
   loading="lazy"
+  srcSet="/images/project-small.png 480w, /images/project.png 800w"
   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+  className="w-full h-auto rounded"
 />
 
-// ❌ Avoid Chakra Image for large assets
-<Image src="/images/project.png" alt="..." />  // No optimization
+// ❌ Avoid unoptimized images
+<img src="/images/large-uncompressed.jpg" alt="..." />
 ```
 
-**Image Sizing:**
-- Thumbnails: 400x300px
-- Detail images: 800x600px
-- Profile photo: 374x374px (already 2236x2236, needs resize)
-- Target: < 300KB per image
+**Image Sizing Guidelines:**
+- Thumbnails: 400x300px (target < 50KB)
+- Grid items: 600x400px (target < 100KB)
+- Detail images: 800x600px (target < 200KB)
+- Profile photo: 300x300px (target < 50KB)
+- All images pre-compressed (PNG/JPG optimized)
 
 ### Code Splitting
 

@@ -1,10 +1,10 @@
 # Personal Portfolio Website
 
-> Modern, responsive portfolio website built with Next.js, React, and Chakra UI, featuring 3D graphics, smooth animations, and comprehensive SEO optimization.
+> Modern, responsive portfolio website built with Vite, React 19, and Tailwind CSS 4, featuring 3D graphics, smooth animations, and comprehensive SEO optimization.
 
-[![Next.js](https://img.shields.io/badge/Next.js-14.2.13-black)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-18-blue)](https://reactjs.org/)
-[![Chakra UI](https://img.shields.io/badge/Chakra%20UI-2.8-teal)](https://chakra-ui.com/)
+[![Vite](https://img.shields.io/badge/Vite-6-646cff)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-19-61dafb)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-38b2ac)](https://tailwindcss.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## Live Demo
@@ -43,25 +43,30 @@
 ## Tech Stack
 
 **Frontend**
-- [Next.js 14](https://nextjs.org/) - React framework (Pages Router)
-- [React 18](https://reactjs.org/) - UI library
-- [Chakra UI 2.8](https://chakra-ui.com/) - Component system
-- [Framer Motion 11.5](https://www.framer.com/motion/) - Animations
+- [Vite 6](https://vitejs.dev/) - Build tool & dev server (SPA)
+- [React 19](https://react.dev/) - UI library
+- [React Router 7](https://reactrouter.com/) - Client-side routing
+- [Tailwind CSS 4](https://tailwindcss.com/) - Utility-first styling
+- [Motion 12](https://motion.dev/) - Component animations
+- [GSAP + Lenis](https://gsap.com/) - Scroll animations & smooth scrolling
 - [Three.js 0.172](https://threejs.org/) - 3D rendering
-- [Emotion](https://emotion.sh/) - CSS-in-JS
 
-**Backend & Tools**
-- [Node.js](https://nodejs.org/) - Runtime
-- [Vercel](https://vercel.com/) - Deployment
+**Deployment & Analytics**
+- [Vercel](https://vercel.com/) - Hosting (static SPA)
+- [@vercel/analytics](https://vercel.com/analytics) - Traffic analytics
+- [@vercel/speed-insights](https://vercel.com/docs/speed-insights) - Core Web Vitals
+
+**Dev Tools**
+- [TypeScript 5.7](https://www.typescriptlang.org/) - Type safety
 - [ESLint](https://eslint.org/) - Linting
-- [Prettier](https://prettier.io/) - Formatting
+- [Prettier](https://prettier.io/) - Code formatting
 
 ---
 
 ## Quick Start
 
 ### Prerequisites
-- Node.js 16+
+- Node.js 18+
 - npm or yarn
 
 ### Installation
@@ -78,23 +83,24 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:5173](http://localhost:5173)
 
 ### Build for Production
 
 ```bash
 npm run build
-npm run start
+npm run preview
 ```
 
 ### Available Scripts
 
 ```bash
-npm run dev       # Dev server (accessible at 0.0.0.0)
-npm run build     # Production build
-npm run analyze   # Bundle size analysis
+npm run dev       # Start Vite dev server at http://localhost:5173
+npm run build     # TypeScript check + Vite production build
+npm run preview   # Preview production build locally
 npm run lint      # ESLint check
-npm run prettier  # Format code
+npm run prettier  # Format code with Prettier
+npm run analyze   # Bundle size visualization
 ```
 
 ---
@@ -103,32 +109,49 @@ npm run prettier  # Format code
 
 ```
 /
-├── components/           # React components
-│   ├── layouts/         # Layout wrappers (main, article)
-│   ├── icons/           # Icon components
-│   ├── navbar.js        # Navigation
-│   ├── totoro.js        # 3D model renderer
-│   ├── seo.js           # SEO component
-│   └── json-ld.js       # Structured data
-├── src/pages/           # Next.js pages
-│   ├── index.js         # Homepage
-│   ├── works.js         # Projects listing
-│   ├── works/           # Project detail pages
-│   ├── audiophile.js    # Audio equipment
-│   ├── activities.js    # Activities
-│   ├── _app.js          # App wrapper
-│   └── _document.js     # Document config
-├── lib/                 # Utilities
-│   ├── theme.js         # Chakra theme
-│   ├── model.js         # 3D model loader
-│   └── performance.js   # Web Vitals
-├── public/              # Static assets (13MB)
-│   ├── images/          # Photos (11MB)
-│   ├── totoro-compressed.glb  # 3D model (1.5MB)
+├── src/
+│   ├── main.tsx                 # Entry point (Vite + React 19)
+│   ├── app.tsx                  # App root with React Router (BrowserRouter)
+│   ├── pages/                   # Route components
+│   │   ├── home.tsx             # Homepage
+│   │   ├── works.tsx            # Projects listing
+│   │   ├── works/               # Project detail pages
+│   │   ├── activities.tsx       # Activities listing
+│   │   ├── activities/          # Activity details
+│   │   ├── audiophile.tsx       # Audio equipment listing
+│   │   └── audiophile/          # Device reviews
+│   ├── components/              # Reusable UI components
+│   │   ├── ui/                  # Primitive components (button, badge, card, etc.)
+│   │   ├── layout/              # Layout wrappers (main, detail-page)
+│   │   ├── home/                # Homepage sections (scenes, cards, etc.)
+│   │   ├── works/               # Works section components
+│   │   ├── scene/               # 3D scene components (GSAP, Lenis)
+│   │   ├── navbar.tsx           # Navigation bar
+│   │   ├── footer.tsx           # Footer
+│   │   ├── seo.tsx              # SEO meta tags
+│   │   ├── json-ld.tsx          # JSON-LD structured data
+│   │   └── theme-toggle.tsx     # Dark/light mode toggle
+│   ├── lib/                     # Utilities
+│   │   ├── cn.ts                # clsx + tailwind-merge
+│   │   ├── model.ts             # GLTF/Draco loader
+│   │   └── constants.ts         # App constants
+│   ├── providers/               # React Context providers
+│   │   └── theme.tsx            # Theme context (dark/light)
+│   ├── styles/                  # Global styles
+│   │   └── global.css           # Tailwind + design tokens + GSAP animations
+│   ├── data/                    # Data files
+│   │   └── works-data.ts        # Projects, activities, audio data
+│   └── types/                   # TypeScript types
+├── public/                      # Static assets (~2.5MB)
+│   ├── images/                  # Optimized project images
+│   ├── totoro.glb               # 3D model (compressed)
 │   ├── sitemap.xml
 │   └── robots.txt
-├── providers/           # React context
-└── docs/                # Documentation
+├── vite.config.ts              # Vite build config
+├── tsconfig.json               # TypeScript config
+├── tailwind.config.ts          # Tailwind CSS config
+├── index.html                  # HTML entry point
+└── docs/                       # Project documentation
 ```
 
 ---
@@ -137,21 +160,23 @@ npm run prettier  # Format code
 
 ### Update Personal Info
 1. **Profile Photo** - Replace `/public/images/loc.jpeg`
-2. **CV/Resume** - Replace `/public/files/CV.pdf`
-3. **About Me** - Edit `src/pages/index.js`
-4. **Projects** - Add/edit files in `src/pages/works/`
-5. **Social Links** - Update in `src/pages/index.js`
+2. **Projects** - Edit `src/data/works-data.ts`
+3. **Activities** - Add/edit in `src/data/works-data.ts`
+4. **Audio Reviews** - Add/edit in `src/data/works-data.ts`
+5. **Social Links** - Update in `src/pages/home.tsx`
 
-### Change Theme
-Edit `lib/theme.js`:
-```javascript
-const colors = {
-  grassTeal: '#88ccca' // Accent color
+### Change Theme Colors
+Edit `src/styles/global.css` (Tailwind 4 theme variables):
+```css
+@theme {
+  --color-primary: #88ccca;      /* Accent color */
+  --color-primary-dark: #7eb77f;  /* Dark variant */
+  /* Update semantic color vars for light/dark modes */
 }
 ```
 
 ### Replace 3D Model
-Replace `public/totoro-compressed.glb` with GLTF model
+Replace `public/totoro.glb` with another GLTF model, update `src/components/scene/totoro.tsx`
 
 ---
 
@@ -176,16 +201,19 @@ Replace `public/totoro-compressed.glb` with GLTF model
 ## Performance
 
 - **Lighthouse Score**: 97+ (Performance, Accessibility, Best Practices, SEO)
-- **Core Web Vitals**: Optimized
-- **FCP**: < 1.5s
-- **TTI**: < 3.5s
+- **Core Web Vitals**: Optimized (LCP, FID, CLS)
+- **First Contentful Paint**: < 1.5s
+- **Time to Interactive**: < 3.5s
 
 **Optimizations:**
-- AVIF/WebP image formats with 1-year cache
-- SWC minification (faster than Terser)
-- Code splitting (Three.js, Chakra UI, Framer Motion isolated)
+- Vite's fast ESM-based dev server & lightning-fast HMR
+- SWC transpilation (Rust-based, much faster than Babel)
+- Code splitting: React, GSAP, Three.js, Motion isolated chunks
+- Tailwind CSS 4 JIT compiler (minimal CSS output)
+- GSAP ScrollTrigger + Lenis confined to scene components (zero re-renders on scroll)
 - Draco compression (3D model: 44MB → 1.5MB, 96.7% reduction)
-- Tree-shaking via package optimization
+- Image lazy loading and responsive sizing
+- 1-year cache headers on static assets
 
 ---
 
@@ -244,6 +272,6 @@ MIT License - see [LICENSE](LICENSE) file
 
 **[Live Demo](https://my-profile-jura69.vercel.app)** | **[Report Bug](https://github.com/Jura69/My-Profile/issues)** | **[Request Feature](https://github.com/Jura69/My-Profile/issues)**
 
-Made with ❤️ using Next.js and React
+Made with ❤️ using Vite, React 19, and Tailwind CSS 4
 
 </div>
