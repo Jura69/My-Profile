@@ -27,7 +27,7 @@ const Timeline3DPath = memo(function Timeline3DPath({
         const ctx = canvas.getContext('2d')
         if (!ctx) return
 
-        let canvasWidth = 48
+        const canvasWidth = 48
         let canvasHeight = container.scrollHeight
 
         const setupCanvas = () => {

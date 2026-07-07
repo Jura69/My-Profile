@@ -103,9 +103,9 @@ const FloatingSkillSphere = memo(() => {
             const cosY = Math.cos(s.rotY), sinY = Math.sin(s.rotY)
 
             // Rotate around Y axis
-            let x = px * cosY - pz * sinY
-            let z = px * sinY + pz * cosY
-            let y = py
+            const x = px * cosY - pz * sinY
+            const z = px * sinY + pz * cosY
+            const y = py
 
             // Rotate around X axis
             const y2 = y * cosX - z * sinX
@@ -225,9 +225,9 @@ const FloatingSkillSphere = memo(() => {
             points.forEach(([px, py, pz], i) => {
                 const cosX = Math.cos(s.rotX), sinX = Math.sin(s.rotX)
                 const cosY = Math.cos(s.rotY), sinY = Math.sin(s.rotY)
-                let x = px * cosY - pz * sinY
-                let z = px * sinY + pz * cosY
-                let y = py
+                const x = px * cosY - pz * sinY
+                const z = px * sinY + pz * cosY
+                const y = py
                 const y2 = y * cosX - z * sinX
                 const z2 = y * sinX + z * cosX
                 const perspective = 1.8

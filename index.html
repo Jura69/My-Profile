@@ -38,13 +38,14 @@
     <!-- Preload 3D model -->
     <link rel="preload" href="/totoro-compressed.glb" as="fetch" crossorigin="anonymous" />
 
-    <!-- Chakra UI color mode script (prevents flash) -->
+    <!-- Color mode script (prevents flash): data-theme for Chakra, .dark class for Tailwind.
+         Runs in <head>, so document.body does not exist yet — only touch documentElement. -->
     <script>
       (function () {
         var stored = localStorage.getItem('chakra-ui-color-mode');
         var color = stored || 'dark';
         document.documentElement.setAttribute('data-theme', color);
-        document.body.setAttribute('data-theme', color);
+        document.documentElement.classList.toggle('dark', color === 'dark');
       })();
     </script>
 

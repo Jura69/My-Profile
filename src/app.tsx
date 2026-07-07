@@ -1,5 +1,5 @@
+import { useLayoutEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router'
-import { AnimatePresence } from 'framer-motion'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import Chakra from '../providers/chakra'
@@ -34,13 +34,18 @@ if (typeof window !== 'undefined') {
 
 function AnimatedRoutes() {
     const location = useLocation()
+
+    // framer-motion 11 AnimatePresence never completes exit here (routes get stuck
+    // on the old page, dev AND prod) — page transitions come back with Motion in
+    // the detail-templates phase. Entrance animations per page still run.
+    // useLayoutEffect: reset scroll before paint so the new page never flashes
+    // at the old scroll offset.
+    useLayoutEffect(() => {
+        window.scrollTo({ top: 0 })
+    }, [location.pathname])
+
     return (
-        <AnimatePresence
-            mode="wait"
-            initial={false}
-            onExitComplete={() => window.scrollTo({ top: 0 })}
-        >
-            <Routes location={location} key={location.pathname}>
+        <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/works" element={<WorksPage />} />
                 <Route path="/works/foodlover" element={<FoodLoverPage />} />
@@ -63,7 +68,6 @@ function AnimatedRoutes() {
                 <Route path="/audiophile/fiioka11" element={<FiiokA11Page />} />
                 <Route path="*" element={<div style={{ padding: '2rem' }}>404 — Page not found</div>} />
             </Routes>
-        </AnimatePresence>
     )
 }
 

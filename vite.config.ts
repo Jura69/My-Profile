@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-    plugins: [react(), tsconfigPaths()],
+    plugins: [react(), tsconfigPaths(), tailwindcss()],
     resolve: {
         alias: {
             // Map @/* to src/* (redundant with tsconfigPaths but explicit)
@@ -19,6 +20,7 @@ export default defineConfig({
                     'vendor-react': ['react', 'react-dom', 'react-router'],
                     'vendor-chakra': ['@chakra-ui/react', '@emotion/react', '@emotion/styled'],
                     'vendor-motion': ['framer-motion'],
+                    'motion': ['motion'],
                     'vendor-three': ['three'],
                 }
             }

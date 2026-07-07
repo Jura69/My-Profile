@@ -1,0 +1,75 @@
+/*
+ * Tailwind 4 — granular imports, preflight OFF while Chakra UI coexists.
+ * Importing `tailwindcss` (full) would reset buttons/links and break Chakra pages.
+ * Preflight is enabled in the final migration phase, after Chakra removal.
+ *
+ * Utilities are imported UNLAYERED on purpose: Chakra injects its CSS reset
+ * unlayered via emotion, and unlayered CSS beats any @layer regardless of
+ * specificity — layered utilities would lose `bg-*`/`border-*`/`text-*` on
+ * buttons, links and headings to that reset.
+ */
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css';
+
+/* Dark mode follows the `.dark` class on <html>, kept in sync with Chakra colorMode */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Static Ghibli palette — mirrors lib/theme.ts colors (single source until Chakra removal) */
+@theme {
+    --font-rounded:
+        'M PLUS Rounded 1c', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
+        sans-serif;
+
+    --color-grass-teal: #88ccca;
+
+    --color-ghibli-forest-green: #7eb77f;
+    --color-ghibli-deep-forest: #4a7c59;
+    --color-ghibli-sky-blue: #87ceeb;
+    --color-ghibli-soft-pink: #e8a0b4;
+    --color-ghibli-cream-yellow: #fff8dc;
+    --color-ghibli-warm-parchment: #f5f0e8;
+    --color-ghibli-night-forest: #1a1e2e;
+    --color-ghibli-mint-green: #98d8c8;
+    --color-ghibli-lavender: #c4b5d8;
+    --color-ghibli-golden-dust: #d4a853;
+    --color-ghibli-leaf-green: #6db86b;
+    --color-ghibli-warm-brown: #8b6f47;
+
+    --color-skill-frontend: #6db86b;
+    --color-skill-backend: #5a9bd5;
+    --color-skill-ai: #d4a853;
+    --color-skill-tools: #b08fd8;
+
+    --color-timeline-creasia: #5a9dab;
+    --color-timeline-infordation: #6db86b;
+    --color-timeline-vnpt: #5a9bd5;
+    --color-timeline-university: #b08fd8;
+}
+
+/* Semantic tokens — resolve to runtime CSS vars so `.dark` can flip values without a rebuild */
+@theme inline {
+    --color-surface: var(--surface);
+    --color-surface-elevated: var(--surface-elevated);
+    --color-ink: var(--ink);
+    --color-ink-muted: var(--ink-muted);
+    --color-accent: var(--accent);
+    --color-line: var(--line);
+}
+
+:root {
+    --surface: #f5f0e8;
+    --surface-elevated: #fbf7ee;
+    --ink: #2d2a24;
+    --ink-muted: #5c564c;
+    --accent: #4a7c59;
+    --line: #e2dbcd;
+}
+
+.dark {
+    --surface: #1a1e2e;
+    --surface-elevated: #232838;
+    --ink: #e9e7e4;
+    --ink-muted: #a8adb8;
+    --accent: #98d8c8;
+    --line: #2e3447;
+}
