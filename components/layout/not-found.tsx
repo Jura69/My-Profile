@@ -1,16 +1,17 @@
 import { Link as RouterLink } from 'react-router'
 import { IoChevronForward } from 'react-icons/io5'
 import Layout from '../layouts/article'
+import SEO from '../seo'
 import { buttonClasses } from '../ui/button-styles'
 
 /**
  * 404 page — a Ghibli-lite "lost in the forest" moment with a small forest
  * spirit mark and a route home. Rendered by the `*` route in app.tsx.
- * Wrapped in Layout so it shares the page transition + tab title.
  */
 export default function NotFound() {
     return (
-        <Layout title="Not Found">
+        <Layout>
+        <SEO title="Page Not Found | Trương Tuấn Lộc" description="This page could not be found." />
         <section className="w-full px-4 py-24">
             <div className="mx-auto flex max-w-md flex-col items-center text-center">
                 <svg

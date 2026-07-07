@@ -18,8 +18,6 @@ export default defineConfig({
                 // Manual chunks: isolate heavy libs
                 manualChunks: {
                     'vendor-react': ['react', 'react-dom', 'react-router'],
-                    'vendor-chakra': ['@chakra-ui/react', '@emotion/react', '@emotion/styled'],
-                    'vendor-motion': ['framer-motion'],
                     'motion': ['motion'],
                     'vendor-gsap': ['gsap', '@gsap/react', 'lenis'],
                     'vendor-three': ['three'],

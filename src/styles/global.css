@@ -1,20 +1,13 @@
 /*
- * Tailwind 4 — granular imports, preflight OFF while Chakra UI coexists.
- * Importing `tailwindcss` (full) would reset buttons/links and break Chakra pages.
- * Preflight is enabled in the final migration phase, after Chakra removal.
- *
- * Utilities are imported UNLAYERED on purpose: Chakra injects its CSS reset
- * unlayered via emotion, and unlayered CSS beats any @layer regardless of
- * specificity — layered utilities would lose `bg-*`/`border-*`/`text-*` on
- * buttons, links and headings to that reset.
+ * Tailwind 4 — full import (preflight ON). Chakra UI has been removed, so the
+ * base reset is ours to own; utilities are layered normally.
  */
-@import 'tailwindcss/theme.css' layer(theme);
-@import 'tailwindcss/utilities.css';
+@import 'tailwindcss';
 
-/* Dark mode follows the `.dark` class on <html>, kept in sync with Chakra colorMode */
+/* Dark mode follows the `.dark` class on <html>, owned by providers/theme.tsx */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Static Ghibli palette — mirrors lib/theme.ts colors (single source until Chakra removal) */
+/* Static Ghibli palette (single source of design tokens) */
 @theme {
     --font-rounded:
         'M PLUS Rounded 1c', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,

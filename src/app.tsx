@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router'
 import { motion } from 'motion/react'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
-import Chakra from '../providers/chakra'
+import ThemeProvider from '../providers/theme'
 import SceneProvider, { useScene } from '../components/scene/scene-provider'
 import MainLayout from '../components/layouts/main'
 import NotFound from '../components/layout/not-found'
@@ -89,13 +89,13 @@ function AnimatedRoutes() {
 export default function App() {
     return (
         <BrowserRouter>
-            <Chakra>
+            <ThemeProvider>
                 <SceneProvider>
                     <MainLayout>
                         <AnimatedRoutes />
                     </MainLayout>
                 </SceneProvider>
-            </Chakra>
+            </ThemeProvider>
             <Analytics />
             <SpeedInsights />
         </BrowserRouter>

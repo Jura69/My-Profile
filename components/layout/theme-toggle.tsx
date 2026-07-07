@@ -1,21 +1,21 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { useColorMode } from '@chakra-ui/react'
 import { IoMoon, IoSunny } from 'react-icons/io5'
+import { useTheme } from '../../providers/theme'
 import IconButton from '../ui/icon-button'
 
 /**
- * Theme switch with icon morph. Reads/writes Chakra colorMode — the source of
- * truth during coexistence; `providers/chakra.tsx` mirrors it to the `.dark` class.
+ * Theme switch with icon morph. Reads/writes the standalone ThemeProvider, which
+ * owns the `.dark` class on <html> and localStorage persistence.
  */
 export default function ThemeToggle() {
-    const { colorMode, toggleColorMode } = useColorMode()
-    const isDark = colorMode === 'dark'
+    const { mode, toggle } = useTheme()
+    const isDark = mode === 'dark'
 
     return (
         <IconButton
             aria-label="Toggle color theme"
             variant="solid"
-            onClick={toggleColorMode}
+            onClick={toggle}
             className={
                 isDark
                     ? 'bg-ghibli-golden-dust text-ghibli-night-forest'
@@ -24,7 +24,7 @@ export default function ThemeToggle() {
         >
             <AnimatePresence mode="wait" initial={false}>
                 <motion.span
-                    key={colorMode}
+                    key={mode}
                     className="grid place-items-center text-lg"
                     initial={{ y: -16, opacity: 0, rotate: -90 }}
                     animate={{ y: 0, opacity: 1, rotate: 0 }}

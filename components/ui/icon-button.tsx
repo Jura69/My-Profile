@@ -18,7 +18,7 @@ interface IconButtonProps extends HTMLMotionProps<'button'> {
 
 /**
  * Square icon-only button with press feedback.
- * Forwards ref so it works as a Radix `asChild` trigger (React 18 requires forwardRef).
+ * Forwards ref so it works as a Radix `asChild` trigger.
  */
 const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
     { variant = 'outline', className, children, ...props },

@@ -1,29 +1,17 @@
-import { Helmet } from 'react-helmet-async'
-
 interface ArticleLayoutProps {
     children: React.ReactNode
+    /**
+     * Deprecated: the document title now comes from the per-page `<SEO>` component
+     * (React 19 native metadata). Kept so existing `<Layout title="…">` call sites
+     * stay valid; the value is intentionally unused.
+     */
     title?: string
 }
 
 /**
- * Page wrapper: sets the per-page tab/OG title (kept on react-helmet-async until
- * phase 6). The page-transition animation lives one level up in app.tsx (a single
- * keyed motion element that fades each route in) — see the note there.
+ * Page wrapper. Now a thin structural boundary — the page-transition animation
+ * lives in app.tsx and metadata lives in `<SEO>`, so this just renders children.
  */
-const Layout = ({ children, title }: ArticleLayoutProps) => {
-    const t = title ? `${title} - Jura69` : 'Jura69'
-    return (
-        <>
-            {title && (
-                <Helmet>
-                    <title>{t}</title>
-                    <meta name="twitter:title" content={t} />
-                    <meta property="og:title" content={t} />
-                </Helmet>
-            )}
-            {children}
-        </>
-    )
-}
+const Layout = ({ children }: ArticleLayoutProps) => <>{children}</>
 
 export default Layout

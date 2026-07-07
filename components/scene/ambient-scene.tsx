@@ -1,5 +1,5 @@
 import { memo, useRef } from 'react'
-import { useColorMode } from '@chakra-ui/react'
+import { useTheme } from '../../providers/theme'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
@@ -67,8 +67,8 @@ function sunColors(t: number) {
 const AmbientScene = memo(function AmbientScene() {
     const rootRef = useRef<HTMLDivElement>(null)
     const { reducedMotion } = useScene()
-    const { colorMode } = useColorMode()
-    const isDark = colorMode === 'dark'
+    const { mode } = useTheme()
+    const isDark = mode === 'dark'
 
     useGSAP(
         () => {

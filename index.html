@@ -35,13 +35,13 @@
       />
     </noscript>
 
-    <!-- Color mode script (prevents flash): data-theme for Chakra, .dark class for Tailwind.
-         Runs in <head>, so document.body does not exist yet — only touch documentElement. -->
+    <!-- Color mode script (prevents flash): applies the `.dark` class pre-paint.
+         Reads the `theme` key (migrates from the legacy Chakra key). Runs in
+         <head>, so document.body does not exist yet — only touch documentElement. -->
     <script>
       (function () {
-        var stored = localStorage.getItem('chakra-ui-color-mode');
-        var color = stored || 'dark';
-        document.documentElement.setAttribute('data-theme', color);
+        var stored = localStorage.getItem('theme') || localStorage.getItem('chakra-ui-color-mode');
+        var color = stored === 'light' ? 'light' : 'dark';
         document.documentElement.classList.toggle('dark', color === 'dark');
       })();
     </script>
@@ -49,7 +49,6 @@
     <title>Jura69 - Portfolio</title>
   </head>
   <body>
-    <!-- ColorModeScript rendered via ChakraProvider in app.tsx -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

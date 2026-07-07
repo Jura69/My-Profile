@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async'
 import { useLocation } from 'react-router'
 
 interface SEOProps {
@@ -10,6 +9,11 @@ interface SEOProps {
     author?: string
 }
 
+/**
+ * Per-page metadata. React 19 hoists `<title>`/`<meta>`/`<link>` rendered here
+ * into <head> (no react-helmet-async needed). This component owns the document
+ * title for every route.
+ */
 const SEO = ({
     title = 'Trương Tuấn Lộc - Full-stack Developer',
     description = 'Full-stack developer specializing in React, Node.js, and C#. Building scalable web applications and backend services. Currently at CREASIA.',
@@ -24,7 +28,7 @@ const SEO = ({
     const imageUrl = image.startsWith('http') ? image : `${siteUrl}${image}`
 
     return (
-        <Helmet>
+        <>
             <title>{title}</title>
             <meta name="title" content={title} />
             <meta name="description" content={description} />
@@ -48,12 +52,7 @@ const SEO = ({
             <meta name="twitter:description" content={description} />
             <meta name="twitter:image" content={imageUrl} />
             <meta name="twitter:creator" content="@Jura69" />
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-            <meta name="theme-color" content="#88ccca" />
-            <meta name="mobile-web-app-capable" content="yes" />
-            <meta name="apple-mobile-web-app-capable" content="yes" />
-            <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        </Helmet>
+        </>
     )
 }
 
