@@ -1,12 +1,7 @@
-import {
-    Container,
-    Badge,
-    List,
-    ListItem,
-} from '@chakra-ui/react'
-import { DetailTitle, DetailImage, Meta } from '../../../components/detail-components'
-import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
+import Container from '../../../components/ui/container'
+import Reveal from '../../../components/ui/reveal'
+import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -35,26 +30,30 @@ const Work = () => (
             ]}
         />
         <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works">
-                BAT PSA <Badge>2024</Badge>
+            <DetailTitle parentPath="/works" parentLabel="Works" year="2024">
+                BAT PSA
             </DetailTitle>
-            <P>
-                Administrative dashboard for problem statement analysis at British American Tobacco.
-                Features advanced reporting, data visualization, and export capabilities
-                for operational decision-making across the organization.
-            </P>
-            <List ml={4} my={4}>
-                <ListItem>
-                    <Meta>Platform</Meta>
-                    <span>Web application (Enterprise)</span>
-                </ListItem>
-                <ListItem>
-                    <Meta>Stack</Meta>
-                    <span>React 18, DevExtreme, TailwindCSS, Redux Toolkit, C# .NET 7, Docker</span>
-                </ListItem>
-            </List>
 
-            <DetailImage src="/images/works/bat-psa-detail.webp" alt="BAT PSA" />
+            <Reveal>
+                <DetailProse>
+                    Administrative dashboard for problem statement analysis at British American Tobacco.
+                    Features advanced reporting, data visualization, and export capabilities
+                    for operational decision-making across the organization.
+                </DetailProse>
+            </Reveal>
+
+            <Reveal delay={0.05}>
+                <DetailMeta
+                    rows={[
+                        { label: 'Platform', value: 'Web application (Enterprise)' },
+                        { label: 'Stack', value: 'React 18, DevExtreme, TailwindCSS, Redux Toolkit, C# .NET 7, Docker' }
+                    ]}
+                />
+            </Reveal>
+
+            <Reveal delay={0.1}>
+                <DetailImage src="/images/works/bat-psa-detail.webp" alt="BAT PSA" />
+            </Reveal>
         </Container>
     </Layout>
 )

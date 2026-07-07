@@ -1,14 +1,12 @@
-import {
-    Container,
-    ListItem,
-    List,
-    Heading,
-    Box,
-} from '@chakra-ui/react'
-import { DetailTitle, Meta, DetailImage } from '../../../components/detail-components'
-import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
-import Section from '../../../components/section'
+import Container from '../../../components/ui/container'
+import Reveal from '../../../components/ui/reveal'
+import {
+    DetailTitle,
+    DetailProse,
+    DetailMeta,
+    DetailImage
+} from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -31,41 +29,25 @@ const Activities = () => (
                 YTC Nha Trang University
             </DetailTitle>
 
-            <Section delay={0.1}>
-                <P>
+            <Reveal>
+                <DetailProse>
                     Designed media publications and event promotional materials. Captured event photography to document and promote activities.
-                </P>
-            </Section>
+                </DetailProse>
+            </Reveal>
 
-            <Section delay={0.2}>
-                <Heading as="h4" fontSize={16} mb={3}>
-                    Details
-                </Heading>
-                <Box
-                    borderRadius="lg"
-                    p={4}
-                    bg="whiteAlpha.100"
-                    border="1px solid"
-                    borderColor="whiteAlpha.200"
-                >
-                    <List spacing={2}>
-                        <ListItem>
-                            <Meta>Period</Meta>
-                            <span>2021 – 2023</span>
-                        </ListItem>
-                    </List>
-                </Box>
-            </Section>
+            <Reveal delay={0.05}>
+                <DetailMeta title="Details" rows={[{ label: 'Period', value: '2021 – 2023' }]} />
+            </Reveal>
 
-            <Section delay={0.3}>
+            <Reveal delay={0.1}>
                 <DetailImage src="/images/activities/Ytc2.webp" alt="YTC" />
-            </Section>
-            <Section delay={0.4}>
+            </Reveal>
+            <Reveal delay={0.15}>
                 <DetailImage src="/images/activities/Ytc3.jpg" alt="YTC" />
-            </Section>
-            <Section delay={0.5}>
+            </Reveal>
+            <Reveal delay={0.2}>
                 <DetailImage src="/images/activities/Ytc4.jpg" alt="YTC" />
-            </Section>
+            </Reveal>
         </Container>
     </Layout>
 )

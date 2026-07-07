@@ -1,12 +1,7 @@
-import {
-    Container,
-    Badge,
-    List,
-    ListItem,
-} from '@chakra-ui/react'
-import { DetailTitle, DetailImage, Meta } from '../../../components/detail-components'
-import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
+import Container from '../../../components/ui/container'
+import Reveal from '../../../components/ui/reveal'
+import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -35,26 +30,30 @@ const Work = () => (
             ]}
         />
         <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works">
-                Castrol Fleet Management <Badge>2024</Badge>
+            <DetailTitle parentPath="/works" parentLabel="Works" year="2024">
+                Castrol Fleet Management
             </DetailTitle>
-            <P>
-                Vehicle fleet tracking platform with real-time geolocation via Mapbox built at Creasia.
-                Includes maintenance scheduling, route optimization, and logistics management
-                for fleet operators managing large vehicle networks.
-            </P>
-            <List ml={4} my={4}>
-                <ListItem>
-                    <Meta>Platform</Meta>
-                    <span>Web application (Enterprise)</span>
-                </ListItem>
-                <ListItem>
-                    <Meta>Stack</Meta>
-                    <span>React 18, TypeScript, MUI, Mapbox GL, Full Calendar, C# .NET</span>
-                </ListItem>
-            </List>
 
-            <DetailImage src="/images/works/castrol-fleet-detail.webp" alt="Castrol Fleet Management" />
+            <Reveal>
+                <DetailProse>
+                    Vehicle fleet tracking platform with real-time geolocation via Mapbox built at Creasia.
+                    Includes maintenance scheduling, route optimization, and logistics management
+                    for fleet operators managing large vehicle networks.
+                </DetailProse>
+            </Reveal>
+
+            <Reveal delay={0.05}>
+                <DetailMeta
+                    rows={[
+                        { label: 'Platform', value: 'Web application (Enterprise)' },
+                        { label: 'Stack', value: 'React 18, TypeScript, MUI, Mapbox GL, Full Calendar, C# .NET' }
+                    ]}
+                />
+            </Reveal>
+
+            <Reveal delay={0.1}>
+                <DetailImage src="/images/works/castrol-fleet-detail.webp" alt="Castrol Fleet Management" />
+            </Reveal>
         </Container>
     </Layout>
 )

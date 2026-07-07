@@ -1,9 +1,17 @@
-import { Container, Heading, SimpleGrid } from '@chakra-ui/react'
 import Layout from '../../components/layouts/article'
-import Section from '../../components/section'
-import { CategoryGridItem } from '../../components/grid-item'
 import SEO from '../../components/seo'
 import { BreadcrumbSchema } from '../../components/json-ld'
+import Reveal from '../../components/ui/reveal'
+import SectionHeading from '../../components/ui/section-heading'
+import ProjectCard from '../../components/works/project-card'
+import type { CardItem } from '../../components/works/works-data'
+
+const devices: CardItem[] = [
+    { id: 'ea1000', title: 'Simgot EA1000 Fermat', thumbnail: '/images/audiophile/ea1000.webp' },
+    { id: 'moondropSSP', title: 'Moondrop SSP', thumbnail: '/images/audiophile/ssp.jpg' },
+    { id: 'onix', title: 'Onix Alpha XI1', thumbnail: '/images/audiophile/onix.jpg' },
+    { id: 'fiioka11', title: 'Fiio Ka11', thumbnail: '/images/audiophile/ka11.jpg' }
+]
 
 const Audiophile = () => (
     <Layout title="Audiophile">
@@ -18,31 +26,22 @@ const Audiophile = () => (
                 { name: 'Audiophile', url: 'https://my-profile-jura69.vercel.app/audiophile' }
             ]}
         />
-        <Container>
-            <Section delay={0.1}>
-                <Heading as="h3" variant="section-title">
-                    My Audio Devices 🎧
-                </Heading>
-            </Section>
-            <SimpleGrid columns={[1, 1, 2]} gap={6}>
-                <Section delay={0.2}>
-                    <CategoryGridItem category="audiophile" id="ea1000" title="Simgot EA1000 Fermat" thumbnail="/images/audiophile/ea1000.webp">
-                    </CategoryGridItem>
-                </Section>
-                <Section delay={0.3}>
-                    <CategoryGridItem category="audiophile" id="moondropSSP" title="Moondrop SSP" thumbnail="/images/audiophile/ssp.jpg">
-                    </CategoryGridItem>
-                </Section>
-                <Section delay={0.4}>
-                    <CategoryGridItem category="audiophile" id="onix" title="Onix Alpha XI1" thumbnail="/images/audiophile/onix.jpg">
-                    </CategoryGridItem>
-                </Section>
-                <Section delay={0.5}>
-                    <CategoryGridItem category="audiophile" id="fiioka11" title="Fiio Ka11" thumbnail="/images/audiophile/ka11.jpg">
-                    </CategoryGridItem>
-                </Section>
-            </SimpleGrid>
-        </Container>
+
+        <section className="w-full px-4 py-8">
+            <div className="mx-auto max-w-[1100px]">
+                <Reveal>
+                    <SectionHeading as="h2">My Audio Devices 🎧</SectionHeading>
+                </Reveal>
+
+                <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                    {devices.map((device, i) => (
+                        <Reveal key={device.id} delay={0.05 + i * 0.05} className="h-full">
+                            <ProjectCard project={device} to={`/audiophile/${device.id}`} />
+                        </Reveal>
+                    ))}
+                </div>
+            </div>
+        </section>
     </Layout>
 )
 

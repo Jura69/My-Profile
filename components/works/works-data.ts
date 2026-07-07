@@ -4,11 +4,18 @@
  * splits the page into "Personal Projects" and "Enterprise @ Creasia".
  * To promote/demote a flagship, just toggle `featured` here.
  */
-export interface Project {
+/** Minimal shape a compact ProjectCard needs — also satisfied by the
+ *  audiophile/activities listings (phase 5) which reuse ProjectCard via `to`. */
+export interface CardItem {
     id: string
     title: string
-    description: string
     thumbnail: string
+    /** One-line blurb; audiophile gear items may omit it. */
+    description?: string
+}
+
+export interface Project extends CardItem {
+    description: string
     category: 'personal' | 'enterprise'
     featured?: boolean
     /** Shown as badges on featured cards; omitted on compact cards. */

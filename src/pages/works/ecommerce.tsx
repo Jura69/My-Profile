@@ -1,14 +1,12 @@
-import {
-    Container,
-    Badge,
-    Link,
-    List,
-    ListItem,
-} from '@chakra-ui/react'
-import { ExternalLinkIcon } from '@chakra-ui/icons'
-import { DetailTitle, Meta, MetaRed } from '../../../components/detail-components'
-import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
+import Container from '../../../components/ui/container'
+import Reveal from '../../../components/ui/reveal'
+import {
+    DetailTitle,
+    DetailProse,
+    DetailMeta,
+    DetailLink
+} from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -38,43 +36,43 @@ const Work = () => (
             ]}
         />
         <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works">
-                E-commerce Microservices Platform <Badge>2024</Badge>
+            <DetailTitle parentPath="/works" parentLabel="Works" year="2024">
+                E-commerce Microservices Platform
             </DetailTitle>
-            <P>
-                A full-stack e-commerce platform built with a microservices architecture, spanning multiple repositories. The system is designed for scalability, modularity, and real-world production patterns — including event-driven communication, caching, and background workers.
-            </P>
-            <List ml={4} my={4}>
-                <ListItem>
-                    <Meta>Backend API</Meta>
-                    <Link href="https://github.com/Jura69/E-com-NodeBE">
-                        E-com-NodeBE <ExternalLinkIcon mx="2px" />
-                    </Link>
-                </ListItem>
-                <ListItem>
-                    <Meta>Frontend</Meta>
-                    <Link href="https://github.com/Jura69/E-com-FE">
-                        E-com-FE <ExternalLinkIcon mx="2px" />
-                    </Link>
-                </ListItem>
-                <ListItem>
-                    <Meta>Platform</Meta>
-                    <span>Microservices — Backend API, React Storefront, Email & Notification Services</span>
-                </ListItem>
-                <ListItem>
-                    <Meta>Stack</Meta>
-                    <span>Node.js, Express, React, MongoDB, Redis, RabbitMQ, Docker</span>
-                </ListItem>
-                <ListItem>
-                    <MetaRed>Status</MetaRed>
-                    <span>Under development</span>
-                </ListItem>
-            </List>
-        </Container>
 
-        <P>
-            The platform follows a microservices approach across separate repositories: the core backend handles products, carts, orders, authentication (JWT), and role-based access; RabbitMQ drives asynchronous email and notification services; Redis provides caching and distributed locking (e.g. for inventory). The React storefront connects through RESTful APIs. Designed for horizontal scaling and production-ready patterns including rate limiting, error handling, and database optimization.
-        </P>
+            <Reveal>
+                <DetailProse>
+                    A full-stack e-commerce platform built with a microservices architecture, spanning multiple repositories. The system is designed for scalability, modularity, and real-world production patterns — including event-driven communication, caching, and background workers.
+                </DetailProse>
+            </Reveal>
+
+            <Reveal delay={0.05}>
+                <DetailMeta
+                    rows={[
+                        {
+                            label: 'Backend API',
+                            value: <DetailLink href="https://github.com/Jura69/E-com-NodeBE">E-com-NodeBE</DetailLink>
+                        },
+                        {
+                            label: 'Frontend',
+                            value: <DetailLink href="https://github.com/Jura69/E-com-FE">E-com-FE</DetailLink>
+                        },
+                        {
+                            label: 'Platform',
+                            value: 'Microservices — Backend API, React Storefront, Email & Notification Services'
+                        },
+                        { label: 'Stack', value: 'Node.js, Express, React, MongoDB, Redis, RabbitMQ, Docker' },
+                        { label: 'Status', value: 'Under development', tone: 'red' }
+                    ]}
+                />
+            </Reveal>
+
+            <Reveal delay={0.1}>
+                <DetailProse>
+                    The platform follows a microservices approach across separate repositories: the core backend handles products, carts, orders, authentication (JWT), and role-based access; RabbitMQ drives asynchronous email and notification services; Redis provides caching and distributed locking (e.g. for inventory). The React storefront connects through RESTful APIs. Designed for horizontal scaling and production-ready patterns including rate limiting, error handling, and database optimization.
+                </DetailProse>
+            </Reveal>
+        </Container>
     </Layout>
 )
 

@@ -1,14 +1,12 @@
-import {
-    Container,
-    List,
-    ListItem,
-    Heading,
-    Box,
-} from '@chakra-ui/react'
-import { DetailTitle, Meta, DetailImage } from '../../../components/detail-components'
-import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
-import Section from '../../../components/section'
+import Container from '../../../components/ui/container'
+import Reveal from '../../../components/ui/reveal'
+import {
+    DetailTitle,
+    DetailProse,
+    DetailMeta,
+    DetailImage
+} from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -31,71 +29,33 @@ const Audios = () => (
                 Moondrop SSP
             </DetailTitle>
 
-            <Section delay={0.1}>
-                <P>
+            <Reveal>
+                <DetailProse>
                     Unlike some other IEMs on the market. MOONDROP implements acoustical damper and filter into one package in order to make precise control of frequency response.
-                </P>
-            </Section>
+                </DetailProse>
+            </Reveal>
 
-            <Section delay={0.2}>
+            <Reveal delay={0.05}>
                 <DetailImage src="/images/audiophile/ssp-2.jpg" alt="SSP" />
-            </Section>
+            </Reveal>
 
-            <Section delay={0.3}>
-                <Heading as="h4" fontSize={16} mb={3}>
-                    Specifications
-                </Heading>
-                <Box
-                    borderRadius="lg"
-                    p={4}
-                    bg="whiteAlpha.100"
-                    border="1px solid"
-                    borderColor="whiteAlpha.200"
-                >
-                    <List spacing={2}>
-                        <ListItem>
-                            <Meta>Diaphragm</Meta>
-                            <span>Beryllium-Coated Dome + PU Suspension Ring</span>
-                        </ListItem>
-                        <ListItem>
-                            <Meta>Sensitivity</Meta>
-                            <span>112dB/Vrms@1kHz</span>
-                        </ListItem>
-                        <ListItem>
-                            <Meta>Impedance</Meta>
-                            <span>16Ω@1kHz</span>
-                        </ListItem>
-                        <ListItem>
-                            <Meta>Headphone jack</Meta>
-                            <span>0.78mm 2-pin</span>
-                        </ListItem>
-                        <ListItem>
-                            <Meta>Frequency response</Meta>
-                            <span>20-20000Hz (IEC60318-4)</span>
-                        </ListItem>
-                        <ListItem>
-                            <Meta>THD</Meta>
-                            <span>≤1% @1kHz</span>
-                        </ListItem>
-                        <ListItem>
-                            <Meta>Housing Material</Meta>
-                            <span>Amorphous Metal Alloy Housing</span>
-                        </ListItem>
-                        <ListItem>
-                            <Meta>Coil</Meta>
-                            <span>0.035mm-CCAW (Daikoku)</span>
-                        </ListItem>
-                        <ListItem>
-                            <Meta>Magnet</Meta>
-                            <span>N52-Neodymium High Density Magnetic Circuit</span>
-                        </ListItem>
-                        <ListItem>
-                            <Meta>Acoustic Filter</Meta>
-                            <span>Patented Anti-blocking Filter</span>
-                        </ListItem>
-                    </List>
-                </Box>
-            </Section>
+            <Reveal delay={0.1}>
+                <DetailMeta
+                    title="Specifications"
+                    rows={[
+                        { label: 'Diaphragm', value: 'Beryllium-Coated Dome + PU Suspension Ring' },
+                        { label: 'Sensitivity', value: '112dB/Vrms@1kHz' },
+                        { label: 'Impedance', value: '16Ω@1kHz' },
+                        { label: 'Headphone jack', value: '0.78mm 2-pin' },
+                        { label: 'Frequency response', value: '20-20000Hz (IEC60318-4)' },
+                        { label: 'THD', value: '≤1% @1kHz' },
+                        { label: 'Housing Material', value: 'Amorphous Metal Alloy Housing' },
+                        { label: 'Coil', value: '0.035mm-CCAW (Daikoku)' },
+                        { label: 'Magnet', value: 'N52-Neodymium High Density Magnetic Circuit' },
+                        { label: 'Acoustic Filter', value: 'Patented Anti-blocking Filter' }
+                    ]}
+                />
+            </Reveal>
         </Container>
     </Layout>
 )

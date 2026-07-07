@@ -1,12 +1,12 @@
-import {
-    Container,
-    Badge,
-    List,
-    ListItem,
-} from '@chakra-ui/react'
-import { DetailTitle, DetailImage, Meta } from '../../../components/detail-components'
-import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
+import Container from '../../../components/ui/container'
+import Reveal from '../../../components/ui/reveal'
+import {
+    DetailTitle,
+    DetailProse,
+    DetailMeta,
+    DetailImage
+} from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -35,26 +35,30 @@ const Work = () => (
             ]}
         />
         <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works">
-                BAT Loyalty Program <Badge>2024</Badge>
+            <DetailTitle parentPath="/works" parentLabel="Works" year="2024">
+                BAT Loyalty Program
             </DetailTitle>
-            <P>
-                Customer loyalty rewards and points management system for British American Tobacco.
-                Handles point accumulation, redemption workflows, and reward catalog management
-                across multiple regions and partner networks.
-            </P>
-            <List ml={4} my={4}>
-                <ListItem>
-                    <Meta>Platform</Meta>
-                    <span>Web application (Enterprise)</span>
-                </ListItem>
-                <ListItem>
-                    <Meta>Stack</Meta>
-                    <span>React 18, MUI, Redux, C# .NET, RESTful API</span>
-                </ListItem>
-            </List>
 
-            <DetailImage src="/images/works/bat-loyalty-detail.webp" alt="BAT Loyalty Program" />
+            <Reveal>
+                <DetailProse>
+                    Customer loyalty rewards and points management system for British American Tobacco.
+                    Handles point accumulation, redemption workflows, and reward catalog management
+                    across multiple regions and partner networks.
+                </DetailProse>
+            </Reveal>
+
+            <Reveal delay={0.05}>
+                <DetailMeta
+                    rows={[
+                        { label: 'Platform', value: 'Web application (Enterprise)' },
+                        { label: 'Stack', value: 'React 18, MUI, Redux, C# .NET, RESTful API' }
+                    ]}
+                />
+            </Reveal>
+
+            <Reveal delay={0.1}>
+                <DetailImage src="/images/works/bat-loyalty-detail.webp" alt="BAT Loyalty Program" />
+            </Reveal>
         </Container>
     </Layout>
 )

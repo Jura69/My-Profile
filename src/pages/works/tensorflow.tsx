@@ -1,14 +1,13 @@
-import {
-    Container,
-    Badge,
-    Link,
-    List,
-    ListItem,
-} from '@chakra-ui/react'
-import { ExternalLinkIcon } from '@chakra-ui/icons'
-import { DetailTitle, DetailImage, Meta } from '../../../components/detail-components'
-import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
+import Container from '../../../components/ui/container'
+import Reveal from '../../../components/ui/reveal'
+import {
+    DetailTitle,
+    DetailProse,
+    DetailMeta,
+    DetailLink,
+    DetailImage
+} from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -38,30 +37,36 @@ const Work = () => (
             ]}
         />
         <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works">
-                Tensorflow SignLanguage Detect <Badge>2024</Badge>
+            <DetailTitle parentPath="/works" parentLabel="Works" year="2024">
+                Tensorflow SignLanguage Detect
             </DetailTitle>
-            <P>
-                A machine learning application that uses TensorFlow and computer vision to detect and interpret sign language gestures in real-time. The model is trained on sign language datasets to recognize various hand signs and convert them to text, making communication more accessible for the hearing-impaired community.
-            </P>
-            <List ml={4} my={4}>
-                <ListItem>
-                    <Meta>Github</Meta>
-                    <Link href="https://github.com/Jura69/TensorflowProject">
-                        https://github.com/Jura69/TensorflowProject <ExternalLinkIcon mx="2px" />
-                    </Link>
-                </ListItem>
-                <ListItem>
-                    <Meta>Platform</Meta>
-                    <span>Python application</span>
-                </ListItem>
-                <ListItem>
-                    <Meta>Stack</Meta>
-                    <span>Python, Tensorflow, Machine learning</span>
-                </ListItem>
-            </List>
 
-            <DetailImage src="/images/works/Tensorflow1.webp" alt="Tensorflow" />
+            <Reveal>
+                <DetailProse>
+                    A machine learning application that uses TensorFlow and computer vision to detect and interpret sign language gestures in real-time. The model is trained on sign language datasets to recognize various hand signs and convert them to text, making communication more accessible for the hearing-impaired community.
+                </DetailProse>
+            </Reveal>
+
+            <Reveal delay={0.05}>
+                <DetailMeta
+                    rows={[
+                        {
+                            label: 'Github',
+                            value: (
+                                <DetailLink href="https://github.com/Jura69/TensorflowProject">
+                                    https://github.com/Jura69/TensorflowProject
+                                </DetailLink>
+                            )
+                        },
+                        { label: 'Platform', value: 'Python application' },
+                        { label: 'Stack', value: 'Python, Tensorflow, Machine learning' }
+                    ]}
+                />
+            </Reveal>
+
+            <Reveal delay={0.1}>
+                <DetailImage src="/images/works/Tensorflow1.webp" alt="Tensorflow" />
+            </Reveal>
         </Container>
     </Layout>
 )

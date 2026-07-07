@@ -1,14 +1,14 @@
 import { Link as RouterLink } from 'react-router'
 import { motion } from 'motion/react'
 import { cn } from '../../lib/cn'
-import type { Project } from './works-data'
+import type { CardItem } from './works-data'
 
 /**
  * Compact project card — thumbnail, title, one-line blurb. Used for the
  * non-flagship personal work and the enterprise grid, and reused by the
- * audiophile/activities listings in phase 5. Transform-only hover, no CLS.
+ * audiophile/activities listings via `to`. Transform-only hover, no CLS.
  */
-export default function ProjectCard({ project, to }: { project: Project; to?: string }) {
+export default function ProjectCard({ project, to }: { project: CardItem; to?: string }) {
     return (
         <motion.article
             whileHover={{ y: -4 }}
@@ -34,9 +34,11 @@ export default function ProjectCard({ project, to }: { project: Project; to?: st
                 </div>
                 <div className="flex flex-1 flex-col p-4">
                     <h3 className="font-rounded text-base font-bold text-ink">{project.title}</h3>
-                    <p className="mt-1 font-rounded text-sm leading-snug text-ink-muted">
-                        {project.description}
-                    </p>
+                    {project.description && (
+                        <p className="mt-1 font-rounded text-sm leading-snug text-ink-muted">
+                            {project.description}
+                        </p>
+                    )}
                 </div>
             </RouterLink>
         </motion.article>

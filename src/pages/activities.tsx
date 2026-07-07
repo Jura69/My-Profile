@@ -1,9 +1,19 @@
-import { Container, Heading, SimpleGrid } from '@chakra-ui/react'
 import Layout from '../../components/layouts/article'
-import Section from '../../components/section'
-import { CategoryGridItem } from '../../components/grid-item'
 import SEO from '../../components/seo'
 import { BreadcrumbSchema } from '../../components/json-ld'
+import Reveal from '../../components/ui/reveal'
+import SectionHeading from '../../components/ui/section-heading'
+import ProjectCard from '../../components/works/project-card'
+import type { CardItem } from '../../components/works/works-data'
+
+const activities: CardItem[] = [
+    {
+        id: 'ytc',
+        title: 'YTC NTU',
+        thumbnail: '/images/activities/Ytc1.jpeg',
+        description: 'Social Media, Design and Event Management Club at Nha Trang University.'
+    }
+]
 
 const Activities = () => (
     <Layout title="Activities">
@@ -18,20 +28,22 @@ const Activities = () => (
                 { name: 'Activities', url: 'https://my-profile-jura69.vercel.app/activities' }
             ]}
         />
-        <Container>
-            <Section delay={0.1}>
-                <Heading as="h3" variant="section-title">
-                    My Activities 🌿
-                </Heading>
-            </Section>
-            <SimpleGrid columns={[1, 1, 2]} gap={6}>
-                <Section delay={0.2}>
-                    <CategoryGridItem category="activities" id="ytc" title="YTC NTU" thumbnail="/images/activities/Ytc1.jpeg">
-                        Social Media, Design and Event Management Club at Nha Trang University.
-                    </CategoryGridItem>
-                </Section>
-            </SimpleGrid>
-        </Container>
+
+        <section className="w-full px-4 py-8">
+            <div className="mx-auto max-w-[1100px]">
+                <Reveal>
+                    <SectionHeading as="h2">My Activities 🌿</SectionHeading>
+                </Reveal>
+
+                <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    {activities.map((activity, i) => (
+                        <Reveal key={activity.id} delay={0.05 + i * 0.05} className="h-full">
+                            <ProjectCard project={activity} to={`/activities/${activity.id}`} />
+                        </Reveal>
+                    ))}
+                </div>
+            </div>
+        </section>
     </Layout>
 )
 

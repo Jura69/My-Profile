@@ -1,12 +1,7 @@
-import {
-    Container,
-    Badge,
-    List,
-    ListItem,
-} from '@chakra-ui/react'
-import { DetailTitle, DetailImage, Meta } from '../../../components/detail-components'
-import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
+import Container from '../../../components/ui/container'
+import Reveal from '../../../components/ui/reveal'
+import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -35,26 +30,30 @@ const Work = () => (
             ]}
         />
         <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works">
-                Warehouse Management <Badge>2024</Badge>
+            <DetailTitle parentPath="/works" parentLabel="Works" year="2024">
+                Warehouse Management
             </DetailTitle>
-            <P>
-                Inventory tracking system with barcode and QR scanning integration built at Creasia.
-                Manages order workflows, stock movements, and warehouse operations
-                for enterprise logistics and supply chain management.
-            </P>
-            <List ml={4} my={4}>
-                <ListItem>
-                    <Meta>Platform</Meta>
-                    <span>Web application (Enterprise)</span>
-                </ListItem>
-                <ListItem>
-                    <Meta>Stack</Meta>
-                    <span>React 18, MUI, DevExtreme, Redux, QR/Barcode scanning, C# .NET</span>
-                </ListItem>
-            </List>
 
-            <DetailImage src="/images/works/warehouse-management-detail.webp" alt="Warehouse Management" />
+            <Reveal>
+                <DetailProse>
+                    Inventory tracking system with barcode and QR scanning integration built at Creasia.
+                    Manages order workflows, stock movements, and warehouse operations
+                    for enterprise logistics and supply chain management.
+                </DetailProse>
+            </Reveal>
+
+            <Reveal delay={0.05}>
+                <DetailMeta
+                    rows={[
+                        { label: 'Platform', value: 'Web application (Enterprise)' },
+                        { label: 'Stack', value: 'React 18, MUI, DevExtreme, Redux, QR/Barcode scanning, C# .NET' }
+                    ]}
+                />
+            </Reveal>
+
+            <Reveal delay={0.1}>
+                <DetailImage src="/images/works/warehouse-management-detail.webp" alt="Warehouse Management" />
+            </Reveal>
         </Container>
     </Layout>
 )

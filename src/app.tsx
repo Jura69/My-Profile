@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router'
+import { motion } from 'motion/react'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import Chakra from '../providers/chakra'
-import SceneProvider from '../components/scene/scene-provider'
+import SceneProvider, { useScene } from '../components/scene/scene-provider'
 import MainLayout from '../components/layouts/main'
+import NotFound from '../components/layout/not-found'
 
 // Pages — lazy-loaded in Phase 4; use direct imports for now
 import HomePage from './pages/index'
@@ -34,35 +36,53 @@ if (typeof window !== 'undefined') {
 
 function AnimatedRoutes() {
     const location = useLocation()
+    const { reducedMotion } = useScene()
 
-    // framer-motion 11 AnimatePresence never completes exit here (routes get stuck
-    // on the old page, dev AND prod) — page transitions come back with Motion in
-    // the detail-templates phase. Entrance animations per page still run.
-    // Scroll reset on navigation lives in SceneProvider (Lenis-aware).
+    const routes = (
+        <Routes location={location}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/works" element={<WorksPage />} />
+            <Route path="/works/foodlover" element={<FoodLoverPage />} />
+            <Route path="/works/ticketapp" element={<TicketAppPage />} />
+            <Route path="/works/ecommerce" element={<EcommercePage />} />
+            <Route path="/works/tensorflow" element={<TensorflowPage />} />
+            <Route path="/works/asset-management" element={<AssetManagementPage />} />
+            <Route path="/works/bat-loyalty" element={<BatLoyaltyPage />} />
+            <Route path="/works/bat-psa" element={<BatPsaPage />} />
+            <Route path="/works/castrol-fleet" element={<CastrolFleetPage />} />
+            <Route path="/works/vending-ai-agent" element={<VendingAiAgentPage />} />
+            <Route path="/works/warehouse-management" element={<WarehouseManagementPage />} />
+            <Route path="/works/creasia-erp" element={<CreasiaErpPage />} />
+            <Route path="/activities" element={<ActivitiesPage />} />
+            <Route path="/activities/ytc" element={<YtcPage />} />
+            <Route path="/audiophile" element={<AudiophilePage />} />
+            <Route path="/audiophile/ea1000" element={<Ea1000Page />} />
+            <Route path="/audiophile/moondropSSP" element={<MoondropPage />} />
+            <Route path="/audiophile/onix" element={<OnixPage />} />
+            <Route path="/audiophile/fiioka11" element={<FiiokA11Page />} />
+            <Route path="*" element={<NotFound />} />
+        </Routes>
+    )
+
+    // Reduced-motion users get instant, always-visible page swaps — no transition.
+    if (reducedMotion) return routes
+
+    // Entrance-only page transition: a keyed motion element remounts per route and
+    // fades in. Deliberately NOT AnimatePresence exit/mode="wait" — the exit never
+    // reliably completed with this Router + motion@12 setup and left the old page
+    // stuck (same failure mode as framer-motion 11), so we keep the enter only.
+    // Opacity-only (no transform): a transformed ancestor would become the
+    // containing block for the homepage's position:fixed GSAP pin (ExperienceDusk)
+    // and misalign it. SceneProvider handles scroll reset + ScrollTrigger refresh.
     return (
-        <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/works" element={<WorksPage />} />
-                <Route path="/works/foodlover" element={<FoodLoverPage />} />
-                <Route path="/works/ticketapp" element={<TicketAppPage />} />
-                <Route path="/works/ecommerce" element={<EcommercePage />} />
-                <Route path="/works/tensorflow" element={<TensorflowPage />} />
-                <Route path="/works/asset-management" element={<AssetManagementPage />} />
-                <Route path="/works/bat-loyalty" element={<BatLoyaltyPage />} />
-                <Route path="/works/bat-psa" element={<BatPsaPage />} />
-                <Route path="/works/castrol-fleet" element={<CastrolFleetPage />} />
-                <Route path="/works/vending-ai-agent" element={<VendingAiAgentPage />} />
-                <Route path="/works/warehouse-management" element={<WarehouseManagementPage />} />
-                <Route path="/works/creasia-erp" element={<CreasiaErpPage />} />
-                <Route path="/activities" element={<ActivitiesPage />} />
-                <Route path="/activities/ytc" element={<YtcPage />} />
-                <Route path="/audiophile" element={<AudiophilePage />} />
-                <Route path="/audiophile/ea1000" element={<Ea1000Page />} />
-                <Route path="/audiophile/moondropSSP" element={<MoondropPage />} />
-                <Route path="/audiophile/onix" element={<OnixPage />} />
-                <Route path="/audiophile/fiioka11" element={<FiiokA11Page />} />
-                <Route path="*" element={<div style={{ padding: '2rem' }}>404 — Page not found</div>} />
-            </Routes>
+        <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+        >
+            {routes}
+        </motion.div>
     )
 }
 

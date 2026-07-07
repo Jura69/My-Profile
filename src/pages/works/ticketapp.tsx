@@ -1,14 +1,13 @@
-import {
-    Container,
-    Badge,
-    Link,
-    List,
-    ListItem,
-} from '@chakra-ui/react'
-import { ExternalLinkIcon } from '@chakra-ui/icons'
-import { DetailTitle, DetailImage, Meta } from '../../../components/detail-components'
-import P from '../../../components/paragraph'
 import Layout from '../../../components/layouts/article'
+import Container from '../../../components/ui/container'
+import Reveal from '../../../components/ui/reveal'
+import {
+    DetailTitle,
+    DetailProse,
+    DetailMeta,
+    DetailLink,
+    DetailImage
+} from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -38,31 +37,37 @@ const Work = () => (
             ]}
         />
         <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works">
-                Flutter Ticket Booking App <Badge>2024</Badge>
+            <DetailTitle parentPath="/works" parentLabel="Works" year="2024">
+                Flutter Ticket Booking App
             </DetailTitle>
-            <P>
-                A modern mobile application for booking movie tickets, built with Flutter for cross-platform compatibility. Features include browsing available movies, selecting seats, and secure ticket booking with a clean, intuitive user interface.
-            </P>
-            <List ml={4} my={4}>
-                <ListItem>
-                    <Meta>Github</Meta>
-                    <Link href="https://github.com/Jura69/Flutter-TicketApp">
-                        https://github.com/Jura69/Flutter-TicketApp <ExternalLinkIcon mx="2px" />
-                    </Link>
-                </ListItem>
-                <ListItem>
-                    <Meta>Platform</Meta>
-                    <span>Android, iOS</span>
-                </ListItem>
-                <ListItem>
-                    <Meta>Stack</Meta>
-                    <span>Flutter, Nodejs Express, MongoDB</span>
-                </ListItem>
-            </List>
 
-            <DetailImage src="/images/works/Ticket2.webp" alt="Ticket" />
-            <DetailImage src="/images/works/Ticket3.webp" alt="Ticket" />
+            <Reveal>
+                <DetailProse>
+                    A modern mobile application for booking movie tickets, built with Flutter for cross-platform compatibility. Features include browsing available movies, selecting seats, and secure ticket booking with a clean, intuitive user interface.
+                </DetailProse>
+            </Reveal>
+
+            <Reveal delay={0.05}>
+                <DetailMeta
+                    rows={[
+                        {
+                            label: 'Github',
+                            value: (
+                                <DetailLink href="https://github.com/Jura69/Flutter-TicketApp">
+                                    https://github.com/Jura69/Flutter-TicketApp
+                                </DetailLink>
+                            )
+                        },
+                        { label: 'Platform', value: 'Android, iOS' },
+                        { label: 'Stack', value: 'Flutter, Nodejs Express, MongoDB' }
+                    ]}
+                />
+            </Reveal>
+
+            <Reveal delay={0.1}>
+                <DetailImage src="/images/works/Ticket2.webp" alt="Ticket" />
+                <DetailImage src="/images/works/Ticket3.webp" alt="Ticket" />
+            </Reveal>
         </Container>
     </Layout>
 )
