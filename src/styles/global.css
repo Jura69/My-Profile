@@ -73,3 +73,71 @@
     --accent: #98d8c8;
     --line: #2e3447;
 }
+
+/* Fully-hidden scene groups cost nothing: ambient-scene toggles these data
+   attrs from its scroll handler when a group's alpha reaches zero. */
+[data-stars='off'] .scene-stars,
+[data-dawn='off'] .scene-pollen,
+[data-night='off'] .scene-fireflies {
+    display: none;
+}
+
+/* Ambient scene keyframes — transform/opacity only (compositor-friendly).
+   Consumed via motion-safe: so reduced-motion users get a static scene. */
+@keyframes scene-star-twinkle {
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes scene-pollen-float {
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+    25% {
+        transform: translate(10px, -14px) scale(1.1);
+    }
+    50% {
+        transform: translate(-6px, -26px) scale(0.92);
+    }
+    75% {
+        transform: translate(12px, -10px) scale(1.05);
+    }
+}
+
+@keyframes scene-firefly-drift {
+    0%,
+    100% {
+        transform: translate(0, 0);
+        opacity: 0.2;
+    }
+    30% {
+        transform: translate(14px, -10px);
+        opacity: 1;
+    }
+    60% {
+        transform: translate(-8px, -22px);
+        opacity: 0.4;
+    }
+    80% {
+        transform: translate(6px, -6px);
+        opacity: 0.9;
+    }
+}
+
+@keyframes scene-scroll-hint {
+    0%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translateY(8px);
+        opacity: 1;
+    }
+}

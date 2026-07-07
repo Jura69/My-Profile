@@ -21,6 +21,7 @@ export default defineConfig({
                     'vendor-chakra': ['@chakra-ui/react', '@emotion/react', '@emotion/styled'],
                     'vendor-motion': ['framer-motion'],
                     'motion': ['motion'],
+                    'vendor-gsap': ['gsap', '@gsap/react', 'lenis'],
                     'vendor-three': ['three'],
                 }
             }

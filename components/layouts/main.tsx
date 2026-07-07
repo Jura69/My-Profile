@@ -1,32 +1,27 @@
-import { Box, Container } from '@chakra-ui/react'
+import { memo } from 'react'
 import { MotionConfig } from 'motion/react'
-import { memo, lazy, Suspense } from 'react'
 import Navbar from '../layout/navbar'
 import Footer from '../layout/footer'
-import TotoroLoader from '../totoro-loader'
-import ScrollAmbientScene from '../scroll-ambient-scene'
-
-// Replaces next/dynamic — React.lazy with Suspense
-const LazyTotoro = lazy(() => import('../totoro'))
+import AmbientScene from '../scene/ambient-scene'
 
 interface MainProps {
     children: React.ReactNode
 }
 
+/**
+ * App shell. No width wrapper here — each page owns its own container
+ * (homepage is full-bleed for the scene). pt-16 keeps content clear of the
+ * fixed navbar, matching the spacing the old Chakra Container provided.
+ */
 const Main = memo(function Main({ children }: MainProps) {
     return (
         <MotionConfig reducedMotion="user">
-            <Box as="main" pb={8}>
-                <ScrollAmbientScene />
+            <main className="pt-16 pb-8">
+                <AmbientScene />
                 <Navbar />
-                <Container maxW="container.md" pt={16}>
-                    <Suspense fallback={<TotoroLoader />}>
-                        <LazyTotoro />
-                    </Suspense>
-                    {children}
-                    <Footer />
-                </Container>
-            </Box>
+                {children}
+                <Footer />
+            </main>
         </MotionConfig>
     )
 })

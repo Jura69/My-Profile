@@ -1,11 +1,12 @@
 import {
     Container, Box, Heading, useColorModeValue, List, UnorderedList,
-    ListItem, Link, SimpleGrid, Badge, Text, Flex, Wrap, WrapItem, Icon
+    ListItem, Link, Badge, Text, Flex, Wrap, WrapItem, Icon
 } from "@chakra-ui/react"
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import { Link as RouterLink } from 'react-router'
 import { motion } from 'framer-motion'
 import Layout from "../../components/layouts/article"
+import HeroDawn from "../../components/home/hero-dawn"
 import ScrollRevealSection from "../../components/scroll-reveal-section"
 import Timeline3DPath from "../../components/timeline-3d-path"
 import Paragraph from "../../components/paragraph"
@@ -18,16 +19,12 @@ import {
 } from 'react-icons/si'
 import { DiMsqlServer } from 'react-icons/di'
 import { HiOutlineBuildingOffice2, HiOutlineCommandLine, HiOutlineSignal, HiOutlineAcademicCap } from 'react-icons/hi2'
-import { WorkSection, WorkTimes } from "../../components/bio"
 import SEO from "../../components/seo"
 import { PersonSchema, WebsiteSchema, ProfilePageSchema } from "../../components/json-ld"
 import SkillCard from "../../components/skill-card"
 import SkillCategory from "../../components/skill-category"
 import TimelineCard from "../../components/timeline-card"
 import AnimatedButton from "../../components/animated-button"
-import {
-    GhibliLeaf, GhibliSparkle
-} from "../../components/icons/ghibli-icons"
 
 const MotionBox = motion(Box)
 
@@ -53,75 +50,8 @@ export default function Home() {
             <PersonSchema />
             <WebsiteSchema />
             <ProfilePageSchema />
+            <HeroDawn />
             <Container>
-                {/* Hero section for scroll tracking */}
-                <Box data-section="hero">
-                    <MotionBox
-                        borderRadius="lg"
-                        mb={6}
-                        mt={2}
-                        p={3}
-                        textAlign="center"
-                        bg={useColorModeValue('rgba(245,240,232,0.8)', 'rgba(26,30,46,0.6)')}
-                        css={{ backdropFilter: 'blur(10px)' }}
-                        border="1px solid"
-                        borderColor={useColorModeValue('#7eb77f40', '#98D8C830')}
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, ease: "easeOut" }}
-                    >
-                        🌿 Hello, I&apos;m a web developer based in Việt Nam 🍃
-                    </MotionBox>
-                    <Box display={{ md: 'flex' }}>
-                        <Box flexGrow={1}>
-                            <Heading as="h2" variant="page-title">
-                                Trương Tuấn Lộc
-                            </Heading>
-                            <p>Jura69 ( Developer / Audiophile / Designer )</p>
-                        </Box>
-                        <Box
-                            flexShrink={0}
-                            mt={{ base: 4, md: 0 }}
-                            ml={{ md: 6 }}
-                            textAlign="center"
-                        >
-                            <MotionBox
-                                borderColor={useColorModeValue('#7eb77f', '#98D8C8')}
-                                borderWidth={2}
-                                borderStyle="solid"
-                                w="100px"
-                                h="100px"
-                                display="inline-block"
-                                borderRadius="full"
-                                overflow="hidden"
-                                whileHover={{ scale: 1.1, rotate: 5 }}
-                                animate={{
-                                    boxShadow: [
-                                        '0 0 0 0 rgba(126, 183, 127, 0.4)',
-                                        '0 0 0 10px rgba(126, 183, 127, 0)',
-                                        '0 0 0 0 rgba(126, 183, 127, 0)'
-                                    ]
-                                }}
-                                transition={{
-                                    boxShadow: {
-                                        duration: 2,
-                                        repeat: Infinity,
-                                        ease: "easeInOut"
-                                    }
-                                }}
-                            >
-                                <img
-                                    src="/images/loc.jpeg"
-                                    alt="Profile image of Trương Tuấn Lộc"
-                                    width={100}
-                                    height={100}
-                                    style={{ objectFit: 'cover', width: '100px', height: '100px' }}
-                                />
-                            </MotionBox>
-                        </Box>
-                    </Box>
-                </Box>
-
                 <ScrollRevealSection sectionName="about" delay={0.1}>
                     <Heading as="h3" variant="section-title">
                         About Me 🌿

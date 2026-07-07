@@ -1,8 +1,8 @@
-import { useLayoutEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import Chakra from '../providers/chakra'
+import SceneProvider from '../components/scene/scene-provider'
 import MainLayout from '../components/layouts/main'
 
 // Pages — lazy-loaded in Phase 4; use direct imports for now
@@ -38,12 +38,7 @@ function AnimatedRoutes() {
     // framer-motion 11 AnimatePresence never completes exit here (routes get stuck
     // on the old page, dev AND prod) — page transitions come back with Motion in
     // the detail-templates phase. Entrance animations per page still run.
-    // useLayoutEffect: reset scroll before paint so the new page never flashes
-    // at the old scroll offset.
-    useLayoutEffect(() => {
-        window.scrollTo({ top: 0 })
-    }, [location.pathname])
-
+    // Scroll reset on navigation lives in SceneProvider (Lenis-aware).
     return (
         <Routes location={location} key={location.pathname}>
                 <Route path="/" element={<HomePage />} />
@@ -75,9 +70,11 @@ export default function App() {
     return (
         <BrowserRouter>
             <Chakra>
-                <MainLayout>
-                    <AnimatedRoutes />
-                </MainLayout>
+                <SceneProvider>
+                    <MainLayout>
+                        <AnimatedRoutes />
+                    </MainLayout>
+                </SceneProvider>
             </Chakra>
             <Analytics />
             <SpeedInsights />

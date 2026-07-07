@@ -1,44 +1,31 @@
 import { forwardRef } from 'react'
-import { Box, Spinner } from '@chakra-ui/react'
-import FloatingBox from './floating-box'
 
+/** Spinner shown while the Totoro GLB streams in. */
 export const TotoroSpinner = () => (
-    <Spinner
-        size="xl"
-        position="absolute"
-        left="50%"
-        top="50%"
-        ml="calc(0px - var(--spinner-size) / 2)"
-        mt="calc(0px - var(--spinner-size))"
+    <span
+        role="status"
+        aria-label="Loading 3D model"
+        className="absolute top-1/2 left-1/2 -mt-5 -ml-5 inline-block size-10 animate-spin rounded-full border-4 border-line border-t-accent"
     />
 )
 
+/**
+ * Mount target for the Three.js canvas. Fills whatever slot the parent
+ * provides (the hero composition owns the sizing).
+ */
 export const TotoroContainer = forwardRef<HTMLDivElement, { children?: React.ReactNode }>(
     ({ children }, ref) => (
-        <FloatingBox>
-            <Box
-                ref={ref}
-                className="Totoro"
-                m="auto"
-                mt={['-20px', '-60px', '-120px']}
-                mb={['-40px', '-140px', '-200px']}
-                w={[280, 480, 640]}
-                h={[280, 480, 640]}
-                position="relative"
-            >
-                {children}
-            </Box>
-        </FloatingBox>
+        <div ref={ref} className="relative h-full w-full">
+            {children}
+        </div>
     )
 )
 TotoroContainer.displayName = 'TotoroContainer'
 
-const Loader = () => {
-    return (
-        <TotoroContainer>
-            <TotoroSpinner />
-        </TotoroContainer>
-    )
-}
+const Loader = () => (
+    <TotoroContainer>
+        <TotoroSpinner />
+    </TotoroContainer>
+)
 
 export default Loader
