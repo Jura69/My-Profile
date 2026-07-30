@@ -4,16 +4,7 @@ import { BreadcrumbSchema } from '../../components/json-ld'
 import Reveal from '../../components/ui/reveal'
 import SectionHeading from '../../components/ui/section-heading'
 import ProjectCard from '../../components/works/project-card'
-import type { CardItem } from '../../components/works/works-data'
-
-const activities: CardItem[] = [
-    {
-        id: 'ytc',
-        title: 'YTC NTU',
-        thumbnail: '/images/activities/Ytc1.jpeg',
-        description: 'Social Media, Design and Event Management Club at Nha Trang University.'
-    }
-]
+import { activities } from '../../components/works/works-data'
 
 const Activities = () => (
     <Layout title="Activities">

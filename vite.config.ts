@@ -2,9 +2,10 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
+import sitemapPlugin from './scripts/vite-plugin-sitemap'
 
 export default defineConfig({
-    plugins: [react(), tsconfigPaths(), tailwindcss()],
+    plugins: [react(), tsconfigPaths(), tailwindcss(), sitemapPlugin()],
     resolve: {
         alias: {
             // Map @/* to src/* (redundant with tsconfigPaths but explicit)

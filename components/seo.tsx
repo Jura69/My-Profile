@@ -17,7 +17,7 @@ interface SEOProps {
 const SEO = ({
     title = 'Trương Tuấn Lộc - Full-stack Developer',
     description = 'Full-stack developer specializing in React, Node.js, and C#. Building scalable web applications and backend services. Currently at CREASIA.',
-    image = '/images/loc.jpeg',
+    image = '/images/og-image.jpg',
     type = 'website',
     keywords = 'Full-stack Developer, React Developer, Node.js Developer, C# Developer, Web Development, Portfolio, Trương Tuấn Lộc, Jura69',
     author = 'Trương Tuấn Lộc'

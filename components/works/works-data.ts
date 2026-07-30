@@ -117,3 +117,21 @@ export const featuredProjects = projects.filter(p => p.featured)
 export const otherPersonalProjects = projects.filter(p => p.category === 'personal' && !p.featured)
 /** Enterprise work built at Creasia — compact grid. */
 export const enterpriseProjects = projects.filter(p => p.category === 'enterprise')
+
+/** Activities listing — single source shared by the page and the build-time sitemap. */
+export const activities: CardItem[] = [
+    {
+        id: 'ytc',
+        title: 'YTC NTU',
+        thumbnail: '/images/activities/Ytc1.jpeg',
+        description: 'Social Media, Design and Event Management Club at Nha Trang University.'
+    }
+]
+
+/** Audiophile gear listing — single source shared by the page and the build-time sitemap. */
+export const audioGear: CardItem[] = [
+    { id: 'ea1000', title: 'Simgot EA1000 Fermat', thumbnail: '/images/audiophile/ea1000.webp' },
+    { id: 'moondropSSP', title: 'Moondrop SSP', thumbnail: '/images/audiophile/ssp.jpg' },
+    { id: 'onix', title: 'Onix Alpha XI1', thumbnail: '/images/audiophile/onix.jpg' },
+    { id: 'fiioka11', title: 'Fiio Ka11', thumbnail: '/images/audiophile/ka11.jpg' }
+]

@@ -4,14 +4,7 @@ import { BreadcrumbSchema } from '../../components/json-ld'
 import Reveal from '../../components/ui/reveal'
 import SectionHeading from '../../components/ui/section-heading'
 import ProjectCard from '../../components/works/project-card'
-import type { CardItem } from '../../components/works/works-data'
-
-const devices: CardItem[] = [
-    { id: 'ea1000', title: 'Simgot EA1000 Fermat', thumbnail: '/images/audiophile/ea1000.webp' },
-    { id: 'moondropSSP', title: 'Moondrop SSP', thumbnail: '/images/audiophile/ssp.jpg' },
-    { id: 'onix', title: 'Onix Alpha XI1', thumbnail: '/images/audiophile/onix.jpg' },
-    { id: 'fiioka11', title: 'Fiio Ka11', thumbnail: '/images/audiophile/ka11.jpg' }
-]
+import { audioGear } from '../../components/works/works-data'
 
 const Audiophile = () => (
     <Layout title="Audiophile">
@@ -34,7 +27,7 @@ const Audiophile = () => (
                 </Reveal>
 
                 <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                    {devices.map((device, i) => (
+                    {audioGear.map((device, i) => (
                         <Reveal key={device.id} delay={0.05 + i * 0.05} className="h-full">
                             <ProjectCard project={device} to={`/audiophile/${device.id}`} />
                         </Reveal>
