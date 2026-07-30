@@ -36,7 +36,7 @@ const Audios = () => (
             </Reveal>
 
             <Reveal delay={0.05}>
-                <DetailImage src="/images/audiophile/ea1000-2.jpg" alt="EA1000" />
+                <DetailImage src="/images/audiophile/ea1000-2.webp" alt="EA1000" />
             </Reveal>
 
             <Reveal delay={0.1}>

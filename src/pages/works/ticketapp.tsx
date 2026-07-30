@@ -16,7 +16,7 @@ const Work = () => (
             title="Flutter Ticket Booking App | Trương Tuấn Lộc"
             description="A modern mobile application for booking movie tickets, built with Flutter for cross-platform compatibility. Features seat selection, secure booking, and intuitive user interface."
             keywords="Flutter App, Ticket Booking App, Mobile App Development, Flutter Projects, Movie Ticket App, Cross-platform App"
-            image="/images/works/Ticket1.jpeg"
+            image="/images/works/Ticket1.webp"
         />
         <ProjectSchema
             project={{
@@ -24,7 +24,7 @@ const Work = () => (
                 description: 'A modern mobile application for booking movie tickets',
                 year: '2024',
                 github: 'https://github.com/Jura69/Flutter-TicketApp',
-                image: 'https://my-profile-jura69.vercel.app/images/works/Ticket1.jpeg',
+                image: 'https://my-profile-jura69.vercel.app/images/works/Ticket1.webp',
                 stack: 'Flutter, Node.js, Express, MongoDB'
             }}
         />

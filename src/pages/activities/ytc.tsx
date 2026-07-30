@@ -42,10 +42,10 @@ const Activities = () => (
                 <DetailImage src="/images/activities/Ytc2.webp" alt="YTC" />
             </Reveal>
             <Reveal delay={0.15}>
-                <DetailImage src="/images/activities/Ytc3.jpg" alt="YTC" />
+                <DetailImage src="/images/activities/Ytc3.webp" alt="YTC" />
             </Reveal>
             <Reveal delay={0.2}>
-                <DetailImage src="/images/activities/Ytc4.jpg" alt="YTC" />
+                <DetailImage src="/images/activities/Ytc4.webp" alt="YTC" />
             </Reveal>
         </Container>
     </>

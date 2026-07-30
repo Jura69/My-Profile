@@ -123,7 +123,7 @@ export const activities: CardItem[] = [
     {
         id: 'ytc',
         title: 'YTC NTU',
-        thumbnail: '/images/activities/Ytc1.jpeg',
+        thumbnail: '/images/activities/Ytc1.webp',
         description: 'Social Media, Design and Event Management Club at Nha Trang University.'
     }
 ]
@@ -131,7 +131,7 @@ export const activities: CardItem[] = [
 /** Audiophile gear listing — single source shared by the page and the build-time sitemap. */
 export const audioGear: CardItem[] = [
     { id: 'ea1000', title: 'Simgot EA1000 Fermat', thumbnail: '/images/audiophile/ea1000.webp' },
-    { id: 'moondrop-ssp', title: 'Moondrop SSP', thumbnail: '/images/audiophile/ssp.jpg' },
-    { id: 'onix', title: 'Onix Alpha XI1', thumbnail: '/images/audiophile/onix.jpg' },
-    { id: 'fiioka11', title: 'Fiio Ka11', thumbnail: '/images/audiophile/ka11.jpg' }
+    { id: 'moondrop-ssp', title: 'Moondrop SSP', thumbnail: '/images/audiophile/ssp.webp' },
+    { id: 'onix', title: 'Onix Alpha XI1', thumbnail: '/images/audiophile/onix.webp' },
+    { id: 'fiioka11', title: 'Fiio Ka11', thumbnail: '/images/audiophile/ka11.webp' }
 ]

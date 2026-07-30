@@ -16,7 +16,7 @@ const Work = () => (
             title="TensorFlow Sign Language Detection | Trương Tuấn Lộc"
             description="A machine learning application using TensorFlow and computer vision to detect and interpret sign language gestures in real-time. Making communication more accessible."
             keywords="TensorFlow, Machine Learning, Sign Language Detection, Computer Vision, AI Project, Python, Deep Learning"
-            image="/images/works/Tensorflow.jpg"
+            image="/images/works/Tensorflow.webp"
         />
         <ProjectSchema
             project={{
@@ -24,7 +24,7 @@ const Work = () => (
                 description: 'Machine learning app for real-time sign language detection',
                 year: '2024',
                 github: 'https://github.com/Jura69/TensorflowProject',
-                image: 'https://my-profile-jura69.vercel.app/images/works/Tensorflow.jpg',
+                image: 'https://my-profile-jura69.vercel.app/images/works/Tensorflow.webp',
                 stack: 'Python, TensorFlow, Machine Learning, Computer Vision'
             }}
         />
