@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
@@ -6,7 +5,7 @@ import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
 const Work = () => (
-    <Layout title="Castrol Fleet Management">
+    <>
         <SEO
             title="Castrol Fleet Management - Enterprise Platform | Trương Tuấn Lộc"
             description="Vehicle fleet tracking platform with real-time geolocation via Mapbox. Includes maintenance scheduling, route optimization, and logistics management."
@@ -55,7 +54,7 @@ const Work = () => (
                 <DetailImage src="/images/works/castrol-fleet-detail.webp" alt="Castrol Fleet Management" />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Work

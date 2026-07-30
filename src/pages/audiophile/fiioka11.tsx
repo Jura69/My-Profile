@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import {
@@ -11,7 +10,7 @@ import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
 const Audios = () => (
-    <Layout title="Fiio Ka11">
+    <>
         <SEO
             title="FiiO KA11 Review | Trương Tuấn Lộc"
             description="Review of the FiiO KA11 USB DAC/AMP dongle featuring CS43131 DAC chip, SGM8262 op-amp, and support for 384kHz/32bit and DSD256."
@@ -55,7 +54,7 @@ const Audios = () => (
                 />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Audios

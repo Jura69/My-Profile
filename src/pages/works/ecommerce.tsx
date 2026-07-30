@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import {
@@ -11,7 +10,7 @@ import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
 const Work = () => (
-    <Layout title="E-commerce Microservices Platform">
+    <>
         <SEO
             title="E-commerce Microservices Platform | Trương Tuấn Lộc"
             description="A full-stack e-commerce platform built with microservices architecture. Features include a Node.js/Express backend with MongoDB & Redis, a React storefront, and supporting services for email, notifications (RabbitMQ), and media uploads."
@@ -73,7 +72,7 @@ const Work = () => (
                 </DetailProse>
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Work

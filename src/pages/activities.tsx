@@ -1,4 +1,3 @@
-import Layout from '../../components/layouts/article'
 import SEO from '../../components/seo'
 import { BreadcrumbSchema } from '../../components/json-ld'
 import Reveal from '../../components/ui/reveal'
@@ -7,7 +6,7 @@ import ProjectCard from '../../components/works/project-card'
 import { activities } from '../../components/works/works-data'
 
 const Activities = () => (
-    <Layout title="Activities">
+    <>
         <SEO
             title="Activities & Clubs | Trương Tuấn Lộc Portfolio"
             description="Explore my extracurricular activities including YTC NTU - Social Media, Design and Event Management Club at Nha Trang University."
@@ -35,7 +34,7 @@ const Activities = () => (
                 </div>
             </div>
         </section>
-    </Layout>
+    </>
 )
 
 export default Activities

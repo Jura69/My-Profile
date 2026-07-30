@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import {
@@ -11,7 +10,7 @@ import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
 const Audios = () => (
-    <Layout title="Moondrop SSP">
+    <>
         <SEO
             title="Moondrop SSP Review | Trương Tuấn Lộc"
             description="Review of the Moondrop SSP IEM featuring beryllium-coated dome diaphragm, patented anti-blocking filter, and precise frequency response control."
@@ -21,7 +20,7 @@ const Audios = () => (
             items={[
                 { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
                 { name: 'Audiophile', url: 'https://my-profile-jura69.vercel.app/audiophile' },
-                { name: 'Moondrop SSP', url: 'https://my-profile-jura69.vercel.app/audiophile/moondropSSP' }
+                { name: 'Moondrop SSP', url: 'https://my-profile-jura69.vercel.app/audiophile/moondrop-ssp' }
             ]}
         />
         <Container>
@@ -57,7 +56,7 @@ const Audios = () => (
                 />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Audios

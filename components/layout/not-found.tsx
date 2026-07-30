@@ -1,6 +1,5 @@
 import { Link as RouterLink } from 'react-router'
 import { IoChevronForward } from 'react-icons/io5'
-import Layout from '../layouts/article'
 import SEO from '../seo'
 import { buttonClasses } from '../ui/button-styles'
 
@@ -10,7 +9,7 @@ import { buttonClasses } from '../ui/button-styles'
  */
 export default function NotFound() {
     return (
-        <Layout>
+        <>
         <SEO title="Page Not Found | Trương Tuấn Lộc" description="This page could not be found." />
         <section className="w-full px-4 py-24">
             <div className="mx-auto flex max-w-md flex-col items-center text-center">
@@ -51,6 +50,6 @@ export default function NotFound() {
                 </RouterLink>
             </div>
         </section>
-        </Layout>
+        </>
     )
 }

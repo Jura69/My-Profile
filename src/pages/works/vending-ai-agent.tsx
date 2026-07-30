@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
@@ -6,7 +5,7 @@ import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
 const Work = () => (
-    <Layout title="Vending Management">
+    <>
         <SEO
             title="Vending Management - Enterprise Platform | Trương Tuấn Lộc"
             description="Vending machine management platform with sales analytics, inventory tracking, and restocking workflows for enterprise vending operations."
@@ -55,7 +54,7 @@ const Work = () => (
                 <DetailImage src="/images/works/vending-ai-agent-detail.webp" alt="Vending Management" />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Work

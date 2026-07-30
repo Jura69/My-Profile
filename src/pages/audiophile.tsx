@@ -1,4 +1,3 @@
-import Layout from '../../components/layouts/article'
 import SEO from '../../components/seo'
 import { BreadcrumbSchema } from '../../components/json-ld'
 import Reveal from '../../components/ui/reveal'
@@ -7,7 +6,7 @@ import ProjectCard from '../../components/works/project-card'
 import { audioGear } from '../../components/works/works-data'
 
 const Audiophile = () => (
-    <Layout title="Audiophile">
+    <>
         <SEO
             title="Audio Gear & Reviews | Trương Tuấn Lộc Portfolio"
             description="Explore my audiophile collection featuring in-depth reviews of IEMs and DAC/AMPs including Simgot EA1000, Moondrop SSP, Shanling Onix XI1, and FiiO KA11."
@@ -35,7 +34,7 @@ const Audiophile = () => (
                 </div>
             </div>
         </section>
-    </Layout>
+    </>
 )
 
 export default Audiophile

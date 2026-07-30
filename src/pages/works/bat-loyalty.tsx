@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import {
@@ -11,7 +10,7 @@ import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
 const Work = () => (
-    <Layout title="BAT Loyalty Program">
+    <>
         <SEO
             title="BAT Loyalty Program - Enterprise Platform | Trương Tuấn Lộc"
             description="Customer loyalty rewards and points management system for British American Tobacco. Handles point accumulation, redemption workflows, and reward catalog management."
@@ -60,7 +59,7 @@ const Work = () => (
                 <DetailImage src="/images/works/bat-loyalty-detail.webp" alt="BAT Loyalty Program" />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Work

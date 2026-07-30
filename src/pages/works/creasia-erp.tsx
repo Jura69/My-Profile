@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
@@ -6,7 +5,7 @@ import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
 const Work = () => (
-    <Layout title="Creasia ERP">
+    <>
         <SEO
             title="Creasia ERP - Enterprise Resource Planning | Trương Tuấn Lộc"
             description="Comprehensive enterprise resource planning platform covering finance, HR, procurement, and supply chain modules. Features Gantt-based project planning and multi-language support."
@@ -55,7 +54,7 @@ const Work = () => (
                 <DetailImage src="/images/works/creasia-erp-detail.webp" alt="Creasia ERP" />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Work

@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import {
@@ -12,7 +11,7 @@ import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
 const Work = () => (
-    <Layout title="Flutter App">
+    <>
         <SEO
             title="Flutter Ticket Booking App | Trương Tuấn Lộc"
             description="A modern mobile application for booking movie tickets, built with Flutter for cross-platform compatibility. Features seat selection, secure booking, and intuitive user interface."
@@ -69,7 +68,7 @@ const Work = () => (
                 <DetailImage src="/images/works/Ticket3.webp" alt="Ticket" />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Work

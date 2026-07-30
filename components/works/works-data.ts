@@ -131,7 +131,7 @@ export const activities: CardItem[] = [
 /** Audiophile gear listing — single source shared by the page and the build-time sitemap. */
 export const audioGear: CardItem[] = [
     { id: 'ea1000', title: 'Simgot EA1000 Fermat', thumbnail: '/images/audiophile/ea1000.webp' },
-    { id: 'moondropSSP', title: 'Moondrop SSP', thumbnail: '/images/audiophile/ssp.jpg' },
+    { id: 'moondrop-ssp', title: 'Moondrop SSP', thumbnail: '/images/audiophile/ssp.jpg' },
     { id: 'onix', title: 'Onix Alpha XI1', thumbnail: '/images/audiophile/onix.jpg' },
     { id: 'fiioka11', title: 'Fiio Ka11', thumbnail: '/images/audiophile/ka11.jpg' }
 ]

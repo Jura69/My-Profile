@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import {
@@ -11,7 +10,7 @@ import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
 const Activities = () => (
-    <Layout title="YTC NTU">
+    <>
         <SEO
             title="YTC Nha Trang University | Trương Tuấn Lộc"
             description="My experience at YTC (Youth Technology Club) at Nha Trang University. Designed media publications, event promotional materials, and captured event photography."
@@ -49,7 +48,7 @@ const Activities = () => (
                 <DetailImage src="/images/activities/Ytc4.jpg" alt="YTC" />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Activities

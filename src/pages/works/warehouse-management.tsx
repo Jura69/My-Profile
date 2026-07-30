@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
@@ -6,7 +5,7 @@ import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
 const Work = () => (
-    <Layout title="Warehouse Management">
+    <>
         <SEO
             title="Warehouse Management - Enterprise Platform | Trương Tuấn Lộc"
             description="Inventory tracking system with barcode and QR scanning integration. Manages order workflows, stock movements, and warehouse operations for enterprise logistics."
@@ -55,7 +54,7 @@ const Work = () => (
                 <DetailImage src="/images/works/warehouse-management-detail.webp" alt="Warehouse Management" />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Work

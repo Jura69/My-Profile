@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
@@ -6,7 +5,7 @@ import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
 const Work = () => (
-    <Layout title="BAT PSA">
+    <>
         <SEO
             title="BAT PSA - Enterprise Analytics Dashboard | Trương Tuấn Lộc"
             description="Administrative dashboard for problem statement analysis at British American Tobacco. Features advanced reporting, data visualization, and export capabilities."
@@ -55,7 +54,7 @@ const Work = () => (
                 <DetailImage src="/images/works/bat-psa-detail.webp" alt="BAT PSA" />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Work

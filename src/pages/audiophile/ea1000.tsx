@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import {
@@ -12,7 +11,7 @@ import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
 const Audios = () => (
-    <Layout title="EA1000 fermat">
+    <>
         <SEO
             title="Simgot EA1000 Fermat Review | Trương Tuấn Lộc"
             description="In-depth review of the Simgot EA1000 Fermat IEM featuring SDPGD technology, DMDC dynamic driver, and hybrid 1DD+1PR architecture. Includes pairing recommendations and tips."
@@ -79,7 +78,7 @@ const Audios = () => (
                 </DetailProse>
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Audios

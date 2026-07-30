@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import {
@@ -11,7 +10,7 @@ import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
 const Audios = () => (
-    <Layout title="Shanling Onix Alpha XI1">
+    <>
         <SEO
             title="Shanling Onix XI1 Review | Trương Tuấn Lộc"
             description="Review of the Shanling ONIX XI1 DAC/AMP featuring dual Cirrus Logic CS43198, 500mW output, and OLED display. A compact powerhouse for audiophiles on the go."
@@ -55,7 +54,7 @@ const Audios = () => (
                 />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Audios

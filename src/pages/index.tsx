@@ -1,4 +1,3 @@
-import Layout from '../../components/layouts/article'
 import SEO from '../../components/seo'
 import { PersonSchema, WebsiteSchema, ProfilePageSchema } from '../../components/json-ld'
 import HeroDawn from '../../components/home/hero-dawn'
@@ -15,7 +14,7 @@ import NightContact from '../../components/home/night-contact'
  */
 export default function Home() {
     return (
-        <Layout>
+        <>
             <SEO
                 title="Trương Tuấn Lộc (Jura69) – Full-stack Developer"
                 description="Full-stack developer with 2+ years of experience in React, Node.js, and C#. Currently at CREASIA, building scalable web applications and backend services."
@@ -31,6 +30,6 @@ export default function Home() {
             <SkillsBento />
             <ExperienceDusk />
             <NightContact />
-        </Layout>
+        </>
     )
 }

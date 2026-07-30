@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import {
@@ -11,7 +10,7 @@ import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
 const Work = () => (
-    <Layout title="Asset Management">
+    <>
         <SEO
             title="Asset Management - Enterprise Platform | Trương Tuấn Lộc"
             description="Enterprise asset tracking and lifecycle management platform built at Creasia. Monitor, maintain, and optimize physical and digital assets from acquisition to disposal."
@@ -60,7 +59,7 @@ const Work = () => (
                 <DetailImage src="/images/works/asset-management-detail.webp" alt="Asset Management" />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Work

@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import {
@@ -12,7 +11,7 @@ import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
 const Work = () => (
-    <Layout title="Tensorflow SignLanguage Detect">
+    <>
         <SEO
             title="TensorFlow Sign Language Detection | Trương Tuấn Lộc"
             description="A machine learning application using TensorFlow and computer vision to detect and interpret sign language gestures in real-time. Making communication more accessible."
@@ -68,7 +67,7 @@ const Work = () => (
                 <DetailImage src="/images/works/Tensorflow1.webp" alt="Tensorflow" />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Work

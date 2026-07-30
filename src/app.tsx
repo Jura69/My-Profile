@@ -1,11 +1,11 @@
 import { lazy, Suspense } from 'react'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router'
 import { motion } from 'motion/react'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
 import ThemeProvider from '../providers/theme'
 import SceneProvider, { useScene } from '../components/scene/scene-provider'
-import MainLayout from '../components/layouts/main'
+import MainLayout from '../components/layout/main'
 import NotFound from '../components/layout/not-found'
 
 // HomePage stays eager — it is the LCP-critical landing route. Every other
@@ -28,7 +28,7 @@ const ActivitiesPage = lazy(() => import('./pages/activities'))
 const YtcPage = lazy(() => import('./pages/activities/ytc'))
 const AudiophilePage = lazy(() => import('./pages/audiophile'))
 const Ea1000Page = lazy(() => import('./pages/audiophile/ea1000'))
-const MoondropPage = lazy(() => import('./pages/audiophile/moondropSSP'))
+const MoondropPage = lazy(() => import('./pages/audiophile/moondrop-ssp'))
 const OnixPage = lazy(() => import('./pages/audiophile/onix'))
 const FiiokA11Page = lazy(() => import('./pages/audiophile/fiioka11'))
 
@@ -60,7 +60,9 @@ function AnimatedRoutes() {
             <Route path="/activities/ytc" element={<YtcPage />} />
             <Route path="/audiophile" element={<AudiophilePage />} />
             <Route path="/audiophile/ea1000" element={<Ea1000Page />} />
-            <Route path="/audiophile/moondropSSP" element={<MoondropPage />} />
+            <Route path="/audiophile/moondrop-ssp" element={<MoondropPage />} />
+            {/* Legacy camelCase URL lives on in old shares/indexes — permanent client redirect */}
+            <Route path="/audiophile/moondropSSP" element={<Navigate to="/audiophile/moondrop-ssp" replace />} />
             <Route path="/audiophile/onix" element={<OnixPage />} />
             <Route path="/audiophile/fiioka11" element={<FiiokA11Page />} />
             <Route path="*" element={<NotFound />} />

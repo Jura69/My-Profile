@@ -1,6 +1,5 @@
 import { Link as RouterLink } from 'react-router'
 import { IoChevronForward } from 'react-icons/io5'
-import Layout from '../../components/layouts/article'
 import SEO from '../../components/seo'
 import { BreadcrumbSchema } from '../../components/json-ld'
 import Reveal from '../../components/ui/reveal'
@@ -11,7 +10,7 @@ import ProjectCard from '../../components/works/project-card'
 import { featuredProjects, otherPersonalProjects, enterpriseProjects } from '../../components/works/works-data'
 
 const Works = () => (
-    <Layout title="Works">
+    <>
         <SEO
             title="My Projects & Works | Trương Tuấn Lộc Portfolio"
             description="Browse my portfolio of personal and enterprise web development projects. Includes Food Lover, Flutter Ticket App, TensorFlow Sign Language Detection, and 7 enterprise projects built at Creasia."
@@ -71,7 +70,7 @@ const Works = () => (
                 </Reveal>
             </div>
         </section>
-    </Layout>
+    </>
 )
 
 export default Works

@@ -1,4 +1,3 @@
-import Layout from '../../../components/layouts/article'
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
 import {
@@ -12,7 +11,7 @@ import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
 const Work = () => (
-    <Layout title="Nextjs Food App">
+    <>
         <SEO
             title="Food Lover - Next.js Food Ordering Platform | Trương Tuấn Lộc"
             description="A full-stack food ordering and recipe discovery platform built with Next.js, Node.js, and MongoDB. Features Stripe payment integration, AWS S3 storage, and comprehensive admin dashboard."
@@ -70,7 +69,7 @@ const Work = () => (
                 <DetailImage src="/images/works/Food4.webp" alt="Foodlover" />
             </Reveal>
         </Container>
-    </Layout>
+    </>
 )
 
 export default Work

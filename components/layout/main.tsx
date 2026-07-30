@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { MotionConfig } from 'motion/react'
-import Navbar from '../layout/navbar'
-import Footer from '../layout/footer'
+import Navbar from './navbar'
+import Footer from './footer'
 import AmbientScene from '../scene/ambient-scene'
 
 interface MainProps {
