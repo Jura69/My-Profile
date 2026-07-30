@@ -1,6 +1,6 @@
 import type { IconType } from 'react-icons'
 import {
-    SiReact, SiNextdotjs, SiFlutter, SiChakraui, SiHtml5, SiJavascript,
+    SiReact, SiNextdotjs, SiFlutter, SiTailwindcss, SiThreedotjs, SiHtml5, SiJavascript,
     SiNodedotjs, SiSharp, SiExpress, SiMongodb, SiDotnet,
     SiTensorflow, SiPytorch, SiOpenai, SiPython,
     SiGit, SiDocker, SiAdobephotoshop, SiAdobepremierepro, SiTypescript, SiRedis,
@@ -46,7 +46,8 @@ export const skillGroups: SkillGroup[] = [
             { icon: SiNextdotjs, label: 'Next.js', color: '#808080' },
             { icon: SiFlutter, label: 'Flutter', color: '#02569B' },
             { icon: SiTypescript, label: 'TypeScript', color: '#3178C6' },
-            { icon: SiChakraui, label: 'Chakra UI', color: '#319795' },
+            { icon: SiTailwindcss, label: 'Tailwind CSS', color: '#38B2AC' },
+            { icon: SiThreedotjs, label: 'Three.js', color: '#808080' },
             { icon: SiJavascript, label: 'JavaScript', color: '#F7DF1E' },
             { icon: SiHtml5, label: 'HTML/CSS', color: '#E34F26' }
         ]

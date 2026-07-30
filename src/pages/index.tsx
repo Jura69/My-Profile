@@ -17,8 +17,8 @@ export default function Home() {
     return (
         <Layout>
             <SEO
-                title="Trương Tuấn Lộc - Full-stack Developer | React, Node.js, C# Expert"
-                description="Full-stack developer with expertise in React, Node.js, and C#. Currently working at CREASIA. Building scalable web applications, backend services, and mobile apps with Flutter. View my portfolio and projects."
+                title="Trương Tuấn Lộc (Jura69) – Full-stack Developer"
+                description="Full-stack developer with 2+ years of experience in React, Node.js, and C#. Currently at CREASIA, building scalable web applications and backend services."
                 keywords="Trương Tuấn Lộc, Jura69, Full-stack Developer, React Developer, Node.js Developer, C# Developer, Web Development, Backend Developer, Frontend Developer, Portfolio, CREASIA, Nha Trang University, Vietnam Developer"
                 type="profile"
             />

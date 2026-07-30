@@ -6,7 +6,7 @@ import { buttonClasses } from '../ui/button-styles'
 
 /** Small headline stat — factual, drawn from the bio + works listing. */
 const stats = [
-    { value: '1+ yr', label: 'Experience' },
+    { value: '2+ yrs', label: 'Experience' },
     { value: '10+', label: 'Projects' },
     { value: 'AI/ML', label: 'Focus' }
 ]
@@ -27,10 +27,10 @@ export default function AboutMorning() {
                     <p className="max-w-[65ch] font-rounded text-base leading-relaxed text-ink-muted">
                         Full-stack developer with expertise in building scalable web applications and
                         backend services. Currently working as a React and C# developer at CREASIA, with
-                        over 1+ year of experience in Node.js backend development. Passionate about AI/ML
-                        technologies and creating efficient, user-friendly solutions. Skilled in both
-                        frontend and backend development, with hands-on experience in Machine Learning,
-                        TensorFlow, and prompt engineering.
+                        over two years of experience across Node.js backend and React/C# full-stack
+                        development. Passionate about AI/ML technologies and creating efficient,
+                        user-friendly solutions. Skilled in both frontend and backend development, with
+                        hands-on experience in Machine Learning, TensorFlow, and prompt engineering.
                     </p>
                 </Reveal>
 
