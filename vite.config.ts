@@ -6,11 +6,6 @@ import sitemapPlugin from './scripts/vite-plugin-sitemap'
 
 export default defineConfig({
     plugins: [react(), tsconfigPaths(), tailwindcss(), sitemapPlugin()],
-    resolve: {
-        alias: {
-            // Map @/* to src/* (redundant with tsconfigPaths but explicit)
-        }
-    },
     build: {
         outDir: 'dist',
         sourcemap: false,
