@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "lint": "eslint src components lib providers --ext .ts,.tsx,.js,.jsx",
     "prettier": "prettier --write .",
-    "analyze": "vite-bundle-visualizer"
+    "analyze": "npx vite-bundle-visualizer"
   },
   "keywords": [],
   "author": "Truong Tuan Loc",

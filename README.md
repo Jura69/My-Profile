@@ -17,10 +17,10 @@
 
 ### Design & UX
 - **Responsive Design** - Mobile-first, optimized for all devices
-- **Dark/Light Mode** - Smooth theme switching with SSR persistence
-- **Smooth Animations** - Framer Motion page transitions and scroll effects
+- **Dark/Light Mode** - New visitors follow the OS `prefers-color-scheme`; the toggle choice persists in localStorage
+- **Smooth Animations** - Motion page transitions and GSAP scroll effects
 - **3D Graphics** - Interactive Totoro character using Three.js (96.7% compressed)
-- **Ghibli-Inspired Theme** - Warm, professional aesthetic
+- **Ghibli-Inspired Theme** - Warm, professional aesthetic with a day→night scroll narrative
 
 ### Content
 - **About & Bio** - Professional introduction
@@ -32,11 +32,10 @@
 - **Contact & Social** - GitHub, LinkedIn, Facebook, Instagram, Email
 
 ### Performance & SEO
-- **Full SEO Optimization** - Meta tags, Open Graph, Twitter Card, JSON-LD
-- **97+ Lighthouse Score** - Performance, Accessibility, Best Practices, SEO
-- **Core Web Vitals Optimized** - AVIF/WebP images, code splitting, lazy loading
+- **Full SEO Optimization** - Static OG/description fallback for no-JS crawlers + per-page meta (React 19 native), Twitter Card, JSON-LD
+- **Core Web Vitals Optimized** - WebP images, route-level code splitting, lazy loading
 - **Analytics** - Vercel Analytics + Speed Insights
-- **Sitemap & Robots** - Properly configured for search engines
+- **Sitemap & Robots** - `sitemap.xml` generated at build time from the same data the pages render (no drift)
 
 ---
 
@@ -67,7 +66,7 @@
 
 ### Prerequisites
 - Node.js 18+
-- npm or yarn
+- Yarn 1 (classic) — `yarn.lock` is the canonical lockfile
 
 ### Installation
 
@@ -77,10 +76,10 @@ git clone https://github.com/Jura69/My-Profile.git
 cd My-Profile
 
 # Install dependencies
-npm install
+yarn install
 
 # Run dev server
-npm run dev
+yarn dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173)
@@ -88,19 +87,19 @@ Open [http://localhost:5173](http://localhost:5173)
 ### Build for Production
 
 ```bash
-npm run build
-npm run preview
+yarn build
+yarn preview
 ```
 
 ### Available Scripts
 
 ```bash
-npm run dev       # Start Vite dev server at http://localhost:5173
-npm run build     # TypeScript check + Vite production build
-npm run preview   # Preview production build locally
-npm run lint      # ESLint check
-npm run prettier  # Format code with Prettier
-npm run analyze   # Bundle size visualization
+yarn dev       # Start Vite dev server at http://localhost:5173
+yarn build     # TypeScript check + Vite production build (also emits dist/sitemap.xml)
+yarn preview   # Preview production build locally
+yarn lint      # ESLint check (0 errors / 0 warnings expected)
+yarn prettier  # Format code with Prettier
+yarn analyze   # Bundle size visualization (fetches vite-bundle-visualizer via npx)
 ```
 
 ---
@@ -111,47 +110,41 @@ npm run analyze   # Bundle size visualization
 /
 ├── src/
 │   ├── main.tsx                 # Entry point (Vite + React 19)
-│   ├── app.tsx                  # App root with React Router (BrowserRouter)
-│   ├── pages/                   # Route components
-│   │   ├── home.tsx             # Homepage
+│   ├── app.tsx                  # App root: BrowserRouter, lazy routes, Suspense
+│   ├── pages/                   # Route components (all lazy except index)
+│   │   ├── index.tsx            # Homepage
 │   │   ├── works.tsx            # Projects listing
 │   │   ├── works/               # Project detail pages
-│   │   ├── activities.tsx       # Activities listing
+│   │   ├── activities.tsx       # Activities listing (off-nav, linked from works)
 │   │   ├── activities/          # Activity details
 │   │   ├── audiophile.tsx       # Audio equipment listing
 │   │   └── audiophile/          # Device reviews
-│   ├── components/              # Reusable UI components
-│   │   ├── ui/                  # Primitive components (button, badge, card, etc.)
-│   │   ├── layout/              # Layout wrappers (main, detail-page)
-│   │   ├── home/                # Homepage sections (scenes, cards, etc.)
-│   │   ├── works/               # Works section components
-│   │   ├── scene/               # 3D scene components (GSAP, Lenis)
-│   │   ├── navbar.tsx           # Navigation bar
-│   │   ├── footer.tsx           # Footer
-│   │   ├── seo.tsx              # SEO meta tags
-│   │   ├── json-ld.tsx          # JSON-LD structured data
-│   │   └── theme-toggle.tsx     # Dark/light mode toggle
-│   ├── lib/                     # Utilities
-│   │   ├── cn.ts                # clsx + tailwind-merge
-│   │   ├── model.ts             # GLTF/Draco loader
-│   │   └── constants.ts         # App constants
-│   ├── providers/               # React Context providers
-│   │   └── theme.tsx            # Theme context (dark/light)
-│   ├── styles/                  # Global styles
-│   │   └── global.css           # Tailwind + design tokens + GSAP animations
-│   ├── data/                    # Data files
-│   │   └── works-data.ts        # Projects, activities, audio data
-│   └── types/                   # TypeScript types
-├── public/                      # Static assets (~2.5MB)
-│   ├── images/                  # Optimized project images
-│   ├── totoro.glb               # 3D model (compressed)
-│   ├── sitemap.xml
+│   ├── styles/
+│   │   └── global.css           # Tailwind 4 theme tokens + scene keyframes
+│   └── three-modules.d.ts       # Ambient types for three example modules
+├── components/                  # Reusable UI (repo root, not src/)
+│   ├── ui/                      # Primitives (buttons, cards, reveal, headings)
+│   ├── layout/                  # App shell (main, navbar, footer, theme-toggle, not-found)
+│   ├── home/                    # Homepage scenes + home-data.ts (skills, experience, socials)
+│   ├── works/                   # Cards + works-data.ts (projects, activities, audio gear)
+│   ├── scene/                   # Ambient scene system (GSAP, Lenis, particles)
+│   ├── icons/                   # Inline SVG icons
+│   ├── seo.tsx                  # Per-page meta (React 19 hoists to <head>)
+│   ├── json-ld.tsx              # JSON-LD structured data
+│   └── totoro.tsx               # Three.js Totoro viewer
+├── lib/                         # Utilities (cn.ts, model.ts GLTF/Draco loader)
+├── providers/                   # Theme provider + use-theme hook
+├── scripts/
+│   └── vite-plugin-sitemap.ts   # Emits dist/sitemap.xml from works-data at build
+├── public/                      # Static assets
+│   ├── images/                  # WebP project images (+ og-image.jpg)
+│   ├── apple-touch-icon.png
+│   ├── totoro-compressed.glb    # Draco-compressed 3D model
 │   └── robots.txt
-├── vite.config.ts              # Vite build config
-├── tsconfig.json               # TypeScript config
-├── tailwind.config.ts          # Tailwind CSS config
-├── index.html                  # HTML entry point
-└── docs/                       # Project documentation
+├── vite.config.ts               # Vite config (plugins, vendor chunking)
+├── tsconfig.json                # TypeScript project references
+├── index.html                   # HTML entry: static OG meta + pre-paint theme script
+└── docs/                        # Project documentation
 ```
 
 ---
@@ -159,24 +152,24 @@ npm run analyze   # Bundle size visualization
 ## Customization
 
 ### Update Personal Info
-1. **Profile Photo** - Replace `/public/images/loc.jpeg`
-2. **Projects** - Edit `src/data/works-data.ts`
-3. **Activities** - Add/edit in `src/data/works-data.ts`
-4. **Audio Reviews** - Add/edit in `src/data/works-data.ts`
-5. **Social Links** - Update in `src/pages/home.tsx`
+1. **Profile Photo** - Replace `public/images/loc.webp` (also referenced by `components/json-ld.tsx`)
+2. **Projects / Activities / Audio Gear** - Edit `components/works/works-data.ts` (listing pages and the build-time sitemap both derive from it)
+3. **Skills, Experience, Social Links** - Edit `components/home/home-data.ts`
+4. **Meta defaults & site URL** - `components/seo.tsx`, the static fallback meta in `index.html`, and `ORIGIN` in `scripts/vite-plugin-sitemap.ts`
 
 ### Change Theme Colors
-Edit `src/styles/global.css` (Tailwind 4 theme variables):
+Edit `src/styles/global.css` (Tailwind 4 theme tokens):
 ```css
 @theme {
-  --color-primary: #88ccca;      /* Accent color */
-  --color-primary-dark: #7eb77f;  /* Dark variant */
-  /* Update semantic color vars for light/dark modes */
+  --color-grass-teal: #88ccca;          /* Accent */
+  --color-ghibli-forest-green: #7eb77f; /* Ghibli palette tokens */
 }
+:root { --surface: #f5f0e8; /* … light mode semantic vars */ }
+.dark { --surface: #1a1e2e; /* … dark mode overrides */ }
 ```
 
 ### Replace 3D Model
-Replace `public/totoro.glb` with another GLTF model, update `src/components/scene/totoro.tsx`
+Replace `public/totoro-compressed.glb` with another Draco-compressed GLTF model, update `components/totoro.tsx`
 
 ---
 
@@ -194,26 +187,21 @@ Replace `public/totoro.glb` with another GLTF model, update `src/components/scen
 1. Vercel Dashboard → Project Settings → Domains
 2. Add custom domain
 3. Update DNS records
-4. Update `siteUrl` in `components/seo.js`
+4. Update the site URL in `components/seo.tsx`, `index.html` static meta, and `ORIGIN` in `scripts/vite-plugin-sitemap.ts`
 
 ---
 
 ## Performance
 
-- **Lighthouse Score**: 97+ (Performance, Accessibility, Best Practices, SEO)
-- **Core Web Vitals**: Optimized (LCP, FID, CLS)
-- **First Contentful Paint**: < 1.5s
-- **Time to Interactive**: < 3.5s
-
 **Optimizations:**
-- Vite's fast ESM-based dev server & lightning-fast HMR
-- SWC transpilation (Rust-based, much faster than Babel)
-- Code splitting: React, GSAP, Three.js, Motion isolated chunks
+- Vite's fast ESM-based dev server & lightning-fast HMR; SWC transpilation
+- Route-level code splitting: every page lazy-loads its own ~2KB chunk (homepage stays eager for LCP); app chunk is ~52KB
+- Vendor chunking: React, GSAP, Three.js, Motion, react-icons isolated — app edits don't invalidate cached vendor bytes
 - Tailwind CSS 4 JIT compiler (minimal CSS output)
 - GSAP ScrollTrigger + Lenis confined to scene components (zero re-renders on scroll)
 - Draco compression (3D model: 44MB → 1.5MB, 96.7% reduction)
-- Image lazy loading and responsive sizing
-- 1-year cache headers on static assets
+- WebP images (max 1200px), lazy loading and responsive sizing
+- Vercel immutable caching for hashed build assets
 
 ---
 
@@ -224,8 +212,6 @@ Comprehensive docs in `/docs`:
 - [Codebase Summary](docs/codebase-summary.md)
 - [Code Standards](docs/code-standards.md)
 - [System Architecture](docs/system-architecture.md)
-- [Deployment Guide](docs/deployment-guide.md)
-- [Design Guidelines](docs/design-guidelines.md)
 - [Project Roadmap](docs/project-roadmap.md)
 
 ---
