@@ -3,9 +3,10 @@ import {
     SiReact, SiNextdotjs, SiFlutter, SiChakraui, SiHtml5, SiJavascript,
     SiNodedotjs, SiSharp, SiExpress, SiMongodb, SiDotnet,
     SiTensorflow, SiPytorch, SiOpenai, SiPython,
-    SiGit, SiDocker, SiAdobephotoshop, SiAdobepremierepro, SiTypescript, SiRedis
+    SiGit, SiDocker, SiAdobephotoshop, SiAdobepremierepro, SiTypescript, SiRedis,
+    SiAmazonwebservices
 } from 'react-icons/si'
-import { DiMsqlServer } from 'react-icons/di'
+import { DiMsqlServer, DiDatabase } from 'react-icons/di'
 import {
     HiOutlineBuildingOffice2, HiOutlineCommandLine, HiOutlineSignal, HiOutlineAcademicCap
 } from 'react-icons/hi2'
@@ -191,3 +192,17 @@ export const socialLinks: SocialLink[] = [
     { label: '@_midori_neko_', href: 'https://www.instagram.com/_midori_neko_/', icon: 'instagram' },
     { label: 'Loctruongtuan@gmail.com', href: 'mailto:Loctruongtuan@gmail.com', icon: 'google' }
 ]
+
+export const techIconMap: Record<string, { icon: IconType; color: string }> = {
+    'React': { icon: SiReact, color: '#61DAFB' },
+    'C#': { icon: SiSharp, color: '#512BD4' },
+    '.NET': { icon: SiDotnet, color: '#512BD4' },
+    'SQL Server': { icon: DiMsqlServer, color: '#CC2927' },
+    'Node.js': { icon: SiNodedotjs, color: '#339933' },
+    'Express': { icon: SiExpress, color: '#808080' },
+    'MongoDB': { icon: SiMongodb, color: '#47A248' },
+    'Redis': { icon: SiRedis, color: '#DC382D' },
+    'Docker': { icon: SiDocker, color: '#2496ED' },
+    'AWS': { icon: SiAmazonwebservices, color: '#FF9900' },
+    'SQL': { icon: DiDatabase, color: '#00758F' }
+}

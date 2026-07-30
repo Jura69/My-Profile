@@ -4,7 +4,7 @@ import SectionHeading from '../ui/section-heading'
 import Badge from '../ui/badge'
 import { buttonClasses } from '../ui/button-styles'
 import { usePinnedIntro } from '../scene/use-pinned-intro'
-import { experiences, type ExperienceEntry } from './home-data'
+import { experiences, type ExperienceEntry, techIconMap } from './home-data'
 
 function ExperienceCard({ entry }: { entry: ExperienceEntry }) {
     const Icon = entry.icon
@@ -33,11 +33,21 @@ function ExperienceCard({ entry }: { entry: ExperienceEntry }) {
             </ul>
             {entry.badges.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-2">
-                    {entry.badges.map(badge => (
-                        <Badge key={badge} tone={entry.tone}>
-                            {badge}
-                        </Badge>
-                    ))}
+                    {entry.badges.map(badge => {
+                        const tech = techIconMap[badge]
+                        return (
+                            <Badge key={badge} tone={entry.tone} className="gap-1.5 px-2.5 py-1">
+                                {tech && (
+                                    <tech.icon
+                                        className="shrink-0 text-[10px]"
+                                        style={{ color: tech.color }}
+                                        aria-hidden="true"
+                                    />
+                                )}
+                                {badge}
+                            </Badge>
+                        )
+                    })}
                 </div>
             )}
         </div>
@@ -56,7 +66,7 @@ export default function ExperienceDusk() {
         <section data-section="work" className="w-full px-4 py-16 md:py-20">
             <div className="mx-auto max-w-[1100px]">
                 <div ref={pinRef}>
-                    <SectionHeading as="h2">Work Experience 🌳</SectionHeading>
+                    <SectionHeading as="h2">My Journey 🌳</SectionHeading>
                 </div>
 
                 <div className="relative mt-8">

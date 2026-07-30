@@ -26,6 +26,13 @@ const riseIn = (delay: number) => ({
 export default function HeroDawn() {
     return (
         <section data-section="hero" className="relative flex min-h-[85svh] flex-col items-center justify-center px-4 pb-24 text-center">
+            {/* Totoro — centered block, part of vertical flow */}
+            <div className="relative mb-6 h-[220px] w-[220px] md:h-[320px] md:w-[320px] lg:h-[360px] lg:w-[360px]">
+                <Suspense fallback={<TotoroLoader />}>
+                    <LazyTotoro />
+                </Suspense>
+            </div>
+
             <motion.p
                 {...riseIn(0.05)}
                 className="mb-6 rounded-full border border-line bg-surface/60 px-4 py-2 font-rounded text-sm text-ink backdrop-blur-md"
@@ -46,7 +53,7 @@ export default function HeroDawn() {
                 Jura69 · Developer / Audiophile / Designer
             </motion.p>
 
-            <motion.div {...riseIn(0.7)} className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <motion.div {...riseIn(0.7)} className="mt-10 flex flex-wrap items-center justify-center gap-3">
                 <MotionRouterLink
                     to="/works"
                     className={buttonClasses('solid', 'lg')}
@@ -66,19 +73,18 @@ export default function HeroDawn() {
                 </motion.a>
             </motion.div>
 
-            {/* Totoro — composed into the scene, bottom-right between the hills */}
-            <div className="absolute right-[2vw] bottom-[2vh] h-[220px] w-[220px] md:h-[360px] md:w-[360px] lg:h-[430px] lg:w-[430px]">
-                <Suspense fallback={<TotoroLoader />}>
-                    <LazyTotoro />
-                </Suspense>
-            </div>
-
-            <div
+            <motion.div
                 aria-hidden="true"
-                className="absolute bottom-6 left-1/2 -translate-x-1/2 text-2xl text-ink-muted motion-safe:animate-[scene-scroll-hint_2s_ease-in-out_infinite]"
+                className="absolute bottom-6 left-1/2 -translate-x-1/2 text-2xl text-ink-muted"
+                animate={{ y: [0, 8, 0] }}
+                transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: 'easeInOut'
+                }}
             >
                 <IoChevronDown />
-            </div>
+            </motion.div>
         </section>
     )
 }
