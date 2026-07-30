@@ -17,10 +17,14 @@ export default defineConfig({
                 // entries and left ~300KB of them inside the app chunk.
                 manualChunks(id) {
                     if (!id.includes('node_modules')) return
-                    if (id.includes('three')) return 'vendor-three'
-                    if (id.includes('gsap') || id.includes('lenis')) return 'vendor-gsap'
-                    if (id.includes('motion')) return 'motion'
-                    if (id.includes('react-icons')) return 'vendor-icons'
+                    // Match the segment AFTER node_modules/ so directory names in
+                    // the checkout path can never hijack a vendor bucket.
+                    const pkg = id.split('node_modules/').pop() ?? ''
+                    if (pkg.startsWith('three/')) return 'vendor-three'
+                    if (pkg.startsWith('gsap/') || pkg.startsWith('@gsap/') || pkg.startsWith('lenis/')) return 'vendor-gsap'
+                    // motion + its framer-motion/motion-dom/motion-utils internals
+                    if (pkg.startsWith('motion') || pkg.startsWith('framer-motion/')) return 'motion'
+                    if (pkg.startsWith('react-icons/')) return 'vendor-icons'
                     // Everything else (react, react-dom, router, small glue libs)
                     // shares ONE chunk: glue libs read React at module-eval time,
                     // so a separate misc chunk creates a circular-init TypeError.

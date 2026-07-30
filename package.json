@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "lint": "eslint src components lib providers --ext .ts,.tsx,.js,.jsx",
+    "lint": "eslint src components lib providers scripts vite.config.ts --ext .ts,.tsx,.js,.jsx",
     "prettier": "prettier --write .",
     "analyze": "npx vite-bundle-visualizer"
   },

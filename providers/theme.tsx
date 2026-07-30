@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { ThemeContext, type Mode } from './use-theme'
 
 /** localStorage key. Old Chakra key is read once for migration. */
@@ -9,10 +9,15 @@ const LEGACY_KEY = 'chakra-ui-color-mode'
  *  or first paint and hydrated state disagree (flash of the wrong theme). */
 function readInitialMode(): Mode {
     if (typeof window === 'undefined') return 'dark'
-    const stored = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(LEGACY_KEY)
+    const stored = localStorage.getItem(STORAGE_KEY) || localStorage.getItem(LEGACY_KEY)
     if (stored === 'light') return 'light'
     if (stored === 'dark') return 'dark'
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
+
+function hasStoredPreference() {
+    if (typeof window === 'undefined') return false
+    return localStorage.getItem(STORAGE_KEY) !== null || localStorage.getItem(LEGACY_KEY) !== null
 }
 
 /**
@@ -23,13 +28,20 @@ function readInitialMode(): Mode {
  */
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
     const [mode, setMode] = useState<Mode>(readInitialMode)
+    // Persist only explicit choices (stored key or a toggle click). Writing the
+    // OS-derived value on mount would freeze a first visit's scheme forever and
+    // stop new visitors from following prefers-color-scheme on later visits.
+    const explicitChoice = useRef(hasStoredPreference())
 
     useEffect(() => {
         document.documentElement.classList.toggle('dark', mode === 'dark')
-        localStorage.setItem(STORAGE_KEY, mode)
+        if (explicitChoice.current) localStorage.setItem(STORAGE_KEY, mode)
     }, [mode])
 
-    const toggle = useCallback(() => setMode(m => (m === 'dark' ? 'light' : 'dark')), [])
+    const toggle = useCallback(() => {
+        explicitChoice.current = true
+        setMode(m => (m === 'dark' ? 'light' : 'dark'))
+    }, [])
 
     return <ThemeContext.Provider value={{ mode, toggle }}>{children}</ThemeContext.Provider>
 }

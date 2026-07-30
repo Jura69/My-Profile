@@ -8,6 +8,7 @@ import SceneProvider from '../components/scene/scene-provider'
 import { useScene } from '../components/scene/use-scene'
 import MainLayout from '../components/layout/main'
 import NotFound from '../components/layout/not-found'
+import RouteErrorBoundary from '../components/layout/route-error-boundary'
 
 // HomePage stays eager — it is the LCP-critical landing route. Every other
 // page is its own chunk; router navigations run in startTransition, so the
@@ -103,7 +104,9 @@ export default function App() {
             <ThemeProvider>
                 <SceneProvider>
                     <MainLayout>
-                        <AnimatedRoutes />
+                        <RouteErrorBoundary>
+                            <AnimatedRoutes />
+                        </RouteErrorBoundary>
                     </MainLayout>
                 </SceneProvider>
             </ThemeProvider>

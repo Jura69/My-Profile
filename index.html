@@ -51,7 +51,9 @@
     <title>Trương Tuấn Lộc (Jura69) – Full-stack Developer</title>
 
     <!-- Static SEO/OG fallback for crawlers that never run JS (FB/Zalo/LinkedIn).
-         React 19 SEO component overrides these per-page for JS-capable bots.
+         The per-page <SEO> component hoists its tags AHEAD of these (verified:
+         document.title follows the page), so JS-capable bots read the per-page
+         values first; these static copies remain in the DOM as the no-JS answer.
          Keep title/description in sync with the homepage SEO props in src/pages/index.tsx. -->
     <meta name="description" content="Full-stack developer with 2+ years of experience in React, Node.js, and C#. Currently at CREASIA, building scalable web applications and backend services." />
     <meta property="og:type" content="website" />
