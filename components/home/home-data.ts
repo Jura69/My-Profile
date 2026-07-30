@@ -119,7 +119,7 @@ export const experiences: ExperienceEntry[] = [
     },
     {
         icon: HiOutlineCommandLine,
-        company: 'Infordation Vietnam',
+        company: 'Infodation Vietnam',
         role: 'Junior Backend Developer',
         period: 'Dec 2023 - Feb 2025 · 1 year 3 months',
         color: '#6db86b',
