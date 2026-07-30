@@ -36,30 +36,34 @@
     </noscript>
 
     <!-- Color mode script (prevents flash): applies the `.dark` class pre-paint.
-         Reads the `theme` key (migrates from the legacy Chakra key). Runs in
+         Reads the `theme` key (migrates from the legacy Chakra key); visitors
+         without a stored choice follow the OS prefers-color-scheme. MUST stay
+         logic-identical with readInitialMode() in providers/theme.tsx. Runs in
          <head>, so document.body does not exist yet — only touch documentElement. -->
     <script>
       (function () {
         var stored = localStorage.getItem('theme') || localStorage.getItem('chakra-ui-color-mode');
-        var color = stored === 'light' ? 'light' : 'dark';
+        var color = stored === 'light' ? 'light' : stored === 'dark' ? 'dark'
+          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.classList.toggle('dark', color === 'dark');
       })();
     </script>
 
-    <title>Trương Tuấn Lộc - Full-stack Developer</title>
+    <title>Trương Tuấn Lộc (Jura69) – Full-stack Developer</title>
 
     <!-- Static SEO/OG fallback for crawlers that never run JS (FB/Zalo/LinkedIn).
-         React 19 SEO component overrides these per-page for JS-capable bots. -->
-    <meta name="description" content="Full-stack developer specializing in React, Node.js, and C#. Building scalable web applications and backend services. Currently at CREASIA." />
+         React 19 SEO component overrides these per-page for JS-capable bots.
+         Keep title/description in sync with the homepage SEO props in src/pages/index.tsx. -->
+    <meta name="description" content="Full-stack developer with 2+ years of experience in React, Node.js, and C#. Currently at CREASIA, building scalable web applications and backend services." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://my-profile-jura69.vercel.app/" />
-    <meta property="og:title" content="Trương Tuấn Lộc - Full-stack Developer" />
-    <meta property="og:description" content="Full-stack developer specializing in React, Node.js, and C#. Building scalable web applications and backend services. Currently at CREASIA." />
+    <meta property="og:title" content="Trương Tuấn Lộc (Jura69) – Full-stack Developer" />
+    <meta property="og:description" content="Full-stack developer with 2+ years of experience in React, Node.js, and C#. Currently at CREASIA, building scalable web applications and backend services." />
     <meta property="og:image" content="https://my-profile-jura69.vercel.app/images/og-image.jpg" />
     <meta property="og:site_name" content="Trương Tuấn Lộc Portfolio" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Trương Tuấn Lộc - Full-stack Developer" />
-    <meta name="twitter:description" content="Full-stack developer specializing in React, Node.js, and C#. Building scalable web applications and backend services. Currently at CREASIA." />
+    <meta name="twitter:title" content="Trương Tuấn Lộc (Jura69) – Full-stack Developer" />
+    <meta name="twitter:description" content="Full-stack developer with 2+ years of experience in React, Node.js, and C#. Currently at CREASIA, building scalable web applications and backend services." />
     <meta name="twitter:image" content="https://my-profile-jura69.vercel.app/images/og-image.jpg" />
   </head>
   <body>

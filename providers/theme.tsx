@@ -18,10 +18,14 @@ export function useTheme() {
 const STORAGE_KEY = 'theme'
 const LEGACY_KEY = 'chakra-ui-color-mode'
 
+/** MUST stay logic-identical with the pre-paint inline script in index.html,
+ *  or first paint and hydrated state disagree (flash of the wrong theme). */
 function readInitialMode(): Mode {
     if (typeof window === 'undefined') return 'dark'
     const stored = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(LEGACY_KEY)
-    return stored === 'light' ? 'light' : 'dark'
+    if (stored === 'light') return 'light'
+    if (stored === 'dark') return 'dark'
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
 /**

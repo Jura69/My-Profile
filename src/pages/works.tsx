@@ -1,8 +1,11 @@
+import { Link as RouterLink } from 'react-router'
+import { IoChevronForward } from 'react-icons/io5'
 import Layout from '../../components/layouts/article'
 import SEO from '../../components/seo'
 import { BreadcrumbSchema } from '../../components/json-ld'
 import Reveal from '../../components/ui/reveal'
 import SectionHeading from '../../components/ui/section-heading'
+import { buttonClasses } from '../../components/ui/button-styles'
 import FeaturedProjectCard from '../../components/works/featured-project-card'
 import ProjectCard from '../../components/works/project-card'
 import { featuredProjects, otherPersonalProjects, enterpriseProjects } from '../../components/works/works-data'
@@ -24,7 +27,7 @@ const Works = () => (
         <section className="w-full px-4 py-8">
             <div className="mx-auto max-w-[1100px]">
                 <Reveal>
-                    <SectionHeading as="h2">My Personal Projects 💻</SectionHeading>
+                    <SectionHeading as="h1">My Personal Projects 💻</SectionHeading>
                 </Reveal>
 
                 <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -58,6 +61,14 @@ const Works = () => (
                         </Reveal>
                     ))}
                 </div>
+
+                <Reveal>
+                    <div className="mt-12 text-center">
+                        <RouterLink to="/activities" className={buttonClasses('ghost', 'md')}>
+                            Beyond code — my university activities <IoChevronForward aria-hidden="true" />
+                        </RouterLink>
+                    </div>
+                </Reveal>
             </div>
         </section>
     </Layout>

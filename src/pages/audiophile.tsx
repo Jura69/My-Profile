@@ -23,7 +23,7 @@ const Audiophile = () => (
         <section className="w-full px-4 py-8">
             <div className="mx-auto max-w-[1100px]">
                 <Reveal>
-                    <SectionHeading as="h2">My Audio Devices 🎧</SectionHeading>
+                    <SectionHeading as="h1">My Audio Devices 🎧</SectionHeading>
                 </Reveal>
 
                 <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

@@ -9,9 +9,10 @@ import { cn } from '../../lib/cn'
 
 const GITHUB_URL = 'https://github.com/Jura69'
 
+// Activities intentionally lives off-nav: the route stays reachable from the
+// works page footer link (and direct URL), it just no longer earns a slot here.
 const NAV_LINKS = [
     { href: '/works', label: 'Works' },
-    { href: '/activities', label: 'Activities' },
     { href: '/audiophile', label: 'Audiophile' }
 ]
 
@@ -84,7 +85,7 @@ function MobileMenu() {
 export default function Navbar() {
     return (
         <nav className="fixed inset-x-0 top-0 z-20 bg-surface/80 backdrop-blur-[10px]">
-            <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-2 p-2">
+            <div className="mx-auto flex w-full max-w-[1100px] items-center justify-between gap-2 p-2">
                 <RouterLink to="/" className="group flex items-center gap-2 p-2">
                     <span aria-hidden="true" className="transition-transform duration-200 group-hover:scale-125">
                         <TotoroIcon />

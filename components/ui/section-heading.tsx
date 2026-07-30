@@ -1,7 +1,7 @@
 import { cn } from '../../lib/cn'
 
 interface SectionHeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
-    as?: 'h2' | 'h3'
+    as?: 'h1' | 'h2' | 'h3'
     children: React.ReactNode
 }
 
