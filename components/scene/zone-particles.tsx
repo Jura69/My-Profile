@@ -29,15 +29,44 @@ function isCoarsePointer() {
  * golden pollen for the dawn zone, fireflies for the night zone. Group
  * visibility multipliers --dawn-a / --night-a are scroll-driven by
  * ambient-scene, and fully-hidden groups are display:none'd via data attrs
- * on the scene root ([data-dawn="off"], [data-night="off"]).
+ * on the scene root ([data-dawn="off"], [data-day="off"], [data-night="off"]).
  */
 const ZoneParticles = memo(function ZoneParticles() {
     const coarse = useMemo(isCoarsePointer, [])
     const pollen = useMemo(() => generate(coarse ? 5 : 8, 2, 2.5), [coarse])
     const fireflies = useMemo(() => generate(coarse ? 4 : 7, 2.5, 2), [coarse])
+    const leaves = useMemo(() => generate(coarse ? 4 : 8, 8, 6), [coarse])
 
     return (
         <div className="absolute inset-0 overflow-hidden">
+            {/* Day-only falling leaves (Dawn, Morning, Midday) */}
+            <div
+                className="scene-leaves absolute inset-0 pointer-events-none"
+                style={{ opacity: 'calc(1 - var(--night-a, 0))' }}
+            >
+                {leaves.map(l => {
+                    const colors = ['#7eb77f', '#6db86b', '#8b6f47', '#e8a0b4']
+                    const color = colors[l.id % colors.length]
+                    return (
+                        <span
+                            key={l.id}
+                            className="absolute motion-safe:animate-[scene-leaf-fall_14s_linear_infinite]"
+                            style={{
+                                left: `${l.x}%`,
+                                top: `-5%`,
+                                width: `${l.size}px`,
+                                height: `${l.size * 0.6}px`,
+                                background: color,
+                                borderRadius: '0 100% 0 100%',
+                                boxShadow: `0 0 4px ${color}33`,
+                                animationDelay: `${l.delay}s`,
+                                animationDuration: `${l.duration + 4}s`
+                            }}
+                        />
+                    )
+                })}
+            </div>
+
             {/* Dawn pollen — warm golden dust drifting up */}
             <div className="scene-pollen absolute inset-0" style={{ opacity: 'var(--dawn-a, 1)' }}>
                 {pollen.map(p => (

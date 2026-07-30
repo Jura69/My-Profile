@@ -94,6 +94,7 @@ const AmbientScene = memo(function AmbientScene() {
                 root.dataset.stars = isDark && zone.starOpacity > 0.01 ? 'on' : 'off'
                 root.dataset.dawn = dawn > 0.01 ? 'on' : 'off'
                 root.dataset.night = night > 0.01 ? 'on' : 'off'
+                root.dataset.day = night > 0.99 ? 'off' : 'on'
 
                 // Sun: rises left, peaks, sets right across the first ~55% of scroll
                 if (sunEl) {

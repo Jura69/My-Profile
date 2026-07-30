@@ -71,6 +71,7 @@
    attrs from its scroll handler when a group's alpha reaches zero. */
 [data-stars='off'] .scene-stars,
 [data-dawn='off'] .scene-pollen,
+[data-day='off'] .scene-leaves,
 [data-night='off'] .scene-fireflies {
     display: none;
 }
@@ -132,5 +133,22 @@
     50% {
         transform: translateY(8px);
         opacity: 1;
+    }
+}
+
+@keyframes scene-leaf-fall {
+    0% {
+        transform: translateY(-20px) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.75;
+    }
+    90% {
+        opacity: 0.75;
+    }
+    100% {
+        transform: translateY(105vh) translateX(-25vw) rotate(540deg);
+        opacity: 0;
     }
 }
