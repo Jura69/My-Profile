@@ -40,7 +40,7 @@
 }
 ```
 
-**Auto-format command:** `npm run prettier`
+**Auto-format command:** `yarn prettier`
 
 ### ESLint Rules
 
@@ -55,7 +55,7 @@
 }
 ```
 
-**Lint check:** `npm run lint`
+**Lint check:** `yarn lint`
 
 ### JavaScript/JSX Style
 
@@ -63,7 +63,7 @@
 ```javascript
 // Order: External → Internal → Relative
 import { Container, Heading } from '@chakra-ui/react'  // External
-import Layout from '@/components/layouts/article'      // Internal (alias)
+import SectionHeading from '../../components/ui/section-heading'  // Internal
 import SEO from '../components/seo'                    // Relative
 ```
 
@@ -132,11 +132,9 @@ kebab-case for Next.js pages
 ```
 kebab-case, plural for collections
 ✅ components/
-✅ layouts/
 ✅ icons/
 ✅ works/
 ❌ Components/
-❌ Layout/ (singular)
 ```
 
 ### Variables & Functions
@@ -235,7 +233,6 @@ className={cn('bg-white', isActive && 'bg-blue-500')}
 // 1. Imports (external, internal, relative)
 import { Box, Heading } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import Layout from '../layouts/article'
 import SEO from '../seo'
 
 // 2. Styled components (if using Emotion)
@@ -264,12 +261,12 @@ const MyComponent = ({ title, children }) => {
 
   // 4d. Render
   return (
-    <Layout>
+    <>
       <SEO title={title} />
       <StyledBox onClick={handleClick}>
         {children}
       </StyledBox>
-    </Layout>
+    </>
   )
 }
 
@@ -287,25 +284,22 @@ export { StyledBox }
 ```javascript
 // 1. Imports
 import { Container, Heading } from '@chakra-ui/react'
-import Layout from '../../components/layouts/article'
 import SEO from '../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../components/json-ld'
 
-// 2. Page component
+// 2. Page component (no per-page `<Layout>` wrapper)
 const ProjectPage = () => (
-  <Layout title="Project Name">
-    <Container>
-      <SEO
-        title="Project Name - Trương Tuấn Lộc"
-        description="Project description"
-        type="article"
-      />
-      <ProjectSchema project={{...}} />
-      <BreadcrumbSchema items={[...]} />
+  <Container>
+    <SEO
+      title="Project Name - Trương Tuấn Lộc"
+      description="Project description"
+      type="article"
+    />
+    <ProjectSchema project={{...}} />
+    <BreadcrumbSchema items={[...]} />
 
-      {/* Page content */}
-    </Container>
-  </Layout>
+    {/* Page content */}
+  </Container>
 )
 
 // 3. Data fetching (if needed)
@@ -323,9 +317,9 @@ export default ProjectPage
 
 ### Component Types
 
-**1. Layout Components** (`layouts/`)
+**1. Layout Components** (`components/layout/`)
 ```javascript
-// Wrap entire pages, provide structure
+// App shell, applied once in src/app.tsx (not per-page)
 const MainLayout = ({ children }) => (
   <>
     <Navbar />
@@ -338,12 +332,12 @@ const MainLayout = ({ children }) => (
 **2. Page Components** (`pages/`)
 ```javascript
 // Route-specific components
-// Use Layout wrapper, SEO, JSON-LD
+// Return a fragment directly (MainLayout wraps once at app root); include SEO, JSON-LD
 const HomePage = () => (
-  <Layout>
+  <>
     <SEO title="Homepage" />
     {/* Content */}
-  </Layout>
+  </>
 )
 ```
 
@@ -453,14 +447,14 @@ const prevCountRef = useRef(0)
 
 ```typescript
 // Global state: Color mode (custom context + localStorage)
-import { useTheme } from '@/providers/theme'
+import { useTheme } from '../providers/use-theme'
 
-const { theme, toggleTheme } = useTheme()
-// theme is 'light' or 'dark'
-// toggleTheme() swaps theme and updates localStorage
+const { mode, toggle } = useTheme()
+// mode is 'light' or 'dark'; new visitors default to the OS prefers-color-scheme
+// toggle() swaps mode and updates localStorage
 
 // For conditional Tailwind classes
-<div className={theme === 'dark' ? 'dark' : ''}>
+<div className={mode === 'dark' ? 'dark' : ''}>
   <span className="text-black dark:text-white">Text</span>
 </div>
 ```
@@ -636,13 +630,15 @@ const prefersReducedMotion = useReducedMotion()
 
 **Dynamic Imports:**
 ```javascript
-import dynamic from 'next/dynamic'
+import { lazy, Suspense } from 'react'
 
-// Lazy load heavy components
-const Totoro = dynamic(() => import('../totoro'), {
-  ssr: false,  // Client-side only
-  loading: () => <TotoroSpinner />
-})
+// Lazy load non-critical routes (see src/app.tsx) — every page except
+// HomePage is its own chunk; navigations run inside a Suspense boundary
+const WorksPage = lazy(() => import('./pages/works'))
+
+<Suspense fallback={null}>
+  <WorksPage />
+</Suspense>
 ```
 
 **When to Split:**
@@ -678,14 +674,11 @@ export default WorkGridItem
 
 ### Bundle Size Targets
 
-| Chunk | Target | Current | Status |
-|-------|--------|---------|--------|
-| Main | < 500KB | ~450KB | ✅ |
-| Three.js | < 200KB | ~180KB | ✅ |
-| Chakra UI | < 150KB | ~130KB | ✅ |
-| Framer Motion | < 100KB | ~85KB | ✅ |
+Vendor libraries are isolated into their own chunks (function-form `manualChunks`
+in `vite.config.ts`: vendor-react, vendor-gsap, vendor-three, motion, vendor-icons)
+so the app chunk itself stays small — target < 500KB per NFR-01.
 
-**Check bundle:** `npm run analyze`
+**Check current bundle sizes:** `yarn analyze`
 
 ---
 

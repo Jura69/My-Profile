@@ -65,7 +65,6 @@ My-Profile/
 ├── public/                   # Static assets (~2.5MB)
 │   ├── images/               # Optimized project images
 │   ├── totoro.glb            # 3D model (Draco compressed)
-│   ├── sitemap.xml
 │   └── robots.txt
 ├── index.html                # HTML entry point (Vite template)
 ├── vite.config.ts            # Vite build configuration
@@ -84,9 +83,8 @@ My-Profile/
 
 ### Components (23 files, 1,266 LOC)
 
-**Layouts (2 files):**
-- `layouts/main.js` - Primary app layout with navbar, footer, Totoro 3D model
-- `layouts/article.js` - Page transition wrapper with metadata injection
+**Layout (1 file):**
+- `components/layout/main.tsx` - App shell (navbar, footer, ambient scene); applied once in `src/app.tsx`. Pages return a fragment directly — no per-page layout wrapper.
 
 **Animation Components (4 files):**
 - `animated-badge.js` - Tech stack skill badges with spring physics
@@ -130,8 +128,9 @@ My-Profile/
 **Icons (1 file):**
 - `icons/totoro.js` (1,774 tokens) - Hand-drawn Totoro SVG icon (40x40px)
 
-**Providers (1 file):**
-- `chakra.js` - Chakra UI provider with SSR color mode persistence
+**Providers (2 files):**
+- `providers/theme.tsx` - Theme provider component (mirrors mode onto the `.dark` class, persists to localStorage)
+- `providers/use-theme.ts` - `useTheme()` hook + context (split out so the provider file only exports a component, for react-refresh)
 
 ---
 
@@ -159,7 +158,7 @@ My-Profile/
 **Audio Equipment Pages (4 files):**
 - `audiophile/ea1000.js` - Simgot EA1000 Fermat IEM review
 - `audiophile/fiioka11.js` - Fiio Ka11 DAC/AMP review
-- `audiophile/moondropSSP.js` - Moondrop SSP IEM review
+- `audiophile/moondrop-ssp.tsx` - Moondrop SSP IEM review
 - `audiophile/onix.js` (139 LOC) - Shanling Onix Alpha XI1 DAC/AMP review
 
 **Deprecated (1 file):**
@@ -169,12 +168,8 @@ My-Profile/
 
 ### Utilities (3 files, 161 LOC)
 
-**lib/theme.js** - Chakra UI theme customization:
-- Custom colors: grassTeal (#88ccca), ghibli palette (6 colors)
-- Global styles: background, link colors (light/dark mode)
-- Typography: M PLUS Rounded 1c font
-- Component variants: section-title heading style
-- Color mode: dark initial, cookie-based SSR persistence
+**lib/cn.ts** - `clsx` + `tailwind-merge` class-name helper:
+- `cn(...inputs)` merges Tailwind classes with conflict resolution (later class wins)
 
 **lib/model.js** - 3D GLTF/Draco loader:
 - GLTFLoader + DRACOLoader integration
@@ -236,18 +231,15 @@ My-Profile/
 **3D Model (1 file, 1.5MB):**
 - `totoro-compressed.glb` - Draco compressed (96.7% reduction from 44MB)
 
-**Images (23 files, 11MB):**
-- **Works:** 10 images (6.6MB) - Largest: Ticket2.png (1.6MB)
-- **Audiophile:** 8 images (3.1MB) - Largest: ea1000.jpg (1.2MB)
-- **Activities:** 4 images (1.1MB) - Largest: Ytc2.jpg (612K)
-- **Profile:** loc.jpeg (374K, 2236x2236px)
+**Images:** All converted to WebP (see `public/images/`); exceptions kept in their
+required format: `og-image.jpg` (Open Graph) and `apple-touch-icon.png`.
 
 **Documents (1 file, 118K):**
 - `files/CV.pdf` - Resume/CV
 
-**SEO Files (2 files):**
-- `robots.txt` (293B) - Allow all crawlers, 1s delay, sitemap reference
-- `sitemap.xml` (2.2K) - 9 URLs indexed (homepage, main pages, projects)
+**SEO Files:**
+- `public/robots.txt` - Allow all crawlers, sitemap reference
+- `sitemap.xml` - generated at build time by `scripts/vite-plugin-sitemap.ts` (not a static file in `public/`)
 
 **Favicon:**
 - `favicon.ico` (38K) - Standard ICO format
@@ -320,26 +312,22 @@ My-Profile/
 ### Internal Dependency Graph
 
 ```
-_app.js
-├── Chakra Provider (providers/chakra.js)
-│   └── Theme (lib/theme.js)
-├── Layout (components/layouts/main.js)
+src/app.tsx (BrowserRouter)
+├── ThemeProvider (providers/theme.tsx + providers/use-theme.ts)
+├── SceneProvider (components/scene/scene-provider.tsx)
+├── MainLayout (components/layout/main.tsx)
+│   ├── AmbientScene
 │   ├── Navbar
 │   │   ├── Logo
 │   │   │   └── TotoroIcon
 │   │   └── ThemeToggleButton
-│   ├── Totoro (lazy loaded)
-│   │   ├── FloatingBox
-│   │   └── Model Loader (lib/model.js)
+│   ├── Routes → Page Components (each returns a fragment, no layout wrapper)
+│   │   ├── SEO
+│   │   ├── JSON-LD Schemas
+│   │   └── ProjectCard / FeaturedProjectCard / grid cards
 │   └── Footer
-└── Page Components
-    ├── Layout (article.js)
-    ├── SEO
-    ├── JSON-LD Schemas
-    ├── Section
-    ├── AnimatedBadge
-    ├── WorkGridItem/AudioGridItem/ActivitiesGridItem
-    └── Domain Components (Title, Image, Meta)
+├── Vercel Analytics
+└── Vercel Speed Insights
 ```
 
 ---
@@ -443,17 +431,18 @@ MainLayout mounts
 
 ### Theme System
 
-**localStorage-Based Color Mode:**
+**localStorage-Based Color Mode (OS preference for new visitors):**
 ```typescript
-// providers/theme.tsx
-useEffect(() => {
-  const saved = localStorage.getItem('theme') ?? 'light'
-  setTheme(saved)
-  document.documentElement.classList.toggle('dark', saved === 'dark')
-}, [])
+// providers/theme.tsx — readInitialMode()
+function readInitialMode() {
+  const stored = localStorage.getItem('theme') ?? localStorage.getItem('chakra-ui-color-mode')
+  if (stored === 'light') return 'light'
+  if (stored === 'dark') return 'dark'
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
 
-// Component usage
-const { theme, toggleTheme } = useTheme()
+// Component usage (hook lives in providers/use-theme.ts)
+const { mode, toggle } = useTheme()
 ```
 
 **Tailwind Dark Mode:**
@@ -483,7 +472,7 @@ const { theme, toggleTheme } = useTheme()
 
 4. **Static Files**:
    - robots.txt - Crawler directives
-   - sitemap.xml - URL inventory
+   - sitemap.xml - generated at build time (`scripts/vite-plugin-sitemap.ts`), not hand-maintained
 
 ---
 
@@ -577,13 +566,7 @@ const { theme, toggleTheme } = useTheme()
 - PropTypes not needed (TS provides inference)
 - Consider extracting shared types to src/types/
 
-### 4. SEO Route Discovery (Low Priority)
-
-**sitemap.xml:**
-- Currently static file (manually updated)
-- Consider: Dynamic sitemap generation or manual update script
-
-### 5. Testing Coverage (Not Implemented)
+### 4. Testing Coverage (Not Implemented)
 
 **Current State:**
 - No unit tests, E2E tests, or visual regression tests

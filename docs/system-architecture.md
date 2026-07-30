@@ -244,33 +244,26 @@ App (src/app.tsx with BrowserRouter)
 
 ### Layout Hierarchy
 
-**Two-Tier Layout System:**
-
-1. **Main Layout** (`layouts/main.js`)
-   - Global wrapper for entire app
-   - Contains: Navbar, Footer, Totoro 3D model
-   - Memoized to prevent re-renders
-   - Applied in `_app.js`
-
-2. **Article Layout** (`layouts/article.js`)
-   - Page-specific wrapper
-   - Contains: Page title injection, GridItemStyle
-   - Handles page transitions (Framer Motion)
-   - Applied per page
+**Single Layout: MainLayout** (`components/layout/main.tsx`)
+- Global wrapper for entire app
+- Contains: Navbar, Footer, ambient scene
+- Memoized to prevent re-renders
+- Applied once in `src/app.tsx` — pages return a fragment directly, no per-page layout wrapper
 
 **Layout Usage:**
 ```javascript
-// _app.js (global)
-<Layout router={router}>
-  <Component {...pageProps} />
-</Layout>
+// src/app.tsx (applied once, wraps the router's routes)
+<MainLayout>
+  <AnimatedRoutes />
+</MainLayout>
 
-// Project page (page-specific)
-<Layout title="Project Name">
-  <Container>
+// Page (no wrapper)
+const ProjectPage = () => (
+  <>
+    <SEO title="Project Name" />
     {/* Page content */}
-  </Container>
-</Layout>
+  </>
+)
 ```
 
 ---
@@ -361,20 +354,22 @@ Parent Component
 
 ### Color Mode Persistence
 
-**localStorage Strategy:**
+**localStorage Strategy (OS preference for new visitors):**
 ```typescript
-// providers/theme.tsx
-useEffect(() => {
-  const saved = localStorage.getItem('theme') ?? 'light'
-  setTheme(saved)
-  document.documentElement.classList.toggle('dark', saved === 'dark')
-}, [])
+// providers/theme.tsx — readInitialMode()
+function readInitialMode() {
+  const stored = localStorage.getItem('theme') ?? localStorage.getItem('chakra-ui-color-mode')
+  if (stored === 'light') return 'light'
+  if (stored === 'dark') return 'dark'
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
 
-// HTML pre-paint script (index.html)
-// Runs before React hydration to prevent FOUC
+// HTML pre-paint script (index.html) — logic-identical, runs before first paint
 <script>
-  const theme = localStorage.getItem('theme') ?? 'light'
-  if (theme === 'dark') document.documentElement.classList.add('dark')
+  var stored = localStorage.getItem('theme') || localStorage.getItem('chakra-ui-color-mode');
+  var color = stored === 'light' ? 'light' : stored === 'dark' ? 'dark'
+    : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.classList.toggle('dark', color === 'dark');
 </script>
 ```
 
@@ -403,19 +398,19 @@ useEffect(() => {
 
 ```
 Local Development
-  ├── npm run dev (Vite dev server on :5173)
+  ├── yarn dev (Vite dev server on :5173)
   │   ├── ES modules (no bundling)
   │   ├── Instant HMR (< 100ms)
   │   └── TypeScript type-checking
-  ├── npm run lint (ESLint check)
-  ├── npm run prettier (Code formatting)
-  └── npm run analyze (Bundle size viz)
+  ├── yarn lint (ESLint check)
+  ├── yarn prettier (Code formatting)
+  └── yarn analyze (Bundle size viz)
 ```
 
 ### Build Process
 
 ```
-npm run build
+yarn build
   ↓
 ┌─────────────────────────────────────────┐
 │ 1. TypeScript Check                      │
@@ -432,11 +427,10 @@ npm run build
               ↓
 ┌─────────────────────────────────────────┐
 │ 3. Code Splitting                        │
-│    - vendor-react (~180KB)               │
-│    - vendor-gsap (~150KB)                │
-│    - vendor-three (~200KB)               │
-│    - motion (~45KB)                      │
-│    - main chunk (~120KB)                 │
+│    Function-form manualChunks            │
+│    (vite.config.ts): vendor-react,       │
+│    vendor-gsap, vendor-three, motion,    │
+│    vendor-icons — app chunk stays small  │
 └─────────────┬───────────────────────────┘
               ↓
 ┌─────────────────────────────────────────┐
@@ -471,8 +465,8 @@ Vercel Webhook Triggered
 ┌─────────────────────────────────────────┐
 │ Vercel Build Environment                 │
 │ - Node.js 18.x                           │
-│ - npm install (dependencies)             │
-│ - npm run build (Vite build)             │
+│ - yarn install (dependencies)            │
+│ - yarn build (Vite build)                │
 │ - Build time: ~2-3 minutes               │
 │ - Output: dist/ (static files)           │
 └─────────────┬───────────────────────────┘
@@ -539,11 +533,11 @@ headers: [
 └────────────────────┬─────────────────────────────────┘
                      ↓
 ┌──────────────────────────────────────────────────────┐
-│ Layer 2: Build-Time (Next.js)                        │
-│ - Code splitting (Webpack cache groups)              │
-│ - Tree shaking (optimizePackageImports)              │
-│ - Image optimization (AVIF/WebP)                     │
-│ - SWC minification                                   │
+│ Layer 2: Build-Time (Vite)                           │
+│ - Code splitting (Rollup manualChunks)               │
+│ - Tree shaking                                       │
+│ - Image optimization (WebP)                          │
+│ - SWC transpilation                                  │
 └────────────────────┬─────────────────────────────────┘
                      ↓
 ┌──────────────────────────────────────────────────────┐
@@ -574,8 +568,7 @@ headers: [
    → DNS Prefetch: fonts.googleapis.com
    ↓
 3. Load Critical CSS
-   → Inline Chakra theme
-   → ColorModeScript (prevent FOUC)
+   → Inline pre-paint theme script (OS prefers-color-scheme fallback, prevents FOUC)
    ↓
 4. Load JavaScript
    → Main chunk (< 500KB)
@@ -592,43 +585,17 @@ headers: [
 
 ### Bundle Optimization
 
-**Webpack Cache Groups:**
+**Vite `manualChunks` (function form — the object form left ~300KB of subpath
+imports like `react-dom/client` and `gsap/ScrollTrigger` stuck in the app chunk):**
 ```javascript
-optimization: {
-  splitChunks: {
-    cacheGroups: {
-      three: {
-        test: /[\\/]node_modules[\\/]three[\\/]/,
-        name: 'three',
-        priority: 30,
-        reuseExistingChunk: true
-      },
-      chakra: {
-        test: /[\\/]node_modules[\\/](@chakra-ui|@emotion)[\\/]/,
-        name: 'chakra-ui',
-        priority: 20,
-        reuseExistingChunk: true
-      },
-      framer: {
-        test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-        name: 'framer-motion',
-        priority: 15,
-        reuseExistingChunk: true
-      }
-    }
-  }
-}
-```
-
-**Tree Shaking:**
-```javascript
-experimental: {
-  optimizePackageImports: [
-    '@chakra-ui/react',
-    'framer-motion',
-    'three',
-    'react-icons'
-  ]
+// vite.config.ts
+manualChunks(id) {
+  if (!id.includes('node_modules')) return
+  if (id.includes('three')) return 'vendor-three'
+  if (id.includes('gsap') || id.includes('lenis')) return 'vendor-gsap'
+  if (id.includes('motion')) return 'motion'
+  if (id.includes('react-icons')) return 'vendor-icons'
+  return 'vendor-react' // react, react-dom, router, small glue libs
 }
 ```
 
@@ -642,7 +609,7 @@ experimental: {
 ┌──────────────────────────────────────────────────────┐
 │ Layer 1: Static Files                                │
 │ - robots.txt (allow all, sitemap reference)          │
-│ - sitemap.xml (9 URLs, priorities, changefreq)       │
+│ - sitemap.xml (generated at build time, not static)  │
 └────────────────────┬─────────────────────────────────┘
                      ↓
 ┌──────────────────────────────────────────────────────┐
@@ -825,45 +792,41 @@ npm update  # Update dependencies
    - Reduce 11MB → 3MB target
    - Automatic format optimization
 
-2. **Dynamic Sitemap Generation**
-   - API route `/api/sitemap.xml`
-   - Auto-update lastmod dates
-
-3. **Contact Form Backend**
+2. **Contact Form Backend**
    - EmailJS or Vercel serverless function
    - Form validation
    - Spam protection (reCAPTCHA)
 
 ### Mid-Term (Q3 2026)
 
-4. **Progressive Web App (PWA)**
+3. **Progressive Web App (PWA)**
    - Service Worker
    - Offline support
    - Install prompt
 
-5. **Enhanced Analytics**
+4. **Enhanced Analytics**
    - Google Analytics 4
    - Custom event tracking
    - Conversion funnels
 
-6. **TypeScript Migration**
+5. **TypeScript Migration**
    - Gradual migration (.js → .tsx)
    - Type safety for props
    - Better IDE support
 
 ### Long-Term (Q4 2026)
 
-7. **CMS Integration**
+6. **CMS Integration**
    - Headless CMS (Sanity, Contentful)
    - Blog post management
    - Portfolio updates without code changes
 
-8. **Testing Suite**
+7. **Testing Suite**
    - Jest unit tests
    - Playwright E2E tests
    - Visual regression (Percy, Chromatic)
 
-9. **App Router Migration**
+8. **App Router Migration**
    - Upgrade to Next.js App Router
    - Server Components
    - Streaming SSR

@@ -61,7 +61,7 @@ Feature Categories:
 - [x] AVIF/WebP image formats
 - [x] Lazy loading for images
 - [x] 3D model Draco compression (96.7%)
-- [x] Code splitting (Three.js, Chakra UI, Framer Motion)
+- [x] Code splitting (Three.js, GSAP, Motion)
 - [x] SWC minification
 - [x] 1-year caching for static assets
 
@@ -374,37 +374,9 @@ export const AudioImage = ({ src, alt }) => (
 
 ---
 
-#### 7. Static Sitemap (Outdated lastmod Dates)
-
-**Problem:**
-- `public/sitemap.xml` has static lastmod dates (2025-01-05)
-- No automatic regeneration on content changes
-- Google Search Console shows stale dates
-
-**Proposed Solution:**
-```javascript
-// pages/api/sitemap.xml.js (Future)
-export default function handler(req, res) {
-  const pages = ['/', '/works', '/activities', '/audiophile', ...]
-  const projects = ['foodlover', 'ticketapp', 'tensorflow', 'ecommerceBE']
-  // ... build dynamic sitemap with current dates
-
-  res.setHeader('Content-Type', 'text/xml')
-  res.write(sitemapXml)
-  res.end()
-}
-```
-
-**Alternative:** Use `next-sitemap` package
-
-**Effort:** 2 hours
-**Priority:** P2 (Low impact on SEO)
-
----
-
 ### Low Priority Issues
 
-#### 8. Deprecated Font Loader
+#### 7. Deprecated Font Loader
 
 **Problem:**
 - `src/pages/fonts/font.js` exists but unused
@@ -422,49 +394,6 @@ rm src/pages/fonts/font.js
 
 **Effort:** 10 minutes
 **Priority:** P2 (Cleanup, no functional impact)
-
----
-
-#### 9. Missing TypeScript
-
-**Problem:**
-- All files are `.js` (no type safety)
-- No PropTypes or runtime validation
-- Harder to catch bugs during development
-- Poor IDE autocomplete
-
-**Proposed Migration Path:**
-
-**Phase 1: Setup (Q3 2026)**
-```bash
-npm install --save-dev typescript @types/react @types/node
-# Rename jsconfig.json → tsconfig.json
-```
-
-**Phase 2: Gradual Migration**
-- Rename utilities first (`lib/*.js` → `lib/*.ts`)
-- Then components (`components/*.js` → `components/*.tsx`)
-- Finally pages (`pages/*.js` → `pages/*.tsx`)
-
-**Phase 3: Add Interfaces**
-```typescript
-interface AnimatedBadgeProps {
-  children: ReactNode
-  colorScheme: string
-  delay?: number
-}
-
-const AnimatedBadge: React.FC<AnimatedBadgeProps> = ({
-  children,
-  colorScheme,
-  delay = 0
-}) => {
-  // Component implementation
-}
-```
-
-**Effort:** 20-30 hours (gradual over Q3-Q4 2026)
-**Priority:** P2 (Long-term code quality)
 
 ---
 
@@ -508,11 +437,6 @@ const AnimatedBadge: React.FC<AnimatedBadgeProps> = ({
    - Form validation (react-hook-form)
    - Spam protection (reCAPTCHA)
    - **Feature:** Direct contact from portfolio
-
-5. **Dynamic Sitemap** (Effort: 2h)
-   - API route `/api/sitemap.xml`
-   - Auto-update lastmod dates
-   - **Expected Impact:** Better SEO freshness signals
 
 **Deliverables:**
 - v1.1.0 release (performance improvements)

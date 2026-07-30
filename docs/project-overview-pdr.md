@@ -258,7 +258,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 - Cumulative Layout Shift (CLS) < 0.1
 - Image optimization (AVIF/WebP with lazy loading)
 - 3D model Draco compression (< 2MB)
-- Code splitting for Three.js, Chakra UI, Framer Motion
+- Code splitting for Three.js, GSAP, Motion
 - Aggressive caching (1 year static assets)
 - SWC minification
 
@@ -321,7 +321,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 ### NFR-05: SEO
 - **Indexability:** All pages crawlable by search engines
 - **Schema Markup:** Valid JSON-LD on all pages
-- **Sitemap:** Auto-update on content changes (future)
+- **Sitemap:** Generated at build time from the same data the pages render (no drift)
 - **Mobile-First:** Google Mobile-Friendly test passes
 - **Page Speed:** Google PageSpeed Insights score ≥ 90
 
@@ -410,7 +410,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 **Performance:**
 - AVIF/WebP image optimization
 - Lazy loading for below-fold content
-- Code splitting (Three.js, Chakra UI, Framer Motion)
+- Code splitting (Three.js, GSAP, Motion)
 - 3D model Draco compression (96.7% reduction)
 - SWC minification
 - 1-year caching for static assets
@@ -541,11 +541,11 @@ Lighthouse audits before/after changes. Real user metrics (Core Web Vitals) driv
 ## Dependencies & Integrations
 
 ### Core Dependencies
-- next@14.2.13
-- react@18
-- @chakra-ui/react@2.8.2
-- framer-motion@11.5.6
-- three@0.172.0
+- react@^19.2.0
+- react-router@^7.0.0
+- tailwindcss@^4.3.2
+- motion@^12.42.2
+- three@^0.172.0
 
 ### External Services
 - **Vercel:** Hosting, analytics, deployment
