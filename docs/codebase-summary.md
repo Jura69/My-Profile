@@ -1,28 +1,27 @@
 # Codebase Summary
 
 **Project:** Personal Portfolio Website
-**Generated:** 2026-07-07
+**Last Updated:** 2026-07-30
 **Build Tool:** Vite 6 (SPA)
 **Framework:** React 19 + React Router 7
 **Styling:** Tailwind CSS 4
-**Animation:** Motion 12 + GSAP + Lenis
-**Total Files:** ~45 code files
-**Total LOC:** ~2,500 (excluding node_modules)
-**Bundle Size:** ~2.5MB (public assets, highly optimized)
+**Animation:** Motion 12 + GSAP 3.15 + Lenis
+**Code Files:** 69 TS/TSX (`components/` 42, `src/` 23, `lib/` 2, `providers/` 2) + 2 build scripts
+**Public Assets:** ~4.3MB (1.5MB Draco GLB, ~2.5MB WebP images, 168K CV.pdf)
 
 ---
 
 ## Executive Overview
 
-Modern Vite 6 SPA portfolio using React 19, client-side routing (React Router 7), Tailwind CSS 4 for styling, and Motion 12 + GSAP for animations. Rebuilt from Next.js to Vite for better performance and developer experience. Codebase demonstrates clean separation with dedicated directories for components, pages, utilities, and providers. Architecture emphasizes performance through code splitting, scroll optimization (GSAP confined to scene components), and aggressive asset caching.
+Vite 6 SPA portfolio using React 19, client-side routing (React Router 7), Tailwind CSS 4, and Motion 12 + GSAP for animations. Rebuilt from Next.js to Vite (v2, 2026-07). All content is hardcoded TypeScript data — no backend, no CMS. Architecture emphasizes performance through route-level lazy loading, vendor chunk isolation, scroll work confined to GSAP scene components (zero React re-renders on scroll), and build-time sitemap generation from the same data the pages render.
 
 **Key Characteristics:**
-- 100% functional components with TypeScript
-- Client-side rendering (SPA) for speed
-- Scroll animations isolated to scene components (zero re-render overhead)
-- Comprehensive SEO (meta tags, JSON-LD, sitemap)
-- 97+ Lighthouse score across all metrics
-- 96.7% 3D model compression (Draco)
+- 100% functional components, strict TypeScript
+- Every route except the homepage lazy-loads its own chunk (~2KB each); app chunk ~52KB
+- Scroll animations isolated to `components/scene/` (GSAP writes CSS vars/transforms directly)
+- SEO: static OG fallback in `index.html` for no-JS crawlers + per-page React 19 hoisted meta + JSON-LD + build-time sitemap
+- Lint gate: 0 errors / 0 warnings across `src components lib providers scripts vite.config.ts`
+- 96.7% 3D model compression (Draco, 44MB → 1.5MB)
 
 ---
 
@@ -31,604 +30,190 @@ Modern Vite 6 SPA portfolio using React 19, client-side routing (React Router 7)
 ```
 My-Profile/
 ├── src/
-│   ├── main.tsx              # Vite entry point
-│   ├── app.tsx               # React Router setup (BrowserRouter, routes)
-│   ├── pages/                # Route components
-│   │   ├── home.tsx          # Homepage
-│   │   ├── works.tsx         # Projects listing
-│   │   ├── works/            # Project detail pages (*.tsx)
-│   │   ├── activities.tsx    # Activities listing
-│   │   ├── activities/       # Activity details
-│   │   ├── audiophile.tsx    # Audio equipment listing
-│   │   ├── audiophile/       # Audio device reviews
-│   │   └── not-found.tsx     # 404 page
-│   ├── components/           # Reusable components
-│   │   ├── ui/               # Primitives (button, badge, card, container, etc.)
-│   │   ├── layout/           # Main, detail-page, navbar, footer
-│   │   ├── home/             # Homepage sections (day-to-night scenes)
-│   │   ├── works/            # Works components
-│   │   ├── scene/            # 3D scene + GSAP animations
-│   │   ├── seo.tsx           # Meta tags
-│   │   ├── json-ld.tsx       # Structured data
-│   │   └── theme-toggle.tsx  # Dark/light mode
-│   ├── lib/                  # Utilities
-│   │   ├── cn.ts             # clsx + tailwind-merge
-│   │   ├── model.ts          # GLTF/Draco loader
-│   │   └── constants.ts
-│   ├── providers/            # Context providers
-│   │   └── theme.tsx         # Dark/light mode context
-│   ├── styles/               # Global styles
-│   │   └── global.css        # Tailwind + design tokens + GSAP keyframes
-│   ├── data/                 # Data files
-│   │   └── works-data.ts     # Projects, activities, audio data
-│   └── types/                # TypeScript types
-├── public/                   # Static assets (~2.5MB)
-│   ├── images/               # Optimized project images
-│   ├── totoro.glb            # 3D model (Draco compressed)
-│   └── robots.txt
-├── index.html                # HTML entry point (Vite template)
-├── vite.config.ts            # Vite build configuration
-├── tsconfig.json             # TypeScript config
-├── tailwind.config.ts        # Tailwind CSS 4 theme
-├── .eslintrc.json            # ESLint rules
-├── .gitignore
-├── package.json              # Dependencies
-├── prettier.config.js        # Formatting
-└── README.md
+│   ├── main.tsx              # Vite entry (createRoot + StrictMode)
+│   ├── app.tsx               # BrowserRouter, lazy routes, Suspense, RouteErrorBoundary
+│   ├── pages/                # Route components (all lazy except index.tsx)
+│   │   ├── index.tsx         # Homepage (eager — LCP route)
+│   │   ├── works.tsx         # Projects listing (+ works/ 11 detail pages)
+│   │   ├── activities.tsx    # Activities listing (+ activities/ytc.tsx)
+│   │   └── audiophile.tsx    # Audio listing (+ audiophile/ 4 detail pages)
+│   ├── styles/global.css     # Tailwind 4 @theme tokens + scene keyframes
+│   └── three-modules.d.ts    # Ambient types for three example modules
+├── components/               # (repo root, NOT src/)
+│   ├── ui/                   # Primitives: badge, button(+styles), card, container,
+│   │                         #   icon-button, reveal, section-heading
+│   ├── layout/               # main (app shell), navbar, footer, detail-page,
+│   │                         #   not-found, route-error-boundary, theme-toggle
+│   ├── home/                 # hero-dawn, about-morning, skills-bento,
+│   │                         #   experience-dusk, night-contact + home-data.ts
+│   ├── works/                # project-card, featured-project-card + works-data.ts
+│   ├── scene/                # ambient-scene, celestial-arc, parallax-hills, stars,
+│   │                         #   zone-particles, zone-data, scene-provider,
+│   │                         #   use-scene, use-pinned-intro, svg/{hills,moon,sun}
+│   ├── icons/                # totoro.tsx, ghibli-icons.tsx (inline SVG)
+│   ├── seo.tsx               # Per-page meta (React 19 hoists to <head>)
+│   ├── json-ld.tsx           # Person/Website/ProfilePage/Project/Breadcrumb schemas
+│   ├── totoro.tsx            # Three.js viewer (lazy-loaded from hero-dawn)
+│   └── totoro-loader.tsx     # Spinner + container while GLB streams
+├── lib/
+│   ├── cn.ts                 # clsx + tailwind-merge helper
+│   └── model.ts              # GLTF/Draco loader, Promise<Group>, isMesh() guard
+├── providers/
+│   ├── theme.tsx             # ThemeProvider (persists only explicit choices)
+│   └── use-theme.ts          # ThemeContext + useTheme() (react-refresh split)
+├── scripts/
+│   ├── vite-plugin-sitemap.ts  # Emits dist/sitemap.xml from works-data
+│   └── optimize-images.mjs     # One-off sharp-based image pipeline
+├── public/                   # apple-touch-icon.png, cv.html, favicon.ico,
+│   │                         #   robots.txt, totoro-compressed.glb, files/CV.pdf
+│   └── images/               # WebP (exceptions: og-image.jpg, apple-touch-icon.png)
+├── index.html                # Static OG/description fallback + pre-paint theme script
+├── vite.config.ts            # Plugins + function-form manualChunks
+├── vercel.json               # SPA rewrite /(.*) → /index.html, framework vite
+├── tsconfig.json             # Project references → tsconfig.app + tsconfig.node
+├── .eslintrc.cjs             # TS + react-hooks + react-refresh (0/0 gate)
+├── prettier.config.js        # No semicolons, single quotes, LF
+└── .gitattributes            # * text=auto eol=lf + binary rules
 ```
+
+Notable absences (deleted as cruft, do not reference): `components/layouts/`
+(merged into `layout/`), `jest.config.js`, `jsconfig.json`, `package-lock.json`,
+`.eslintrc.json`, `lib/performance.ts`, `public/sitemap.xml` (now build-generated),
+`tailwind.config.ts` (Tailwind 4 configures via `@theme` in global.css).
 
 ---
 
-## File Inventory by Category
+## Data Model (single sources of truth)
 
-### Components (23 files, 1,266 LOC)
+**`components/works/works-data.ts`** — drives listings, detail hrefs, AND the sitemap:
+- `projects: Project[]` — 11 projects (4 personal, of which 3 `featured`; 7 enterprise `@ Creasia`)
+- `activities: CardItem[]` — 1 activity (YTC NTU)
+- `audioGear: CardItem[]` — 4 devices (`ea1000`, `moondrop-ssp`, `onix`, `fiioka11`)
+- Derived exports: `featuredProjects`, `otherPersonalProjects`, `enterpriseProjects`
 
-**Layout (1 file):**
-- `components/layout/main.tsx` - App shell (navbar, footer, ambient scene); applied once in `src/app.tsx`. Pages return a fragment directly — no per-page layout wrapper.
+**`components/home/home-data.ts`** — homepage content:
+- `skillGroups` — 23 skills in 4 groups (Frontend 8, AI & ML, Backend, Tools & Others)
+- `experiences` — 4 timeline entries (CREASIA, Infodation, VNPT, university)
+- `socialLinks` — 5 links (GitHub, LinkedIn, Facebook, Instagram, Email)
+- `techIconMap` — tech-name → icon/color for experience badges
 
-**Animation Components (4 files):**
-- `animated-badge.js` - Tech stack skill badges with spring physics
-- `animated-button.js` - Enhanced buttons with hover effects
-- `animated-work-card.js` - Work timeline cards with scroll triggers
-- `floating-box.js` - Levitation animation for 3D model container
-
-**3D Graphics (2 files):**
-- `totoro.js` (147 LOC) - Three.js WebGL renderer with OrbitControls
-- `totoro-loader.js` - Loading spinner and responsive container
-
-**Navigation & UI (3 files):**
-- `navbar.js` (160 LOC) - Fixed navigation with hamburger menu
-- `logo.js` - Brand logo with Totoro icon
-- `theme-toggle-button.js` - Dark/light mode switcher
-
-**Grid Items & Cards (1 file, 196 LOC):**
-- `grid-item.js` - Exports 4 components:
-  - `GridItem` - Basic card with image
-  - `WorkGridItem` - Project portfolio cards
-  - `AudioGridItem` - Audio equipment cards (90% duplicate)
-  - `ActivitiesGridItem` - Activity cards (90% duplicate)
-  - `GridItemStyle` - Global CSS for thumbnails
-
-**Domain Components (3 files, ~84 LOC):**
-- `work.js` - Title, WorkImage, Meta for project pages
-- `activities.js` - Title, ActivitiesImage, Meta for activity pages
-- `audiophile.js` - Title, AudioImage, Meta for audio pages
-- **Note:** 90% code duplication across these 3 files
-
-**SEO & Metadata (2 files):**
-- `seo.js` - Meta tags (Open Graph, Twitter Card, mobile)
-- `json-ld.js` - Structured data schemas (5 schemas: Person, Website, ProfilePage, Breadcrumb, Project)
-
-**Utility Components (4 files):**
-- `section.js` - Staggered fade-in animation wrapper
-- `paragraph.js` - Justified text with indentation (Emotion styled)
-- `bio.js` - Work timeline styled components (WorkSection, WorkTimes)
-- `footer.js` - Copyright footer with dynamic year
-
-**Icons (1 file):**
-- `icons/totoro.js` (1,774 tokens) - Hand-drawn Totoro SVG icon (40x40px)
-
-**Providers (2 files):**
-- `providers/theme.tsx` - Theme provider component (mirrors mode onto the `.dark` class, persists to localStorage)
-- `providers/use-theme.ts` - `useTheme()` hook + context (split out so the provider file only exports a component, for react-refresh)
+Adding a project/device: append to the array — listing card, route href, and
+sitemap entry all follow. The page component in `src/pages/<section>/` and its
+`<Route>` in `src/app.tsx` are still created by hand.
 
 ---
 
-### Pages (16 files, 1,253 LOC)
+## Entry & Code Flow
 
-**Core Pages (2 files):**
-- `_app.js` - App wrapper with Chakra provider, Analytics, Font loader
-- `_document.js` - HTML document with preloading, DNS prefetch, Google Fonts
+### Initial Load
 
-**Main Pages (4 files):**
-- `index.js` (359 LOC) - Homepage with about, skills, experience timeline
-- `works.js` - Projects listing (4 cards)
-- `activities.js` - Activities listing (1 card)
-- `audiophile.js` - Audio equipment listing (4 cards)
+```
+index.html (static OG meta + pre-paint theme script sets .dark before first paint)
+  → src/main.tsx: createRoot(#root)
+    → App (src/app.tsx): BrowserRouter
+      → ThemeProvider (providers/theme.tsx)
+        → SceneProvider (Lenis + ScrollTrigger sync, reduced-motion state)
+          → MainLayout (AmbientScene + Navbar + children + Footer, MotionConfig reducedMotion="user")
+            → RouteErrorBoundary (catches stale-chunk import rejections)
+              → AnimatedRoutes (Suspense above keyed fade wrapper)
+      → Vercel Analytics + Speed Insights
+```
 
-**Project Detail Pages (4 files):**
-- `works/foodlover.js` - Food Lover (Next.js, MongoDB, AWS S3, Stripe)
-- `works/ticketapp.js` - Flutter Ticket App (Flutter, Node.js, MongoDB)
-- `works/tensorflow.js` - TensorFlow Sign Language Detection (Python, ML)
-- `works/ecommerceBE.js` - E-commerce Backend (Node.js, Express, Redis)
+### Navigation
 
-**Activity Detail Page (1 file):**
-- `activities/ytc.js` - YTC Nha Trang University club
+React Router 7 runs navigations inside `startTransition`, so when a lazy chunk
+streams in, the previous page stays visible (the Suspense boundary sits ABOVE the
+`key={pathname}` motion wrapper and never remounts). SceneProvider scrolls to top
+and refreshes ScrollTrigger on pathname change. Legacy URL
+`/audiophile/moondropSSP` has a `<Navigate replace>` redirect to
+`/audiophile/moondrop-ssp`.
 
-**Audio Equipment Pages (4 files):**
-- `audiophile/ea1000.js` - Simgot EA1000 Fermat IEM review
-- `audiophile/fiioka11.js` - Fiio Ka11 DAC/AMP review
-- `audiophile/moondrop-ssp.tsx` - Moondrop SSP IEM review
-- `audiophile/onix.js` (139 LOC) - Shanling Onix Alpha XI1 DAC/AMP review
+### Failure path (deploy invalidates chunks)
 
-**Deprecated (1 file):**
-- `fonts/font.js` - Old font loader (kept for backward compatibility)
+A long-lived tab requesting a deleted hashed chunk gets `index.html` back
+(SPA rewrite) → dynamic import rejects → `RouteErrorBoundary` auto-reloads once
+(sessionStorage-guarded), else renders a manual reload prompt.
+
+### 3D scene
+
+`hero-dawn.tsx` lazy-loads `components/totoro.tsx` (spinner from
+`totoro-loader.tsx`); `lib/model.ts` loads `/totoro-compressed.glb` through
+GLTFLoader + DRACOLoader (decoder from Google CDN), returns `Promise<Group>`.
+Renderer: pixel ratio ≤ 2, `precision: 'mediump'`, conditional antialias,
+shadows off, stencil off. 100-frame eased intro orbit, then OrbitControls.
 
 ---
 
-### Utilities (3 files, 161 LOC)
+## Theme System
 
-**lib/cn.ts** - `clsx` + `tailwind-merge` class-name helper:
-- `cn(...inputs)` merges Tailwind classes with conflict resolution (later class wins)
+New visitors follow the OS `prefers-color-scheme`; a stored choice always wins.
+Two implementations MUST stay logic-identical (else FOUC):
 
-**lib/model.js** - 3D GLTF/Draco loader:
-- GLTFLoader + DRACOLoader integration
-- Decoder path: Google CDN (https://www.gstatic.com/draco/v1/decoders/)
-- Shadow configuration (cast/receive)
-- Recursive mesh traversal for optimization
-- Promise-based async loading
+1. Pre-paint inline script in `index.html` — sets `.dark` on `<html>` before paint
+2. `readInitialMode()` in `providers/theme.tsx`
 
-**lib/performance.js** - Web Vitals utilities:
-- `measurePerformance()` - Timing wrapper with console logging
-- `reportWebVitals()` - Production metrics logging
-- `preloadCriticalResources()` - Preload Totoro model (⚠️ outdated path)
-- `optimizeImages()` - IntersectionObserver for lazy loading
+`ThemeProvider` persists to `localStorage.theme` ONLY on explicit choice (an
+existing stored key, incl. legacy `chakra-ui-color-mode` migration, or a toggle
+click) — never auto-writes the OS-derived value, so OS-following visitors keep
+following the OS on later visits. `useTheme()` lives in `providers/use-theme.ts`
+(context split from the provider file so react-refresh sees component-only exports).
 
 ---
 
-### Configuration Files (7 files)
+## Build Pipeline
 
-**vite.config.ts** - Vite build configuration:
-- React plugin (@vitejs/plugin-react-swc) - Fast JSX transform with SWC
-- Tailwind CSS 4 plugin (@tailwindcss/vite) - JIT CSS generation
-- Manual chunks: vendor-react, motion, vendor-gsap, vendor-three (optimized splitting)
-- Output directory: dist/
-- Dev server: port 5173, host 0.0.0.0
+`yarn build` = `tsc -b && vite build`:
+- `tsc -b` — project references (`tsconfig.app.json` for src/components,
+  `tsconfig.node.json` for vite.config + sitemap plugin). Type errors halt build.
+- Vite/Rollup — SWC transpile, tree-shake, function-form `manualChunks` matches
+  the path segment AFTER the package directory: `vendor-three` (~590KB, loaded
+  only with the lazy Totoro), `vendor-gsap` (~136KB incl. ScrollTrigger + Lenis),
+  `motion` (~129KB), `vendor-icons` (~48KB), everything else (react, react-dom,
+  router, glue) → `vendor-react` (~342KB). Glue libs share the react chunk on
+  purpose — a separate misc chunk caused a circular-init TypeError that silently
+  prevented mount.
+- `scripts/vite-plugin-sitemap.ts` — `generateBundle` + `this.emitFile` writes
+  `dist/sitemap.xml` (20 URLs) from works-data. No `node:fs`, no extra deps.
 
-**tsconfig.json** - TypeScript config:
-- Target: ES2020 (modern browsers)
-- JSX: react-jsx (React 19 native)
-- Path aliases: @/* → src/*
-
-**tailwind.config.ts** - Tailwind CSS 4:
-- Custom design tokens (Ghibli palette)
-- Dark mode: class-based (.dark on <html>)
-- Theme extensions (colors, spacing)
-
-**package.json** - Dependencies:
-- **Framework:** react@^19.2, react-dom@^19.2, react-router@^7
-- **Styling:** tailwindcss@^4.3, @tailwindcss/vite@^4.3
-- **Animation:** motion@^12.42, gsap@^3.15, lenis@^1.3, @gsap/react@^2.1
-- **3D:** three@0.172.0
-- **Analytics:** @vercel/analytics, @vercel/speed-insights
-- **Dev:** vite@^6, typescript@^5.7, eslint, sharp
-
-**.eslintrc.json** - Linting:
-- React hooks plugin
-- React refresh plugin
-- TypeScript support
-
-**prettier.config.js** - Code formatting:
-- Single quotes, no semicolons, 2-space indent
-
-**.gitignore** - Ignored patterns:
-- node_modules/, dist/, .env*, *.log
+Deploy: push to `master` → Vercel builds (`vercel.json`: framework vite, dist
+output, SPA rewrite). Hashed `/assets/*` get Vercel's default immutable caching;
+there is no custom header config.
 
 ---
 
-### Static Assets (12.5MB)
-
-**3D Model (1 file, 1.5MB):**
-- `totoro-compressed.glb` - Draco compressed (96.7% reduction from 44MB)
-
-**Images:** All converted to WebP (see `public/images/`); exceptions kept in their
-required format: `og-image.jpg` (Open Graph) and `apple-touch-icon.png`.
-
-**Documents (1 file, 118K):**
-- `files/CV.pdf` - Resume/CV
-
-**SEO Files:**
-- `public/robots.txt` - Allow all crawlers, sitemap reference
-- `sitemap.xml` - generated at build time by `scripts/vite-plugin-sitemap.ts` (not a static file in `public/`)
-
-**Favicon:**
-- `favicon.ico` (38K) - Standard ICO format
-
----
-
-## Code Statistics
-
-### Lines of Code by Directory
-
-| Directory | Files | LOC | Percentage |
-|-----------|-------|-----|------------|
-| src/pages/ | 16 | 1,253 | 46.8% |
-| components/ | 23 | 1,266 | 47.2% |
-| lib/ | 3 | 161 | 6.0% |
-| Total Code | 42 | 2,680 | 100% |
-
-### Top 5 Files by Token Count
-
-1. `src/pages/index.js` - 3,429 tokens (11.5% of total)
-2. `src/pages/audiophile/onix.js` - 2,192 tokens (7.4%)
-3. `README.md` - 1,956 tokens (6.6%)
-4. `components/icons/totoro.js` - 1,774 tokens (5.9%)
-5. `components/grid-item.js` - 1,292 tokens (4.3%)
-
-### Largest Files by LOC
-
-1. `src/pages/index.js` - 359 lines (homepage sections)
-2. `components/grid-item.js` - 196 lines (4 grid variants)
-3. `components/navbar.js` - 160 lines (navigation bar)
-4. `components/totoro.js` - 147 lines (3D rendering logic)
-5. `src/pages/audiophile/onix.js` - 139 lines (detailed review)
-
----
-
-## Module Dependencies
-
-### External Dependencies (13 core)
-
-**Core Framework:**
-- react@^19.2.0
-- react-dom@^19.2.0
-- react-router@^7.0.0 (client-side routing)
-
-**Styling:**
-- tailwindcss@^4.3.2 (utility-first CSS)
-- @tailwindcss/vite@^4.3.2 (Vite integration)
-- clsx@^2.1.1 (conditional classNames)
-- tailwind-merge@^3.6.0 (merge Tailwind classes)
-
-**Animation:**
-- motion@^12.42.2 (component animations)
-- gsap@^3.15.0 (scroll animations, GSAP ScrollTrigger)
-- @gsap/react@^2.1.2 (GSAP React integration)
-- lenis@^1.3.25 (smooth scroll behavior)
-
-**3D Graphics:**
-- three@0.172.0
-
-**UI Primitives:**
-- @radix-ui/react-dropdown-menu@^2.1.20
-
-**Icons:**
-- react-icons@5.3.0
-
-**Analytics:**
-- @vercel/analytics@^1.5.0
-- @vercel/speed-insights@^1.2.0
-
-### Internal Dependency Graph
-
-```
-src/app.tsx (BrowserRouter)
-├── ThemeProvider (providers/theme.tsx + providers/use-theme.ts)
-├── SceneProvider (components/scene/scene-provider.tsx)
-├── MainLayout (components/layout/main.tsx)
-│   ├── AmbientScene
-│   ├── Navbar
-│   │   ├── Logo
-│   │   │   └── TotoroIcon
-│   │   └── ThemeToggleButton
-│   ├── Routes → Page Components (each returns a fragment, no layout wrapper)
-│   │   ├── SEO
-│   │   ├── JSON-LD Schemas
-│   │   └── ProjectCard / FeaturedProjectCard / grid cards
-│   └── Footer
-├── Vercel Analytics
-└── Vercel Speed Insights
-```
-
----
-
-## Entry Points & Code Flow
-
-### 1. Initial Load (Vite SPA)
-
-```
-User accesses site
-  → Vite loads index.html (Vite template)
-  → src/main.tsx initializes
-    → React.createRoot + React.StrictMode
-    → App component mounts (src/app.tsx)
-      → BrowserRouter setup
-      → ThemeProvider (dark/light mode context + localStorage)
-      → MainLayout (Navbar, Footer, Routes)
-        → Route components (home, works, activities, audiophile)
-        → Navbar (fixed, with theme toggle)
-        → Dynamic Totoro 3D scene (lazy loaded with spinner)
-      → Vercel Analytics
-      → Vercel Speed Insights
-```
-
-### 2. Page Navigation Flow
-
-```
-User clicks navbar link
-  → React Router client-side navigation (no page reload)
-  → Motion exit animation (0.3-0.4s fade)
-  → Route change
-  → New page mounts
-    → DetailPage Layout wrapper (if detail page)
-    → SEO component (meta tags injected)
-    → JSON-LD schemas
-    → Page content with Motion enter animation
-    → Scroll to top (window.scrollTo)
-```
-
-### 3. Data Strategy
-
-**All Data Hardcoded (No Backend):**
-- Projects, activities, audio reviews defined in `src/data/works-data.ts`
-- Content embedded directly in component JSX
-- No API calls or database queries
-- Extremely fast rendering (pure client-side)
-
-### 4. 3D Scene + GSAP Flow
-
-```
-MainLayout mounts
-  → Lazy load scene components (components/scene/*)
-  → Totoro component mounts
-    → Three.js setup (WebGLRenderer, Camera, Lights)
-    → Load GLTF model (lib/model.ts)
-      → DRACOLoader from Google CDN
-      → Decompress totoro.glb
-      → Add to scene
-    → Start animation loop
-  → GSAP ScrollTrigger (separate scene components)
-    → onMouseEnter/wheel events trigger GSAP animations
-    → Lenis smooth scroll applied
-    → Zero re-renders (GSAP updates DOM directly)
-  → Cleanup on unmount (dispose Three.js, kill GSAP tweens)
-```
-
----
-
-## Component Interaction Patterns
-
-### Animation System
-
-**Motion (Framer's modern replacement) Usage:**
-
-1. **Page Transitions** (detail-page.tsx):
-   - Entry: opacity 0→1, y 20→0 (0.3-0.4s, easeOut)
-   - Exit: opacity 1→0, y 0→20 (0.2-0.3s)
-   - Uses `<motion.div>` with variants
-
-2. **Scroll-Based Reveals** (reveal.tsx):
-   - `initial={{ opacity: 0, y: 20 }}`
-   - `whileInView={{ opacity: 1, y: 0 }}`
-   - `viewport={{ once: true, margin: "-50px" }}`
-   - Staggered delays for multiple elements
-
-3. **Hover Interactions**:
-   - Lift effect: `whileHover={{ y: -8 }}`
-   - Scale: `whileHover={{ scale: 1.02 }}`
-   - Shadow from Tailwind hover classes
-
-4. **GSAP Scroll Animations** (scene components):
-   - ScrollTrigger for complex scroll-linked animations
-   - Direct DOM manipulation (zero React re-renders)
-   - Lenis smooth scroll applied globally
-   - Used for day-to-night homepage scenes
-
-5. **3D Model Animations** (scene/totoro.tsx):
-   - Intro animation: 100-frame circular camera path
-   - OrbitControls for user interaction
-   - Smooth camera tracking
-
-### Theme System
-
-**localStorage-Based Color Mode (OS preference for new visitors):**
-```typescript
-// providers/theme.tsx — readInitialMode()
-function readInitialMode() {
-  const stored = localStorage.getItem('theme') ?? localStorage.getItem('chakra-ui-color-mode')
-  if (stored === 'light') return 'light'
-  if (stored === 'dark') return 'dark'
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-}
-
-// Component usage (hook lives in providers/use-theme.ts)
-const { mode, toggle } = useTheme()
-```
-
-**Tailwind Dark Mode:**
-- `.dark` class on `<html>` enables dark variant utilities
-- CSS variables in `src/styles/global.css` for semantic colors
-- No Chakra useColorModeValue() needed (pure Tailwind)
-
-### SEO Architecture
-
-**Multi-Layer SEO:**
-
-1. **Global (_document.js)**:
-   - Preload critical assets
-   - DNS prefetch for external resources
-   - Google Fonts with display=swap
-
-2. **Per-Page (SEO component)**:
-   - Dynamic title, description, keywords
-   - Open Graph + Twitter Card
-   - Canonical URL generation
-
-3. **Structured Data (json-ld.js)**:
-   - PersonSchema - Professional profile
-   - WebsiteSchema - Site metadata
-   - ProjectSchema - Project details
-   - BreadcrumbSchema - Navigation
-
-4. **Static Files**:
-   - robots.txt - Crawler directives
-   - sitemap.xml - generated at build time (`scripts/vite-plugin-sitemap.ts`), not hand-maintained
-
----
-
-## Performance Optimizations
-
-### Code Splitting
-
-**Vite Manual Chunks (vite.config.ts):**
-1. vendor-react - React, React-DOM, React-Router (~180KB)
-2. vendor-gsap - GSAP, Lenis, @gsap/react (~150KB)
-3. vendor-three - Three.js (~200KB)
-4. motion - Motion library (~45KB)
-5. Main chunk - App code (~120KB)
-
-**Lazy Loading:**
-- Scene components lazy loaded (suspense boundaries)
-- Totoro 3D component: React.lazy() with loading spinner
-- Detail pages prefetch on hover
-
-### Image Optimization
-
-**Static Asset Strategy:**
-- Images pre-compressed (PNG/JPG → WebP in public/)
-- Responsive `srcset` via image tags
-- Lazy loading via `loading="lazy"` attribute
-- Quality: optimized at source (target < 300KB per image)
-- Cache: 1-year immutable headers via Vercel
-
-**Current Usage:**
-- All images in `public/images/` fetched as static assets
-- `<img loading="lazy" srcSet={...} />` in components
-- No JavaScript-based image optimization (pure HTML)
-
-### 3D Model Optimization
-
-**Compression:**
-- Original: 44MB
-- First compression: 5.7MB (87% reduction)
-- Draco compression: 1.5MB (96.7% total reduction)
-
-**Rendering:**
-- Pixel ratio capped at 2 (mobile performance)
-- Shadows disabled (no castShadow/receiveShadow)
-- Precision: mediump (lower GPU load)
-- Antialiasing: conditional (devicePixelRatio < 2)
-- Stencil buffer: disabled
-
-### Memoization
-
-**React.memo() Usage:**
-- Navbar (prevent re-renders on route changes)
-- Footer (static content, no deps)
-- Theme toggle (isolated icon swap)
-- Detail page headers (prevent unnecessary remounts)
-- Grid items (card list renders)
-- Totoro 3D component (expensive render)
-
-### Caching Strategy
-
-**HTTP Cache Headers:**
-- 3D model: `public, max-age=31536000, immutable`
-- Images: `public, max-age=31536000, immutable`
-- Next.js static: `public, max-age=31536000, immutable`
-
-**Browser Caching:**
-- Service Worker: Not implemented
-- localStorage: Color mode preference only
+## Quality Gates
+
+- `yarn lint` — ESLint over `src components lib providers scripts vite.config.ts`,
+  expected 0 errors / 0 warnings (react-refresh rule enforced via hook-file splits)
+- `yarn build` — tsc strict + Vite build must both pass
+- No automated test suite — manual checklist + Lighthouse (see roadmap)
+- Line endings: `.gitattributes` normalizes all text to LF
 
 ---
 
 ## Known Technical Debt
 
-### 1. Scene Component Organization (Low Priority)
-
-**GSAP Scene Components:**
-- Scroll animations isolated to scene/ directory (good)
-- Consider extracting reusable GSAP patterns to lib/gsap-utils.ts
-- May reduce duplication in ScrollTrigger setup
-
-### 2. Data File Size (Low Priority)
-
-**src/data/works-data.ts:**
-- Contains all projects, activities, audio data (single file)
-- Could split: works-data.ts, activities-data.ts, audio-data.ts
-- Current approach is simpler for small dataset
-
-### 3. Component Type Safety (Low Priority)
-
-**Current State:**
-- All components are TypeScript (.tsx)
-- PropTypes not needed (TS provides inference)
-- Consider extracting shared types to src/types/
-
-### 4. Testing Coverage (Not Implemented)
-
-**Current State:**
-- No unit tests, E2E tests, or visual regression tests
-- Lighthouse audit is primary quality gate
-- Consider: Jest + React Testing Library for component tests
+See `docs/project-roadmap.md` → "Known Issues & Technical Debt" (single source;
+duplicated lists here kept drifting).
 
 ---
 
-## Security Considerations
+## Security Posture
 
-**Implemented:**
-- SVG handling: Strict CSP (`script-src 'none'; sandbox`)
-- No exposed secrets in public/ directory
-- No API routes (static content only)
-- Robots.txt properly configured
-
-**Potential Risks:**
-- No Content Security Policy headers for HTML
-- No rate limiting (N/A for static site)
-- CV.pdf is intentionally public
+- Static SPA: no API routes, no secrets in client code, CV.pdf intentionally public
+- HTTPS + HSTS via Vercel defaults; no custom CSP headers configured
+- Draco decoder and Google Fonts are the only external runtime origins
 
 ---
 
-## Browser Compatibility
+## Browser Support
 
-**Supported:**
-- Chrome 90+ (ES2020, WebGL 2.0)
-- Firefox 88+ (ES2020, WebGL 2.0)
-- Safari 14+ (ES2020, WebGL 2.0)
-- Edge 90+ (Chromium-based)
-
-**Not Supported:**
-- IE11 (Three.js requires modern browser)
-- Safari < 14 (missing ES2020 features)
-
-**Progressive Enhancement:**
-- 3D model: Graceful degradation with loading spinner
-- Animations: Disabled in `prefers-reduced-motion`
-- Images: Fallback to original format if AVIF/WebP unsupported
+Modern evergreen browsers (ES2020 + WebGL). No IE11. Reduced-motion users get a
+static scene composition (`SceneProvider` gates Lenis/ScrollTrigger) and
+instant page swaps; `MotionConfig reducedMotion="user"` covers Motion animations.
 
 ---
 
-## Unresolved Questions
-
-1. Why mix SSR and SSG if both only fetch cookies? Could standardize on SSG for better performance.
-
-2. Are there source/original image files stored elsewhere? No compression pipeline detected.
-
-3. Is there a CI/CD pipeline for asset optimization? No GitHub Actions workflow found.
-
-4. Are analytics tracking Core Web Vitals in production? reportWebVitals() only logs to console.
-
-5. Is there a plan to add API routes for contact form, newsletter, or backend features?
-
-6. Why is activities section under-utilized (only 1 activity)? Future expansion planned?
-
-7. Browser support matrix - has Safari 3D rendering been tested? Any known issues?
-
----
-
-**Summary Complete**
-**Last Updated:** 2026-01-20
-**Codebase Health:** High (clean architecture, minor tech debt)
-**Performance:** Excellent (97+ Lighthouse, optimized assets)
-**Maintainability:** Good (consistent patterns, needs DRY refactor)
+**Maintained By:** Trương Tuấn Lộc
+**Regenerate hint:** verify counts against `works-data.ts` / `home-data.ts` and
+the real file tree before editing this file.

@@ -2,9 +2,9 @@
 
 **Project Name:** Personal Portfolio Website
 **Owner:** Trương Tuấn Lộc (Jura69)
-**Version:** 1.0.0
+**Version:** 2.x (Vite SPA)
 **Status:** Production (Live)
-**Last Updated:** 2026-01-20
+**Last Updated:** 2026-07-30
 **Live URL:** https://my-profile-jura69.vercel.app
 
 ---
@@ -29,7 +29,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 
 4. **User Experience** - Deliver smooth, delightful interactions with responsive design, dark/light modes, and engaging animations
 
-5. **Technical Demonstration** - Showcase advanced frontend capabilities (3D graphics, animations, SSR/SSG) as proof of skills
+5. **Technical Demonstration** - Showcase advanced frontend capabilities (3D graphics, scroll-driven animation, performance engineering) as proof of skills
 
 ### Secondary Goals
 
@@ -82,7 +82,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 1. Include portfolio URL in resume/application
 2. Recruiter clicks link from application
 3. Lands on homepage, views skills and experience
-4. Clicks "My Personal Projects" → Reviews 4 projects
+4. Clicks "My Personal Projects" → Reviews the project portfolio (11 projects)
 5. Downloads CV PDF
 6. Connects on LinkedIn or sends email
 
@@ -93,7 +93,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 **Trigger:** Shortlist candidate for interview
 **Flow:**
 1. Access portfolio from email/LinkedIn
-2. Review homepage technical skills (18 badges)
+2. Review homepage technical skills (23 skills in 4 groups)
 3. Navigate to Works section
 4. Click Food Lover project → View tech stack, GitHub link, screenshots
 5. Open GitHub repository in new tab
@@ -146,14 +146,14 @@ Create a modern, high-performance portfolio website that showcases professional 
 
 ## Functional Requirements
 
-### FR-01: Homepage (index.js)
+### FR-01: Homepage (src/pages/index.tsx)
 **Priority:** P0 (Critical)
 
 **Requirements:**
-- Display animated hero section with profile photo
-- Show "About Me" section with bio paragraph
-- Present skills in 3 categories (Frontend, Backend, Tools) with 18 animated badges
-- Show work experience timeline with 3 positions + education
+- Display animated hero section (day→night scroll narrative with 3D Totoro)
+- Show "About Me" section with bio and stat pills
+- Present 23 skills in 4 groups (Frontend, AI & ML, Backend, Tools & Others) in a bento grid
+- Show work experience timeline with 4 entries (3 positions + education)
 - Include CV download button (opens /files/CV.pdf)
 - Display social links (GitHub, LinkedIn, Facebook, Instagram, Email)
 - Implement 3D Totoro character with auto-rotate and user interaction
@@ -166,11 +166,11 @@ Create a modern, high-performance portfolio website that showcases professional 
 - 3D model loads within 3s on 4G connection
 - Dark/light mode persists across sessions
 
-### FR-02: Project Portfolio (works.js + detail pages)
+### FR-02: Project Portfolio (src/pages/works.tsx + detail pages)
 **Priority:** P0 (Critical)
 
 **Requirements:**
-- Display 4 project cards in responsive grid (1 col mobile, 2 col desktop)
+- Display 11 projects: 3 featured large cards + compact responsive grids (personal / enterprise @ Creasia)
 - Each card shows: thumbnail, title, brief description, link to detail page
 - Detail pages include: title, year badge, full description, metadata (GitHub, Platform, Stack, Status), 2-4 project images
 - Implement breadcrumb navigation (Works > Project Name)
@@ -183,20 +183,21 @@ Create a modern, high-performance portfolio website that showcases professional 
 - SEO meta tags unique per project
 - Breadcrumbs clickable and functional
 
-### FR-03: Activities Section (activities.js + ytc.js)
+### FR-03: Activities Section (src/pages/activities.tsx + activities/ytc.tsx)
 **Priority:** P1 (Important)
 
 **Requirements:**
 - Display activities grid (currently 1 item, scalable to more)
 - Show YTC club detail page with description and images
 - Support same layout pattern as Works section
+- Route intentionally lives OFF the navbar; reachable via the works-page link and direct URL
 
 **Acceptance Criteria:**
 - Grid layout matches Works section design
 - Easy to add new activities (copy existing pattern)
 - Images optimized and lazy-loaded
 
-### FR-04: Audiophile Section (audiophile.js + 4 detail pages)
+### FR-04: Audiophile Section (src/pages/audiophile.tsx + 4 detail pages)
 **Priority:** P1 (Important)
 
 **Requirements:**
@@ -214,10 +215,10 @@ Create a modern, high-performance portfolio website that showcases professional 
 **Priority:** P0 (Critical)
 
 **Requirements:**
-- Fixed navigation bar at top (blur backdrop)
+- Fixed navigation bar at top (blur backdrop), content column 1100px aligned with pages
 - Logo clickable → returns to homepage
-- Desktop: horizontal links (Works, Activities, Audiophile, GitHub)
-- Mobile: hamburger menu with slide-out drawer
+- Desktop: horizontal links (Works, Audiophile, GitHub — Activities off-nav by decision)
+- Mobile: hamburger button opening a Radix dropdown menu
 - Theme toggle button (sun/moon icon swap)
 - Active route highlighting
 - Footer with copyright and dynamic year
@@ -238,8 +239,9 @@ Create a modern, high-performance portfolio website that showcases professional 
 - Twitter Card metadata
 - JSON-LD structured data (Person, Website, ProfilePage, Project, Breadcrumb schemas)
 - Canonical URLs for all pages
+- Static OG/description fallback in index.html for no-JS crawlers (FB/Zalo/LinkedIn)
 - robots.txt allowing all crawlers
-- sitemap.xml with all pages listed
+- sitemap.xml generated at build time from works-data (cannot drift from routes)
 - Mobile-optimized viewport and theme color
 
 **Acceptance Criteria:**
@@ -256,11 +258,11 @@ Create a modern, high-performance portfolio website that showcases professional 
 - First Contentful Paint (FCP) < 1.5s
 - Time to Interactive (TTI) < 3.5s
 - Cumulative Layout Shift (CLS) < 0.1
-- Image optimization (AVIF/WebP with lazy loading)
+- Image optimization (WebP, max 1200px, with lazy loading)
 - 3D model Draco compression (< 2MB)
-- Code splitting for Three.js, GSAP, Motion
-- Aggressive caching (1 year static assets)
-- SWC minification
+- Route-level lazy loading + vendor chunk isolation (Three.js, GSAP, Motion, icons)
+- Vercel immutable caching for hashed build assets
+- SWC transpilation + esbuild minification
 
 **Acceptance Criteria:**
 - Pass all Core Web Vitals thresholds
@@ -309,7 +311,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 - **CSP:** Strict Content Security Policy for SVG
 - **Data Privacy:** No user tracking without consent
 - **Secrets:** No API keys or credentials in client code
-- **Dependencies:** Regular security audits (npm audit)
+- **Dependencies:** Regular security audits (yarn audit)
 
 ### NFR-04: Maintainability
 - **Code Quality:** ESLint + Prettier enforced
@@ -390,44 +392,39 @@ Create a modern, high-performance portfolio website that showcases professional 
 
 **Design & UX:**
 - Responsive design (mobile-first approach)
-- Dark/light mode with SSR persistence
-- Ghibli-inspired color palette (grassTeal, forest green, sky blue)
-- Smooth page transitions (Framer Motion)
+- Dark/light mode: new visitors follow OS prefers-color-scheme, toggle choice persists
+- Ghibli-inspired design tokens (grass teal, forest green, warm parchment)
+- Smooth page transitions (Motion 12) + GSAP day→night scroll scenes
 - Interactive 3D Totoro character
-- Scroll-triggered animations
-- Hover effects on interactive elements
+- Scroll-triggered reveals and hover micro-interactions
 
 **Content:**
-- About Me section with professional bio
-- Skills showcase (18 animated badges in 3 categories)
-- Work experience timeline (3 positions + education)
-- 4 featured projects with detail pages
+- About Me section with professional bio and stat pills (2+ yrs experience)
+- Skills showcase (23 skills in 4 groups, bento grid)
+- Work experience timeline (4 entries: 3 positions + education)
+- 11 projects (3 featured + personal/enterprise grids) with detail pages
 - 1 activity (YTC club) with detail page
 - 4 audio equipment reviews with technical specs
 - CV download (PDF)
 - Social media links (5 platforms)
 
 **Performance:**
-- AVIF/WebP image optimization
-- Lazy loading for below-fold content
-- Code splitting (Three.js, GSAP, Motion)
-- 3D model Draco compression (96.7% reduction)
-- SWC minification
-- 1-year caching for static assets
-- Preloading critical resources
+- WebP image optimization (max 1200px)
+- Route-level lazy loading (every page except homepage is its own ~2KB chunk)
+- Vendor chunk isolation (Three.js, GSAP, Motion, icons, React)
+- 3D model Draco compression (96.7% reduction), loaded lazily with the hero
+- Vercel immutable caching for hashed build assets
 
 **SEO:**
-- Comprehensive meta tags (Open Graph, Twitter Card)
+- Static OG fallback (index.html) + per-page meta hoisted by React 19
 - JSON-LD structured data (5 schema types)
 - Canonical URLs
-- robots.txt and sitemap.xml
+- robots.txt + build-time sitemap.xml (derived from works-data)
 - Mobile-optimized viewport
-- Schema.org markup
 
 **Analytics:**
 - Vercel Analytics integration
-- Speed Insights (Core Web Vitals)
-- Web Vitals reporting (console logging)
+- Speed Insights (Core Web Vitals field data)
 
 ### Planned Features (Future Roadmap)
 
@@ -480,7 +477,7 @@ Technical depth without jargon overload. Scannable headings, short paragraphs, v
 Warm, inviting colors. Organic shapes. Whimsical but professional. Totoro as brand mascot.
 
 ### 7. Zero-Config Simplicity
-No build configuration gymnastics. Standard Next.js patterns. Clear file structure.
+No build configuration gymnastics. Standard Vite + React patterns. Clear file structure.
 
 ### 8. Evidence-Based Optimization
 Lighthouse audits before/after changes. Real user metrics (Core Web Vitals) drive decisions.
@@ -497,14 +494,13 @@ Lighthouse audits before/after changes. Real user metrics (Core Web Vitals) driv
 - Disable shadows and reduce precision
 - Provide static fallback image (future)
 
-### Risk 2: Large Image Assets Slow Load Times
-**Probability:** High | **Impact:** Medium
-**Current Status:** 11MB images in public/
+### Risk 2: Image Asset Bloat Returns Over Time
+**Probability:** Medium | **Impact:** Medium
+**Current Status:** RESOLVED baseline — ~2.5MB total, all WebP (2026-07-30 conversion pass)
 **Mitigation:**
-- Compress large PNGs (target 5MB → 3MB)
-- Convert to WebP source files
-- Implement image CDN (Cloudinary/ImageKit)
-- Lazy load all images
+- Every new image goes through the WebP/max-1200px/q~80 constraint before commit
+- Three legacy files still exceed the 150KB budget (tracked in project-roadmap.md)
+- Image CDN deliberately deferred — re-evaluate only at much larger asset volume
 
 ### Risk 3: Vercel Free Tier Bandwidth Limits
 **Probability:** Low | **Impact:** Medium
@@ -531,7 +527,7 @@ Lighthouse audits before/after changes. Real user metrics (Core Web Vitals) driv
 ### Risk 6: Security Vulnerabilities in Dependencies
 **Probability:** Medium | **Impact:** Medium
 **Mitigation:**
-- Run `npm audit` weekly
+- Run `yarn audit` periodically
 - Update dependencies monthly
 - Use Dependabot for automated PRs
 - Pin critical dependency versions
@@ -588,14 +584,19 @@ Lighthouse audits before/after changes. Real user metrics (Core Web Vitals) driv
 
 ## Version History & Evolution
 
-**v2.0.0 (Current - 2026-07-07)**
+**v2.x (Current - 2026-07-30)** — review-v2 fixes plan
+- Route-level lazy loading + real vendor chunking (app chunk 510KB → ~52KB)
+- Static OG fallback + branded og-image; build-time sitemap (drift-proof)
+- System-preference theme; listing h1s; navbar/content column alignment
+- Repo hygiene: LF normalization, lint 0/0, WebP images, honest README/docs
+
+**v2.0.0 (2026-07-07)**
 - Major UI rebuild: Next.js → Vite SPA
 - React 18 → React 19
 - Chakra UI → Tailwind CSS 4
 - Framer Motion → Motion 12 + GSAP + Lenis
 - Client-side routing (React Router 7)
 - Day-to-night homepage with GSAP scroll scenes
-- Maintained 97+ Lighthouse across all metrics
 
 **v1.0.0 (Previous - 2026-01-20)**
 - Initial Next.js 14 production release
@@ -610,38 +611,35 @@ Lighthouse audits before/after changes. Real user metrics (Core Web Vitals) driv
 - **2025-01-05:** Totoro Draco compression (96.7% reduction)
 - **2024-11:** Design concept and initial tech stack selection
 
-**Planned Releases:**
-- **v2.1.0 (Q3 2026):** Blog section, contact form
-- **v2.2.0 (Q4 2026):** PWA features, offline support
-- **v3.0.0 (2027):** Testing suite (Jest + React Testing Library)
+**Planned Releases (aspirational — see project-roadmap.md):**
+- **v2.1.0:** Contact form, parity assertions, Suspense skeleton
+- **v2.2.0:** Blog section; PWA (designed with the stale-chunk reload strategy)
+- **v3.0.0:** Test suite (Vitest + React Testing Library)
 
 ---
 
 ## Appendices
 
-### A. Color Palette
+### A. Color Palette (authority: `@theme` in src/styles/global.css)
 
 **Primary:**
 - Grass Teal: #88ccca
 
 **Ghibli Theme:**
-- Forest Green: #7eb77f
-- Sky Blue: #87CEEB
-- Soft Pink: #FFB6C1
-- Cream Yellow: #FFF8DC
-- Mint Green: #98D8C8
-- Lavender: #E6E6FA
+- Forest Green: #7eb77f · Deep Forest: #4a7c59 · Leaf Green: #6db86b
+- Sky Blue: #87ceeb · Soft Pink: #e8a0b4 · Cream Yellow: #fff8dc
+- Warm Parchment: #f5f0e8 · Night Forest: #1a1e2e
+- Mint Green: #98d8c8 · Lavender: #c4b5d8 · Golden Dust: #d4a853 · Warm Brown: #8b6f47
 
-**Semantic:**
-- Light Mode BG: #f0e7db (cream)
-- Dark Mode BG: #202023 (charcoal)
-- Light Mode Link: #3d7aed (blue)
-- Dark Mode Link: #ff63c3 (pink)
+**Semantic (light / dark):**
+- Surface: #f5f0e8 / #1a1e2e · Surface Elevated: #fbf7ee / #232838
+- Ink: #2d2a24 / #e9e7e4 · Ink Muted: #5c564c / #a8adb8
+- Accent: #4a7c59 / #98d8c8 · Line: #e2dbcd / #2e3447
 
 ### B. Typography
 
-**Primary Font:** M PLUS Rounded 1c
-**Weights:** 100, 300, 400, 500, 700, 800, 900
+**Primary Font:** M PLUS Rounded 1c (Google Fonts, non-render-blocking)
+**Loaded Weights:** 300, 400, 500, 700, 800 (see index.html font URL)
 **Fallback Stack:** -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif
 
 ### C. Key URLs
@@ -651,13 +649,10 @@ Lighthouse audits before/after changes. Real user metrics (Core Web Vitals) driv
 - **LinkedIn:** https://www.linkedin.com/in/tuấn-lộc-b24b391ab/
 - **Email:** Loctruongtuan@gmail.com
 
-### D. Lighthouse Audit Results (Latest)
+### D. Lighthouse Audit Results (historical measurement, pre-rebuild)
 
-**Performance:** 97
-**Accessibility:** 100
-**Best Practices:** 100
-**SEO:** 100
-**Date:** 2026-01-20
+**Performance:** 97 · **Accessibility:** 100 · **Best Practices:** 100 · **SEO:** 100
+**Date:** 2026-01-20 (Next.js v1 era — re-audit pending for the Vite build)
 
 ---
 

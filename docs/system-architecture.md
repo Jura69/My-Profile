@@ -1,8 +1,8 @@
 # System Architecture Documentation
 
 **Project:** Personal Portfolio Website
-**Architecture Style:** Vite SPA (Single Page Application)
-**Last Updated:** 2026-07-07
+**Architecture Style:** Vite SPA (static, client-rendered)
+**Last Updated:** 2026-07-30
 **Build Tool:** Vite 6
 **Runtime:** React 19 + React Router 7 (client-side routing)
 
@@ -13,826 +13,298 @@
 1. [High-Level Architecture](#high-level-architecture)
 2. [Technology Stack](#technology-stack)
 3. [Component Hierarchy](#component-hierarchy)
-4. [Data Flow](#data-flow)
+4. [Data & State](#data--state)
 5. [Rendering Strategy](#rendering-strategy)
 6. [Build & Deployment Pipeline](#build--deployment-pipeline)
 7. [Performance Architecture](#performance-architecture)
 8. [SEO Architecture](#seo-architecture)
 9. [3D Graphics Implementation](#3d-graphics-implementation)
-10. [Security Architecture](#security-architecture)
+10. [Security Posture](#security-posture)
 
 ---
 
 ## High-Level Architecture
 
-### Architecture Overview
-
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        User Browser                          │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │   React 19   │  │ Three.js 3D  │  │  Motion 12   │      │
-│  │  Components  │  │   Renderer   │  │ + GSAP Scroll│      │
-│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘      │
-│         │                  │                  │               │
-│         └──────────────────┴──────────────────┘               │
-│                            │                                  │
-│                ┌───────────▼───────────┐                     │
-│                │  Tailwind CSS 4       │                     │
-│                │  + Design Tokens      │                     │
-│                │  (.dark mode)         │                     │
-│                └───────────┬───────────┘                     │
-└────────────────────────────┼──────────────────────────────────┘
+│                        User Browser                         │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
+│  │   React 19   │  │ Three.js 3D  │  │  Motion 12   │       │
+│  │  Components  │  │  (lazy GLB)  │  │ + GSAP Scroll│       │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘       │
+│         └──────────────────┴─────────────────┘              │
+│                            │                                │
+│                ┌───────────▼───────────┐                    │
+│                │  Tailwind CSS 4       │                    │
+│                │  @theme tokens +      │                    │
+│                │  .dark class          │                    │
+│                └───────────┬───────────┘                    │
+└────────────────────────────┼────────────────────────────────┘
                              │
                     ┌────────▼────────┐
-                    │   Vite 6 SPA    │
-                    │ (React Router 7)│
-                    │ (Client Routes) │
-                    └────────┬────────┘
-                             │
-        ┌────────────────────┼────────────────────┐
-        │                    │                    │
-  ┌─────▼──────┐      ┌─────▼─────┐      ┌──────▼──────┐
-  │   Home     │      │   Works   │      │ Activities  │
-  │  + Scene   │      │  (Grid)   │      │  Audiophile │
-  │ (Day→Night)│      │           │      │   (Detail)  │
-  └─────┬──────┘      └─────┬─────┘      └──────┬──────┘
-        │                    │                    │
-        └────────────────────┴────────────────────┘
-                             │
-                    ┌────────▼────────┐
-                    │  Vercel Edge    │
-                    │    Network      │
-                    │  (CDN + Cache)  │
-                    └────────┬────────┘
-                             │
-                    ┌────────▼────────┐
-                    │  Static Assets  │
-                    │  - Images(2.5MB)│
-                    │  - 3D Model     │
-                    │  - JS/CSS chunks│
+                    │  Vercel CDN     │
+                    │  static dist/   │
+                    │  SPA rewrite    │
+                    │  (vercel.json)  │
                     └─────────────────┘
 ```
 
-### Key Architectural Decisions
+**Key decisions:**
 
-**1. Client-Side Rendering (SPA) First**
-- All routing handled by React Router (no server needed)
-- Instant navigation (no full page reloads)
-- Content hardcoded (no API calls)
-- Faster local development with Vite
-
-**2. TypeScript + Tailwind Foundation**
-- TypeScript for type safety (all .tsx files)
-- Tailwind CSS 4 for utility-first styling
-- Design tokens in global.css (@theme)
-- No Chakra UI or Emotion overhead
-
-**3. Animation Architecture**
-- Motion 12 for component-level animations (transitions, hovers)
-- GSAP ScrollTrigger + Lenis for scroll-linked effects
-- GSAP confined to scene components (zero React re-render cost)
-- Respects `prefers-reduced-motion`
-
-**4. Vercel Edge Deployment**
-- Static SPA served from CDN
-- Automatic HTTPS and git integration
-- 1-year cache headers for assets
-- Instant deployments on git push
+1. **Pure static SPA** — no server, no API; all content is TypeScript data.
+   React Router 7 handles navigation client-side; Vercel rewrites every path
+   to `index.html` (`vercel.json`).
+2. **TypeScript + Tailwind 4** — strict TS everywhere; design tokens live in
+   `src/styles/global.css` under `@theme` (Tailwind 4 has no config file here).
+3. **Two-tier animation system** — Motion 12 for component-level
+   transitions/reveals; GSAP ScrollTrigger + Lenis EXCLUSIVELY inside
+   `components/scene/` writing CSS vars/data-attrs directly (zero React
+   re-renders on scroll).
+4. **Route-level code splitting** — every page except the homepage is a lazy
+   chunk; heavy vendors isolated into stable cacheable chunks.
 
 ---
 
 ## Technology Stack
 
-### Frontend Framework
-
-**Vite 6**
-- **Why:** Lightning-fast SPA build tool (1000x faster than Webpack)
-- **Trade-offs:** No SSR (but not needed for portfolio)
-- **Key Features Used:**
-  - ESM-based dev server (instant HMR)
-  - SWC transpilation (Rust, very fast)
-  - Manual code splitting (vendor isolation)
-  - TypeScript support out-of-box
-  - Rollup-based production builds
-
-**React 19 + React Router 7**
-- **React 19:** Latest, with improved hooks and performance
-- **Hooks Used:** useState, useEffect, useRef, useCallback, useMemo, useContext
-- **React Router 7:** Client-side navigation (SPA routing)
-- **Advantages:** No build complexity, all routing in src/app.tsx
-
-### Styling Framework
-
-**Tailwind CSS 4**
-- **Why:**
-  - Smallest CSS footprint (only used classes)
-  - Rapid iteration (no context switching to CSS)
-  - Built-in dark mode (class-based)
-  - Excellent TypeScript support in config
-  - @tailwindcss/vite plugin for Vite
-- **Alternatives Considered:**
-  - CSS Modules (more boilerplate)
-  - Emotion/Styled Components (larger JS bundle)
-  - UnoCSS (less mature ecosystem)
-- **Usage:**
-  - Utility classes in JSX
-  - Design tokens (@theme in global.css)
-  - Dark mode via `.dark` class on <html>
-  - Semantic color variables for light/dark
-
-**Radix UI (Optional Primitives)**
-- **Why:** Headless, unstyled components (when Tailwind alone isn't enough)
-- **Current Usage:** Dropdown menu (only dependency when needed)
-
-### Animation
-
-**Motion 12 (Framer's successor)**
-- **Why:**
-  - Modern animation primitives
-  - Full React 19 compatibility
-  - Smaller bundle than Framer Motion
-  - `<motion.div>` for declarative animations
-- **Patterns:**
-  - Page transitions (enter/exit variants)
-  - Scroll-triggered reveals (whileInView)
-  - Hover interactions (whileHover)
-  - Staggered children animations
-
-**GSAP 3.15 + ScrollTrigger + Lenis**
-- **Why:**
-  - Advanced scroll-linked animations
-  - Performance optimized (no React re-renders)
-  - Smooth scroll library (Lenis) integration
-  - Used for complex hero/scene animations
-- **Separation:** GSAP confined to `src/components/scene/` (not in main app flow)
-- **Benefit:** Zero React re-render overhead during scroll
-
-### 3D Graphics
-
-**Three.js 0.172.0**
-- **Why:**
-  - Industry standard WebGL library
-  - GLTF/Draco support
-  - OrbitControls for interaction
-- **Alternatives Considered:**
-  - React Three Fiber (abstraction overhead)
-  - Babylon.js (larger bundle)
-  - PlayCanvas (game engine overkill)
-- **Components:**
-  - WebGLRenderer
-  - OrthographicCamera
-  - GLTFLoader + DRACOLoader
-  - OrbitControls
-
-### Build Tools
-
-**Vite 6 + Rollup**
-- **Transpiler:** SWC (Rust-based, 20x faster than Babel)
-- **Minifier:** esbuild (production-grade)
-- **Features:**
-  - Instant HMR in dev mode
-  - Manual code splitting (vendor-react, motion, gsap, three)
-  - Tree shaking
-  - Asset inlining
-  - CSS minification
-
-**TypeScript 5.7**
-- **Build Step:** `tsc -b` before Vite build
-- **Type Checking:** Full strict mode
-- **Path Aliases:** @/* → src/*
+| Layer | Choice | Why / Notes |
+|---|---|---|
+| Build | Vite 6 (SWC transpile, esbuild minify, Rollup bundle) | Instant HMR; `tsc -b` runs first for strict type gate |
+| UI | React 19 | Native metadata hoisting (`<title>`/`<meta>` from components), Suspense-driven lazy routes |
+| Routing | React Router 7 (`BrowserRouter`) | Navigations run in `startTransition` → old page stays visible while lazy chunks stream |
+| Styling | Tailwind CSS 4 via `@tailwindcss/vite` | `@theme` tokens; semantic vars (`--surface`, `--ink`, `--accent`, `--line`) flipped by `.dark` |
+| Component animation | Motion 12 | Reveals, hovers, page fade; honors `MotionConfig reducedMotion="user"` |
+| Scroll animation | GSAP 3.15 + ScrollTrigger + Lenis | One rAF loop (Lenis driven by GSAP ticker); confined to `components/scene/` |
+| 3D | Three.js 0.172 + GLTFLoader/DRACOLoader | Hand-rolled setup, no react-three-fiber (avoids abstraction cost for one model) |
+| UI primitive | @radix-ui/react-dropdown-menu | Mobile nav menu only |
+| Icons | react-icons (tree-shaken per-icon) | ~44 icons used → own `vendor-icons` chunk |
+| Analytics | @vercel/analytics + @vercel/speed-insights | Core Web Vitals field data |
+| Hosting | Vercel | `vercel.json`: framework vite, `dist` output, SPA rewrite; default immutable caching for hashed assets |
 
 ---
 
 ## Component Hierarchy
 
-### Application Tree
-
 ```
-App (src/app.tsx with BrowserRouter)
-├── ThemeProvider (theme context + localStorage)
-│   └── MainLayout (components/layout/main.tsx)
-│       ├── Navbar (fixed top)
-│       │   ├── Logo (clickable → home)
-│       │   ├── Desktop Navigation Links
-│       │   ├── Mobile Hamburger Menu
-│       │   └── Theme Toggle Button
-│       │       └── <motion.div> (icon swap animation)
-│       ├── Routes (React Router 7)
-│       │   ├── <Route path="/" element={<HomePage />} />
-│       │   ├── <Route path="/works" element={<WorksPage />} />
-│       │   ├── <Route path="/works/:id" element={<DetailPage />} />
-│       │   ├── <Route path="/activities" element={<ActivitiesPage />} />
-│       │   ├── <Route path="/activities/:id" element={<DetailPage />} />
-│       │   ├── <Route path="/audiophile" element={<AudiophilePage />} />
-│       │   ├── <Route path="/audiophile/:id" element={<DetailPage />} />
-│       │   └── <Route path="*" element={<NotFound />} />
-│       ├── Dynamic Scene Components (lazy loaded)
-│       │   ├── Home Day→Night Scene (GSAP + Lenis)
-│       │   └── Totoro 3D (React.lazy + loading spinner)
-│       │       └── Canvas (Three.js WebGL)
-│       │           ├── Scene, Camera, Lights
-│       │           ├── GLTF Model (Draco decompressed)
-│       │           └── OrbitControls (user interaction)
-│       └── Footer (components/footer.tsx)
-│           └── Copyright + Year
-├── SEO Component (per-page meta tags)
-├── JSON-LD Schemas (per-page structured data)
+App (src/app.tsx — BrowserRouter)
+├── ThemeProvider (providers/theme.tsx; context in providers/use-theme.ts)
+│   └── SceneProvider (components/scene/scene-provider.tsx — Lenis instance,
+│       │              ScrollTrigger sync, reducedMotion state, scroll reset per route)
+│       └── MainLayout (components/layout/main.tsx, memoized,
+│           │           <MotionConfig reducedMotion="user">)
+│           ├── AmbientScene (fixed background: sky gradient, sun/moon arc,
+│           │                 parallax hills, stars, zone particles — GSAP-driven)
+│           ├── Navbar (fixed; desktop links + Radix dropdown mobile menu;
+│           │           NAV_LINKS = Works, Audiophile — Activities off-nav by design)
+│           ├── RouteErrorBoundary (stale-chunk auto-reload guard)
+│           │   └── AnimatedRoutes
+│           │       └── Suspense fallback={null}        ← ABOVE the keyed wrapper
+│           │           └── motion.div key={pathname}   (0.25s entrance fade)
+│           │               └── Routes (all static paths, no URL params)
+│           │                   ├── /                    HomePage (EAGER — LCP route)
+│           │                   ├── /works               + 11 detail routes (lazy)
+│           │                   ├── /activities          + /activities/ytc (lazy)
+│           │                   ├── /audiophile          + 4 detail routes (lazy)
+│           │                   ├── /audiophile/moondropSSP → Navigate replace
+│           │                   │                          → /audiophile/moondrop-ssp
+│           │                   └── *                    NotFound
+│           └── Footer
 ├── Vercel Analytics
 └── Vercel Speed Insights
 ```
 
-### Layout Hierarchy
+Homepage composition (day→night scroll narrative): `HeroDawn` (lazy-loads the
+Three.js `Totoro`), `AboutMorning`, `SkillsBento`, `ExperienceDusk`,
+`NightContact` — each owns an inner `max-w-[1100px]` column; the fixed
+`AmbientScene` runs behind all of them.
 
-**Single Layout: MainLayout** (`components/layout/main.tsx`)
-- Global wrapper for entire app
-- Contains: Navbar, Footer, ambient scene
-- Memoized to prevent re-renders
-- Applied once in `src/app.tsx` — pages return a fragment directly, no per-page layout wrapper
-
-**Layout Usage:**
-```javascript
-// src/app.tsx (applied once, wraps the router's routes)
-<MainLayout>
-  <AnimatedRoutes />
-</MainLayout>
-
-// Page (no wrapper)
-const ProjectPage = () => (
-  <>
-    <SEO title="Project Name" />
-    {/* Page content */}
-  </>
-)
-```
+**Single layout rule:** `MainLayout` wraps once at the app root. Pages return
+fragments — there is no per-page layout wrapper (the old `layouts/article` shim
+was a no-op and was deleted).
 
 ---
 
-## Data Flow
+## Data & State
 
-### State Management Architecture
+### Content (all hardcoded TypeScript)
 
-```
-┌──────────────────────────────────────────────────────┐
-│                   Global State                        │
-│  ┌─────────────────────────────────────────────────┐ │
-│  │  Chakra Context (Theme + Color Mode)            │ │
-│  │  - localStorage fallback (client)               │ │
-│  │  - Cookie-based SSR (server)                    │ │
-│  └───────────────────┬─────────────────────────────┘ │
-└──────────────────────┼────────────────────────────────┘
-                       │
-          ┌────────────┴────────────┐
-          │                         │
-    ┌─────▼──────┐          ┌──────▼─────┐
-    │ Component  │          │ Component  │
-    │   State    │          │   State    │
-    │ (useState) │          │ (useRef)   │
-    └─────┬──────┘          └──────┬─────┘
-          │                         │
-    ┌─────▼──────┐          ┌──────▼─────┐
-    │ Derived    │          │ DOM Refs   │
-    │ State      │          │ (canvas,   │
-    │ (useMemo)  │          │ containers)│
-    └────────────┘          └────────────┘
-```
+- `components/works/works-data.ts` — 11 projects, 1 activity, 4 audio devices;
+  single source for listing cards, detail hrefs AND the build-time sitemap
+- `components/home/home-data.ts` — 23 skills / 4 groups, 4 experience entries,
+  5 social links, tech-icon map
 
-### Data Sources
+### Runtime state (deliberately minimal)
 
-**Static Content (Hardcoded):**
-- Skills array (18 badges)
-- Work experience (3 positions + education)
-- Project details (4 projects)
-- Audio reviews (4 devices)
-- No CMS, no API calls
+| State | Owner | Mechanism |
+|---|---|---|
+| Theme mode | `ThemeProvider` | React context + localStorage (`theme` key; legacy `chakra-ui-color-mode` migrated). Persists ONLY explicit choices — OS-derived mode is never auto-written |
+| Reduced motion | `SceneProvider` | `matchMedia('(prefers-reduced-motion: reduce)')` + change listener |
+| Scroll progress | GSAP ScrollTrigger | CSS custom properties + data-attrs on the scene root — never React state |
+| 3D loading | `Totoro` component | Local `useState` spinner |
 
-**Dynamic Data:**
-- Color mode preference (localStorage + cookie)
-- 3D model state (loading, error)
-- Animation states (Framer Motion)
-- Route state (Next.js router)
-
-### Props Flow
-
-**Uni-directional Data Flow:**
-```
-Parent Component
-  ├── prop1 ──► Child A
-  ├── prop2 ──► Child B
-  └── prop3 ──► Child C
-      └── prop4 ──► Grandchild
-```
-
-**No Redux/MobX:**
-- Props drilling acceptable for small app
-- Chakra Context sufficient for theme
-- No complex state management needed
+No Redux/Zustand — nothing crosses more than one context boundary.
 
 ---
 
 ## Rendering Strategy
 
-### Pure Client-Side Rendering (SPA)
+**Everything is CSR.** `src/main.tsx` calls `createRoot` (mount, not
+hydration — there is no SSR HTML to hydrate). Implications, and how each is
+mitigated:
 
-**All Pages: CSR (Client-Side Rendering)**
+1. **No-JS crawlers see only `index.html`** → static description/OG/Twitter
+   fallback block is maintained in `index.html`, kept in sync with the homepage
+   SEO props. JS-capable bots get per-page tags which React 19 hoists AHEAD of
+   the static copies (first-occurrence wins; verified in DOM).
+2. **First paint could flash the wrong theme** → inline pre-paint script in
+   `<head>` applies `.dark` before render; MUST stay logic-identical with
+   `readInitialMode()` (`providers/theme.tsx`):
 
-| Page | Routing | Data Source | Strategy |
-|------|---------|-------------|----------|
-| `/` | React Router | Hardcoded (src/data) | CSR |
-| `/works` | React Router | Hardcoded (src/data) | CSR |
-| `/works/:id` | React Router | Hardcoded (src/data) | CSR |
-| `/activities` | React Router | Hardcoded (src/data) | CSR |
-| `/activities/:id` | React Router | Hardcoded (src/data) | CSR |
-| `/audiophile` | React Router | Hardcoded (src/data) | CSR |
-| `/audiophile/:id` | React Router | Hardcoded (src/data) | CSR |
-
-**Advantages:**
-- No server logic needed
-- Instant client-side navigation (no reload)
-- Simple Vercel static deployment
-- Lightning-fast development with Vite HMR
-
-### Color Mode Persistence
-
-**localStorage Strategy (OS preference for new visitors):**
-```typescript
-// providers/theme.tsx — readInitialMode()
-function readInitialMode() {
-  const stored = localStorage.getItem('theme') ?? localStorage.getItem('chakra-ui-color-mode')
-  if (stored === 'light') return 'light'
-  if (stored === 'dark') return 'dark'
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-}
-
-// HTML pre-paint script (index.html) — logic-identical, runs before first paint
-<script>
-  var stored = localStorage.getItem('theme') || localStorage.getItem('chakra-ui-color-mode');
-  var color = stored === 'light' ? 'light' : stored === 'dark' ? 'dark'
-    : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  document.documentElement.classList.toggle('dark', color === 'dark');
-</script>
+```javascript
+var stored = localStorage.getItem('theme') || localStorage.getItem('chakra-ui-color-mode');
+var color = stored === 'light' ? 'light' : stored === 'dark' ? 'dark'
+  : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+document.documentElement.classList.toggle('dark', color === 'dark');
 ```
 
-### Build-Time vs Runtime
-
-**Build-Time (Vite):**
-- TypeScript type-checking (tsc -b)
-- SWC transpilation (ES modules)
-- Tailwind CSS JIT compilation
-- Tree-shaking (unused code removal)
-- Manual code splitting (vendor chunks)
-- Asset minification and hashing
-
-**Runtime (Browser):**
-- React hydration (mount to HTML root)
-- React Router navigation (client-side, no reloads)
-- Lazy loading (React.lazy + Suspense)
-- Animation triggers (Motion, GSAP)
-- 3D rendering (Three.js WebGL)
+3. **Deep links must resolve** → Vercel SPA rewrite serves `index.html` for any
+   path; React Router renders the matching route (or NotFound).
 
 ---
 
 ## Build & Deployment Pipeline
 
-### Development Workflow
+### `yarn build` = `tsc -b && vite build`
 
 ```
-Local Development
-  ├── yarn dev (Vite dev server on :5173)
-  │   ├── ES modules (no bundling)
-  │   ├── Instant HMR (< 100ms)
-  │   └── TypeScript type-checking
-  ├── yarn lint (ESLint check)
-  ├── yarn prettier (Code formatting)
-  └── yarn analyze (Bundle size viz)
+1. tsc -b                    project references: tsconfig.app.json (src/components/
+                             lib/providers) + tsconfig.node.json (vite.config.ts,
+                             which pulls scripts/vite-plugin-sitemap.ts + works-data)
+2. vite build                SWC transpile → tree-shake → Rollup chunks →
+                             esbuild minify → content-hash filenames
+3. manualChunks              function form, matches path segment AFTER the
+                             package dir (checkout-path-proof):
+                               three→vendor-three · gsap/lenis→vendor-gsap ·
+                               motion*→motion · react-icons→vendor-icons ·
+                               everything else→vendor-react
+4. sitemap plugin            generateBundle + emitFile → dist/sitemap.xml
+                             (20 URLs from works-data; redirects/404 excluded)
 ```
 
-### Build Process
+Chunk profile (2026-07-30 build): app `index.js` ~52KB · vendor-react ~342KB ·
+vendor-gsap ~136KB · motion ~129KB · vendor-icons ~48KB · vendor-three ~590KB
+(loads only with the lazy Totoro) · per-page chunks ~2KB.
+
+**Hard-won constraint:** react + small glue libs MUST share one chunk. A
+separate misc chunk produced `TypeError: Cannot read properties of undefined
+(reading 'useLayoutEffect')` at module-eval and the app silently failed to
+mount — zero console errors on load. The dev server ignores `manualChunks`, so
+any chunking change requires a `yarn preview` smoke test of the real build.
+
+### Deployment
 
 ```
-yarn build
-  ↓
-┌─────────────────────────────────────────┐
-│ 1. TypeScript Check                      │
-│    tsc -b (incremental build)            │
-│    - Type errors halt build              │
-└─────────────┬───────────────────────────┘
-              ↓
-┌─────────────────────────────────────────┐
-│ 2. Vite Build                            │
-│    - SWC transpilation                   │
-│    - JSX compilation                     │
-│    - Tree-shaking                        │
-└─────────────┬───────────────────────────┘
-              ↓
-┌─────────────────────────────────────────┐
-│ 3. Code Splitting                        │
-│    Function-form manualChunks            │
-│    (vite.config.ts): vendor-react,       │
-│    vendor-gsap, vendor-three, motion,    │
-│    vendor-icons — app chunk stays small  │
-└─────────────┬───────────────────────────┘
-              ↓
-┌─────────────────────────────────────────┐
-│ 4. Tailwind CSS Compilation              │
-│    - JIT generation (only used classes)  │
-│    - Minification                        │
-└─────────────┬───────────────────────────┘
-              ↓
-┌─────────────────────────────────────────┐
-│ 5. Asset Minification & Hashing          │
-│    - JS minification (esbuild)           │
-│    - CSS minification                    │
-│    - Content-hash in filenames           │
-└─────────────┬───────────────────────────┘
-              ↓
-┌─────────────────────────────────────────┐
-│ 6. Output Directory                      │
-│    dist/                                 │
-│    ├── index.html (entry point)          │
-│    ├── assets/ (JS, CSS chunks)          │
-│    └── images/ (static images)           │
-└──────────────────────────────────────────┘
+git push master → Vercel builds (yarn build) → atomic deploy to CDN
 ```
 
-### Deployment to Vercel
-
-```
-GitHub Push (main branch)
-  ↓
-Vercel Webhook Triggered
-  ↓
-┌─────────────────────────────────────────┐
-│ Vercel Build Environment                 │
-│ - Node.js 18.x                           │
-│ - yarn install (dependencies)            │
-│ - yarn build (Vite build)                │
-│ - Build time: ~2-3 minutes               │
-│ - Output: dist/ (static files)           │
-└─────────────┬───────────────────────────┘
-              ↓
-┌─────────────────────────────────────────┐
-│ Edge Network Deployment                  │
-│ - Global CDN (300+ locations)            │
-│ - Static asset serving (ultra-fast)      │
-│ - Atomic deployment (zero downtime)      │
-│ - Automatic HTTPS + redirects            │
-│ - Cache headers applied                  │
-└─────────────┬───────────────────────────┘
-              ↓
-Production Live
-https://my-profile-jura69.vercel.app
-```
-
-### Cache Strategy
-
-**Vercel Edge Cache:**
-```javascript
-// next.config.mjs
-headers: [
-  {
-    source: '/images/:path*',
-    headers: [
-      {
-        key: 'Cache-Control',
-        value: 'public, max-age=31536000, immutable'  // 1 year
-      }
-    ]
-  },
-  {
-    source: '/totoro-compressed.glb',
-    headers: [
-      {
-        key: 'Cache-Control',
-        value: 'public, max-age=31536000, immutable'
-      }
-    ]
-  }
-]
-```
-
-**Browser Cache:**
-- HTML: No cache (always fresh)
-- JavaScript chunks: 1 year (content hash in filename)
-- Images: 1 year (Vercel Image Optimization CDN)
-- 3D model: 1 year (static asset)
+- `vercel.json`: `framework: vite`, `outputDirectory: dist`, SPA rewrite
+  `/(.*) → /index.html`. No custom cache headers are configured — hashed
+  `/assets/*` files rely on Vercel's default immutable caching; `public/`
+  files are etag-cached.
+- Deploy-time failure mode: a redeploy deletes old hashed chunks; a long-lived
+  tab's next lazy import gets `index.html` (rewrite) and rejects →
+  `RouteErrorBoundary` auto-reloads once (sessionStorage-guarded), else shows
+  a manual reload prompt.
 
 ---
 
 ## Performance Architecture
 
-### Optimization Layers
-
 ```
-┌──────────────────────────────────────────────────────┐
-│ Layer 1: Network (Vercel Edge)                       │
-│ - Global CDN                                          │
-│ - HTTP/2, HTTP/3                                      │
-│ - Brotli compression                                  │
-│ - Edge caching (1 year immutable)                     │
-└────────────────────┬─────────────────────────────────┘
-                     ↓
-┌──────────────────────────────────────────────────────┐
-│ Layer 2: Build-Time (Vite)                           │
-│ - Code splitting (Rollup manualChunks)               │
-│ - Tree shaking                                       │
-│ - Image optimization (WebP)                          │
-│ - SWC transpilation                                  │
-└────────────────────┬─────────────────────────────────┘
-                     ↓
-┌──────────────────────────────────────────────────────┐
-│ Layer 3: Runtime (React)                             │
-│ - React.memo (prevent re-renders)                    │
-│ - Lazy loading (dynamic imports)                     │
-│ - Code splitting (route-based)                       │
-│ - Concurrent rendering                               │
-└────────────────────┬─────────────────────────────────┘
-                     ↓
-┌──────────────────────────────────────────────────────┐
-│ Layer 4: Assets (Images, 3D)                         │
-│ - Lazy loading (IntersectionObserver)                │
-│ - Progressive loading (Totoro spinner)               │
-│ - Draco compression (3D model 96.7%)                 │
-│ - Responsive images (srcset)                         │
-└──────────────────────────────────────────────────────┘
+Network   Vercel CDN · HTTP/2+ · brotli · immutable hashed assets
+Build     route-level lazy chunks · vendor isolation · tree-shaking ·
+          Tailwind JIT (~31KB CSS) · WebP images (max 1200px, q~80)
+Runtime   startTransition navigations (old page visible during chunk load) ·
+          React.memo on shell components · GSAP writes DOM directly (no
+          re-render on scroll) · one rAF loop for Lenis + ScrollTrigger ·
+          display:none for fully-hidden particle groups
+Assets    Draco GLB 44MB→1.5MB (96.7%) · GLB + three chunk load only when
+          HeroDawn mounts its lazy Totoro · loading="lazy" images
 ```
 
-### Critical Rendering Path
-
-```
-1. HTML Request
-   → Vercel Edge CDN (< 50ms TTFB)
-   ↓
-2. Parse HTML
-   → Preload: /totoro-compressed.glb
-   → DNS Prefetch: fonts.googleapis.com
-   ↓
-3. Load Critical CSS
-   → Inline pre-paint theme script (OS prefers-color-scheme fallback, prevents FOUC)
-   ↓
-4. Load JavaScript
-   → Main chunk (< 500KB)
-   → React hydration
-   ↓
-5. Lazy Load Non-Critical
-   → Totoro 3D model (dynamic import)
-   → Below-fold images (lazy loading)
-   ↓
-6. Interactive
-   → Framer Motion animations trigger
-   → OrbitControls enable
-```
-
-### Bundle Optimization
-
-**Vite `manualChunks` (function form — the object form left ~300KB of subpath
-imports like `react-dom/client` and `gsap/ScrollTrigger` stuck in the app chunk):**
-```javascript
-// vite.config.ts
-manualChunks(id) {
-  if (!id.includes('node_modules')) return
-  if (id.includes('three')) return 'vendor-three'
-  if (id.includes('gsap') || id.includes('lenis')) return 'vendor-gsap'
-  if (id.includes('motion')) return 'motion'
-  if (id.includes('react-icons')) return 'vendor-icons'
-  return 'vendor-react' // react, react-dom, router, small glue libs
-}
-```
+Reduced motion: `SceneProvider` skips Lenis/ScrollTrigger and renders a static
+mid-morning composition; `MotionConfig reducedMotion="user"` disables Motion
+transforms; CSS keyframes are `motion-safe:`-gated.
 
 ---
 
 ## SEO Architecture
 
-### Multi-Layer SEO Strategy
-
 ```
-┌──────────────────────────────────────────────────────┐
-│ Layer 1: Static Files                                │
-│ - robots.txt (allow all, sitemap reference)          │
-│ - sitemap.xml (generated at build time, not static)  │
-└────────────────────┬─────────────────────────────────┘
-                     ↓
-┌──────────────────────────────────────────────────────┐
-│ Layer 2: Document (_document.js)                     │
-│ - HTML lang="en"                                      │
-│ - Preload critical assets                            │
-│ - DNS prefetch (fonts.googleapis.com)                │
-│ - Favicon, apple-touch-icon                          │
-└────────────────────┬─────────────────────────────────┘
-                     ↓
-┌──────────────────────────────────────────────────────┐
-│ Layer 3: SEO Component (per page)                    │
-│ - Primary meta tags (title, description, keywords)   │
-│ - Open Graph (Facebook)                              │
-│ - Twitter Card                                       │
-│ - Canonical URL                                      │
-│ - Mobile viewport                                    │
-└────────────────────┬─────────────────────────────────┘
-                     ↓
-┌──────────────────────────────────────────────────────┐
-│ Layer 4: JSON-LD Structured Data                     │
-│ - PersonSchema (homepage)                            │
-│ - WebsiteSchema (homepage)                           │
-│ - ProfilePageSchema (homepage)                       │
-│ - ProjectSchema (project pages)                      │
-│ - BreadcrumbSchema (all detail pages)                │
-└──────────────────────────────────────────────────────┘
+Layer 1  index.html          static description/OG/Twitter fallback (no-JS
+                             crawlers: FB/Zalo/LinkedIn) + canonical head setup
+Layer 2  <SEO> per page      React 19 hoists title/meta ahead of static copies;
+                             unique title/description/keywords/canonical per route
+Layer 3  JSON-LD             PersonSchema · WebsiteSchema · ProfilePageSchema
+                             (homepage) · ProjectSchema + BreadcrumbSchema (details)
+Layer 4  crawl surface       robots.txt (allow all + sitemap URL) ·
+                             dist/sitemap.xml generated at build from works-data
+                             (cannot drift from real routes)
 ```
 
-### Schema.org Implementation
-
-**Homepage:**
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Trương Tuấn Lộc",
-  "jobTitle": "Full-stack Developer",
-  "knowsAbout": ["React.js", "Node.js", "C#", ...],
-  "sameAs": ["https://github.com/Jura69", ...]
-}
-```
-
-**Project Pages:**
-```json
-{
-  "@context": "https://schema.org",
-  "@type": "CreativeWork",
-  "name": "Project Title",
-  "author": {"@type": "Person", "name": "Trương Tuấn Lộc"},
-  "dateCreated": "2024",
-  "url": "https://github.com/...",
-  "keywords": ["React", "Node.js", ...]
-}
-```
+Route hygiene: kebab-case slugs; renames ship with a `<Navigate replace>`
+redirect (`/audiophile/moondropSSP` → `/audiophile/moondrop-ssp`).
 
 ---
 
 ## 3D Graphics Implementation
 
-### Three.js Architecture
-
 ```
-Totoro Component (components/totoro.js)
-  ├── useRef(canvas)
-  ├── useEffect (mount)
-  │   ├── Create Scene
-  │   ├── Create Camera (Orthographic)
-  │   │   └── Position: (20, 10, circular)
-  │   ├── Create Renderer (WebGL)
-  │   │   ├── Pixel ratio: min(devicePixelRatio, 2)
-  │   │   ├── Precision: mediump
-  │   │   ├── Antialias: conditional
-  │   │   └── Shadows: disabled
-  │   ├── Create Lights (Ambient)
-  │   ├── Load Model (lib/model.js)
-  │   │   ├── GLTFLoader
-  │   │   ├── DRACOLoader (Google CDN)
-  │   │   └── Parse /totoro-compressed.glb
-  │   ├── Animation Loop
-  │   │   ├── Frames 1-100: Circular camera rotation
-  │   │   │   └── Easing: easeOutCirc
-  │   │   └── Frame 101+: OrbitControls takeover
-  │   ├── Resize Handler (window.addEventListener)
-  │   └── Cleanup (cancelAnimationFrame, dispose)
-  └── Return \<canvas ref={canvas} /\>
+HeroDawn (components/home/hero-dawn.tsx)
+  └── React.lazy(import components/totoro.tsx)  + TotoroLoader spinner
+        └── useEffect mount:
+              Scene + OrthographicCamera (scale from container height)
+              WebGLRenderer { antialias: devicePixelRatio < 2, alpha: true,
+                              powerPreference: 'high-performance',
+                              precision: 'mediump', stencil: false }
+              renderer.shadowMap.enabled = false
+              AmbientLight
+              loadGLTFModel(scene, '/totoro-compressed.glb')   // lib/model.ts
+                → GLTFLoader + DRACOLoader (decoder: www.gstatic.com CDN)
+                → Promise<Group>; isMesh() type-guard traverse
+              rAF loop: frames 1–100 eased circular intro (easeOutCirc),
+                        then OrbitControls (autoRotate)
+              cleanup: cancelAnimationFrame + renderer.dispose()
 ```
 
-### Model Loading Pipeline
-
-```
-User loads page
-  ↓
-Dynamic import Totoro component
-  ↓
-TotoroLoader shows spinner
-  ↓
-useEffect mount
-  ↓
-GLTFLoader.load('/totoro-compressed.glb')
-  ↓
-DRACOLoader fetches decoder from CDN
-https://www.gstatic.com/draco/v1/decoders/
-  ↓
-Decompress model (1.5MB → full mesh data)
-  ↓
-Add to scene, compute bounding box
-  ↓
-Start animation loop (requestAnimationFrame)
-  ↓
-Hide spinner, show canvas
-```
-
-### Performance Optimizations
-
-**Compression:**
-- Original: 44MB GLTF
-- First pass: 5.7MB (87% reduction)
-- Draco: 1.5MB (96.7% total reduction)
-
-**Renderer Config:**
-```javascript
-new WebGLRenderer({
-  antialias: devicePixelRatio < 2,  // Conditional AA
-  alpha: true,                       // Transparent background
-  powerPreference: "high-performance",
-  precision: "mediump",              // Lower precision
-  stencil: false,                    // No stencil buffer
-  depth: true
-})
-
-renderer.shadowMap.enabled = false   // No shadows
-renderer.physicallyCorrectLights = false
-```
+The `vendor-three` chunk (~590KB) is reachable ONLY through this lazy import —
+it never blocks initial paint.
 
 ---
 
-## Security Architecture
+## Security Posture
 
-### HTTPS Enforcement
-
-```
-Vercel Automatic HTTPS
-  - Free SSL/TLS certificates (Let's Encrypt)
-  - Automatic renewal
-  - HTTP → HTTPS redirect
-  - HSTS headers
-```
-
-### Content Security Policy
-
-```javascript
-// SVG handling only
-dangerouslyAllowSVG: true,
-contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;"
-```
-
-**Future:** Implement full CSP for HTML
-
-### Dependency Security
-
-```bash
-npm audit  # Check for vulnerabilities
-npm update  # Update dependencies
-```
-
-**No secrets in client code:**
-- No API keys
-- No database credentials
-- No authentication tokens
+- Static site: no API surface, no secrets in client code; `files/CV.pdf` and
+  `cv.html` intentionally public
+- HTTPS + HSTS: Vercel platform defaults
+- No custom CSP headers configured (future hardening option; would go in
+  `vercel.json` `headers`)
+- External runtime origins: Google Fonts (stylesheet) and Google CDN (Draco
+  decoder) only
+- Dependency hygiene: `yarn audit` ad hoc; single lockfile (`yarn.lock`)
 
 ---
 
-## Future Architectural Improvements
+## Future Architectural Notes
 
-### Short-Term (Q2 2026)
-
-1. **Image CDN Integration**
-   - Cloudinary or ImageKit
-   - Reduce 11MB → 3MB target
-   - Automatic format optimization
-
-2. **Contact Form Backend**
-   - EmailJS or Vercel serverless function
-   - Form validation
-   - Spam protection (reCAPTCHA)
-
-### Mid-Term (Q3 2026)
-
-3. **Progressive Web App (PWA)**
-   - Service Worker
-   - Offline support
-   - Install prompt
-
-4. **Enhanced Analytics**
-   - Google Analytics 4
-   - Custom event tracking
-   - Conversion funnels
-
-5. **TypeScript Migration**
-   - Gradual migration (.js → .tsx)
-   - Type safety for props
-   - Better IDE support
-
-### Long-Term (Q4 2026)
-
-6. **CMS Integration**
-   - Headless CMS (Sanity, Contentful)
-   - Blog post management
-   - Portfolio updates without code changes
-
-7. **Testing Suite**
-   - Jest unit tests
-   - Playwright E2E tests
-   - Visual regression (Percy, Chromatic)
-
-8. **App Router Migration**
-   - Upgrade to Next.js App Router
-   - Server Components
-   - Streaming SSR
+Kept in `docs/project-roadmap.md` (single source). Architecture-relevant
+candidates there: contact form (first server-side surface — Vercel function),
+PWA/service worker (interacts with the stale-chunk reload strategy — design
+together), custom CSP headers, and an assertion-level test for
+sitemap ⟷ route-table parity.
 
 ---
 
-**Document Version:** 1.0
-**Reviewed By:** Trương Tuấn Lộc
-**Next Review:** Q2 2026
+**Maintained By:** Trương Tuấn Lộc
+**Verify against:** `src/app.tsx`, `vite.config.ts`, `vercel.json`,
+`providers/theme.tsx`, `components/scene/*` before editing claims here.

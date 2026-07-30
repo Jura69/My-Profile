@@ -1,1059 +1,380 @@
 # Code Standards & Development Guidelines
 
 **Project:** Personal Portfolio Website
-**Last Updated:** 2026-07-07
+**Last Updated:** 2026-07-30
 **Framework:** Vite 6 + React 19 + React Router 7
 **Styling:** Tailwind CSS 4
-**Enforcement:** ESLint + Prettier + TypeScript
+**Enforcement:** ESLint (`.eslintrc.cjs`) + Prettier (`prettier.config.js`) + TypeScript strict
 
 ---
 
 ## Table of Contents
 
-1. [Code Style & Formatting](#code-style--formatting)
+1. [Formatting & Linting](#formatting--linting)
 2. [Naming Conventions](#naming-conventions)
 3. [File Organization](#file-organization)
-4. [Component Architecture](#component-architecture)
-5. [State Management](#state-management)
+4. [Component Patterns](#component-patterns)
+5. [State & Context](#state--context)
 6. [Animation Patterns](#animation-patterns)
 7. [Performance Guidelines](#performance-guidelines)
 8. [SEO Standards](#seo-standards)
 9. [Accessibility Requirements](#accessibility-requirements)
-10. [Testing Standards](#testing-standards)
+10. [Error Handling](#error-handling)
+11. [Testing Status](#testing-status)
+12. [Git Workflow](#git-workflow)
 
 ---
 
-## Code Style & Formatting
+## Formatting & Linting
 
-### Prettier Configuration
+### Prettier (`prettier.config.js` — the file is the authority)
 
 ```javascript
-// prettier.config.js
 {
-  arrowParens: 'avoid',        // (x) => x instead of x => x
-  singleQuote: true,           // 'text' instead of "text"
-  bracketSpacing: true,        // { foo } instead of {foo}
-  endOfLine: 'lf',             // Unix line endings
-  semi: false,                 // No semicolons
-  tabWidth: 2,                 // 2 spaces indentation
-  trailingComma: 'none'        // No trailing commas
+  arrowParens: 'avoid',
+  singleQuote: true,
+  bracketSpacing: true,
+  endOfLine: 'lf',      // .gitattributes also enforces LF repo-wide
+  semi: false,
+  tabWidth: 2,
+  trailingComma: 'none'
 }
 ```
 
-**Auto-format command:** `yarn prettier`
+Format: `yarn prettier`
 
-### ESLint Rules
+### ESLint (`.eslintrc.cjs` — the file is the authority)
 
-```json
+```javascript
 {
-  "extends": "next/core-web-vitals",
-  "rules": {
-    "no-unused-vars": ["error", {}],
-    "react/display-name": 0,           // Allow anonymous components
-    "react/no-unescaped-entities": 0   // Allow apostrophes in JSX
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended',
+            'plugin:react-hooks/recommended'],
+  plugins: ['react-refresh'],
+  rules: {
+    'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-unused-vars': 'warn'
   }
 }
 ```
 
-**Lint check:** `yarn lint`
+Check: `yarn lint` — covers `src components lib providers scripts vite.config.ts`.
+**The gate is 0 errors / 0 warnings.** Warnings are treated as failures:
+- `no-explicit-any` → type it (see `lib/model.ts` `isMesh()` type predicate)
+- `react-refresh/only-export-components` → split contexts/hooks into their own
+  file (`providers/use-theme.ts`, `components/scene/use-scene.ts`), never
+  eslint-disable
 
-### JavaScript/JSX Style
+### Imports
 
-**Imports:**
-```javascript
-// Order: External → Internal → Relative
-import { Container, Heading } from '@chakra-ui/react'  // External
-import SectionHeading from '../../components/ui/section-heading'  // Internal
-import SEO from '../components/seo'                    // Relative
+```typescript
+// Order: react → external libs → internal, RELATIVE paths
+import { useState } from 'react'
+import { motion } from 'motion/react'
+import SectionHeading from '../ui/section-heading'
+import { cn } from '../../lib/cn'
 ```
 
-**Component Declaration:**
-```javascript
-// Functional components only (no class components)
-const ComponentName = ({ prop1, prop2 }) => {
-  return (
-    // JSX
-  )
-}
-
-export default ComponentName
-```
-
-**Arrow Functions:**
-```javascript
-// Prefer arrow functions over function keyword
-const handleClick = () => {
-  // logic
-}
-
-// No parentheses for single param
-const items = data.map(item => item.name)
-```
-
-**Destructuring:**
-```javascript
-// Destructure props immediately
-const MyComponent = ({ title, description, children }) => {
-  // Avoid: props.title, props.description
-}
-
-// Destructure imports
-import { useState, useEffect } from 'react'
-```
+Note: tsconfig defines `@/* → src/*`, but `lib/`, `components/`, `providers/`
+live at the REPO ROOT — `@/lib/cn` would resolve to the nonexistent `src/lib/cn`.
+The codebase uses relative imports throughout; follow that.
 
 ---
 
 ## Naming Conventions
 
-### Files & Directories
+### Files (real examples from this repo)
 
-**Components:**
 ```
-kebab-case for files with descriptive names
-✅ animated-badge.js
-✅ theme-toggle-button.js
-✅ totoro-loader.js
-❌ AB.js (too short)
-❌ AnimatedBadge.js (PascalCase for files discouraged)
-```
-
-**Pages:**
-```
-kebab-case for Next.js pages
-✅ index.js
-✅ works.js
-✅ audiophile.js
-✅ works/foodlover.js
-❌ Works.js
-❌ AudioPhile.js
+kebab-case .tsx/.ts, descriptive names
+✅ components/ui/section-heading.tsx
+✅ components/layout/route-error-boundary.tsx
+✅ components/scene/use-pinned-intro.ts   (hooks: use-*.ts)
+✅ src/pages/audiophile/moondrop-ssp.tsx  (route slugs kebab-case too)
+❌ moondropSSP.tsx (camelCase — renamed away, redirect kept)
+❌ AnimatedBadge.tsx (PascalCase files)
 ```
 
-**Directories:**
-```
-kebab-case, plural for collections
-✅ components/
-✅ icons/
-✅ works/
-❌ Components/
-```
+### Identifiers
 
-### Variables & Functions
-
-**Constants:**
-```javascript
-// UPPER_SNAKE_CASE for true constants
-const API_URL = 'https://api.example.com'
-const MAX_RETRIES = 3
-
-// camelCase for configuration objects
-const colorPalette = {
-  grassTeal: '#88ccca',
-  forestGreen: '#7eb77f'
-}
-```
-
-**Functions:**
-```javascript
-// camelCase, verb-first for actions
-const handleSubmit = () => {}
-const fetchUserData = async () => {}
-const calculateTotal = (items) => {}
-
-// Boolean functions start with is/has/should
-const isAuthenticated = () => {}
-const hasPermission = (user) => {}
-const shouldRender = () => {}
-```
-
-**Components:**
-```javascript
-// PascalCase for React components
-const AnimatedBadge = ({ children }) => {}
-const WorkGridItem = ({ id, title }) => {}
-const SEO = ({ title, description }) => {}
-
-// Prefix with 'use' for hooks
-const useColorMode = () => {}
-const useScrollPosition = () => {}
-```
-
-**Props:**
-```javascript
-// camelCase for prop names
-<AnimatedBadge colorScheme="green" delay={0.1} />
-
-// Boolean props no value = true
-<Component isActive />  // ✅
-<Component isActive={true} />  // ❌ redundant
-```
-
-### CSS Classes
-
-**Tailwind Utilities:**
 ```typescript
-// Use Tailwind class names, no inline CSS
-<div className="bg-gray-100 p-4 rounded-md">  // ✅
-<div style={{ backgroundColor: 'gray' }}>  // ❌ avoid
+// PascalCase components, camelCase functions/variables, use* hooks
+const FeaturedProjectCard = () => {}
+const handleClick = () => {}
+export function useScene() {}
 
-// Compose with clsx + tailwind-merge (cn utility)
-import { cn } from '@/lib/cn'
-className={cn('bg-white', isActive && 'bg-blue-500')}
+// UPPER_SNAKE_CASE module-level constants
+const STORAGE_KEY = 'theme'
+const NAV_LINKS = [...]
+
+// Boolean naming: is/has/should
+const isDark = mode === 'dark'
 ```
 
-**Dark Mode:**
-```typescript
-// Use .dark: prefix for dark mode variants
-<div className="bg-white dark:bg-gray-900 text-black dark:text-white">
-</div>
+### Tailwind Classes
 
-// Or use semantic CSS variables (src/styles/global.css)
-<div className="bg-background text-foreground">
-</div>
+```tsx
+// Utilities in className; compose conditionals with cn()
+import { cn } from '../../lib/cn'
+<div className={cn('rounded-xl border border-line', active && 'text-accent')} />
+
+// Semantic tokens (defined in src/styles/global.css) over raw palette values:
+// bg-surface / bg-surface-elevated, text-ink / text-ink-muted,
+// text-accent, border-line — these flip automatically under `.dark`
+<p className="bg-surface text-ink-muted" />
+
+// dark: variant only when a semantic token doesn't exist for the case
+<div className="bg-white dark:bg-gray-900" />
 ```
 
 ---
 
 ## File Organization
 
-### Directory Conventions
+- Components: ~200 LOC target — split when a file gains a second concern
+- Route pages return a fragment directly (`MainLayout` wraps once in `src/app.tsx`;
+  there is no per-page layout wrapper)
+- Data lives beside its section: `components/works/works-data.ts`,
+  `components/home/home-data.ts` — never inline arrays in pages (the sitemap
+  plugin imports works-data; inline data would drift out of the sitemap)
+- GSAP/Lenis code is ONLY allowed inside `components/scene/` (animation
+  discipline contract — keeps scroll work off the React render path)
 
-**Maximum File Size:**
-- Components: 200 LOC target (300 LOC hard limit)
-- Pages: 400 LOC target (exception: index.js at 359 LOC)
-- Utilities: 150 LOC target
+### Page skeleton (matches real pages)
 
-**When to Split:**
-- File exceeds 200 LOC → Extract sub-components or utilities
-- Component has 3+ responsibilities → Separate concerns
-- Duplicated code across 2+ files → Create shared module
-
-### Component Structure
-
-```javascript
-// 1. Imports (external, internal, relative)
-import { Box, Heading } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
-import SEO from '../seo'
-
-// 2. Styled components (if using Emotion)
-const StyledBox = styled(Box)`
-  display: flex;
-`
-
-// 3. Constants
-const ANIMATION_DURATION = 0.4
-
-// 4. Component definition
-const MyComponent = ({ title, children }) => {
-  // 4a. Hooks
-  const [state, setState] = useState(null)
-  const ref = useRef(null)
-
-  // 4b. Event handlers
-  const handleClick = () => {
-    // logic
-  }
-
-  // 4c. Effects
-  useEffect(() => {
-    // side effects
-  }, [])
-
-  // 4d. Render
-  return (
-    <>
-      <SEO title={title} />
-      <StyledBox onClick={handleClick}>
-        {children}
-      </StyledBox>
-    </>
-  )
-}
-
-// 5. PropTypes or TypeScript interfaces (future)
-
-// 6. Memoization (if needed)
-export default memo(MyComponent)
-
-// 7. Named exports for sub-components
-export { StyledBox }
-```
-
-### Page Structure
-
-```javascript
-// 1. Imports
-import { Container, Heading } from '@chakra-ui/react'
+```tsx
 import SEO from '../../components/seo'
-import { ProjectSchema, BreadcrumbSchema } from '../../components/json-ld'
+import { BreadcrumbSchema } from '../../components/json-ld'
+import Reveal from '../../components/ui/reveal'
+import SectionHeading from '../../components/ui/section-heading'
 
-// 2. Page component (no per-page `<Layout>` wrapper)
-const ProjectPage = () => (
-  <Container>
-    <SEO
-      title="Project Name - Trương Tuấn Lộc"
-      description="Project description"
-      type="article"
-    />
-    <ProjectSchema project={{...}} />
+const Activities = () => (
+  <>
+    <SEO title="Activities & Clubs | Trương Tuấn Lộc Portfolio" description="…" keywords="…" />
     <BreadcrumbSchema items={[...]} />
-
-    {/* Page content */}
-  </Container>
+    <section className="w-full px-4 py-8">
+      <div className="mx-auto max-w-[1100px]">
+        <Reveal>
+          <SectionHeading as="h1">My Activities 🌿</SectionHeading>
+        </Reveal>
+        {/* content */}
+      </div>
+    </section>
+  </>
 )
 
-// 3. Data fetching (if needed)
-export { getServerSideProps } from '../../components/chakra'
-// or
-export { getStaticProps } from '../../components/chakra'
-
-// 4. Default export
-export default ProjectPage
+export default Activities
 ```
+
+Conventions embedded in that skeleton:
+- First heading of a listing page renders `as="h1"` (exactly one h1 per page)
+- Content column: `mx-auto max-w-[1100px]` inside a full-bleed `px-4` section
+  (the navbar uses the same 1100px column so the logo gutters align)
+- Entrance animation via the shared `<Reveal>` wrapper, not ad-hoc motion divs
 
 ---
 
-## Component Architecture
+## Component Patterns
 
-### Component Types
+**App shell** (`components/layout/main.tsx`): AmbientScene + Navbar + children +
+Footer inside `<MotionConfig reducedMotion="user">`. Applied once.
 
-**1. Layout Components** (`components/layout/`)
-```javascript
-// App shell, applied once in src/app.tsx (not per-page)
-const MainLayout = ({ children }) => (
-  <>
-    <Navbar />
-    {children}
-    <Footer />
-  </>
-)
-```
+**UI primitives** (`components/ui/`): small, prop-driven, no data fetching.
+Button styling is a composable function (`buttonClasses(variant, size)`) so
+router links can be styled as buttons without a wrapper component.
 
-**2. Page Components** (`pages/`)
-```javascript
-// Route-specific components
-// Return a fragment directly (MainLayout wraps once at app root); include SEO, JSON-LD
-const HomePage = () => (
-  <>
-    <SEO title="Homepage" />
-    {/* Content */}
-  </>
-)
-```
+**Cards**: `ProjectCard` (compact, reused by works/activities/audiophile via the
+`to` prop) and `FeaturedProjectCard` (large, homepage/works flagships). Do not
+create section-specific card clones — the Chakra-era triplets
+(WorkGridItem/AudioGridItem/ActivitiesGridItem) were deleted for 90% duplication.
 
-**3. Feature Components** (`components/`)
-```javascript
-// Reusable UI components
-// Single responsibility
-// Accept props, no direct state access
-const AnimatedBadge = ({ children, colorScheme, delay }) => {
-  // Component logic
-}
-```
+**Detail pages**: shared pieces from `components/layout/detail-page.tsx`
+(`DetailImage`, `DetailMeta`, `DetailProse`…). Same rule: one implementation,
+category passed as data.
 
-**4. Utility Components** (`components/`)
-```javascript
-// Wrappers for common patterns
-// Section, Paragraph, FloatingBox
-const Section = ({ children, delay = 0 }) => (
-  <StyledDiv
-    initial={{ y: 10, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
-    transition={{ duration: 0.8, delay }}
-  >
-    {children}
-  </StyledDiv>
-)
-```
-
-### Composition Patterns
-
-**Prefer Composition Over Inheritance:**
-```javascript
-// ✅ Good: Compose with wrappers
-<Section delay={0.1}>
-  <AnimatedBadge colorScheme="green">
-    React.js
-  </AnimatedBadge>
-</Section>
-
-// ❌ Bad: Deep inheritance hierarchy
-class ExtendedAnimatedBadge extends AnimatedBadge {
-  // Don't do this
-}
-```
-
-**Container/Presentational Pattern:**
-```javascript
-// Container (logic)
-const WorksContainer = () => {
-  const projects = useProjects()  // Data fetching
-  return <WorksGrid projects={projects} />
-}
-
-// Presentational (UI)
-const WorksGrid = ({ projects }) => (
-  <SimpleGrid columns={[1, 2]}>
-    {projects.map(p => <WorkGridItem key={p.id} {...p} />)}
-  </SimpleGrid>
-)
-```
-
-**Render Props (rare, prefer hooks):**
-```javascript
-// Use hooks instead of render props
-const useAuth = () => {
-  const [user, setUser] = useState(null)
-  return { user, setUser }
-}
-
-// In component
-const { user } = useAuth()
-```
+**Memoization**: used where re-render cost is real — `MainLayout`, `Navbar`,
+`AmbientScene`, `Totoro`, card lists. Don't memo trivial components.
 
 ---
 
-## State Management
+## State & Context
 
-### Local State (useState)
-
-```javascript
-// Use for component-specific state
-const [isOpen, setIsOpen] = useState(false)
-const [count, setCount] = useState(0)
-
-// Initialize with function for expensive computation
-const [data, setData] = useState(() => {
-  return computeExpensiveData()
-})
-```
-
-### Refs (useRef)
-
-```javascript
-// For DOM references
-const canvasRef = useRef(null)
-
-useEffect(() => {
-  const canvas = canvasRef.current
-  // Manipulate DOM
-}, [])
-
-// For persisting values across renders
-const prevCountRef = useRef(0)
-```
-
-### Context (React Context)
-
-```typescript
-// Global state: Color mode (custom context + localStorage)
-import { useTheme } from '../providers/use-theme'
-
-const { mode, toggle } = useTheme()
-// mode is 'light' or 'dark'; new visitors default to the OS prefers-color-scheme
-// toggle() swaps mode and updates localStorage
-
-// For conditional Tailwind classes
-<div className={mode === 'dark' ? 'dark' : ''}>
-  <span className="text-black dark:text-white">Text</span>
-</div>
-```
-
-**Current Usage:**
-- Color mode (custom ThemeProvider context)
-- localStorage for persistence
-- No prop drilling needed for theme
-
-**Not Used:**
-- Redux, Zustand (overkill for static site)
-- Chakra's useColorMode (removed with Chakra)
+- Local state: `useState` / `useRef`; no Redux/Zustand (static content site)
+- Theme: `useTheme()` from `providers/use-theme.ts` → `{ mode, toggle }`.
+  Persistence rule: ONLY explicit choices are written to localStorage (existing
+  key or toggle click). Never auto-persist the OS-derived mode — that freezes a
+  first visit's scheme and stops `prefers-color-scheme` from being honored later.
+- Scene: `useScene()` from `components/scene/use-scene.ts` → `{ reducedMotion }`
+- Context objects live in the hook file, providers import them — provider files
+  export ONLY components (react-refresh requirement)
+- The `index.html` pre-paint theme script and `readInitialMode()` in
+  `providers/theme.tsx` MUST stay logic-identical (first paint vs hydrated state)
 
 ---
 
 ## Animation Patterns
 
-### Motion 12 Standard Patterns
+### 1. Entrance reveals — use the shared wrapper
 
-**1. Page Transitions:**
-```typescript
-// In detail-page.tsx
-import { motion } from 'motion/react'
-
-const pageVariants = {
-  hidden: { opacity: 0, y: 20 },
-  enter: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: 20 }
-}
-
-<motion.div
-  initial="hidden"
-  animate="enter"
-  exit="exit"
-  variants={pageVariants}
-  transition={{ duration: 0.3, ease: 'easeOut' }}
->
-  {children}
-</motion.div>
+```tsx
+// components/ui/reveal.tsx — fade + 14px rise, fires in view, 0.5s easeOut
+<Reveal delay={0.05 + i * 0.05}>
+  <ProjectCard project={p} />
+</Reveal>
 ```
 
-**2. Scroll-Triggered Reveals:**
-```typescript
-// Fade-in on scroll (with React component)
-import { useScroll, useTransform } from 'motion/react'
+### 2. Page transitions — owned by `src/app.tsx`, do not add per-page
 
-<motion.div
-  initial={{ opacity: 0, y: 20 }}
-  whileInView={{ opacity: 1, y: 0 }}
-  viewport={{ once: true, margin: "-50px" }}
-  transition={{ duration: 0.6 }}
->
-  {content}
-</motion.div>
+Entrance-only fade (0.25s, keyed by pathname). Deliberately NOT
+AnimatePresence exit-mode (exit never completed reliably with this Router +
+motion@12) and opacity-only (a transform would break the homepage's
+position:fixed GSAP pin). The Suspense boundary sits ABOVE the keyed wrapper so
+lazy-chunk loads keep the old page visible.
+
+### 3. Hover/tap micro-interactions
+
+```tsx
+<motion.div whileHover={{ y: -4 }} whileTap={{ scale: 0.97 }} />
 ```
 
-**3. Hover Interactions:**
-```typescript
-// Lift + scale effect
-<motion.button
-  whileHover={{ y: -8, scale: 1.02 }}
-  whileTap={{ scale: 0.95 }}
-  transition={{ duration: 0.2 }}
-  className="px-4 py-2 bg-blue-500 rounded"
->
-  Click Me
-</motion.button>
-```
+### 4. Scroll-linked scene work — GSAP, `components/scene/` only
 
-**4. Staggered Children:**
-```typescript
-// Sequential reveals with motion
-<motion.div
-  initial="hidden"
-  animate="visible"
-  variants={{
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
-  }}
->
-  {items.map((item, i) => (
-    <motion.div
-      key={i}
-      variants={{
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 }
-      }}
-    >
-      {item}
-    </motion.div>
-  ))}
-</motion.div>
-```
+One ScrollTrigger drives the day→night narrative by writing CSS custom
+properties and data-attributes to the DOM (`ambient-scene.tsx`) — zero React
+re-renders on scroll. Lenis + ScrollTrigger share one rAF via
+`scene-provider.tsx`. Fully-hidden particle groups are `display:none`'d through
+`[data-*='off']` selectors in `global.css`. Register cleanup (`trigger.kill()`,
+`lenis.destroy()`) in effect teardown.
 
-**5. GSAP Scroll Animations (Scene Components Only):**
-```typescript
-// For complex scroll-linked animations (not regular Motion)
-// Use GSAP ScrollTrigger + Lenis (confined to src/components/scene/)
-import gsap from 'gsap'
-import ScrollTrigger from 'gsap/ScrollTrigger'
+### 5. Reduced motion
 
-gsap.registerPlugin(ScrollTrigger)
-
-useEffect(() => {
-  const tween = gsap.to(elementRef.current, {
-    scrollTrigger: {
-      trigger: elementRef.current,
-      onEnter: () => {},
-      markers: false
-    },
-    y: 50,
-    duration: 1
-  })
-  return () => tween.kill()
-}, [])
-
-### Animation Timing Standards
-
-| Type | Duration | Easing | Use Case |
-|------|----------|--------|----------|
-| Page transition | 0.4s | easeInOut | Route changes |
-| Scroll fade-in | 0.6s | easeOut | Sections appearing |
-| Hover lift | 0.2s | easeOut | Interactive feedback |
-| Badge pop-in | 0.4s | Spring | Skill badges |
-| Continuous float | 4s | easeInOut | Totoro container |
-
-### Accessibility Considerations
-
-```javascript
-// Respect prefers-reduced-motion
-const prefersReducedMotion = useReducedMotion()
-
-<motion.div
-  animate={prefersReducedMotion ? {} : { y: [0, -10, 0] }}
->
-  {content}
-</motion.div>
-```
+`MotionConfig reducedMotion="user"` covers Motion; `SceneProvider` exposes
+`reducedMotion` and skips Lenis/ScrollTrigger entirely (static composition at
+`apply(0.18)`); CSS keyframes use the `motion-safe:` variant. New animation code
+must degrade through one of these three paths — no unguarded infinite animation.
 
 ---
 
 ## Performance Guidelines
 
-### Image Optimization
+### Images
 
-**Standard HTML img Element:**
-```typescript
-// ✅ Correct usage with lazy loading
-<img
-  src="/images/project.png"
-  alt="Project screenshot"
-  loading="lazy"
-  srcSet="/images/project-small.png 480w, /images/project.png 800w"
-  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-  className="w-full h-auto rounded"
-/>
+- Format: WebP, max 1200px, quality ~80 (exceptions: `og-image.jpg` — OG
+  scrapers, `apple-touch-icon.png` — iOS requirement)
+- `<img loading="lazy">` below the fold; explicit dimensions where layout shift
+  is possible
+- New images go through the same constraint before commit (ImageMagick/sharp;
+  `scripts/optimize-images.mjs` exists for batch runs)
 
-// ❌ Avoid unoptimized images
-<img src="/images/large-uncompressed.jpg" alt="..." />
-```
+### Code splitting
 
-**Image Sizing Guidelines:**
-- Thumbnails: 400x300px (target < 50KB)
-- Grid items: 600x400px (target < 100KB)
-- Detail images: 800x600px (target < 200KB)
-- Profile photo: 300x300px (target < 50KB)
-- All images pre-compressed (PNG/JPG optimized)
-
-### Code Splitting
-
-**Dynamic Imports:**
-```javascript
-import { lazy, Suspense } from 'react'
-
-// Lazy load non-critical routes (see src/app.tsx) — every page except
-// HomePage is its own chunk; navigations run inside a Suspense boundary
-const WorksPage = lazy(() => import('./pages/works'))
-
-<Suspense fallback={null}>
-  <WorksPage />
-</Suspense>
-```
-
-**When to Split:**
-- Component > 50KB minified
-- Not needed on initial render
-- Heavy dependencies (Three.js, Chart libraries)
-
-### Memoization
-
-**React.memo:**
-```javascript
-import { memo } from 'react'
-
-// For pure components (same props = same output)
-const WorkGridItem = memo(({ id, title, thumbnail }) => {
-  return (
-    // Component JSX
-  )
-})
-
-export default WorkGridItem
-```
-
-**When to Memoize:**
-- List items rendering 10+ times
-- Components receiving complex props
-- Expensive computations in render
-
-**When NOT to Memoize:**
-- Simple components (< 20 LOC)
-- Components that rarely re-render
-- Premature optimization
-
-### Bundle Size Targets
-
-Vendor libraries are isolated into their own chunks (function-form `manualChunks`
-in `vite.config.ts`: vendor-react, vendor-gsap, vendor-three, motion, vendor-icons)
-so the app chunk itself stays small — target < 500KB per NFR-01.
-
-**Check current bundle sizes:** `yarn analyze`
+- Every route except `src/pages/index.tsx` is `React.lazy` in `src/app.tsx`
+- Heavy leaf libs get their own vendor chunk via function-form `manualChunks`
+  (`vite.config.ts`) which matches the path segment AFTER the package dir.
+  Constraint learned the hard way: react + glue libs must share one chunk —
+  a separate misc chunk creates a circular-init TypeError that silently
+  prevents mount. Verify any chunking change against a real `yarn preview`
+  smoke test, not just the dev server (dev ignores manualChunks).
+- Check sizes: `yarn build` output or `yarn analyze`
 
 ---
 
 ## SEO Standards
 
-### Per-Page SEO Component
+### Per-page meta — required on every page
 
-```javascript
-import SEO from '../components/seo'
-
-// Required on every page
+```tsx
 <SEO
-  title="Page Title - Trương Tuấn Lộc"
-  description="150-160 character description for search results"
-  keywords="keyword1, keyword2, keyword3"
-  type="article"  // or "website", "profile"
-  image="/images/page-specific-image.jpg"
+  title="Page Title | Trương Tuấn Lộc Portfolio"   // < 60 chars
+  description="150–160 char description"
+  keywords="5–10 comma-separated keywords"
+  type="article"            // or "website" / "profile"
 />
 ```
 
-### JSON-LD Structured Data
+React 19 hoists these tags AHEAD of the static fallbacks in `index.html`; the
+static copies stay in the DOM as the answer for no-JS crawlers (FB/Zalo). When
+homepage copy changes, update BOTH `src/pages/index.tsx` SEO props and the
+static block in `index.html`.
 
-**Homepage:**
-```javascript
-<PersonSchema />
-<WebsiteSchema />
-<ProfilePageSchema />
-```
+### Structured data
 
-**Project Pages:**
-```javascript
-<ProjectSchema project={{
-  title: "Project Name",
-  description: "Full description",
-  year: "2024",
-  github: "https://github.com/...",
-  image: "/images/project.png",
-  stack: ["React", "Node.js", "MongoDB"]
-}} />
-<BreadcrumbSchema items={[
-  { name: "Home", url: "https://..." },
-  { name: "Works", url: "https://..." },
-  { name: "Project Name", url: "https://..." }
-]} />
-```
+Homepage: `PersonSchema` + `WebsiteSchema` + `ProfilePageSchema`.
+Detail pages: `ProjectSchema` + `BreadcrumbSchema` (see `components/json-ld.tsx`).
 
-### URL Structure
+### Routes & sitemap
 
-```
-✅ Clean, descriptive URLs
-/works
-/works/foodlover
-/activities/ytc
-/audiophile/ea1000
-
-❌ Avoid query parameters, IDs
-/project?id=123
-/p/1
-```
-
-### Meta Tags Checklist
-
-- [ ] Unique title (< 60 characters)
-- [ ] Unique description (150-160 characters)
-- [ ] Relevant keywords (5-10)
-- [ ] Open Graph tags (title, description, image, type, url)
-- [ ] Twitter Card (summary_large_image)
-- [ ] Canonical URL
-- [ ] robots: index, follow
-- [ ] language: en-US
-- [ ] Mobile viewport
+- Clean kebab-case URLs (`/works/foodlover`, `/audiophile/moondrop-ssp`)
+- Renaming a route REQUIRES a `<Navigate replace>` redirect from the old path
+- The sitemap is generated at build time from `works-data.ts` — new detail pages
+  are picked up automatically once their data entry exists; redirect-only and
+  404 routes are excluded by design
 
 ---
 
 ## Accessibility Requirements
 
-### Semantic HTML
-
-```javascript
-// ✅ Use semantic elements
-<nav>
-  <Link href="/works">Works</Link>
-</nav>
-<main>
-  <article>
-    <h1>Page Title</h1>
-    <p>Content</p>
-  </article>
-</main>
-<footer>
-  <p>Copyright</p>
-</footer>
-
-// ❌ Avoid div soup
-<div class="nav">
-  <div class="link">Works</div>
-</div>
-```
-
-### Alt Text
-
-```javascript
-// ✅ Descriptive alt text
-<Image
-  src="/images/foodlover.png"
-  alt="Food Lover app homepage showing restaurant listings and search bar"
-/>
-
-// ❌ Generic or missing alt
-<Image src="..." alt="image" />
-<Image src="..." />
-```
-
-### Keyboard Navigation
-
-```javascript
-// Ensure tab order
-<Button onClick={handleClick}>Submit</Button>  // ✅ Focusable
-
-// Custom interactive elements need tabIndex
-<div onClick={handleClick} tabIndex={0} role="button">
-  Custom Button
-</div>
-```
-
-### Color Contrast
-
-**Minimum Ratios (WCAG AA):**
-- Normal text: 4.5:1
-- Large text (18pt+): 3:1
-- UI components: 3:1
-
-**Check:** Use browser DevTools contrast checker
-
-### ARIA Labels
-
-```javascript
-// When text content not visible
-<IconButton
-  aria-label="Toggle dark mode"
-  icon={colorMode === 'dark' ? <SunIcon /> : <MoonIcon />}
-  onClick={toggleColorMode}
-/>
-
-// For screen reader context
-<nav aria-label="Main navigation">
-  {/* Links */}
-</nav>
-```
-
----
-
-## Testing Standards
-
-### Manual Testing Checklist
-
-**Pre-Deployment:**
-- [ ] Lighthouse audit (Performance, Accessibility, Best Practices, SEO ≥ 97)
-- [ ] Mobile responsiveness (iPhone SE, iPad, desktop)
-- [ ] Dark/light mode toggle
-- [ ] All links functional (no 404s)
-- [ ] Images load correctly
-- [ ] 3D model loads and rotates
-- [ ] CV download works
-- [ ] Social links open in new tab
-
-**Browser Testing:**
-- [ ] Chrome (latest)
-- [ ] Firefox (latest)
-- [ ] Safari (latest)
-- [ ] Mobile Safari (iOS)
-- [ ] Chrome Mobile (Android)
-
-### Unit Testing (Future)
-
-**Planned Tooling:**
-- Jest for unit tests
-- React Testing Library for component tests
-- Playwright/Cypress for E2E tests
-
-**Coverage Targets:**
-- Utilities: 80%
-- Components: 60%
-- Pages: 40%
-
-**Test Examples:**
-```javascript
-// lib/theme.test.js
-test('theme has correct grassTeal color', () => {
-  expect(theme.colors.grassTeal).toBe('#88ccca')
-})
-
-// components/section.test.js
-test('Section renders with delay', () => {
-  render(<Section delay={0.5}>Content</Section>)
-  expect(screen.getByText('Content')).toBeInTheDocument()
-})
-```
-
----
-
-## Documentation Standards
-
-### Inline Comments
-
-**When to Comment:**
-```javascript
-// ✅ Complex logic, non-obvious code
-// Calculate easing for 100-frame intro animation
-const easeOutCirc = (x) => Math.sqrt(1 - Math.pow(x - 1, 2))
-
-// ❌ Obvious code
-const name = 'Loc'  // Set name to Loc
-```
-
-**Component Documentation:**
-```javascript
-/**
- * Animated badge component for skill tags
- *
- * @param {ReactNode} children - Badge text content
- * @param {string} colorScheme - Chakra color scheme (e.g., 'green', 'purple')
- * @param {number} delay - Animation delay in seconds (default: 0)
- */
-const AnimatedBadge = ({ children, colorScheme, delay = 0 }) => {
-  // Component implementation
-}
-```
-
-### README Updates
-
-**After Major Changes:**
-- Update tech stack versions
-- Update feature list
-- Update performance metrics
-- Update installation instructions
+- Semantic landmarks: `nav` / `main` / `footer` (see `main.tsx`, `navbar.tsx`);
+  exactly one `h1` per page, hierarchy h1 → h2 → h3 (`SectionHeading as=`)
+- Descriptive `alt` on every image; `aria-hidden="true"` on decorative icons
+  and the ambient scene root
+- Icon-only buttons carry `aria-label` (e.g. "Toggle color theme"); active nav
+  links set `aria-current="page"`
+- Color contrast WCAG AA (4.5:1 text, 3:1 UI) — check both modes when adding
+  tokens to `global.css`
+- Reduced motion honored via the three paths in [Animation Patterns](#animation-patterns)
 
 ---
 
 ## Error Handling
 
-### Try-Catch for Async Operations
+- Async loading: `.then/.catch` with user-visible fallback state
+  (`components/totoro.tsx` logs and clears the spinner on GLB failure)
+- Route-level: `components/layout/route-error-boundary.tsx` wraps the lazy
+  route tree — auto-reloads once on stale-chunk import rejections (deploys
+  invalidate hashed chunks; the SPA rewrite otherwise turns that into a blank
+  page), then falls back to a manual reload prompt
+- No silent catches: log with context (`console.error('Failed to load 3D model:', error)`)
 
-```javascript
-// Model loading
-try {
-  const model = await loadGLTFModel(scene, '/totoro-compressed.glb')
-  setLoading(false)
-} catch (error) {
-  console.error('Failed to load 3D model:', error)
-  setError(true)
-}
-```
+---
 
-### Graceful Degradation
+## Testing Status
 
-```javascript
-// Show fallback if 3D fails
-{error ? (
-  <Image src="/images/totoro-fallback.png" alt="Totoro" />
-) : (
-  <Totoro />
-)}
-```
+**There is no automated test suite.** Quality gates that DO exist and are
+enforced: `tsc -b` strict, ESLint 0/0, real-build smoke test via `yarn preview`,
+manual pre-deploy checklist (routes navigate, console clean, both themes, mobile
+layout, 3D loads, CV downloads).
 
-### Error Boundaries (Future)
-
-```javascript
-class ErrorBoundary extends React.Component {
-  componentDidCatch(error, info) {
-    console.error('Error caught:', error, info)
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>
-    }
-    return this.props.children
-  }
-}
-```
+If a suite is introduced, prefer Vitest (Vite-native) + React Testing Library;
+the highest-value first assertions are the invariants most likely to rot
+silently: sitemap ⟷ route-table parity, and `index.html` theme script ⟷
+`readInitialMode()` logic equality. Jest configs found in the repo earlier were
+dead artifacts and have been deleted — do not resurrect them by copy-paste.
 
 ---
 
 ## Git Workflow
 
-### Commit Messages (Conventional Commits)
+### Conventional commits (no AI references)
 
 ```
-Format: <type>(<scope>): <subject>
+<type>(<scope>): <subject>
 
-Types:
-- feat: New feature
-- fix: Bug fix
-- docs: Documentation only
-- style: Code style (formatting, no logic change)
-- refactor: Code refactor (no feature/bug change)
-- perf: Performance improvement
-- test: Add/update tests
-- chore: Build process, dependencies
-
-Examples:
-feat(homepage): add work experience timeline
-fix(navbar): mobile menu not closing on route change
-perf(images): compress project thumbnails to WebP
-docs(readme): update installation instructions
+feat(home): center totoro hero, journey heading, tech badge icons
+fix(review): route error boundary, honest theme persistence
+perf(images): convert photos to webp, compress oversized
+refactor: merge layout dirs, drop no-op article shim
+chore: enforce LF line endings via .gitattributes
+docs(journals): log review-v2 fixes execution session
 ```
 
-### Branch Strategy
-
-```
-main (protected)
-  ↓
-feature/add-blog-section
-feature/optimize-images
-fix/mobile-menu-bug
-```
-
-**Pull Request Template:**
-```markdown
-## Description
-Brief description of changes
-
-## Type of Change
-- [ ] New feature
-- [ ] Bug fix
-- [ ] Performance improvement
-- [ ] Documentation update
-
-## Testing
-- [ ] Lighthouse audit passed
-- [ ] Mobile responsive
-- [ ] Dark/light mode tested
-- [ ] No console errors
-
-## Screenshots
-(If UI changes)
-```
+- Group commits by concern; split mixed files with `git apply --cached` when a
+  file carries two concerns' hunks
+- Push to `master` deploys production (Vercel) — `yarn build && yarn lint` must
+  pass BEFORE every push
+- Never commit secrets/dotenv; binary assets are declared in `.gitattributes`
 
 ---
 
-## Deprecation Policy
-
-**Before Removing Code:**
-1. Mark as deprecated with comment
-2. Log deprecation warning (console.warn)
-3. Wait 1 release cycle
-4. Remove in next version
-
-**Example:**
-```javascript
-// @deprecated Use Section component instead (will be removed in v2.0)
-const OldSection = () => {
-  console.warn('OldSection is deprecated, use Section instead')
-  // Implementation
-}
-```
-
----
-
-## Performance Budget
-
-| Metric | Budget | Current | Status |
-|--------|--------|---------|--------|
-| First Contentful Paint | < 1.5s | ~1.2s | ✅ |
-| Time to Interactive | < 3.5s | ~2.8s | ✅ |
-| Speed Index | < 3.0s | ~2.5s | ✅ |
-| Total Blocking Time | < 200ms | ~150ms | ✅ |
-| Cumulative Layout Shift | < 0.1 | ~0.05 | ✅ |
-| Largest Contentful Paint | < 2.5s | ~1.8s | ✅ |
-
-**Enforcement:** Block deployment if any metric exceeds budget
-
----
-
-**Document Version:** 1.0
 **Maintained By:** Trương Tuấn Lộc
-**Review Frequency:** Quarterly
+**Review:** when conventions change, not on a calendar
