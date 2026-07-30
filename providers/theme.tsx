@@ -1,18 +1,5 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
-
-type Mode = 'light' | 'dark'
-
-interface ThemeContextValue {
-    mode: Mode
-    toggle: () => void
-}
-
-const ThemeContext = createContext<ThemeContextValue>({ mode: 'dark', toggle: () => {} })
-
-/** Read/toggle the color theme. Provider owns the `.dark` class + persistence. */
-export function useTheme() {
-    return useContext(ThemeContext)
-}
+import { useCallback, useEffect, useState } from 'react'
+import { ThemeContext, type Mode } from './use-theme'
 
 /** localStorage key. Old Chakra key is read once for migration. */
 const STORAGE_KEY = 'theme'

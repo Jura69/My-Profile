@@ -18,7 +18,7 @@ declare module 'three/examples/jsm/controls/OrbitControls' {
 }
 
 declare module 'three/examples/jsm/loaders/GLTFLoader' {
-    import { Loader, LoadingManager, Group, Scene } from 'three'
+    import { Loader, LoadingManager, Group } from 'three'
     export interface GLTF {
         scene: Group
         scenes: Group[]

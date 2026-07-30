@@ -1,21 +1,11 @@
-import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import Lenis from 'lenis'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { SceneContext } from './use-scene'
 
 gsap.registerPlugin(ScrollTrigger)
-
-interface SceneContextValue {
-    /** True when the user prefers reduced motion — scene renders static, Lenis stays off. */
-    reducedMotion: boolean
-}
-
-const SceneContext = createContext<SceneContextValue>({ reducedMotion: false })
-
-export function useScene() {
-    return useContext(SceneContext)
-}
 
 function prefersReducedMotion() {
     return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches

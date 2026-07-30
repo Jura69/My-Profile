@@ -1,6 +1,11 @@
-import { Scene } from 'three'
+import { Group, Mesh, Object3D, Scene } from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js'
+
+/** Narrow an Object3D from `traverse` to a Mesh (three's own discriminant flag). */
+export function isMesh(child: Object3D): child is Mesh {
+    return (child as Mesh).isMesh === true
+}
 
 const draco = new DRACOLoader()
 draco.setDecoderConfig({ type: 'js' })
@@ -15,9 +20,9 @@ export function loadGLTFModel(
     scene: Scene,
     glbPath: string,
     options: LoadOptions = { receiveShadow: true, castShadow: true }
-) {
+): Promise<Group> {
     const { receiveShadow, castShadow } = options
-    return new Promise((resolve, reject) => {
+    return new Promise<Group>((resolve, reject) => {
         const loader = new GLTFLoader()
         loader.setDRACOLoader(draco)
 
@@ -32,10 +37,10 @@ export function loadGLTFModel(
                 obj.castShadow = castShadow ?? true
                 scene.add(obj)
 
-                obj.traverse(function (child: any) {
-                    if (child.isMesh) {
-                        child.castShadow = castShadow
-                        child.receiveShadow = receiveShadow
+                obj.traverse(child => {
+                    if (isMesh(child)) {
+                        child.castShadow = castShadow ?? false
+                        child.receiveShadow = receiveShadow ?? false
                     }
                 })
                 resolve(obj)

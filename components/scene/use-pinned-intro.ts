@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useScene } from './scene-provider'
+import { useScene } from './use-scene'
 
 gsap.registerPlugin(ScrollTrigger)
 

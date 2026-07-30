@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { IoMoon, IoSunny } from 'react-icons/io5'
-import { useTheme } from '../../providers/theme'
+import { useTheme } from '../../providers/use-theme'
 import IconButton from '../ui/icon-button'
 
 /**

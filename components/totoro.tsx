@@ -8,7 +8,7 @@ import {
     SRGBColorSpace,
 } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { loadGLTFModel } from '../lib/model'
+import { loadGLTFModel, isMesh } from '../lib/model'
 import { TotoroSpinner, TotoroContainer } from './totoro-loader'
 
 function easeOutCirc(x: number): number {
@@ -78,9 +78,9 @@ const Totoro = memo(() => {
             loadGLTFModel(scene, urlTotoroGLB, {
                 receiveShadow: false,
                 castShadow: false
-            }).then((model: any) => {
-                model.traverse((child: any) => {
-                    if (child.isMesh) {
+            }).then(model => {
+                model.traverse(child => {
+                    if (isMesh(child)) {
                         child.geometry.computeBoundingBox()
                         child.geometry.computeBoundingSphere()
                     }
