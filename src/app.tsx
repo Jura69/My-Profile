@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router'
 import { motion } from 'motion/react'
 import { Analytics } from '@vercel/analytics/react'
@@ -7,27 +8,29 @@ import SceneProvider, { useScene } from '../components/scene/scene-provider'
 import MainLayout from '../components/layouts/main'
 import NotFound from '../components/layout/not-found'
 
-// Pages — lazy-loaded in Phase 4; use direct imports for now
+// HomePage stays eager — it is the LCP-critical landing route. Every other
+// page is its own chunk; router navigations run in startTransition, so the
+// previous page stays visible while a chunk streams in.
 import HomePage from './pages/index'
-import WorksPage from './pages/works'
-import FoodLoverPage from './pages/works/foodlover'
-import TicketAppPage from './pages/works/ticketapp'
-import EcommercePage from './pages/works/ecommerce'
-import TensorflowPage from './pages/works/tensorflow'
-import AssetManagementPage from './pages/works/asset-management'
-import BatLoyaltyPage from './pages/works/bat-loyalty'
-import BatPsaPage from './pages/works/bat-psa'
-import CastrolFleetPage from './pages/works/castrol-fleet'
-import VendingAiAgentPage from './pages/works/vending-ai-agent'
-import WarehouseManagementPage from './pages/works/warehouse-management'
-import CreasiaErpPage from './pages/works/creasia-erp'
-import ActivitiesPage from './pages/activities'
-import YtcPage from './pages/activities/ytc'
-import AudiophilePage from './pages/audiophile'
-import Ea1000Page from './pages/audiophile/ea1000'
-import MoondropPage from './pages/audiophile/moondropSSP'
-import OnixPage from './pages/audiophile/onix'
-import FiiokA11Page from './pages/audiophile/fiioka11'
+const WorksPage = lazy(() => import('./pages/works'))
+const FoodLoverPage = lazy(() => import('./pages/works/foodlover'))
+const TicketAppPage = lazy(() => import('./pages/works/ticketapp'))
+const EcommercePage = lazy(() => import('./pages/works/ecommerce'))
+const TensorflowPage = lazy(() => import('./pages/works/tensorflow'))
+const AssetManagementPage = lazy(() => import('./pages/works/asset-management'))
+const BatLoyaltyPage = lazy(() => import('./pages/works/bat-loyalty'))
+const BatPsaPage = lazy(() => import('./pages/works/bat-psa'))
+const CastrolFleetPage = lazy(() => import('./pages/works/castrol-fleet'))
+const VendingAiAgentPage = lazy(() => import('./pages/works/vending-ai-agent'))
+const WarehouseManagementPage = lazy(() => import('./pages/works/warehouse-management'))
+const CreasiaErpPage = lazy(() => import('./pages/works/creasia-erp'))
+const ActivitiesPage = lazy(() => import('./pages/activities'))
+const YtcPage = lazy(() => import('./pages/activities/ytc'))
+const AudiophilePage = lazy(() => import('./pages/audiophile'))
+const Ea1000Page = lazy(() => import('./pages/audiophile/ea1000'))
+const MoondropPage = lazy(() => import('./pages/audiophile/moondropSSP'))
+const OnixPage = lazy(() => import('./pages/audiophile/onix'))
+const FiiokA11Page = lazy(() => import('./pages/audiophile/fiioka11'))
 
 // Restore scroll position on navigation
 if (typeof window !== 'undefined') {
@@ -65,7 +68,10 @@ function AnimatedRoutes() {
     )
 
     // Reduced-motion users get instant, always-visible page swaps — no transition.
-    if (reducedMotion) return routes
+    // Suspense sits ABOVE the keyed transition wrapper: the boundary stays
+    // mounted across navigations, so in-transition chunk loads keep the old
+    // page on screen instead of flashing the null fallback.
+    if (reducedMotion) return <Suspense fallback={null}>{routes}</Suspense>
 
     // Entrance-only page transition: a keyed motion element remounts per route and
     // fades in. Deliberately NOT AnimatePresence exit/mode="wait" — the exit never
@@ -75,14 +81,16 @@ function AnimatedRoutes() {
     // containing block for the homepage's position:fixed GSAP pin (ExperienceDusk)
     // and misalign it. SceneProvider handles scroll reset + ScrollTrigger refresh.
     return (
-        <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.25, ease: 'easeInOut' }}
-        >
-            {routes}
-        </motion.div>
+        <Suspense fallback={null}>
+            <motion.div
+                key={location.pathname}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.25, ease: 'easeInOut' }}
+            >
+                {routes}
+            </motion.div>
+        </Suspense>
     )
 }
 
