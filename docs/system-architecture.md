@@ -92,7 +92,7 @@ App (src/app.tsx — BrowserRouter)
 │       │              ScrollTrigger sync, reducedMotion state, scroll reset per route)
 │       └── MainLayout (components/layout/main.tsx, memoized,
 │           │           <MotionConfig reducedMotion="user">)
-│           ├── AmbientScene (fixed background: sky gradient, sun/moon arc,
+│           ├── AmbientScene (fixed background: sky gradient, moon arc,
 │           │                 parallax hills, stars, zone particles — GSAP-driven)
 │           ├── Navbar (fixed; desktop links + Radix dropdown mobile menu;
 │           │           NAV_LINKS = Works, Audiophile — Activities off-nav by design)

@@ -49,7 +49,7 @@ My-Profile/
 │   ├── works/                # project-card, featured-project-card + works-data.ts
 │   ├── scene/                # ambient-scene, celestial-arc, parallax-hills, stars,
 │   │                         #   zone-particles, zone-data, scene-provider,
-│   │                         #   use-scene, use-pinned-intro, svg/{hills,moon,sun}
+│   │                         #   use-scene, use-pinned-intro, svg/{hills,moon}
 │   ├── icons/                # totoro.tsx, ghibli-icons.tsx (inline SVG)
 │   ├── seo.tsx               # Per-page meta (React 19 hoists to <head>)
 │   ├── json-ld.tsx           # Person/Website/ProfilePage/Project/Breadcrumb schemas

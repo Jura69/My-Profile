@@ -35,13 +35,14 @@
   singleQuote: true,
   bracketSpacing: true,
   endOfLine: 'lf',      // .gitattributes also enforces LF repo-wide
+  printWidth: 120,
   semi: false,
-  tabWidth: 2,
+  tabWidth: 4,
   trailingComma: 'none'
 }
 ```
 
-Format: `yarn prettier`
+Format: `yarn prettier` (scoped to the same targets as `yarn lint` — docs/plans/json stay untouched)
 
 ### ESLint (`.eslintrc.cjs` — the file is the authority)
 
