@@ -33,7 +33,10 @@ import {
     HiOutlineAcademicCap,
     HiOutlineWrenchScrewdriver,
     HiOutlineShare,
-    HiOutlineChatBubbleBottomCenterText
+    HiOutlineChatBubbleBottomCenterText,
+    HiOutlineServerStack,
+    HiOutlineArrowPathRoundedSquare,
+    HiOutlineChartBarSquare
 } from 'react-icons/hi2'
 import type { BadgeTone } from '../ui/badge'
 
@@ -59,10 +62,28 @@ export interface SkillGroup {
     skills: Skill[]
 }
 
-// Order IS the bento layout: row 1 gives Frontend and AI equal width (3+3) so
-// the agentic-AI skill set gets flagship billing; row 2 keeps Backend wide (4)
-// with Tools compact (2), filling a 6-col grid two rows deep.
+// Order IS the bento layout: row 1 leads with AI (3) beside Frontend (3) —
+// the AI card comes first so operating-AI experience opens the section;
+// row 2 keeps Backend wide (4) with Tools compact (2), filling a 6-col grid.
 export const skillGroups: SkillGroup[] = [
+    {
+        title: 'AI & Agent Engineering',
+        tone: 'ai',
+        span: 'lg:col-span-3',
+        skills: [
+            // Operating-AI skills lead, agent-building follows, classic ML stack last.
+            { icon: HiOutlineServerStack, label: 'AI Operations (LLMOps)', color: '#5a9dab' },
+            { icon: HiOutlineArrowPathRoundedSquare, label: 'AI Workflow Automation', color: '#d4a853' },
+            { icon: HiOutlineChartBarSquare, label: 'LLM Evaluation & Monitoring', color: '#6db86b' },
+            { icon: SiClaude, label: 'Agent Skill Building', color: '#D97757' },
+            { icon: HiOutlineWrenchScrewdriver, label: 'Agent Harness Design', color: '#5a9dab' },
+            { icon: HiOutlineShare, label: 'Agent Orchestration', color: '#6db86b' },
+            { icon: HiOutlineChatBubbleBottomCenterText, label: 'Prompt & Context Engineering', color: '#d4a853' },
+            { icon: SiOpenai, label: 'OpenAI API', color: '#808080' },
+            { icon: SiTensorflow, label: 'TensorFlow', color: '#FF6F00' },
+            { icon: SiPytorch, label: 'PyTorch', color: '#EE4C2C' }
+        ]
+    },
     {
         title: 'Frontend',
         tone: 'frontend',
@@ -76,21 +97,6 @@ export const skillGroups: SkillGroup[] = [
             { icon: SiThreedotjs, label: 'Three.js', color: '#808080' },
             { icon: SiJavascript, label: 'JavaScript', color: '#F7DF1E' },
             { icon: SiHtml5, label: 'HTML/CSS', color: '#E34F26' }
-        ]
-    },
-    {
-        title: 'AI & Agent Engineering',
-        tone: 'ai',
-        span: 'lg:col-span-3',
-        skills: [
-            // Agentic-AI era skills lead; classic ML stack follows.
-            { icon: SiClaude, label: 'Agent Skill Building', color: '#D97757' },
-            { icon: HiOutlineWrenchScrewdriver, label: 'Agent Harness Design', color: '#5a9dab' },
-            { icon: HiOutlineShare, label: 'Agent Orchestration', color: '#6db86b' },
-            { icon: HiOutlineChatBubbleBottomCenterText, label: 'Prompt & Context Engineering', color: '#d4a853' },
-            { icon: SiOpenai, label: 'OpenAI API', color: '#808080' },
-            { icon: SiTensorflow, label: 'TensorFlow', color: '#FF6F00' },
-            { icon: SiPytorch, label: 'PyTorch', color: '#EE4C2C' }
         ]
     },
     {
@@ -143,13 +149,14 @@ export const experiences: ExperienceEntry[] = [
         color: '#5a9dab',
         tone: 'frontend',
         summary:
-            'Building scalable web applications using React and C# with focus on clean architecture and user experience.',
+            'Building enterprise AI agent platforms and full-stack web applications — agent engineering with LLM integration on a React/C# foundation.',
         bullets: [
+            'Build and operate an enterprise AI agent platform (Creasia AI Center) — multi-channel assistants with agent orchestration, custom skills and tools',
+            'Ship applied-AI products: computer-vision shelf compliance (Planogram AI) and Vietnamese ID-card OCR',
             'Develop and maintain full-stack applications with React frontend and C# backend',
-            'Collaborate with cross-functional teams to deliver high-quality features',
             'Implement responsive UI/UX designs and optimize application performance'
         ],
-        badges: ['React', 'C#', '.NET', 'SQL Server']
+        badges: ['AI Agents', 'LLM Integration', 'React', 'C#', '.NET', 'SQL Server']
     },
     {
         icon: HiOutlineCommandLine,
@@ -233,6 +240,8 @@ export const socialLinks: SocialLink[] = [
 ]
 
 export const techIconMap: Record<string, { icon: IconType; color: string }> = {
+    'AI Agents': { icon: SiClaude, color: '#D97757' },
+    'LLM Integration': { icon: SiOpenai, color: '#808080' },
     React: { icon: SiReact, color: '#61DAFB' },
     'C#': { icon: SiSharp, color: '#512BD4' },
     '.NET': { icon: SiDotnet, color: '#512BD4' },
