@@ -26,7 +26,7 @@ export default function AboutMorning() {
                     <SectionHeading as="h2">About Me 🌿</SectionHeading>
                 </Reveal>
 
-                <div className="flex flex-col items-center gap-8 md:flex-row md:items-start md:gap-12">
+                <div className="mt-8 flex flex-col items-center gap-8 md:flex-row md:items-center md:gap-16">
                     <Reveal delay={0.05} className="shrink-0">
                         <img
                             src="/images/loc.webp"
