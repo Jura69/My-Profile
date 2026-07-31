@@ -15,6 +15,7 @@ import {
     SiTensorflow,
     SiPytorch,
     SiOpenai,
+    SiClaude,
     SiPython,
     SiGit,
     SiDocker,
@@ -25,7 +26,15 @@ import {
     SiAmazonwebservices
 } from 'react-icons/si'
 import { DiMsqlServer, DiDatabase } from 'react-icons/di'
-import { HiOutlineBuildingOffice2, HiOutlineCommandLine, HiOutlineSignal, HiOutlineAcademicCap } from 'react-icons/hi2'
+import {
+    HiOutlineBuildingOffice2,
+    HiOutlineCommandLine,
+    HiOutlineSignal,
+    HiOutlineAcademicCap,
+    HiOutlineWrenchScrewdriver,
+    HiOutlineShare,
+    HiOutlineChatBubbleBottomCenterText
+} from 'react-icons/hi2'
 import type { BadgeTone } from '../ui/badge'
 
 /**
@@ -50,13 +59,14 @@ export interface SkillGroup {
     skills: Skill[]
 }
 
-// Order IS the bento layout: Frontend + Backend span wide on the left,
-// AI + Tools stay compact on the right, filling a 6-col grid two rows deep.
+// Order IS the bento layout: row 1 gives Frontend and AI equal width (3+3) so
+// the agentic-AI skill set gets flagship billing; row 2 keeps Backend wide (4)
+// with Tools compact (2), filling a 6-col grid two rows deep.
 export const skillGroups: SkillGroup[] = [
     {
         title: 'Frontend',
         tone: 'frontend',
-        span: 'lg:col-span-4',
+        span: 'lg:col-span-3',
         skills: [
             { icon: SiReact, label: 'React.js', color: '#61DAFB' },
             { icon: SiNextdotjs, label: 'Next.js', color: '#808080' },
@@ -69,13 +79,18 @@ export const skillGroups: SkillGroup[] = [
         ]
     },
     {
-        title: 'AI & Machine Learning',
+        title: 'AI & Agent Engineering',
         tone: 'ai',
-        span: 'lg:col-span-2',
+        span: 'lg:col-span-3',
         skills: [
+            // Agentic-AI era skills lead; classic ML stack follows.
+            { icon: SiClaude, label: 'Agent Skill Building', color: '#D97757' },
+            { icon: HiOutlineWrenchScrewdriver, label: 'Agent Harness Design', color: '#5a9dab' },
+            { icon: HiOutlineShare, label: 'Agent Orchestration', color: '#6db86b' },
+            { icon: HiOutlineChatBubbleBottomCenterText, label: 'Prompt & Context Engineering', color: '#d4a853' },
+            { icon: SiOpenai, label: 'OpenAI API', color: '#808080' },
             { icon: SiTensorflow, label: 'TensorFlow', color: '#FF6F00' },
-            { icon: SiPytorch, label: 'PyTorch', color: '#EE4C2C' },
-            { icon: SiOpenai, label: 'OpenAI API', color: '#808080' }
+            { icon: SiPytorch, label: 'PyTorch', color: '#EE4C2C' }
         ]
     },
     {
