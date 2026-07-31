@@ -1,12 +1,6 @@
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import {
-    DetailTitle,
-    DetailProse,
-    DetailMeta,
-    DetailLink,
-    DetailImage
-} from '../../../components/layout/detail-page'
+import { DetailTitle, DetailProse, DetailMeta, DetailLink, DetailImage } from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -42,7 +36,10 @@ const Work = () => (
 
             <Reveal>
                 <DetailProse>
-                    A machine learning application that uses TensorFlow and computer vision to detect and interpret sign language gestures in real-time. The model is trained on sign language datasets to recognize various hand signs and convert them to text, making communication more accessible for the hearing-impaired community.
+                    A machine learning application that uses TensorFlow and computer vision to detect and interpret sign
+                    language gestures in real-time. The model is trained on sign language datasets to recognize various
+                    hand signs and convert them to text, making communication more accessible for the hearing-impaired
+                    community.
                 </DetailProse>
             </Reveal>
 

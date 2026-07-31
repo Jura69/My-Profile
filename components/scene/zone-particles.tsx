@@ -95,7 +95,7 @@ const ZoneParticles = memo(function ZoneParticles() {
                         className="absolute rounded-full motion-safe:animate-[scene-firefly-drift_9s_ease-in-out_infinite]"
                         style={{
                             left: `${f.x}%`,
-                            top: `${30 + (f.y * 0.7)}%`,
+                            top: `${30 + f.y * 0.7}%`,
                             width: `${f.size}px`,
                             height: `${f.size}px`,
                             background: '#f6e05e',

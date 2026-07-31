@@ -35,9 +35,9 @@ const Work = () => (
 
             <Reveal>
                 <DetailProse>
-                    Administrative dashboard for problem statement analysis at British American Tobacco.
-                    Features advanced reporting, data visualization, and export capabilities
-                    for operational decision-making across the organization.
+                    Administrative dashboard for problem statement analysis at British American Tobacco. Features
+                    advanced reporting, data visualization, and export capabilities for operational decision-making
+                    across the organization.
                 </DetailProse>
             </Reveal>
 

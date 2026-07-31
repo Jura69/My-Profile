@@ -23,9 +23,7 @@ function ExperienceCard({ entry }: { entry: ExperienceEntry }) {
             >
                 {entry.period}
             </span>
-            {entry.summary && (
-                <p className="mt-3 text-sm leading-relaxed text-ink-muted">{entry.summary}</p>
-            )}
+            {entry.summary && <p className="mt-3 text-sm leading-relaxed text-ink-muted">{entry.summary}</p>}
             <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink-muted">
                 {entry.bullets.map(bullet => (
                     <li key={bullet}>{bullet}</li>
@@ -92,11 +90,7 @@ export default function ExperienceDusk() {
 
                 <Reveal delay={0.1}>
                     <div className="mt-10 text-center">
-                        <a
-                            href="/files/CV.pdf"
-                            download="TuanLoc_CV.pdf"
-                            className={buttonClasses('solid', 'lg')}
-                        >
+                        <a href="/files/CV.pdf" download="TuanLoc_CV.pdf" className={buttonClasses('solid', 'lg')}>
                             Download Full CV <IoChevronForward aria-hidden="true" />
                         </a>
                     </div>

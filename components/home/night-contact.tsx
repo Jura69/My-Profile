@@ -1,5 +1,10 @@
 import {
-    IoLogoGithub, IoLogoLinkedin, IoLogoFacebook, IoLogoInstagram, IoLogoGoogle, IoMailOutline
+    IoLogoGithub,
+    IoLogoLinkedin,
+    IoLogoFacebook,
+    IoLogoInstagram,
+    IoLogoGoogle,
+    IoMailOutline
 } from 'react-icons/io5'
 import type { IconType } from 'react-icons'
 import Reveal from '../ui/reveal'
@@ -73,10 +78,7 @@ export default function NightContact() {
                     </Reveal>
 
                     <Reveal delay={0.1}>
-                        <a
-                            href="mailto:Loctruongtuan@gmail.com"
-                            className={`${buttonClasses('solid', 'lg')} mt-8`}
-                        >
+                        <a href="mailto:Loctruongtuan@gmail.com" className={`${buttonClasses('solid', 'lg')} mt-8`}>
                             <IoMailOutline aria-hidden="true" /> Get in touch
                         </a>
                     </Reveal>

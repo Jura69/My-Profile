@@ -1,15 +1,31 @@
 import type { IconType } from 'react-icons'
 import {
-    SiReact, SiNextdotjs, SiFlutter, SiTailwindcss, SiThreedotjs, SiHtml5, SiJavascript,
-    SiNodedotjs, SiSharp, SiExpress, SiMongodb, SiDotnet,
-    SiTensorflow, SiPytorch, SiOpenai, SiPython,
-    SiGit, SiDocker, SiAdobephotoshop, SiAdobepremierepro, SiTypescript, SiRedis,
+    SiReact,
+    SiNextdotjs,
+    SiFlutter,
+    SiTailwindcss,
+    SiThreedotjs,
+    SiHtml5,
+    SiJavascript,
+    SiNodedotjs,
+    SiSharp,
+    SiExpress,
+    SiMongodb,
+    SiDotnet,
+    SiTensorflow,
+    SiPytorch,
+    SiOpenai,
+    SiPython,
+    SiGit,
+    SiDocker,
+    SiAdobephotoshop,
+    SiAdobepremierepro,
+    SiTypescript,
+    SiRedis,
     SiAmazonwebservices
 } from 'react-icons/si'
 import { DiMsqlServer, DiDatabase } from 'react-icons/di'
-import {
-    HiOutlineBuildingOffice2, HiOutlineCommandLine, HiOutlineSignal, HiOutlineAcademicCap
-} from 'react-icons/hi2'
+import { HiOutlineBuildingOffice2, HiOutlineCommandLine, HiOutlineSignal, HiOutlineAcademicCap } from 'react-icons/hi2'
 import type { BadgeTone } from '../ui/badge'
 
 /**
@@ -111,7 +127,8 @@ export const experiences: ExperienceEntry[] = [
         period: 'June 2025 - Present · Full-time',
         color: '#5a9dab',
         tone: 'frontend',
-        summary: 'Building scalable web applications using React and C# with focus on clean architecture and user experience.',
+        summary:
+            'Building scalable web applications using React and C# with focus on clean architecture and user experience.',
         bullets: [
             'Develop and maintain full-stack applications with React frontend and C# backend',
             'Collaborate with cross-functional teams to deliver high-quality features',
@@ -126,7 +143,8 @@ export const experiences: ExperienceEntry[] = [
         period: 'Dec 2023 - Feb 2025 · 1 year 3 months',
         color: '#6db86b',
         tone: 'frontend',
-        summary: 'Specialized in Node.js backend development, building RESTful APIs and microservices for enterprise applications.',
+        summary:
+            'Specialized in Node.js backend development, building RESTful APIs and microservices for enterprise applications.',
         bullets: [
             'Designed and implemented RESTful APIs serving 10,000+ daily active users',
             'Optimized database queries reducing response time by 40%',
@@ -142,7 +160,8 @@ export const experiences: ExperienceEntry[] = [
         period: 'May 2023 - Jul 2023 · 3 months',
         color: '#5a9bd5',
         tone: 'backend',
-        summary: 'Internship focused on full-stack development with React and C#, working on internal management systems.',
+        summary:
+            'Internship focused on full-stack development with React and C#, working on internal management systems.',
         bullets: [
             'Developed internal web applications using React and C#',
             'Learned enterprise software development practices',
@@ -188,22 +207,26 @@ export interface SocialLink {
 
 export const socialLinks: SocialLink[] = [
     { label: '@Jura69', href: 'https://github.com/Jura69', icon: 'github' },
-    { label: 'Trương Tuấn Lộc', href: 'https://www.linkedin.com/in/tu%E1%BA%A5n-l%E1%BB%99c-b24b391ab/', icon: 'linkedin' },
+    {
+        label: 'Trương Tuấn Lộc',
+        href: 'https://www.linkedin.com/in/tu%E1%BA%A5n-l%E1%BB%99c-b24b391ab/',
+        icon: 'linkedin'
+    },
     { label: '@Trương Tuấn Lộc', href: 'https://www.facebook.com/loc.truongtuanMT', icon: 'facebook' },
     { label: '@_midori_neko_', href: 'https://www.instagram.com/_midori_neko_/', icon: 'instagram' },
     { label: 'Loctruongtuan@gmail.com', href: 'mailto:Loctruongtuan@gmail.com', icon: 'google' }
 ]
 
 export const techIconMap: Record<string, { icon: IconType; color: string }> = {
-    'React': { icon: SiReact, color: '#61DAFB' },
+    React: { icon: SiReact, color: '#61DAFB' },
     'C#': { icon: SiSharp, color: '#512BD4' },
     '.NET': { icon: SiDotnet, color: '#512BD4' },
     'SQL Server': { icon: DiMsqlServer, color: '#CC2927' },
     'Node.js': { icon: SiNodedotjs, color: '#339933' },
-    'Express': { icon: SiExpress, color: '#808080' },
-    'MongoDB': { icon: SiMongodb, color: '#47A248' },
-    'Redis': { icon: SiRedis, color: '#DC382D' },
-    'Docker': { icon: SiDocker, color: '#2496ED' },
-    'AWS': { icon: SiAmazonwebservices, color: '#FF9900' },
-    'SQL': { icon: DiDatabase, color: '#00758F' }
+    Express: { icon: SiExpress, color: '#808080' },
+    MongoDB: { icon: SiMongodb, color: '#47A248' },
+    Redis: { icon: SiRedis, color: '#DC382D' },
+    Docker: { icon: SiDocker, color: '#2496ED' },
+    AWS: { icon: SiAmazonwebservices, color: '#FF9900' },
+    SQL: { icon: DiDatabase, color: '#00758F' }
 }

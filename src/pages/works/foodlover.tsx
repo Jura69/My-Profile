@@ -1,12 +1,6 @@
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import {
-    DetailTitle,
-    DetailProse,
-    DetailMeta,
-    DetailLink,
-    DetailImage
-} from '../../../components/layout/detail-page'
+import { DetailTitle, DetailProse, DetailMeta, DetailLink, DetailImage } from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -42,7 +36,10 @@ const Work = () => (
 
             <Reveal>
                 <DetailProse>
-                    A full-stack food ordering and recipe discovery platform built with Next.js, Node.js, and MongoDB. Users can browse recipes, place orders, and track deliveries. The platform includes a comprehensive admin dashboard for restaurant owners to manage menus, orders, and invoices. Features secure payment processing with Stripe integration and cloud storage with AWS S3.
+                    A full-stack food ordering and recipe discovery platform built with Next.js, Node.js, and MongoDB.
+                    Users can browse recipes, place orders, and track deliveries. The platform includes a comprehensive
+                    admin dashboard for restaurant owners to manage menus, orders, and invoices. Features secure payment
+                    processing with Stripe integration and cloud storage with AWS S3.
                 </DetailProse>
             </Reveal>
 

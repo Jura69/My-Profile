@@ -4,8 +4,18 @@ type IconProps = SVGProps<SVGSVGElement> & { size?: number }
 
 /** Howl's Moving Castle — outline style */
 export const GhibliCastle = ({ size = 24, ...props }: IconProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 32 32"
-        fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={size}
+        height={size}
+        viewBox="0 0 32 32"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...props}
+    >
         {/* Main tower */}
         <path d="M13 4L11 9V15H21V9L19 4H13Z" />
         {/* Flag */}
@@ -30,8 +40,18 @@ export const GhibliCastle = ({ size = 24, ...props }: IconProps) => (
 
 /** Cat Bus — outline style */
 export const GhibliCatBus = ({ size = 24, ...props }: IconProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 32 32"
-        fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={size}
+        height={size}
+        viewBox="0 0 32 32"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...props}
+    >
         {/* Body */}
         <ellipse cx="14" cy="17" rx="12" ry="6" />
         {/* Head */}
@@ -64,8 +84,18 @@ export const GhibliCatBus = ({ size = 24, ...props }: IconProps) => (
 
 /** Kodama tree spirit — outline style */
 export const GhibliKodama = ({ size = 24, ...props }: IconProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 32 32"
-        fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={size}
+        height={size}
+        viewBox="0 0 32 32"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...props}
+    >
         {/* Head */}
         <ellipse cx="16" cy="11" rx="7" ry="8" />
         {/* Head bobble */}
@@ -88,8 +118,18 @@ export const GhibliKodama = ({ size = 24, ...props }: IconProps) => (
 
 /** Soot Sprite — outline style with star eyes */
 export const GhibliSootSprite = ({ size = 24, ...props }: IconProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 32 32"
-        fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={size}
+        height={size}
+        viewBox="0 0 32 32"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...props}
+    >
         {/* Fuzzy body */}
         <circle cx="16" cy="16" r="9" />
         {/* Fuzz spikes */}
@@ -112,8 +152,18 @@ export const GhibliSootSprite = ({ size = 24, ...props }: IconProps) => (
 
 /** Floating leaf — outline style */
 export const GhibliLeaf = ({ size = 24, ...props }: IconProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 32 32"
-        fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={size}
+        height={size}
+        viewBox="0 0 32 32"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...props}
+    >
         <path d="M22 3C22 3 28 8 28 16C28 24 19 29 11 29C11 29 16 24 16 16C16 8 22 3 22 3Z" />
         {/* Center vein */}
         <path d="M22 3C22 3 17 8 16 16C15 24 11 29 11 29" />
@@ -126,8 +176,18 @@ export const GhibliLeaf = ({ size = 24, ...props }: IconProps) => (
 
 /** Magic sparkle — outline style */
 export const GhibliSparkle = ({ size = 24, ...props }: IconProps) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 32 32"
-        fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width={size}
+        height={size}
+        viewBox="0 0 32 32"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        {...props}
+    >
         {/* Main 4-point star */}
         <path d="M16 3L18 12L27 16L18 20L16 29L14 20L5 16L14 12Z" />
         {/* Small accent stars */}

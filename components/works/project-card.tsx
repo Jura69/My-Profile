@@ -35,9 +35,7 @@ export default function ProjectCard({ project, to }: { project: CardItem; to?: s
                 <div className="flex flex-1 flex-col p-4">
                     <h3 className="font-rounded text-base font-bold text-ink">{project.title}</h3>
                     {project.description && (
-                        <p className="mt-1 font-rounded text-sm leading-snug text-ink-muted">
-                            {project.description}
-                        </p>
+                        <p className="mt-1 font-rounded text-sm leading-snug text-ink-muted">{project.description}</p>
                     )}
                 </div>
             </RouterLink>

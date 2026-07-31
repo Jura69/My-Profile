@@ -1,11 +1,6 @@
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import {
-    DetailTitle,
-    DetailProse,
-    DetailMeta,
-    DetailLink
-} from '../../../components/layout/detail-page'
+import { DetailTitle, DetailProse, DetailMeta, DetailLink } from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -41,7 +36,9 @@ const Work = () => (
 
             <Reveal>
                 <DetailProse>
-                    A full-stack e-commerce platform built with a microservices architecture, spanning multiple repositories. The system is designed for scalability, modularity, and real-world production patterns — including event-driven communication, caching, and background workers.
+                    A full-stack e-commerce platform built with a microservices architecture, spanning multiple
+                    repositories. The system is designed for scalability, modularity, and real-world production patterns
+                    — including event-driven communication, caching, and background workers.
                 </DetailProse>
             </Reveal>
 
@@ -68,7 +65,11 @@ const Work = () => (
 
             <Reveal delay={0.1}>
                 <DetailProse>
-                    The platform follows a microservices approach across separate repositories: the core backend handles products, carts, orders, authentication (JWT), and role-based access; RabbitMQ drives asynchronous email and notification services; Redis provides caching and distributed locking (e.g. for inventory). The React storefront connects through RESTful APIs. Designed for horizontal scaling and production-ready patterns including rate limiting, error handling, and database optimization.
+                    The platform follows a microservices approach across separate repositories: the core backend handles
+                    products, carts, orders, authentication (JWT), and role-based access; RabbitMQ drives asynchronous
+                    email and notification services; Redis provides caching and distributed locking (e.g. for
+                    inventory). The React storefront connects through RESTful APIs. Designed for horizontal scaling and
+                    production-ready patterns including rate limiting, error handling, and database optimization.
                 </DetailProse>
             </Reveal>
         </Container>

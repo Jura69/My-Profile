@@ -1,12 +1,6 @@
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import {
-    DetailTitle,
-    DetailProse,
-    DetailMeta,
-    DetailLink,
-    DetailImage
-} from '../../../components/layout/detail-page'
+import { DetailTitle, DetailProse, DetailMeta, DetailLink, DetailImage } from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -42,7 +36,9 @@ const Work = () => (
 
             <Reveal>
                 <DetailProse>
-                    A modern mobile application for booking movie tickets, built with Flutter for cross-platform compatibility. Features include browsing available movies, selecting seats, and secure ticket booking with a clean, intuitive user interface.
+                    A modern mobile application for booking movie tickets, built with Flutter for cross-platform
+                    compatibility. Features include browsing available movies, selecting seats, and secure ticket
+                    booking with a clean, intuitive user interface.
                 </DetailProse>
             </Reveal>
 

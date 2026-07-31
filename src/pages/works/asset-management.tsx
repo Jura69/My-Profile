@@ -1,11 +1,6 @@
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import {
-    DetailTitle,
-    DetailProse,
-    DetailMeta,
-    DetailImage
-} from '../../../components/layout/detail-page'
+import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -40,9 +35,9 @@ const Work = () => (
 
             <Reveal>
                 <DetailProse>
-                    Enterprise asset tracking and lifecycle management platform built at Creasia.
-                    Enables organizations to monitor, maintain, and optimize their physical and digital assets
-                    throughout the entire lifecycle from acquisition to disposal.
+                    Enterprise asset tracking and lifecycle management platform built at Creasia. Enables organizations
+                    to monitor, maintain, and optimize their physical and digital assets throughout the entire lifecycle
+                    from acquisition to disposal.
                 </DetailProse>
             </Reveal>
 
@@ -50,7 +45,10 @@ const Work = () => (
                 <DetailMeta
                     rows={[
                         { label: 'Platform', value: 'Web application (Enterprise)' },
-                        { label: 'Stack', value: 'React 18, TypeScript, MUI, Redux Toolkit, C# .NET 7, Entity Framework Core' }
+                        {
+                            label: 'Stack',
+                            value: 'React 18, TypeScript, MUI, Redux Toolkit, C# .NET 7, Entity Framework Core'
+                        }
                     ]}
                 />
             </Reveal>

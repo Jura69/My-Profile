@@ -1,11 +1,6 @@
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import {
-    DetailTitle,
-    DetailProse,
-    DetailMeta,
-    DetailImage
-} from '../../../components/layout/detail-page'
+import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -30,7 +25,12 @@ const Audios = () => (
 
             <Reveal>
                 <DetailProse>
-                    The Shanling ONIX XI1 is a high-end DAC/AMP featuring a dual Cirrus Logic CS43198 DAC chipset, supporting PCM 32-bit/768kHz and DSD256 for clean, detailed, and natural sound. Powered by dual SGM8262 amplifiers, it delivers up to 500mW@32Ω via the balanced 4.4mm output, driving a wide range of headphones with ease. Its compact design includes a 0.87" OLED display and physical controls for convenient operation. With both 3.5mm and 4.4mm outputs, Eddict Player App support, and optimized low power consumption, the XI1 is a perfect choice for audiophiles on the go.
+                    The Shanling ONIX XI1 is a high-end DAC/AMP featuring a dual Cirrus Logic CS43198 DAC chipset,
+                    supporting PCM 32-bit/768kHz and DSD256 for clean, detailed, and natural sound. Powered by dual
+                    SGM8262 amplifiers, it delivers up to 500mW@32Ω via the balanced 4.4mm output, driving a wide range
+                    of headphones with ease. Its compact design includes a 0.87" OLED display and physical controls for
+                    convenient operation. With both 3.5mm and 4.4mm outputs, Eddict Player App support, and optimized
+                    low power consumption, the XI1 is a perfect choice for audiophiles on the go.
                 </DetailProse>
             </Reveal>
 

@@ -35,9 +35,9 @@ const Work = () => (
 
             <Reveal>
                 <DetailProse>
-                    Comprehensive enterprise resource planning platform built at Creasia covering
-                    finance, HR, procurement, and supply chain modules. Features Gantt-based
-                    project planning and multi-language support for global operations.
+                    Comprehensive enterprise resource planning platform built at Creasia covering finance, HR,
+                    procurement, and supply chain modules. Features Gantt-based project planning and multi-language
+                    support for global operations.
                 </DetailProse>
             </Reveal>
 
@@ -45,7 +45,10 @@ const Work = () => (
                 <DetailMeta
                     rows={[
                         { label: 'Platform', value: 'Web application (Enterprise)' },
-                        { label: 'Stack', value: 'React 18, TypeScript, MUI, Gantt charts, Full Calendar, i18next, C# .NET' }
+                        {
+                            label: 'Stack',
+                            value: 'React 18, TypeScript, MUI, Gantt charts, Full Calendar, i18next, C# .NET'
+                        }
                     ]}
                 />
             </Reveal>

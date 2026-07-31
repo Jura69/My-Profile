@@ -42,9 +42,7 @@ export function DetailTitle({ parentPath, parentLabel, year, children }: DetailT
 
 /** Sub-section heading within a detail page (h2). */
 export function DetailHeading({ children, className }: { children: React.ReactNode; className?: string }) {
-    return (
-        <h2 className={cn('mt-8 mb-3 font-rounded text-lg font-bold text-ink', className)}>{children}</h2>
-    )
+    return <h2 className={cn('mt-8 mb-3 font-rounded text-lg font-bold text-ink', className)}>{children}</h2>
 }
 
 /** Body prose paragraph — left-aligned, ~68ch measure, muted ink. */

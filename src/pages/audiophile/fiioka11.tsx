@@ -1,11 +1,6 @@
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import {
-    DetailTitle,
-    DetailProse,
-    DetailMeta,
-    DetailImage
-} from '../../../components/layout/detail-page'
+import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -30,7 +25,9 @@ const Audios = () => (
 
             <Reveal>
                 <DetailProse>
-                    The FIIO KA11 is a specialized HiFi USB adapter that connects to phones, tablets, and computers. Inside are high-performance DAC and headphone amplifiers that work together to bring a higher-quality listening experience.
+                    The FIIO KA11 is a specialized HiFi USB adapter that connects to phones, tablets, and computers.
+                    Inside are high-performance DAC and headphone amplifiers that work together to bring a
+                    higher-quality listening experience.
                 </DetailProse>
             </Reveal>
 

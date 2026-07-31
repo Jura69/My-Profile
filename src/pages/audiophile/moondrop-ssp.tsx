@@ -1,11 +1,6 @@
 import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import {
-    DetailTitle,
-    DetailProse,
-    DetailMeta,
-    DetailImage
-} from '../../../components/layout/detail-page'
+import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
 import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -30,7 +25,8 @@ const Audios = () => (
 
             <Reveal>
                 <DetailProse>
-                    Unlike some other IEMs on the market. MOONDROP implements acoustical damper and filter into one package in order to make precise control of frequency response.
+                    Unlike some other IEMs on the market. MOONDROP implements acoustical damper and filter into one
+                    package in order to make precise control of frequency response.
                 </DetailProse>
             </Reveal>
 

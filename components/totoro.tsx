@@ -1,12 +1,5 @@
 import { useState, useEffect, useRef, useCallback, memo } from 'react'
-import {
-    WebGLRenderer,
-    Scene,
-    OrthographicCamera,
-    Vector3,
-    AmbientLight,
-    SRGBColorSpace,
-} from 'three'
+import { WebGLRenderer, Scene, OrthographicCamera, Vector3, AmbientLight, SRGBColorSpace } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { loadGLTFModel, isMesh } from '../lib/model'
 import { TotoroSpinner, TotoroContainer } from './totoro-loader'
@@ -57,11 +50,7 @@ const Totoro = memo(() => {
             const scene = new Scene()
 
             const target = new Vector3(-0.5, 1.2, 0)
-            const initialCameraPosition = new Vector3(
-                20 * Math.sin(0.2 * Math.PI),
-                10,
-                20 * Math.cos(0.2 * Math.PI)
-            )
+            const initialCameraPosition = new Vector3(20 * Math.sin(0.2 * Math.PI), 10, 20 * Math.cos(0.2 * Math.PI))
 
             const scale = scH * 0.005 + 4.8
             const camera = new OrthographicCamera(-scale, scale, scale, -scale, 0.01, 50000)
@@ -78,19 +67,21 @@ const Totoro = memo(() => {
             loadGLTFModel(scene, urlTotoroGLB, {
                 receiveShadow: false,
                 castShadow: false
-            }).then(model => {
-                model.traverse(child => {
-                    if (isMesh(child)) {
-                        child.geometry.computeBoundingBox()
-                        child.geometry.computeBoundingSphere()
-                    }
-                })
-                animate()
-                setLoading(false)
-            }).catch((error: unknown) => {
-                console.error('Failed to load 3D model:', error)
-                setLoading(false)
             })
+                .then(model => {
+                    model.traverse(child => {
+                        if (isMesh(child)) {
+                            child.geometry.computeBoundingBox()
+                            child.geometry.computeBoundingSphere()
+                        }
+                    })
+                    animate()
+                    setLoading(false)
+                })
+                .catch((error: unknown) => {
+                    console.error('Failed to load 3D model:', error)
+                    setLoading(false)
+                })
 
             let req: number | null = null
             let frame = 0
@@ -127,9 +118,7 @@ const Totoro = memo(() => {
         }
     }, [handleWindowResize])
 
-    return (
-        <TotoroContainer ref={refContainer}>{loading && <TotoroSpinner />}</TotoroContainer>
-    )
+    return <TotoroContainer ref={refContainer}>{loading && <TotoroSpinner />}</TotoroContainer>
 })
 
 export default Totoro

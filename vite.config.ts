@@ -21,7 +21,8 @@ export default defineConfig({
                     // the checkout path can never hijack a vendor bucket.
                     const pkg = id.split('node_modules/').pop() ?? ''
                     if (pkg.startsWith('three/')) return 'vendor-three'
-                    if (pkg.startsWith('gsap/') || pkg.startsWith('@gsap/') || pkg.startsWith('lenis/')) return 'vendor-gsap'
+                    if (pkg.startsWith('gsap/') || pkg.startsWith('@gsap/') || pkg.startsWith('lenis/'))
+                        return 'vendor-gsap'
                     // motion + its framer-motion/motion-dom/motion-utils internals
                     if (pkg.startsWith('motion') || pkg.startsWith('framer-motion/')) return 'motion'
                     if (pkg.startsWith('react-icons/')) return 'vendor-icons'

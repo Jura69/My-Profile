@@ -4,7 +4,14 @@
  */
 export default function MoonSvg() {
     return (
-        <svg width="72" height="72" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <svg
+            width="72"
+            height="72"
+            viewBox="0 0 64 64"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+        >
             <defs>
                 <filter id="scene-moon-glow" x="-50%" y="-50%" width="200%" height="200%">
                     <feGaussianBlur in="SourceGraphic" stdDeviation="5" />
@@ -42,7 +49,16 @@ export default function MoonSvg() {
             </g>
 
             {/* Luminous rim */}
-            <circle cx="32" cy="32" r="11.5" fill="none" stroke="#F5F5FF" strokeWidth="0.5" opacity="0.35" mask="url(#scene-moon-crescent)" />
+            <circle
+                cx="32"
+                cy="32"
+                r="11.5"
+                fill="none"
+                stroke="#F5F5FF"
+                strokeWidth="0.5"
+                opacity="0.35"
+                mask="url(#scene-moon-crescent)"
+            />
         </svg>
     )
 }

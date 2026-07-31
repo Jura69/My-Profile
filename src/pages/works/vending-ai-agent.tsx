@@ -35,9 +35,8 @@ const Work = () => (
 
             <Reveal>
                 <DetailProse>
-                    Vending machine management platform built at Creasia.
-                    Provides sales analytics, inventory tracking, and restocking workflows
-                    to optimize vending operations across multiple locations.
+                    Vending machine management platform built at Creasia. Provides sales analytics, inventory tracking,
+                    and restocking workflows to optimize vending operations across multiple locations.
                 </DetailProse>
             </Reveal>
 

@@ -13,13 +13,11 @@ export const TotoroSpinner = () => (
  * Mount target for the Three.js canvas. Fills whatever slot the parent
  * provides (the hero composition owns the sizing).
  */
-export const TotoroContainer = forwardRef<HTMLDivElement, { children?: React.ReactNode }>(
-    ({ children }, ref) => (
-        <div ref={ref} className="relative h-full w-full">
-            {children}
-        </div>
-    )
-)
+export const TotoroContainer = forwardRef<HTMLDivElement, { children?: React.ReactNode }>(({ children }, ref) => (
+    <div ref={ref} className="relative h-full w-full">
+        {children}
+    </div>
+))
 TotoroContainer.displayName = 'TotoroContainer'
 
 const Loader = () => (

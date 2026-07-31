@@ -48,7 +48,11 @@ export default class RouteErrorBoundary extends Component<RouteErrorBoundaryProp
                     <p className="max-w-[42ch] font-rounded text-ink-muted">
                         This page failed to load — a new version of the site may have just been deployed.
                     </p>
-                    <button type="button" onClick={() => window.location.reload()} className={buttonClasses('outline', 'md')}>
+                    <button
+                        type="button"
+                        onClick={() => window.location.reload()}
+                        className={buttonClasses('outline', 'md')}
+                    >
                         Reload page
                     </button>
                 </div>

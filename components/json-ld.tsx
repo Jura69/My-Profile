@@ -22,9 +22,17 @@ export const PersonSchema = () => (
             worksFor: { '@type': 'Organization', name: 'CREASIA' },
             alumniOf: { '@type': 'EducationalOrganization', name: 'Nha Trang University' },
             knowsAbout: [
-                'React.js', 'Node.js', 'C#', 'Next.js', 'Flutter',
-                'MongoDB', 'Express.js', 'Full-stack Development',
-                'Web Development', 'Backend Development', 'Machine Learning'
+                'React.js',
+                'Node.js',
+                'C#',
+                'Next.js',
+                'Flutter',
+                'MongoDB',
+                'Express.js',
+                'Full-stack Development',
+                'Web Development',
+                'Backend Development',
+                'Machine Learning'
             ],
             sameAs: [
                 'https://github.com/Jura69',

@@ -35,9 +35,9 @@ const Work = () => (
 
             <Reveal>
                 <DetailProse>
-                    Vehicle fleet tracking platform with real-time geolocation via Mapbox built at Creasia.
-                    Includes maintenance scheduling, route optimization, and logistics management
-                    for fleet operators managing large vehicle networks.
+                    Vehicle fleet tracking platform with real-time geolocation via Mapbox built at Creasia. Includes
+                    maintenance scheduling, route optimization, and logistics management for fleet operators managing
+                    large vehicle networks.
                 </DetailProse>
             </Reveal>
 

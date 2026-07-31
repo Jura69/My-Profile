@@ -35,9 +35,9 @@ const Work = () => (
 
             <Reveal>
                 <DetailProse>
-                    Inventory tracking system with barcode and QR scanning integration built at Creasia.
-                    Manages order workflows, stock movements, and warehouse operations
-                    for enterprise logistics and supply chain management.
+                    Inventory tracking system with barcode and QR scanning integration built at Creasia. Manages order
+                    workflows, stock movements, and warehouse operations for enterprise logistics and supply chain
+                    management.
                 </DetailProse>
             </Reveal>
 
