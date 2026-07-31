@@ -9,7 +9,7 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint src components lib providers scripts vite.config.ts --ext .ts,.tsx,.js,.jsx",
-    "prettier": "prettier --write .",
+    "prettier": "prettier --write src components lib providers scripts vite.config.ts",
     "analyze": "npx vite-bundle-visualizer"
   },
   "keywords": [],
@@ -44,6 +44,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.0",
     "glob": "^13.0.0",
+    "prettier": "^3.9.6",
     "sharp": "^0.34.5",
     "typescript": "^5.7.0",
     "vite": "^6.0.0",

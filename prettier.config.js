@@ -1,11 +1,11 @@
-const options = {
+/** @type {import("prettier").Config} */
+export default {
     arrowParens: 'avoid',
     singleQuote: true,
     bracketSpacing: true,
     endOfLine: 'lf',
+    printWidth: 120,
     semi: false,
-    tabWidth: 2,
+    tabWidth: 4,
     trailingComma: 'none'
-  }
-  
-  module.exports = options
+}
