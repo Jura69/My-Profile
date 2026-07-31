@@ -152,7 +152,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 **Requirements:**
 - Display animated hero section (day→night scroll narrative with 3D Totoro)
 - Show "About Me" section with bio and stat pills
-- Present 23 skills in 4 groups (Frontend, AI & ML, Backend, Tools & Others) in a bento grid
+- Present 32 skills in 4 groups (AI & Agent Engineering, Frontend, Backend, DevOps) in a bento grid
 - Show work experience timeline with 4 entries (3 positions + education)
 - Include CV download button (opens /files/CV.pdf)
 - Display social links (GitHub, LinkedIn, Facebook, Instagram, Email)
