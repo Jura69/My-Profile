@@ -7,14 +7,19 @@ import SectionHeading from '../../components/ui/section-heading'
 import { buttonClasses } from '../../components/ui/button-styles'
 import FeaturedProjectCard from '../../components/works/featured-project-card'
 import ProjectCard from '../../components/works/project-card'
-import { featuredProjects, otherPersonalProjects, enterpriseProjects } from '../../components/works/works-data'
+import {
+    featuredProjects,
+    otherPersonalProjects,
+    featuredEnterpriseProjects,
+    enterpriseProjects
+} from '../../components/works/works-data'
 
 const Works = () => (
     <>
         <SEO
             title="My Projects & Works | Trương Tuấn Lộc Portfolio"
-            description="Browse my portfolio of personal and enterprise web development projects. Includes Food Lover, Flutter Ticket App, TensorFlow Sign Language Detection, and 7 enterprise projects built at Creasia."
-            keywords="Portfolio Projects, Web Development, React, Node.js, Flutter, Machine Learning, TensorFlow, Enterprise Projects, Creasia, .NET, ERP, Fleet Management"
+            description="Browse my portfolio of personal and enterprise projects. Includes Food Lover, TensorFlow Sign Language Detection, and 12 enterprise projects built at Creasia — from an AI agent platform to computer-vision shelf compliance and OCR systems."
+            keywords="Portfolio Projects, Web Development, React, Node.js, Flutter, Machine Learning, TensorFlow, Enterprise Projects, Creasia, .NET, ERP, AI Agent Platform, Computer Vision, OCR"
         />
         <BreadcrumbSchema
             items={[
@@ -52,6 +57,15 @@ const Works = () => (
                 <Reveal>
                     <SectionHeading as="h2">Enterprise Projects @ Creasia 💼</SectionHeading>
                 </Reveal>
+
+                {/* AI flagships lead the section as large cards; the rest stay compact. */}
+                <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                    {featuredEnterpriseProjects.map((project, i) => (
+                        <Reveal key={project.id} delay={0.05 + i * 0.05} className="h-full">
+                            <FeaturedProjectCard project={project} />
+                        </Reveal>
+                    ))}
+                </div>
 
                 <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                     {enterpriseProjects.map((project, i) => (

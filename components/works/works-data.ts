@@ -1,7 +1,7 @@
 /**
  * Single source for the Works listing (ported from the old Chakra works.tsx).
- * `featured` flips a project onto a large FeaturedProjectCard; `category`
- * splits the page into "Personal Projects" and "Enterprise @ Creasia".
+ * `featured` flips a project onto a large FeaturedProjectCard within its own
+ * `category` section — "Personal Projects" or "Enterprise @ Creasia".
  * To promote/demote a flagship, just toggle `featured` here.
  */
 /** Minimal shape a compact ProjectCard needs — also satisfied by the
@@ -61,6 +61,47 @@ export const projects: Project[] = [
         category: 'personal'
     },
     {
+        id: 'ai-center',
+        title: 'Creasia AI Center',
+        description:
+            'Enterprise AI agent platform — multi-channel AI assistants with agent orchestration, custom skills & tools.',
+        thumbnail: '/images/works/ai-center-thumb.webp',
+        category: 'enterprise',
+        featured: true,
+        tech: ['Go', 'AI Agents', 'LLM Integration']
+    },
+    {
+        id: 'planogram',
+        title: 'Planogram AI',
+        description:
+            'AI-powered retail shelf compliance — verifies product placement automatically from shelf photos with computer vision.',
+        thumbnail: '/images/works/planogram-thumb.webp',
+        category: 'enterprise',
+        featured: true,
+        tech: ['AI', 'Computer Vision', 'Python', '.NET']
+    },
+    {
+        id: 'ocr-cccd',
+        title: 'OCR CCCD',
+        description: 'AI-powered OCR that extracts structured data from Vietnamese ID cards',
+        thumbnail: '/images/works/ocr-cccd-thumb.webp',
+        category: 'enterprise'
+    },
+    {
+        id: 'advance-system',
+        title: 'AdvanceSystem',
+        description: 'Retail audit & field-force management platform for FMCG brands',
+        thumbnail: '/images/works/advance-system-thumb.webp',
+        category: 'enterprise'
+    },
+    {
+        id: 'mondelez-display',
+        title: 'Mondelez Display Management',
+        description: 'Retail display program management with field operations & compliance auditing',
+        thumbnail: '/images/works/mondelez-display-thumb.webp',
+        category: 'enterprise'
+    },
+    {
         id: 'asset-management',
         title: 'Asset Management',
         description: 'Enterprise asset tracking & lifecycle management platform',
@@ -112,11 +153,13 @@ export const projects: Project[] = [
 ]
 
 /** 3 personal flagships, rendered as large cards. */
-export const featuredProjects = projects.filter(p => p.featured)
+export const featuredProjects = projects.filter(p => p.category === 'personal' && p.featured)
 /** Remaining personal work (e.g. ticketapp) — compact grid under Personal Projects. */
 export const otherPersonalProjects = projects.filter(p => p.category === 'personal' && !p.featured)
-/** Enterprise work built at Creasia — compact grid. */
-export const enterpriseProjects = projects.filter(p => p.category === 'enterprise')
+/** AI flagships built at Creasia — large cards leading the enterprise section. */
+export const featuredEnterpriseProjects = projects.filter(p => p.category === 'enterprise' && p.featured)
+/** Remaining enterprise work built at Creasia — compact grid. */
+export const enterpriseProjects = projects.filter(p => p.category === 'enterprise' && !p.featured)
 
 /** Activities listing — single source shared by the page and the build-time sitemap. */
 export const activities: CardItem[] = [

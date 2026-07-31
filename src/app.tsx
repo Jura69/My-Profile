@@ -26,6 +26,11 @@ const CastrolFleetPage = lazy(() => import('./pages/works/castrol-fleet'))
 const VendingAiAgentPage = lazy(() => import('./pages/works/vending-ai-agent'))
 const WarehouseManagementPage = lazy(() => import('./pages/works/warehouse-management'))
 const CreasiaErpPage = lazy(() => import('./pages/works/creasia-erp'))
+const AiCenterPage = lazy(() => import('./pages/works/ai-center'))
+const PlanogramPage = lazy(() => import('./pages/works/planogram'))
+const OcrCccdPage = lazy(() => import('./pages/works/ocr-cccd'))
+const AdvanceSystemPage = lazy(() => import('./pages/works/advance-system'))
+const MondelezDisplayPage = lazy(() => import('./pages/works/mondelez-display'))
 const ActivitiesPage = lazy(() => import('./pages/activities'))
 const YtcPage = lazy(() => import('./pages/activities/ytc'))
 const AudiophilePage = lazy(() => import('./pages/audiophile'))
@@ -58,6 +63,11 @@ function AnimatedRoutes() {
             <Route path="/works/vending-ai-agent" element={<VendingAiAgentPage />} />
             <Route path="/works/warehouse-management" element={<WarehouseManagementPage />} />
             <Route path="/works/creasia-erp" element={<CreasiaErpPage />} />
+            <Route path="/works/ai-center" element={<AiCenterPage />} />
+            <Route path="/works/planogram" element={<PlanogramPage />} />
+            <Route path="/works/ocr-cccd" element={<OcrCccdPage />} />
+            <Route path="/works/advance-system" element={<AdvanceSystemPage />} />
+            <Route path="/works/mondelez-display" element={<MondelezDisplayPage />} />
             <Route path="/activities" element={<ActivitiesPage />} />
             <Route path="/activities/ytc" element={<YtcPage />} />
             <Route path="/audiophile" element={<AudiophilePage />} />
