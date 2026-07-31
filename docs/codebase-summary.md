@@ -92,7 +92,7 @@ Notable absences (deleted as cruft, do not reference): `components/layouts/`
 - Derived exports: `featuredProjects`, `otherPersonalProjects`, `enterpriseProjects`
 
 **`components/home/home-data.ts`** — homepage content:
-- `skillGroups` — 23 skills in 4 groups (Frontend 8, AI & ML, Backend, Tools & Others)
+- `skillGroups` — 30 skills in 4 groups, AI-first order (AI & Agent Engineering 10, Frontend 8, Backend 8, Tools & Others 4)
 - `experiences` — 4 timeline entries (CREASIA, Infodation, VNPT, university)
 - `socialLinks` — 5 links (GitHub, LinkedIn, Facebook, Instagram, Email)
 - `techIconMap` — tech-name → icon/color for experience badges
