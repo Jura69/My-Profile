@@ -20,12 +20,14 @@ const riseIn = (delay: number) => ({
 
 /**
  * Scene 1 of the day→night homepage: dawn hero. Full-bleed, composes with the
- * ambient scene behind it (sun low over the hills at progress 0), Totoro sits
- * bottom-right between the hill layers.
+ * ambient scene behind it, Totoro sits bottom-right between the hill layers.
  */
 export default function HeroDawn() {
     return (
-        <section data-section="hero" className="relative flex min-h-[85svh] flex-col items-center justify-center px-4 pb-24 text-center">
+        <section
+            data-section="hero"
+            className="relative flex min-h-[85svh] flex-col items-center justify-center px-4 pb-24 text-center"
+        >
             {/* Totoro — centered block, part of vertical flow */}
             <div className="relative mb-6 h-[220px] w-[220px] md:h-[320px] md:w-[320px] lg:h-[360px] lg:w-[360px]">
                 <Suspense fallback={<TotoroLoader />}>

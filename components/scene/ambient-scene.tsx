@@ -12,51 +12,12 @@ import ZoneParticles from './zone-particles'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
-interface SunStop {
-    at: number
-    core: string
-    mid: string
-    outer: string
-    ray: string
-    glow: string
-}
-
-/** Sun tint stops across its 0→0.55 arc (warm morning → red sunset). */
-const SUN_STOPS: SunStop[] = [
-    { at: 0.0, core: '#FFFDE7', mid: '#FFE082', outer: '#FFD54F', ray: '#FFF8E1', glow: '#FFD600' },
-    { at: 0.14, core: '#FFF8E1', mid: '#FFCA28', outer: '#FFB300', ray: '#FFE082', glow: '#FFA000' },
-    { at: 0.28, core: '#FFF3E0', mid: '#FFB74D', outer: '#FF9800', ray: '#FFCC80', glow: '#F57C00' },
-    { at: 0.42, core: '#FBE9E7', mid: '#FF8A65', outer: '#E64A19', ray: '#FFAB91', glow: '#E64A19' },
-    { at: 0.55, core: '#FFCCBC', mid: '#E64A19', outer: '#BF360C', ray: '#FF7043', glow: '#BF360C' }
-]
-
-const SUN_END = 0.58
 const MOON_START = 0.58
 
 const HILL_COLORS = {
     light: { back: '#cfe3cf', front: '#9fc49f', tree: '#6a9c6a', shade: '#7d95a8' },
     dark: { back: '#16203a', front: '#0f1830', tree: '#0b1226', shade: '#04060d' }
 } as const
-
-function sunColors(t: number) {
-    let lower = SUN_STOPS[0]
-    let upper = SUN_STOPS[SUN_STOPS.length - 1]
-    for (let i = 0; i < SUN_STOPS.length - 1; i++) {
-        if (t >= SUN_STOPS[i].at) {
-            lower = SUN_STOPS[i]
-            upper = SUN_STOPS[i + 1]
-        }
-    }
-    const range = upper.at - lower.at
-    const k = range > 0 ? clamp01((t - lower.at) / range) : 0
-    return {
-        core: lerpColor(lower.core, upper.core, k),
-        mid: lerpColor(lower.mid, upper.mid, k),
-        outer: lerpColor(lower.outer, upper.outer, k),
-        ray: lerpColor(lower.ray, upper.ray, k),
-        glow: lerpColor(lower.glow, upper.glow, k)
-    }
-}
 
 /**
  * Fixed background scene orchestrator. One ScrollTrigger drives the whole
@@ -75,7 +36,6 @@ const AmbientScene = memo(function AmbientScene() {
             const root = rootRef.current
             if (!root) return
 
-            const sunEl = root.querySelector<HTMLElement>('[data-scene="sun"]')
             const moonEl = root.querySelector<HTMLElement>('[data-scene="moon"]')
             const hillsBack = root.querySelector<HTMLElement>('[data-scene="hills-back"]')
             const hillsFront = root.querySelector<HTMLElement>('[data-scene="hills-front"]')
@@ -95,24 +55,6 @@ const AmbientScene = memo(function AmbientScene() {
                 root.dataset.dawn = dawn > 0.01 ? 'on' : 'off'
                 root.dataset.night = night > 0.01 ? 'on' : 'off'
                 root.dataset.day = night > 0.99 ? 'off' : 'on'
-
-                // Sun: rises left, peaks, sets right across the first ~55% of scroll
-                if (sunEl) {
-                    const t = clamp01(p / 0.55)
-                    const x = 12 + t * 76
-                    const y = 78 - Math.sin(t * Math.PI) * 58
-                    const scale = 0.8 + Math.sin(t * Math.PI) * 0.25
-                    const fadeIn = clamp01(p / 0.04)
-                    const fadeOut = 1 - clamp01((p - 0.5) / (SUN_END - 0.5))
-                    sunEl.style.transform = `translate(-50%, -50%) translate(${x}vw, ${y}vh) scale(${scale.toFixed(3)})`
-                    sunEl.style.opacity = (0.85 * Math.min(fadeIn, fadeOut)).toFixed(3)
-                    const c = sunColors(t)
-                    setVar('--sun-core', c.core)
-                    setVar('--sun-mid', c.mid)
-                    setVar('--sun-outer', c.outer)
-                    setVar('--sun-ray', c.ray)
-                    setVar('--sun-glow', c.glow)
-                }
 
                 // Moon: rises on the right through the night zone
                 if (moonEl) {
@@ -153,14 +95,12 @@ const AmbientScene = memo(function AmbientScene() {
     )
 
     return (
-        <div
-            ref={rootRef}
-            aria-hidden="true"
-            className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
-        >
+        <div ref={rootRef} aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
             <div
                 className="absolute inset-0"
-                style={{ background: 'linear-gradient(to bottom, var(--sky-top, #e8f4f8), var(--sky-bottom, #f5f0e8))' }}
+                style={{
+                    background: 'linear-gradient(to bottom, var(--sky-top, #e8f4f8), var(--sky-bottom, #f5f0e8))'
+                }}
             />
             <Stars />
             <CelestialArc />
