@@ -14,9 +14,10 @@ const stats = [
 ]
 
 /**
- * Scene 2 — morning. Circular profile photo beside bio prose (65ch,
- * left-aligned, no justify/indent) with a row of stat pills and the works CTA.
- * The photo stacks above the text on mobile. Entrance reveals fire once.
+ * Scene 2 — morning. Circular profile photo beside justified bio prose (65ch,
+ * auto-hyphenated so justification stays even) with a row of stat pills and the
+ * works CTA. The photo tops-aligns with the first bio line on desktop and
+ * stacks above the text on mobile. Entrance reveals fire once.
  */
 export default function AboutMorning() {
     return (
@@ -26,8 +27,8 @@ export default function AboutMorning() {
                     <SectionHeading as="h2">About Me 🌿</SectionHeading>
                 </Reveal>
 
-                <div className="mt-8 flex flex-col items-center gap-8 md:flex-row md:items-center md:gap-16">
-                    <Reveal delay={0.05} className="shrink-0">
+                <div className="mt-8 flex flex-col items-center gap-8 md:flex-row md:items-start md:gap-12">
+                    <Reveal delay={0.05} className="shrink-0 md:mt-1">
                         <img
                             src="/images/loc.webp"
                             alt="Profile photo of Trương Tuấn Lộc"
@@ -40,7 +41,7 @@ export default function AboutMorning() {
 
                     <div>
                         <Reveal delay={0.1}>
-                            <p className="max-w-[65ch] font-rounded text-base leading-relaxed text-ink-muted">
+                            <p className="max-w-[65ch] font-rounded text-base leading-relaxed text-ink-muted hyphens-auto text-justify">
                                 Full-stack developer building enterprise AI agent platforms at CREASIA — multi-channel
                                 assistants with agent orchestration, custom skills and tools, and deep LLM integration.
                                 Over two years of experience across Node.js backend services and React/C# full-stack
