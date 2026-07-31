@@ -17,10 +17,12 @@ import {
     SiOpenai,
     SiClaude,
     SiPython,
-    SiGit,
     SiDocker,
-    SiAdobephotoshop,
-    SiAdobepremierepro,
+    SiTraefikproxy,
+    SiNginx,
+    SiLinux,
+    SiNvidia,
+    SiLetsencrypt,
     SiTypescript,
     SiRedis,
     SiAmazonwebservices
@@ -64,7 +66,7 @@ export interface SkillGroup {
 
 // Order IS the bento layout: row 1 leads with AI (3) beside Frontend (3) —
 // the AI card comes first so operating-AI experience opens the section;
-// row 2 keeps Backend wide (4) with Tools compact (2), filling a 6-col grid.
+// row 2 pairs Backend (3) with DevOps (3), filling a 6-col grid.
 export const skillGroups: SkillGroup[] = [
     {
         title: 'AI & Agent Engineering',
@@ -102,7 +104,7 @@ export const skillGroups: SkillGroup[] = [
     {
         title: 'Backend',
         tone: 'backend',
-        span: 'lg:col-span-4',
+        span: 'lg:col-span-3',
         skills: [
             { icon: SiNodedotjs, label: 'Node.js', color: '#339933' },
             { icon: SiSharp, label: 'C#', color: '#512BD4' },
@@ -115,14 +117,17 @@ export const skillGroups: SkillGroup[] = [
         ]
     },
     {
-        title: 'Tools & Others',
+        title: 'DevOps',
         tone: 'tools',
-        span: 'lg:col-span-2',
+        span: 'lg:col-span-3',
         skills: [
-            { icon: SiGit, label: 'Git', color: '#F05032' },
-            { icon: SiDocker, label: 'Docker', color: '#2496ED' },
-            { icon: SiAdobephotoshop, label: 'Photoshop', color: '#31A8FF' },
-            { icon: SiAdobepremierepro, label: 'Premiere Pro', color: '#9999FF' }
+            // Server stack actually run in production (GPU-server + AI-platform deploy runbooks).
+            { icon: SiDocker, label: 'Docker & Compose', color: '#2496ED' },
+            { icon: SiTraefikproxy, label: 'Traefik Reverse Proxy', color: '#24A1C1' },
+            { icon: SiNginx, label: 'Nginx', color: '#009639' },
+            { icon: SiLinux, label: 'Linux Server & SSH', color: '#FCC624' },
+            { icon: SiNvidia, label: 'GPU Serving (CUDA)', color: '#76B900' },
+            { icon: SiLetsencrypt, label: 'TLS & DNS (Let’s Encrypt)', color: '#808080' }
         ]
     }
 ]

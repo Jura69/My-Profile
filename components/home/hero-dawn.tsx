@@ -39,7 +39,7 @@ export default function HeroDawn() {
                 {...riseIn(0.05)}
                 className="mb-6 rounded-full border border-line bg-surface/60 px-4 py-2 font-rounded text-sm text-ink backdrop-blur-md"
             >
-                🌿 Hello, I&apos;m a web developer based in Việt Nam 🍃
+                🌿 Xin chào! A Full-stack Dev Engineer 🍃
             </motion.p>
 
             <h1 className="font-rounded text-5xl font-bold tracking-tight text-ink md:text-7xl">
