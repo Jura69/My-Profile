@@ -26,7 +26,7 @@
 - **About & Bio** - Professional introduction
 - **Skills & Tech Stack** - Categorized badges with staggered animations
 - **Work Experience** - Timeline with animated cards
-- **Projects Portfolio** - 4 featured projects with detail pages
+- **Projects Portfolio** - 16 personal & enterprise projects with detail pages
 - **Activities** - University clubs and involvement
 - **Audiophile** - Audio equipment showcase
 - **Contact & Social** - GitHub, LinkedIn, Facebook, Instagram, Email

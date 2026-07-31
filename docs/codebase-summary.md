@@ -86,7 +86,7 @@ Notable absences (deleted as cruft, do not reference): `components/layouts/`
 ## Data Model (single sources of truth)
 
 **`components/works/works-data.ts`** — drives listings, detail hrefs, AND the sitemap:
-- `projects: Project[]` — 11 projects (4 personal, of which 3 `featured`; 7 enterprise `@ Creasia`)
+- `projects: Project[]` — 16 projects (4 personal, of which 3 `featured`; 12 enterprise `@ Creasia`, of which 2 `featured` AI flagships)
 - `activities: CardItem[]` — 1 activity (YTC NTU)
 - `audioGear: CardItem[]` — 4 devices (`ea1000`, `moondrop-ssp`, `onix`, `fiioka11`)
 - Derived exports: `featuredProjects`, `otherPersonalProjects`, `enterpriseProjects`
