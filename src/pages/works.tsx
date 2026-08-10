@@ -7,12 +7,56 @@ import SectionHeading from '../../components/ui/section-heading'
 import { buttonClasses } from '../../components/ui/button-styles'
 import FeaturedProjectCard from '../../components/works/featured-project-card'
 import ProjectCard from '../../components/works/project-card'
+import WorksTabs from '../../components/works/works-tabs'
 import {
     featuredProjects,
     otherPersonalProjects,
     featuredEnterpriseProjects,
     enterpriseProjects
 } from '../../components/works/works-data'
+
+/* AI flagships lead the enterprise tab as large cards; the rest stay compact. */
+const enterprisePanel = (
+    <>
+        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {featuredEnterpriseProjects.map((project, i) => (
+                <Reveal key={project.id} delay={0.05 + i * 0.05} className="h-full">
+                    <FeaturedProjectCard project={project} />
+                </Reveal>
+            ))}
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {enterpriseProjects.map((project, i) => (
+                <Reveal key={project.id} delay={0.05 + i * 0.04} className="h-full">
+                    <ProjectCard project={project} />
+                </Reveal>
+            ))}
+        </div>
+    </>
+)
+
+const personalPanel = (
+    <>
+        <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+            {featuredProjects.map((project, i) => (
+                <Reveal key={project.id} delay={0.05 + i * 0.05} className="h-full">
+                    <FeaturedProjectCard project={project} />
+                </Reveal>
+            ))}
+        </div>
+
+        {otherPersonalProjects.length > 0 && (
+            <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {otherPersonalProjects.map((project, i) => (
+                    <Reveal key={project.id} delay={0.05 + i * 0.05} className="h-full">
+                        <ProjectCard project={project} />
+                    </Reveal>
+                ))}
+            </div>
+        )}
+    </>
+)
 
 const Works = () => (
     <>
@@ -31,49 +75,12 @@ const Works = () => (
         <section className="w-full px-4 py-8">
             <div className="mx-auto max-w-[1100px]">
                 <Reveal>
-                    <SectionHeading as="h1">My Personal Projects 💻</SectionHeading>
+                    <SectionHeading as="h1">My Works 💻</SectionHeading>
                 </Reveal>
 
-                <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
-                    {featuredProjects.map((project, i) => (
-                        <Reveal key={project.id} delay={0.05 + i * 0.05} className="h-full">
-                            <FeaturedProjectCard project={project} />
-                        </Reveal>
-                    ))}
-                </div>
-
-                {otherPersonalProjects.length > 0 && (
-                    <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                        {otherPersonalProjects.map((project, i) => (
-                            <Reveal key={project.id} delay={0.05 + i * 0.05} className="h-full">
-                                <ProjectCard project={project} />
-                            </Reveal>
-                        ))}
-                    </div>
-                )}
-
-                <hr className="my-12 border-line" />
-
-                <Reveal>
-                    <SectionHeading as="h2">Enterprise Projects @ Creasia 💼</SectionHeading>
+                <Reveal delay={0.05}>
+                    <WorksTabs panels={{ enterprise: enterprisePanel, personal: personalPanel }} />
                 </Reveal>
-
-                {/* AI flagships lead the section as large cards; the rest stay compact. */}
-                <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
-                    {featuredEnterpriseProjects.map((project, i) => (
-                        <Reveal key={project.id} delay={0.05 + i * 0.05} className="h-full">
-                            <FeaturedProjectCard project={project} />
-                        </Reveal>
-                    ))}
-                </div>
-
-                <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                    {enterpriseProjects.map((project, i) => (
-                        <Reveal key={project.id} delay={0.05 + i * 0.04} className="h-full">
-                            <ProjectCard project={project} />
-                        </Reveal>
-                    ))}
-                </div>
 
                 <Reveal>
                     <div className="mt-12 text-center">
