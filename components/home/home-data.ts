@@ -13,7 +13,6 @@ import {
     SiMongodb,
     SiDotnet,
     SiTensorflow,
-    SiPytorch,
     SiOpenai,
     SiClaude,
     SiPython,
@@ -33,11 +32,9 @@ import {
     HiOutlineCommandLine,
     HiOutlineSignal,
     HiOutlineAcademicCap,
-    HiOutlineWrenchScrewdriver,
     HiOutlineShare,
     HiOutlineChatBubbleBottomCenterText,
     HiOutlineServerStack,
-    HiOutlineArrowPathRoundedSquare,
     HiOutlineChartBarSquare
 } from 'react-icons/hi2'
 import type { BadgeTone } from '../ui/badge'
@@ -73,17 +70,14 @@ export const skillGroups: SkillGroup[] = [
         tone: 'ai',
         span: 'lg:col-span-3',
         skills: [
-            // Operating-AI skills lead, agent-building follows, classic ML stack last.
+            // Core six only — mirrors the bio verbatim: operating AI leads,
+            // agent-building follows, classic ML anchor last.
             { icon: HiOutlineServerStack, label: 'AI Operations (LLMOps)', color: '#5a9dab' },
-            { icon: HiOutlineArrowPathRoundedSquare, label: 'AI Workflow Automation', color: '#d4a853' },
             { icon: HiOutlineChartBarSquare, label: 'LLM Evaluation & Monitoring', color: '#6db86b' },
-            { icon: SiClaude, label: 'Agent Skill Building', color: '#D97757' },
-            { icon: HiOutlineWrenchScrewdriver, label: 'Agent Harness Design', color: '#5a9dab' },
             { icon: HiOutlineShare, label: 'Agent Orchestration', color: '#6db86b' },
+            { icon: SiClaude, label: 'Agent Skill Building', color: '#D97757' },
             { icon: HiOutlineChatBubbleBottomCenterText, label: 'Prompt & Context Engineering', color: '#d4a853' },
-            { icon: SiOpenai, label: 'OpenAI API', color: '#808080' },
-            { icon: SiTensorflow, label: 'TensorFlow', color: '#FF6F00' },
-            { icon: SiPytorch, label: 'PyTorch', color: '#EE4C2C' }
+            { icon: SiTensorflow, label: 'TensorFlow', color: '#FF6F00' }
         ]
     },
     {
