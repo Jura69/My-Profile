@@ -34,7 +34,7 @@ My-Profile/
 │   ├── app.tsx               # BrowserRouter, lazy routes, Suspense, RouteErrorBoundary
 │   ├── pages/                # Route components (all lazy except index.tsx)
 │   │   ├── index.tsx         # Homepage (eager — LCP route)
-│   │   ├── works.tsx         # Projects listing (+ works/ 11 detail pages)
+│   │   ├── works.tsx         # Projects listing, tabbed (+ works/ 11 detail pages)
 │   │   ├── activities.tsx    # Activities listing (+ activities/ytc.tsx)
 │   │   └── audiophile.tsx    # Audio listing (+ audiophile/ 4 detail pages)
 │   ├── styles/global.css     # Tailwind 4 @theme tokens + scene keyframes
@@ -46,7 +46,8 @@ My-Profile/
 │   │                         #   not-found, route-error-boundary, theme-toggle
 │   ├── home/                 # hero-dawn, about-morning, skills-bento,
 │   │                         #   experience-dusk, night-contact + home-data.ts
-│   ├── works/                # project-card, featured-project-card + works-data.ts
+│   ├── works/                # project-card, featured-project-card, works-tabs
+│   │                         #   + works-data.ts
 │   ├── scene/                # ambient-scene, celestial-arc, parallax-hills, stars,
 │   │                         #   zone-particles, zone-data, scene-provider,
 │   │                         #   use-scene, use-pinned-intro, svg/{hills,moon}
@@ -127,6 +128,13 @@ streams in, the previous page stays visible (the Suspense boundary sits ABOVE th
 and refreshes ScrollTrigger on pathname change. Legacy URL
 `/audiophile/moondropSSP` has a `<Navigate replace>` redirect to
 `/audiophile/moondrop-ssp`.
+
+`/works` splits its listing into two tabs (`components/works/works-tabs.tsx`).
+The active tab is a search param — `/works` (no param, or an unknown value) opens
+Enterprise, `/works?tab=personal` opens Personal — so tabs are linkable and Back
+steps between them. Both panels stay mounted; the inactive one is only `hidden`,
+which keeps all 16 projects in the DOM for crawlers on this CSR-only SPA while
+lazy thumbnails inside it skip their fetch until shown.
 
 ### Failure path (deploy invalidates chunks)
 
