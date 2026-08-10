@@ -93,7 +93,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 **Trigger:** Shortlist candidate for interview
 **Flow:**
 1. Access portfolio from email/LinkedIn
-2. Review homepage technical skills (23 skills in 4 groups)
+2. Review homepage technical skills (28 skills in 4 groups)
 3. Navigate to Works section
 4. Click Food Lover project → View tech stack, GitHub link, screenshots
 5. Open GitHub repository in new tab
@@ -152,7 +152,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 **Requirements:**
 - Display animated hero section (day→night scroll narrative with 3D Totoro)
 - Show "About Me" section with bio and stat pills
-- Present 32 skills in 4 groups (AI & Agent Engineering, Frontend, Backend, DevOps) in a bento grid
+- Present 28 skills in 4 groups (AI & Agent Engineering, Frontend, Backend, DevOps) in a bento grid
 - Show work experience timeline with 4 entries (3 positions + education)
 - Include CV download button (opens /files/CV.pdf)
 - Display social links (GitHub, LinkedIn, Facebook, Instagram, Email)
@@ -400,7 +400,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 
 **Content:**
 - About Me section with professional bio and stat pills (2+ yrs experience)
-- Skills showcase (23 skills in 4 groups, bento grid)
+- Skills showcase (28 skills in 4 groups, bento grid)
 - Work experience timeline (4 entries: 3 positions + education)
 - 11 projects (3 featured + personal/enterprise grids) with detail pages
 - 1 activity (YTC club) with detail page
