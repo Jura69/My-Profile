@@ -30,8 +30,12 @@ lá được dán lên cảnh.
 `cumulus clouds` · `moss & bark` · `paper lanterns` · `fireflies` · `cozy countryside`
 
 ### Tránh
-Glassmorphism, neon glow, 3D render bóng bẩy, isometric vector corporate, stock photo, emoji,
+Glassmorphism, neon glow, 3D render bóng bẩy (PBR, bloom, tone mapping, chrome/glossy), isometric vector corporate, stock photo, emoji,
 drop-shadow đen đặc, gradient 2 màu bão hòa, viền 1px xám lạnh, chữ trong ảnh.
+
+**Ngoại lệ có điều kiện — 3D painted:** 3D được phép khi trông như tranh vẽ chứ không phải render: toon material
+có dải sáng nhiễu, bóng đổ ngả màu (lavender/sky, không đen), rim mảnh; không PBR, bloom, tone mapping, shadow map.
+Hiện chỉ dùng cho spirit ở hero (§6.4); nguồn: `components/spirit/painted-material.ts`.
 
 ---
 
@@ -146,7 +150,10 @@ Badge hiện dùng `text-skill-*` trên nền `/15` → chữ màu 400 trên par
 ### 3.5 Sky narrative
 
 Gradient bầu trời theo scroll vẫn do `zone-data.ts` sở hữu (6 stop light + 6 stop dark) — không copy ở đây.
-Palette image trích các stop đó để xem cùng token. Artwork banner phải khớp 5 cảnh: dawn (đào-kem),
+Palette image trích các stop đó để xem cùng token. Stop được vẽ lại theo banner gouache: light = đỉnh xanh nhạt
+(~`#b0d2ea`–`#d6cce6`) xuống đáy ấm (kem/hồng/vàng bơ); dark = **chàm có màu** (~`#121c3e`–`#3a3466`), không còn gần-đen.
+Ràng buộc cứng: mọi stop giữ `--ink` và `--ink-muted` ≥ 4.5:1 đặt thẳng trên bầu trời (đo lúc áp dụng: min 4.58 light, 4.59 dark) —
+đổi stop phải đo lại. Artwork banner phải khớp 5 cảnh: dawn (đào-kem),
 morning (xanh trời nhạt), golden afternoon (vàng bơ), dusk (lavender-sakura), night (chàm-đen + đốm vàng).
 
 ### 3.6 Tỷ lệ dùng màu
@@ -237,10 +244,26 @@ công nghệ, vẽ lại làm giảm độ nhận biết. Nằm ngoài phạm vi
 
 `divider-vine`, `divider-brush`, `divider-firefly-trail` (viewBox 240×24, stretch ngang) · `sprig-leaf`,
 `acorn`, `paper-lantern`, `firefly`, `cloud-puff`, `sparkle-star` (24×24) · `monogram-lt` (mark cá nhân,
-32×32 viewBox; đề xuất thay Totoro icon ở navbar). **Quyết định user (2026-10-01): navbar giữ Totoro icon gốc**
-(`components/icons/totoro.tsx`); `MonogramLt` vẫn có trong `kit-ornaments` nhưng chưa dùng.
+32×32 viewBox; từng được đề xuất làm logo navbar). **Quyết định user (2026-10-01): navbar dùng `SpiritIcon` (Mầm Đèn,
+`components/icons/spirit-mam-den.tsx`)**, thay icon nhân vật cũ (đã gỡ khỏi repo cùng model 3D cũ); `MonogramLt` vẫn có trong
+`kit-ornaments` nhưng chưa dùng.
 
 **Áp dụng:** ornament heading đặt **sau** chữ (thay emoji cuối heading cũ) qua prop `ornament` của `SectionHeading`; dưới heading là divider `DividerVine` (dây leo + lá) rộng `w-32`, màu `accent` — đổi từ `DividerBrush`/`line-strong` sau review local vì quá mờ. Nguồn: `components/ui/section-heading.tsx`, `components/icons/kit-*.tsx`.
+
+### 6.4 Mầm Đèn — nhân vật gốc của site
+
+Linh vật rừng **original**: viên đá phủ rêu trên bốn mấu rễ, một chồi non cong mang đèn lồng hạt (seed lantern) phía trước;
+đứng trên đảo rêu nhỏ. Một bộ hình, hai cách thể hiện:
+
+| Nơi dùng | Dạng | Nguồn |
+|---|---|---|
+| Hero (chính) | 3D painted, procedural trong three; đèn hạt sáng ấm; ánh sáng chuyển mượt theo theme (ngày: nắng + hemi; đêm: trăng + ánh đèn hạt) | `components/spirit/` |
+| Hero (placeholder, fallback no-WebGL/lỗi) | `SpiritIllustration` — 2D full-colour, khung hình khớp camera 3D để không nhảy layout | `components/icons/spirit-mam-den.tsx` |
+| Navbar logo (40px) | `SpiritIcon` — cùng art, crop sát, bỏ chi tiết < 2px | cùng file |
+
+Quy tắc: trang trí thuần (canvas `aria-hidden`, không tab stop); tương tác chạm/nhấn chỉ là phần thưởng nhỏ; reduced-motion = khung tĩnh.
+Màu 2D dùng literal của palette (moss, stone, golden-dust, ink) nên đọc giống nhau ở cả hai theme. Ràng buộc kỹ thuật và vòng đời: xem
+[system-architecture.md](./system-architecture.md#3d-graphics-implementation).
 
 ---
 

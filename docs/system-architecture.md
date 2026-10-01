@@ -2,7 +2,7 @@
 
 **Project:** Personal Portfolio Website
 **Architecture Style:** Vite SPA (static, client-rendered)
-**Last Updated:** 2026-07-30
+**Last Updated:** 2026-10-01
 **Build Tool:** Vite 6
 **Runtime:** React 19 + React Router 7 (client-side routing)
 
@@ -30,7 +30,7 @@
 │                        User Browser                         │
 │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
 │  │   React 19   │  │ Three.js 3D  │  │  Motion 12   │       │
-│  │  Components  │  │  (lazy GLB)  │  │ + GSAP Scroll│       │
+│  │  Components  │  │ (lazy spirit)│  │ + GSAP Scroll│       │
 │  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘       │
 │         └──────────────────┴─────────────────┘              │
 │                            │                                │
@@ -75,7 +75,7 @@
 | Styling | Tailwind CSS 4 via `@tailwindcss/vite` | `@theme` tokens; semantic vars (`--surface`, `--ink`, `--accent`, `--line`) flipped by `.dark` |
 | Component animation | Motion 12 | Reveals, hovers, page fade; honors `MotionConfig reducedMotion="user"` |
 | Scroll animation | GSAP 3.15 + ScrollTrigger + Lenis | One rAF loop (Lenis driven by GSAP ticker); confined to `components/scene/` |
-| 3D | Three.js 0.172 + GLTFLoader/DRACOLoader | Hand-rolled setup, no react-three-fiber (avoids abstraction cost for one model) |
+| 3D | Three.js 0.172 (raw, procedural geometry; no loaders, no model files) | Hand-rolled stage, no react-three-fiber (avoids abstraction cost for one scene) |
 | UI primitive | @radix-ui/react-dropdown-menu | Mobile nav menu only |
 | Icons | Custom kit SVGs (`components/icons/kit-*.tsx`) + react-icons only for `si`/`di` tech logos and `io5` `IoLogo*` social logos | Kit icons ship in app code; react-icons stays in its own `vendor-icons` chunk. See [design-guidelines.md](./design-guidelines.md) |
 | Materials | `.paper-grain` / `.material-wash` utilities + `shadow-paper` tokens in `src/styles/global.css` | Textures from `public/images/ui/` |
@@ -115,7 +115,7 @@ App (src/app.tsx — BrowserRouter)
 ```
 
 Homepage composition (day→night scroll narrative): `HeroDawn` (lazy-loads the
-Three.js `Totoro`), `AboutMorning`, `SkillsBento`, `ExperienceDusk`,
+Three.js `SpiritCanvas`), `AboutMorning`, `SkillsBento`, `ExperienceDusk`,
 `NightContact` — each owns an inner `max-w-[1100px]` column; the fixed
 `AmbientScene` runs behind all of them.
 
@@ -148,7 +148,7 @@ was a no-op and was deleted).
 | Theme mode | `ThemeProvider` | React context + localStorage (`theme` key; legacy `chakra-ui-color-mode` migrated). Persists ONLY explicit choices — OS-derived mode is never auto-written |
 | Reduced motion | `SceneProvider` | `matchMedia('(prefers-reduced-motion: reduce)')` + change listener |
 | Scroll progress | GSAP ScrollTrigger | CSS custom properties + data-attrs on the scene root — never React state |
-| 3D loading | `Totoro` component | Local `useState` spinner |
+| 3D status (loading / ready / failed) | `SpiritCanvas` component | Local `useState`; the 2D illustration holds the cell until the first frame |
 
 No Redux/Zustand — nothing crosses more than one context boundary.
 
@@ -199,9 +199,12 @@ document.documentElement.classList.toggle('dark', color === 'dark');
                              (20 URLs from works-data; redirects/404 excluded)
 ```
 
-Chunk profile (2026-07-30 build): app `index.js` ~52KB · vendor-react ~342KB ·
-vendor-gsap ~136KB · motion ~129KB · vendor-icons ~48KB · vendor-three ~590KB
-(loads only with the lazy Totoro) · per-page chunks ~2KB.
+Chunk profile (raw sizes from the 2026-07-30 build, except where marked gz):
+vendor-react ~342KB · vendor-gsap ~136KB · motion ~129KB · vendor-icons ~48KB ·
+per-page chunks ~2KB. Since the hero spirit rewrite (2026-10-01), gzipped:
+app `index.js` ~22.4KB · vendor-three ~125.8KB (loads only with the lazy
+spirit) · `spirit-canvas` chunk ~6.4KB. Re-measure with `yarn build` before
+quoting any of these.
 
 **Hard-won constraint:** react + small glue libs MUST share one chunk. A
 separate misc chunk produced `TypeError: Cannot read properties of undefined
@@ -236,8 +239,8 @@ Runtime   startTransition navigations (old page visible during chunk load) ·
           React.memo on shell components · GSAP writes DOM directly (no
           re-render on scroll) · one rAF loop for Lenis + ScrollTrigger ·
           display:none for fully-hidden particle groups
-Assets    Draco GLB 44MB→1.5MB (96.7%) · GLB + three chunk load only when
-          HeroDawn mounts its lazy Totoro · loading="lazy" images
+Assets    no 3D model file (spirit is procedural) · three + spirit chunk load
+          only when HeroDawn mounts its lazy SpiritCanvas · loading="lazy" images
 ```
 
 Reduced motion: `SceneProvider` skips Lenis/ScrollTrigger and renders a static
@@ -269,24 +272,47 @@ redirect (`/audiophile/moondropSSP` → `/audiophile/moondrop-ssp`).
 
 ```
 HeroDawn (components/home/hero-dawn.tsx)
-  └── React.lazy(import components/totoro.tsx)  + TotoroLoader spinner
-        └── useEffect mount:
-              Scene + OrthographicCamera (scale from container height)
-              WebGLRenderer { antialias: devicePixelRatio < 2, alpha: true,
-                              powerPreference: 'high-performance',
-                              precision: 'mediump', stencil: false }
-              renderer.shadowMap.enabled = false
-              AmbientLight
-              loadGLTFModel(scene, '/totoro-compressed.glb')   // lib/model.ts
-                → GLTFLoader + DRACOLoader (decoder: www.gstatic.com CDN)
-                → Promise<Group>; isMesh() type-guard traverse
-              rAF loop: frames 1–100 eased circular intro (easeOutCirc),
-                        then OrbitControls (autoRotate)
-              cleanup: cancelAnimationFrame + renderer.dispose()
+  └── SpiritBoundary            eager local error boundary → SpiritIllustration
+        └── Suspense fallback={<SpiritIllustration/>}
+              └── React.lazy(import components/spirit/spirit-canvas.tsx)
+                    └── createSpiritStage()   components/spirit/spirit-stage.ts
+                          forest-spirit.ts · moss-island.ts · kit-geometry.ts
+                          painted-material.ts · spirit-lighting.ts
 ```
 
-The `vendor-three` chunk (~590KB) is reachable ONLY through this lazy import —
-it never blocks initial paint.
+**Why this shape**
+
+- **Procedural, not a model.** The hero character "Mầm Đèn" is original and built
+  from code-generated geometry, so there is no GLB, no Draco decoder and no
+  external CDN request (the previous third-party model cost 1.5MB).
+- **Raw three, lazy.** `three` and the stage sit behind `React.lazy`, so the hero
+  paints immediately with the 2D `SpiritIllustration` (framed like the 3D camera,
+  so the swap does not shift layout); the canvas fades in after the first frame.
+  `SpiritBoundary` is eager and outside the lazy chunk so it also catches a failed
+  chunk load.
+- **Painted, not rendered.** One toon material (`painted-material.ts`) with noisy
+  light bands, a coloured shadow floor and a faint rim; renderer uses no tone
+  mapping, no PBR, no bloom, no shadow maps (a blob-shadow plane under the feet).
+  This keeps the gouache identity from [design-guidelines.md](./design-guidelines.md)
+  and the 60fps / small-bundle budget.
+- **Light rig = one lerp.** `spirit-lighting.ts` drives day (key + hemisphere) and
+  night (moon + the seed's PointLight) from one mix value; a theme switch lerps
+  ~0.6s, instantly under reduced motion.
+
+**Lifecycle contract (owner: `spirit-stage.ts`; read its header before editing)**
+
+- One WebGL context. The render loop runs only while the host is in the viewport
+  AND the tab is visible; reduced motion renders a still frame (no loop).
+- First render waits for `compileAsync` (4s timeout); teardown waits for the same
+  compile to settle before disposing.
+- Any WebGL failure (constructor throws, `webglcontextlost`, render throw) calls
+  `onFail` once and the cell shows the 2D illustration for good.
+- Decorative: canvas is `aria-hidden`, no tab stop; pointer-down triggers a ~1.2s
+  hop/squash/seed-swing reaction as a bonus, not a control.
+
+`SpiritIcon` (same file as `SpiritIllustration`, `components/icons/spirit-mam-den.tsx`)
+is also the navbar logo, so the 2D art is an authority surface shared by hero
+fallback and navbar.
 
 ---
 
@@ -297,8 +323,7 @@ it never blocks initial paint.
 - HTTPS + HSTS: Vercel platform defaults
 - No custom CSP headers configured (future hardening option; would go in
   `vercel.json` `headers`)
-- External runtime origins: Google Fonts (stylesheet) and Google CDN (Draco
-  decoder) only
+- External runtime origins: Google Fonts (stylesheet) only
 - Dependency hygiene: `yarn audit` ad hoc; single lockfile (`yarn.lock`)
 
 ---

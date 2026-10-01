@@ -35,7 +35,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 
 6. **Content Platform** - Provide structure for future content expansion (blog, tutorials, case studies)
 
-7. **Personal Branding** - Establish "Jura69" as recognizable technical brand with unique Totoro-themed identity
+7. **Personal Branding** - Establish "Jura69" as recognizable technical brand with unique forest-spirit identity (original mascot "Mầm Đèn")
 
 8. **Audiophile Community** - Share audio equipment reviews and connect with enthusiast community
 
@@ -107,7 +107,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 **Trigger:** Google search "React portfolio Nha Trang" or similar
 **Flow:**
 1. Click search result → Lands on homepage
-2. Interacts with Totoro 3D model (rotates, zooms)
+2. Sees the 3D Mầm Đèn spirit (reacts to a tap/click)
 3. Scrolls through animated skill badges
 4. Toggles dark/light mode
 5. Explores audiophile section out of curiosity
@@ -150,13 +150,13 @@ Create a modern, high-performance portfolio website that showcases professional 
 **Priority:** P0 (Critical)
 
 **Requirements:**
-- Display animated hero section (day→night scroll narrative with 3D Totoro)
+- Display animated hero section (day→night scroll narrative with the 3D Mầm Đèn spirit)
 - Show "About Me" section with bio and stat pills
 - Present 28 skills in 4 groups (AI & Agent Engineering, Frontend, Backend, DevOps) in a bento grid
 - Show work experience timeline with 4 entries (3 positions + education)
 - Include CV download button (opens /files/CV.pdf)
 - Display social links (GitHub, LinkedIn, Facebook, Instagram, Email)
-- Implement 3D Totoro character with auto-rotate and user interaction
+- Implement the 3D Mầm Đèn spirit: procedural (no model file), day/night lighting, small pointer reaction, 2D fallback when WebGL fails or is unavailable
 - Support dark/light mode toggle
 
 **Acceptance Criteria:**
@@ -259,7 +259,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 - Time to Interactive (TTI) < 3.5s
 - Cumulative Layout Shift (CLS) < 0.1
 - Image optimization (WebP, max 1200px, with lazy loading)
-- 3D model Draco compression (< 2MB)
+- No 3D model download (procedural spirit); spirit chunk + three load lazily (< 15KB gz for the spirit chunk)
 - Route-level lazy loading + vendor chunk isolation (Three.js, GSAP, Motion, icons)
 - Vercel immutable caching for hashed build assets
 - SWC transpilation + esbuild minification
@@ -343,7 +343,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 - **Framework:** React 19 + React Router 7 - Client-side routing only
 - **Styling:** Tailwind CSS 4 - Utility-first, minimal CSS output
 - **Animation:** Motion 12 + GSAP + Lenis - Lightweight and performant
-- **3D Graphics:** Three.js 0.172 - Necessary for Totoro model
+- **3D Graphics:** Three.js 0.172 - Necessary for the procedural hero spirit
 - **Deployment:** Vercel - Free tier (static SPA, no server costs)
 
 ### Resource Constraints
@@ -354,7 +354,6 @@ Create a modern, high-performance portfolio website that showcases professional 
 
 ### External Dependencies
 - **Google Fonts:** M PLUS Rounded 1c (CDN dependency)
-- **Draco Decoder:** Google Cloud Storage (CDN dependency)
 - **Vercel Analytics:** Free tier (limited data retention)
 
 ---
@@ -395,7 +394,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 - Dark/light mode: new visitors follow OS prefers-color-scheme, toggle choice persists
 - Ghibli-inspired design tokens (grass teal, forest green, warm parchment)
 - Smooth page transitions (Motion 12) + GSAP day→night scroll scenes
-- Interactive 3D Totoro character
+- Interactive 3D Mầm Đèn forest spirit (original, procedural)
 - Scroll-triggered reveals and hover micro-interactions
 
 **Content:**
@@ -412,7 +411,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 - WebP image optimization (max 1200px)
 - Route-level lazy loading (every page except homepage is its own ~2KB chunk)
 - Vendor chunk isolation (Three.js, GSAP, Motion, icons, React)
-- 3D model Draco compression (96.7% reduction), loaded lazily with the hero
+- Procedural 3D spirit (no model file), lazy-loaded with the hero
 - Vercel immutable caching for hashed build assets
 
 **SEO:**
@@ -474,7 +473,7 @@ Design for smallest screen first, scale up. Never assume desktop viewport.
 Technical depth without jargon overload. Scannable headings, short paragraphs, visual hierarchy.
 
 ### 6. Ghibli-Inspired Aesthetic
-Warm, inviting colors. Organic shapes. Whimsical but professional. Totoro as brand mascot.
+Warm, inviting colors. Organic shapes. Whimsical but professional. Mầm Đèn (original forest spirit) as brand mascot.
 
 ### 7. Zero-Config Simplicity
 No build configuration gymnastics. Standard Vite + React patterns. Clear file structure.
@@ -546,7 +545,6 @@ Lighthouse audits before/after changes. Real user metrics (Core Web Vitals) driv
 ### External Services
 - **Vercel:** Hosting, analytics, deployment
 - **Google Fonts:** Typography (M PLUS Rounded 1c)
-- **Google CDN:** Draco decoder for 3D models
 - **GitHub:** Code repository, public profile link
 - **LinkedIn:** Professional network link
 - **Facebook/Instagram:** Social media presence

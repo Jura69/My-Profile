@@ -19,7 +19,7 @@
 - **Responsive Design** - Mobile-first, optimized for all devices
 - **Dark/Light Mode** - New visitors follow the OS `prefers-color-scheme`; the toggle choice persists in localStorage
 - **Smooth Animations** - Motion page transitions and GSAP scroll effects
-- **3D Graphics** - Interactive Totoro character using Three.js (96.7% compressed)
+- **3D Graphics** - Original forest spirit "Mầm Đèn" built procedurally in Three.js (painted toon look, no model file), with a 2D fallback
 - **Ghibli-Inspired Theme** - Warm, professional aesthetic with a day→night scroll narrative
 
 ### Content
@@ -119,27 +119,25 @@ yarn analyze   # Bundle size visualization (fetches vite-bundle-visualizer via n
 │   │   ├── activities/          # Activity details
 │   │   ├── audiophile.tsx       # Audio equipment listing
 │   │   └── audiophile/          # Device reviews
-│   ├── styles/
-│   │   └── global.css           # Tailwind 4 theme tokens + scene keyframes
-│   └── three-modules.d.ts       # Ambient types for three example modules
+│   └── styles/
+│       └── global.css           # Tailwind 4 theme tokens + scene keyframes
 ├── components/                  # Reusable UI (repo root, not src/)
 │   ├── ui/                      # Primitives (buttons, cards, reveal, headings)
 │   ├── layout/                  # App shell (main, navbar, footer, theme-toggle, not-found)
 │   ├── home/                    # Homepage scenes + home-data.ts (skills, experience, socials)
 │   ├── works/                   # Cards + works-data.ts (projects, activities, audio gear)
 │   ├── scene/                   # Ambient scene system (GSAP, Lenis, particles)
-│   ├── icons/                   # Custom kit SVG icons/ornaments (kit-*.tsx)
+│   ├── icons/                   # Custom kit SVG icons/ornaments (kit-*.tsx) + spirit-mam-den.tsx (navbar logo, hero fallback)
+│   ├── spirit/                  # Hero 3D spirit (raw three: stage, painted material, spirit, moss island)
 │   ├── seo.tsx                  # Per-page meta (React 19 hoists to <head>)
-│   ├── json-ld.tsx              # JSON-LD structured data
-│   └── totoro.tsx               # Three.js Totoro viewer
-├── lib/                         # Utilities (cn.ts, model.ts GLTF/Draco loader)
+│   └── json-ld.tsx              # JSON-LD structured data
+├── lib/                         # Utilities (cn.ts)
 ├── providers/                   # Theme provider + use-theme hook
 ├── scripts/
 │   └── vite-plugin-sitemap.ts   # Emits dist/sitemap.xml from works-data at build
 ├── public/                      # Static assets
 │   ├── images/                  # WebP images: works covers, banners, ui textures (+ og-image-forest.jpg)
 │   ├── apple-touch-icon.png
-│   ├── totoro-compressed.glb    # Draco-compressed 3D model
 │   └── robots.txt
 ├── vite.config.ts               # Vite config (plugins, vendor chunking)
 ├── tsconfig.json                # TypeScript project references
@@ -168,8 +166,8 @@ Edit `src/styles/global.css` (Tailwind 4 theme tokens):
 .dark { --surface: #1a1e2e; /* … dark mode overrides */ }
 ```
 
-### Replace 3D Model
-Replace `public/totoro-compressed.glb` with another Draco-compressed GLTF model, update `components/totoro.tsx`
+### Change the Hero 3D Spirit
+The spirit has no model file: it is built in code. Edit `components/spirit/forest-spirit.ts` (shape, motion), `components/spirit/moss-island.ts` (ground), and `components/spirit/spirit-lighting.ts` (day/night light). Keep the 2D art in `components/icons/spirit-mam-den.tsx` in sync — it is the loading placeholder, the no-WebGL fallback and the navbar logo.
 
 ---
 
@@ -199,7 +197,7 @@ Replace `public/totoro-compressed.glb` with another Draco-compressed GLTF model,
 - Vendor chunking: React, GSAP, Three.js, Motion, react-icons isolated — app edits don't invalidate cached vendor bytes
 - Tailwind CSS 4 JIT compiler (minimal CSS output)
 - GSAP ScrollTrigger + Lenis confined to scene components (zero re-renders on scroll)
-- Draco compression (3D model: 44MB → 1.5MB, 96.7% reduction)
+- Hero 3D spirit is procedural (no model download) and lazy-loaded: three.js and the stage stream in after the hero paints, and its render loop pauses off-screen or in a hidden tab
 - WebP images (max 1200px), lazy loading and responsive sizing
 - Vercel immutable caching for hashed build assets
 
@@ -237,7 +235,7 @@ MIT License - see [LICENSE](LICENSE) file
 ## Credits
 
 - **Design Inspiration** - [Takuya Matsuyama](https://www.craftz.dog/)
-- **3D Model** - Totoro (open-source)
+- **3D Spirit** - "Mầm Đèn", an original character built for this site (no third-party model)
 - **Icons** - custom kit SVGs; tech and social brand logos from [React Icons](https://react-icons.github.io/react-icons/)
 - **Font** - [M PLUS Rounded 1c](https://fonts.google.com/specimen/M+PLUS+Rounded+1c)
 

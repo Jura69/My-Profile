@@ -1,13 +1,13 @@
 # Codebase Summary
 
 **Project:** Personal Portfolio Website
-**Last Updated:** 2026-07-30
+**Last Updated:** 2026-10-01
 **Build Tool:** Vite 6 (SPA)
 **Framework:** React 19 + React Router 7
 **Styling:** Tailwind CSS 4
 **Animation:** Motion 12 + GSAP 3.15 + Lenis
-**Code Files:** 69 TS/TSX (`components/` 42, `src/` 23, `lib/` 2, `providers/` 2) + 2 build scripts
-**Public Assets:** ~4.3MB (1.5MB Draco GLB, ~2.5MB WebP images, 168K CV.pdf)
+**Code Files:** TS/TSX under `components/`, `src/`, `lib/`, `providers/` + 2 build scripts (count with the filesystem, not here)
+**Public Assets:** WebP images + CV.pdf; no 3D model file
 
 ---
 
@@ -21,7 +21,7 @@ Vite 6 SPA portfolio using React 19, client-side routing (React Router 7), Tailw
 - Scroll animations isolated to `components/scene/` (GSAP writes CSS vars/transforms directly)
 - SEO: static OG fallback in `index.html` for no-JS crawlers + per-page React 19 hoisted meta + JSON-LD + build-time sitemap
 - Lint gate: 0 errors / 0 warnings across `src components lib providers scripts vite.config.ts`
-- 96.7% 3D model compression (Draco, 44MB → 1.5MB)
+- Hero 3D spirit is procedural raw three (no GLB, no Draco), lazy-loaded with a 2D fallback
 
 ---
 
@@ -37,8 +37,7 @@ My-Profile/
 │   │   ├── works.tsx         # Projects listing, tabbed (+ works/ 11 detail pages)
 │   │   ├── activities.tsx    # Activities listing (+ activities/ytc.tsx)
 │   │   └── audiophile.tsx    # Audio listing (+ audiophile/ 4 detail pages)
-│   ├── styles/global.css     # Tailwind 4 @theme tokens + scene keyframes
-│   └── three-modules.d.ts    # Ambient types for three example modules
+│   └── styles/global.css     # Tailwind 4 @theme tokens + scene keyframes
 ├── components/               # (repo root, NOT src/)
 │   ├── ui/                   # Primitives: badge, button(+styles), card, container,
 │   │                         #   icon-button, page-banner, reveal, section-heading
@@ -52,15 +51,15 @@ My-Profile/
 │   │                         #   zone-particles, zone-data, scene-provider,
 │   │                         #   use-scene, use-pinned-intro, svg/{hills,moon}
 │   ├── icons/                # kit-icon-base (IconComponent type), kit-icons-interface,
-│   │                         #   kit-icons-topics, kit-ornaments, kit-dividers (inline SVG)
-│   │                         #   totoro.tsx = navbar logo (kept by user decision)
+│   │                         #   kit-icons-topics, kit-ornaments, kit-dividers (inline SVG),
+│   │                         #   spirit-mam-den (SpiritIcon navbar logo + SpiritIllustration)
+│   ├── spirit/               # Hero 3D (raw three): spirit-canvas (React mount),
+│   │                         #   spirit-stage (renderer/loop), forest-spirit, moss-island,
+│   │                         #   painted-material, spirit-lighting, kit-geometry
 │   ├── seo.tsx               # Per-page meta (React 19 hoists to <head>)
-│   ├── json-ld.tsx           # Person/Website/ProfilePage/Project/Breadcrumb schemas
-│   ├── totoro.tsx            # Three.js viewer (lazy-loaded from hero-dawn)
-│   └── totoro-loader.tsx     # Spinner + container while GLB streams
+│   └── json-ld.tsx           # Person/Website/ProfilePage/Project/Breadcrumb schemas
 ├── lib/
-│   ├── cn.ts                 # clsx + tailwind-merge helper
-│   └── model.ts              # GLTF/Draco loader, Promise<Group>, isMesh() guard
+│   └── cn.ts                 # clsx + tailwind-merge helper
 ├── providers/
 │   ├── theme.tsx             # ThemeProvider (persists only explicit choices)
 │   └── use-theme.ts          # ThemeContext + useTheme() (react-refresh split)
@@ -68,7 +67,7 @@ My-Profile/
 │   ├── vite-plugin-sitemap.ts  # Emits dist/sitemap.xml from works-data
 │   └── optimize-images.mjs     # One-off sharp-based image pipeline
 ├── public/                   # apple-touch-icon.png, cv.html, favicon.ico,
-│   │                         #   robots.txt, totoro-compressed.glb, files/CV.pdf
+│   │                         #   robots.txt, files/CV.pdf
 │   └── images/               # WebP (exceptions: og-image-forest.jpg, apple-touch-icon.png)
 │       ├── ui/               # Kit materials (paper grain, button wash, brush mask, wreath)
 │       ├── banners/          # <page>-<day|night>-{800,1600,2400}.webp
@@ -149,11 +148,14 @@ A long-lived tab requesting a deleted hashed chunk gets `index.html` back
 
 ### 3D scene
 
-`hero-dawn.tsx` lazy-loads `components/totoro.tsx` (spinner from
-`totoro-loader.tsx`); `lib/model.ts` loads `/totoro-compressed.glb` through
-GLTFLoader + DRACOLoader (decoder from Google CDN), returns `Promise<Group>`.
-Renderer: pixel ratio ≤ 2, `precision: 'mediump'`, conditional antialias,
-shadows off, stencil off. 100-frame eased intro orbit, then OrbitControls.
+`hero-dawn.tsx` renders `SpiritBoundary` → `Suspense` (fallback `SpiritIllustration`)
+→ `React.lazy(components/spirit/spirit-canvas.tsx)`. `spirit-canvas.tsx` mounts
+`createSpiritStage()` (`spirit-stage.ts`), which owns the renderer, camera, loop,
+observers and teardown; the spirit, island, painted material and light rig live in
+the sibling modules. Behavior and lifecycle rules are documented at the top of
+`spirit-stage.ts`; the why is in
+[system-architecture.md](./system-architecture.md#3d-graphics-implementation).
+No model files or loaders: geometry is generated in code.
 
 ---
 
@@ -179,8 +181,8 @@ following the OS on later visits. `useTheme()` lives in `providers/use-theme.ts`
 - `tsc -b` — project references (`tsconfig.app.json` for src/components,
   `tsconfig.node.json` for vite.config + sitemap plugin). Type errors halt build.
 - Vite/Rollup — SWC transpile, tree-shake, function-form `manualChunks` matches
-  the path segment AFTER the package directory: `vendor-three` (~590KB, loaded
-  only with the lazy Totoro), `vendor-gsap` (~136KB incl. ScrollTrigger + Lenis),
+  the path segment AFTER the package directory: `vendor-three` (~126KB gz since the
+  spirit rewrite, loaded only with the lazy spirit), `vendor-gsap` (~136KB incl. ScrollTrigger + Lenis),
   `motion` (~129KB), `vendor-icons` (~48KB, now only `si`/`di` brand logos + `IoLogo*`; kit icons live in app code), everything else (react, react-dom,
   router, glue) → `vendor-react` (~342KB). Glue libs share the react chunk on
   purpose — a separate misc chunk caused a circular-init TypeError that silently
@@ -215,7 +217,7 @@ duplicated lists here kept drifting).
 
 - Static SPA: no API routes, no secrets in client code, CV.pdf intentionally public
 - HTTPS + HSTS via Vercel defaults; no custom CSP headers configured
-- Draco decoder and Google Fonts are the only external runtime origins
+- Google Fonts is the only external runtime origin
 
 ---
 

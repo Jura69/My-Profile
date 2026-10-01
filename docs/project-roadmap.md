@@ -19,9 +19,9 @@ lint 0/0, dead configs deleted.
 ```
 Feature Categories:
 ├── Core Website (100%) ✅  homepage scenes · 11 projects · 1 activity · 4 audio reviews
-├── Performance   (100%) ✅  lazy routes · vendor chunks · WebP · Draco 96.7%
+├── Performance   (100%) ✅  lazy routes · vendor chunks · WebP · procedural 3D (no model file)
 ├── SEO           (100%) ✅  static OG fallback · per-page meta · JSON-LD · build-time sitemap
-├── Design        (100%) ✅  system-preference theme · day→night scenes · 3D Totoro
+├── Design        (100%) ✅  system-preference theme · day→night scenes · 3D Mầm Đèn spirit
 └── Future Enhancements 🔨  blog · contact form · PWA · CMS (below)
 ```
 
@@ -55,34 +55,27 @@ content is empty until the chunk arrives. In-app navigations are unaffected
 (startTransition keeps the old page). A minimal skeleton matching the page
 background would read better on slow connections. **Effort:** 1h.
 
-### 3. `components/totoro.tsx` late-resolve unmount guard
-
-If the GLB promise resolves after unmount, `animate()` starts an orphan rAF
-loop against a disposed renderer. Pre-existing, low impact (single long-lived
-component on the homepage). **Effort:** 30m (track mounted flag / abort in
-cleanup).
-
-### 4. Three legacy WebP files exceed the 150KB budget
+### 3. Three legacy WebP files exceed the 150KB budget
 
 `ka11-2.webp` (~185KB), `Ticket2.webp` (~194KB), `Ticket3.webp` (~165KB) — they
 predate the 2026-07-30 conversion pass, which only re-encoded the two files
 named in its scope. Re-encode at q≤80 / max 1200px. **Effort:** 15m.
 
-### 5. Dead `--color-timeline-*` tokens in `global.css`
+### 4. Dead `--color-timeline-*` tokens in `global.css`
 
 Four tokens defined but unreferenced (experience colors are inline in
 `home-data.ts`). Delete or wire up — owner's call (they were deliberately
 renamed in a recent content fix, so confirm intent before removing).
 **Effort:** 10m.
 
-### 6. `tsconfig.node.json` transitively type-checks `works-data.ts`
+### 5. `tsconfig.node.json` transitively type-checks `works-data.ts`
 
 The sitemap plugin imports works-data into the no-DOM node program. Fine today
 (pure data); a future React/DOM type in that file would break `tsc -b` with a
 confusing error. Mitigation if hit: split route data from card data.
 **Watch, no action.**
 
-### 7. `yarn analyze` shells out to `npx`
+### 6. `yarn analyze` shells out to `npx`
 
 `vite-bundle-visualizer` is not a devDependency; `npx` fetches it on demand in
 a yarn-1 repo. Accepted inconsistency (yarn 1 has no dlx). **No action.**
@@ -154,7 +147,7 @@ Quarters are aspirational, not commitments.
 ## Lessons Learned
 
 ### v1 era (Next.js, 2026-01)
-- Performance-first from day one paid off (Draco, image discipline)
+- Performance-first from day one paid off (image discipline, lean 3D)
 - DRY violations (grid/domain component triplets) compounded fast — fixed only
   by the v2 rebuild
 - Hardcoded content is fine; the pain was never the data, it was duplicated UI

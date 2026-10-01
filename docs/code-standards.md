@@ -194,7 +194,7 @@ create section-specific card clones — the Chakra-era triplets
 category passed as data.
 
 **Memoization**: used where re-render cost is real — `MainLayout`, `Navbar`,
-`AmbientScene`, `Totoro`, card lists. Don't memo trivial components.
+`AmbientScene`, card lists. Don't memo trivial components.
 
 ---
 
@@ -330,7 +330,7 @@ Detail pages: `ProjectSchema` + `BreadcrumbSchema` (see `components/json-ld.tsx`
 ## Error Handling
 
 - Async loading: `.then/.catch` with user-visible fallback state
-  (`components/totoro.tsx` logs and clears the spinner on GLB failure)
+  (`components/spirit/spirit-canvas.tsx` falls back to the 2D illustration on any WebGL failure)
 - Route-level: `components/layout/route-error-boundary.tsx` wraps the lazy
   route tree — auto-reloads once on stale-chunk import rejections (deploys
   invalidate hashed chunks; the SPA rewrite otherwise turns that into a blank
@@ -361,7 +361,7 @@ dead artifacts and have been deleted — do not resurrect them by copy-paste.
 ```
 <type>(<scope>): <subject>
 
-feat(home): center totoro hero, journey heading, tech badge icons
+feat(home): center spirit hero, journey heading, tech badge icons
 fix(review): route error boundary, honest theme persistence
 perf(images): convert photos to webp, compress oversized
 refactor: merge layout dirs, drop no-op article shim
