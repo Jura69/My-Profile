@@ -10,14 +10,14 @@ const Work = () => (
             title="Asset Management - Enterprise Platform | Trương Tuấn Lộc"
             description="Enterprise asset tracking and lifecycle management platform built at Creasia. Monitor, maintain, and optimize physical and digital assets from acquisition to disposal."
             keywords="Asset Management, Enterprise, React, TypeScript, MUI, Redux Toolkit, C# .NET, Entity Framework Core"
-            image="/images/works/asset-management-thumb.webp"
+            image="/images/works/asset-management-cover-1280.webp"
         />
         <ProjectSchema
             project={{
                 title: 'Asset Management',
                 description: 'Enterprise asset tracking & lifecycle management platform',
                 year: '2024',
-                image: 'https://my-profile-jura69.vercel.app/images/works/asset-management-thumb.webp',
+                image: 'https://my-profile-jura69.vercel.app/images/works/asset-management-cover-1280.webp',
                 stack: 'React 18, TypeScript, MUI, Redux Toolkit, C# .NET 7, Entity Framework Core'
             }}
         />

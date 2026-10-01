@@ -35,6 +35,115 @@
     --color-timeline-infodation: #6db86b;
     --color-timeline-vnpt: #5a9bd5;
     --color-timeline-university: #b08fd8;
+
+    /* Primitive scales 50-950 (docs/design-guidelines.md §3.1) */
+    --color-moss-50: #f0f6ee;
+    --color-moss-100: #dcebd6;
+    --color-moss-200: #bcdab3;
+    --color-moss-300: #9cc796;
+    --color-moss-400: #7eb77f;
+    --color-moss-500: #5e9a64;
+    --color-moss-600: #4a7c59;
+    --color-moss-700: #3d6a4b;
+    --color-moss-800: #30543b;
+    --color-moss-900: #233e2c;
+    --color-moss-950: #15261b;
+
+    --color-spirit-teal-50: #effaf7;
+    --color-spirit-teal-100: #d5f2ea;
+    --color-spirit-teal-200: #b4e6d9;
+    --color-spirit-teal-300: #98d8c8;
+    --color-spirit-teal-400: #74c2b4;
+    --color-spirit-teal-500: #5a9dab;
+    --color-spirit-teal-600: #467f8c;
+    --color-spirit-teal-700: #386672;
+    --color-spirit-teal-800: #2b4f59;
+    --color-spirit-teal-900: #1f3a42;
+    --color-spirit-teal-950: #13252b;
+
+    --color-parchment-50: #fdfbf6;
+    --color-parchment-100: #fbf7ee;
+    --color-parchment-200: #f5f0e8;
+    --color-parchment-300: #e2dbcd;
+    --color-parchment-400: #cfc4b0;
+    --color-parchment-500: #b0a38b;
+    --color-parchment-600: #8b7e68;
+    --color-parchment-700: #5c564c;
+    --color-parchment-800: #433e35;
+    --color-parchment-900: #2d2a24;
+    --color-parchment-950: #1c1a16;
+
+    --color-night-50: #eef0f5;
+    --color-night-100: #dadde8;
+    --color-night-200: #b7bccc;
+    --color-night-300: #959cb0;
+    --color-night-400: #737b92;
+    --color-night-500: #565e76;
+    --color-night-600: #3e465d;
+    --color-night-700: #2e3447;
+    --color-night-800: #232838;
+    --color-night-900: #1a1e2e;
+    --color-night-950: #10131e;
+
+    --color-golden-dust-50: #fcf7ea;
+    --color-golden-dust-100: #f8ebc9;
+    --color-golden-dust-200: #f1d999;
+    --color-golden-dust-300: #e7c46d;
+    --color-golden-dust-400: #d4a853;
+    --color-golden-dust-500: #b98c3a;
+    --color-golden-dust-600: #96702d;
+    --color-golden-dust-700: #765725;
+    --color-golden-dust-800: #5a421d;
+    --color-golden-dust-900: #3f2f16;
+    --color-golden-dust-950: #261c0d;
+
+    --color-sakura-50: #fdf2f5;
+    --color-sakura-100: #f9e0e7;
+    --color-sakura-200: #f2c3d1;
+    --color-sakura-300: #e8a0b4;
+    --color-sakura-400: #d97c97;
+    --color-sakura-500: #c25e7c;
+    --color-sakura-600: #9f4864;
+    --color-sakura-700: #7e3a50;
+    --color-sakura-800: #5f2c3c;
+    --color-sakura-900: #42202a;
+    --color-sakura-950: #28131a;
+
+    --color-sky-50: #eff9fd;
+    --color-sky-100: #d8f0fa;
+    --color-sky-200: #b3e2f5;
+    --color-sky-300: #87ceeb;
+    --color-sky-400: #5bb5dc;
+    --color-sky-500: #3d98c2;
+    --color-sky-600: #2f7a9e;
+    --color-sky-700: #286380;
+    --color-sky-800: #214e64;
+    --color-sky-900: #193a4a;
+    --color-sky-950: #0f242e;
+
+    --color-lavender-50: #f6f3fa;
+    --color-lavender-100: #ebe4f3;
+    --color-lavender-200: #d8cce8;
+    --color-lavender-300: #c4b5d8;
+    --color-lavender-400: #b08fd8;
+    --color-lavender-500: #9370c0;
+    --color-lavender-600: #77579f;
+    --color-lavender-700: #5f467f;
+    --color-lavender-800: #483661;
+    --color-lavender-900: #332745;
+    --color-lavender-950: #1f182a;
+
+    --color-bark-50: #f7f2ea;
+    --color-bark-100: #ebdfcb;
+    --color-bark-200: #d8c19c;
+    --color-bark-300: #c0a172;
+    --color-bark-400: #a6855a;
+    --color-bark-500: #8b6f47;
+    --color-bark-600: #715a3a;
+    --color-bark-700: #59472f;
+    --color-bark-800: #423524;
+    --color-bark-900: #2e2519;
+    --color-bark-950: #1b160f;
 }
 
 /* Semantic tokens — resolve to runtime CSS vars so `.dark` can flip values without a rebuild */
@@ -45,6 +154,20 @@
     --color-ink-muted: var(--ink-muted);
     --color-accent: var(--accent);
     --color-line: var(--line);
+    --color-surface-sunken: var(--surface-sunken);
+    --color-ink-subtle: var(--ink-subtle);
+    --color-accent-hover: var(--accent-hover);
+    --color-on-accent: var(--on-accent);
+    --color-accent-soft: var(--accent-soft);
+    --color-highlight: var(--highlight);
+    --color-line-strong: var(--line-strong);
+    --color-focus-ring: var(--focus-ring);
+    --shadow-paper: var(--paper-shadow);
+    --shadow-paper-lift: var(--paper-shadow-lift);
+    --color-skill-frontend-ink: var(--skill-frontend-ink);
+    --color-skill-backend-ink: var(--skill-backend-ink);
+    --color-skill-ai-ink: var(--skill-ai-ink);
+    --color-skill-tools-ink: var(--skill-tools-ink);
 }
 
 :root {
@@ -52,8 +175,24 @@
     --surface-elevated: #fbf7ee;
     --ink: #2d2a24;
     --ink-muted: #5c564c;
-    --accent: #4a7c59;
+    --accent: #3d6a4b;
     --line: #e2dbcd;
+    --surface-sunken: #ece4d6;
+    --ink-subtle: #8b7e68;
+    --accent-hover: #30543b;
+    --on-accent: #fbf7ee;
+    --accent-soft: #dcebd6;
+    --highlight: #d4a853;
+    --line-strong: #cfc4b0;
+    --focus-ring: #4a7c59;
+    /* Elevation = paper on paper: bark-tinted shadow, never pure black in light mode */
+    --paper-shadow: 0 1px 0 #e2dbcd, 0 6px 16px -6px rgb(139 111 71 / 0.18);
+    --paper-shadow-lift: 0 1px 0 #e2dbcd, 0 12px 24px -8px rgb(139 111 71 / 0.26);
+    /* Tone text: 700 step (lavender 600) keeps >= 4.5:1 on tinted surfaces */
+    --skill-frontend-ink: #3d6a4b;
+    --skill-backend-ink: #286380;
+    --skill-ai-ink: #765725;
+    --skill-tools-ink: #77579f;
 }
 
 .dark {
@@ -63,6 +202,92 @@
     --ink-muted: #a8adb8;
     --accent: #98d8c8;
     --line: #2e3447;
+    --surface-sunken: #10131e;
+    --ink-subtle: #737b92;
+    --accent-hover: #b4e6d9;
+    --on-accent: #1a1e2e;
+    --accent-soft: #1f3a42;
+    --highlight: #e7c46d;
+    --line-strong: #3e465d;
+    --focus-ring: #98d8c8;
+    --paper-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 1px 0 #2e3447, 0 8px 20px -8px rgb(0 0 0 / 0.45);
+    --paper-shadow-lift: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 1px 0 #2e3447, 0 14px 28px -10px rgb(0 0 0 / 0.55);
+    --skill-frontend-ink: #9cc796;
+    --skill-backend-ink: #87ceeb;
+    --skill-ai-ink: #e7c46d;
+    --skill-tools-ink: #c4b5d8;
+}
+
+/* Paper texture: ::before sits behind content (z-index:-1 inside the host's own
+   stacking context) so text is never covered and Reveal transforms carry it along. */
+@layer components {
+    .paper-grain {
+        position: relative;
+        isolation: isolate;
+    }
+    .paper-grain::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background: url('/images/ui/card-paper-light.webp') repeat;
+        background-size: 512px;
+        opacity: 0.5;
+        border-radius: inherit;
+    }
+    .dark .paper-grain::before {
+        background-image: url('/images/ui/card-paper-dark.webp');
+        opacity: 0.35;
+    }
+
+    /* Brush-edged gouache button (guide §7.1): ::before = masked accent fill, ::after = masked
+       wash at 35% soft-light over it. Both sit at z-index -1 inside the isolated host, so the host
+       keeps its unclipped focus outline and shadow. Host should be bg-transparent. */
+    .material-wash {
+        position: relative;
+        isolation: isolate;
+    }
+    .material-wash::before,
+    .material-wash::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        border-radius: inherit;
+        -webkit-mask-image: url('/images/ui/brush-edge-mask.webp');
+        mask-image: url('/images/ui/brush-edge-mask.webp');
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+    }
+    .material-wash::before {
+        background-color: var(--accent);
+        transition: background-color 150ms ease-out;
+    }
+    .material-wash::after {
+        background: url('/images/ui/button-wash-moss.webp') 0 0 / 100% 100%;
+        mix-blend-mode: soft-light;
+        opacity: 0.35;
+    }
+    .dark .material-wash::after {
+        background-image: url('/images/ui/button-wash-teal.webp');
+    }
+    @media (hover: hover) {
+        .material-wash:hover::before {
+            background-color: var(--accent-hover);
+        }
+    }
+    /* Disabled: plain fill, no texture */
+    .material-wash:disabled::after,
+    .material-wash[aria-disabled='true']::after {
+        display: none;
+    }
+    .material-wash:disabled::before,
+    .material-wash[aria-disabled='true']::before {
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
 }
 
 /* Fully-hidden scene groups cost nothing: ambient-scene toggles these data

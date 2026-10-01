@@ -1,4 +1,5 @@
 /** Footer with forest silhouette divider — Tailwind rebuild of the legacy Chakra footer. */
+import { SprigLeaf } from '../icons/kit-ornaments'
 export default function Footer() {
     const year = new Date().getFullYear()
 
@@ -30,7 +31,8 @@ export default function Footer() {
                 </svg>
             </div>
             <p className="font-rounded text-sm text-ink-muted opacity-50">
-                🍃 &copy; {year} Jura69. All Rights Reserved. 🌿
+                <SprigLeaf className="inline-block align-[-0.3em] text-accent" /> &copy; {year} Jura69. All Rights
+                Reserved. <SprigLeaf className="inline-block align-[-0.3em] text-accent -scale-x-100" />
             </p>
         </footer>
     )

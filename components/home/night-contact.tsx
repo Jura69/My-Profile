@@ -1,17 +1,12 @@
-import {
-    IoLogoGithub,
-    IoLogoLinkedin,
-    IoLogoFacebook,
-    IoLogoInstagram,
-    IoLogoGoogle,
-    IoMailOutline
-} from 'react-icons/io5'
+import { IoLogoGithub, IoLogoLinkedin, IoLogoFacebook, IoLogoInstagram, IoLogoGoogle } from 'react-icons/io5'
 import type { IconType } from 'react-icons'
+import { Mail } from '../icons/kit-icons-interface'
 import Reveal from '../ui/reveal'
 import SectionHeading from '../ui/section-heading'
 import { ButtonLink } from '../ui/button'
 import { buttonClasses } from '../ui/button-styles'
 import { hobbies, socialLinks, type SocialLink } from './home-data'
+import { PaperLantern } from '../icons/kit-ornaments'
 
 const socialIcon: Record<SocialLink['icon'], IconType> = {
     github: IoLogoGithub,
@@ -31,7 +26,7 @@ export default function NightContact() {
         <section data-section="contact" className="w-full px-4 py-16 md:py-20">
             <div className="mx-auto max-w-[1100px] text-center">
                 <Reveal>
-                    <SectionHeading as="h2" className="inline-block">
+                    <SectionHeading as="h2" className="inline-block" align="center">
                         Things I Love <span className="text-ghibli-soft-pink">♥</span>
                     </SectionHeading>
                 </Reveal>
@@ -52,8 +47,8 @@ export default function NightContact() {
 
                 <div className="mt-14">
                     <Reveal>
-                        <SectionHeading as="h2" className="inline-block">
-                            Contact &amp; Social 🌸
+                        <SectionHeading as="h2" className="inline-block" align="center" ornament={PaperLantern}>
+                            Contact &amp; Social
                         </SectionHeading>
                     </Reveal>
 
@@ -79,7 +74,7 @@ export default function NightContact() {
 
                     <Reveal delay={0.1}>
                         <a href="mailto:Loctruongtuan@gmail.com" className={`${buttonClasses('solid', 'lg')} mt-8`}>
-                            <IoMailOutline aria-hidden="true" /> Get in touch
+                            <Mail aria-hidden="true" /> Get in touch
                         </a>
                     </Reveal>
                 </div>

@@ -10,14 +10,14 @@ const Work = () => (
             title="OCR CCCD - Vietnamese ID Card Data Extraction | Trương Tuấn Lộc"
             description="AI-powered OCR extracting structured data from Vietnamese citizen ID cards — supports both CCCD and the 2024 Căn cước format."
             keywords="OCR, CCCD, Vietnamese ID Card, Document AI, Data Extraction, Python"
-            image="/images/works/ocr-cccd-thumb.webp"
+            image="/images/works/ocr-cccd-cover-1280.webp"
         />
         <ProjectSchema
             project={{
                 title: 'OCR CCCD',
                 description: 'AI-powered OCR that extracts structured data from Vietnamese ID cards',
                 year: '2026',
-                image: 'https://my-profile-jura69.vercel.app/images/works/ocr-cccd-thumb.webp',
+                image: 'https://my-profile-jura69.vercel.app/images/works/ocr-cccd-cover-1280.webp',
                 stack: 'Python, OCR, Vietnamese NLP'
             }}
         />

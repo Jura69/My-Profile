@@ -10,7 +10,7 @@ const Work = () => (
             title="Creasia AI Center - Enterprise AI Agent Platform | Trương Tuấn Lộc"
             description="Enterprise AI agent platform — multi-channel AI assistants with agent orchestration, custom skills, and tool integrations."
             keywords="AI Agent Platform, AI Agents, Agent Orchestration, Agent Skills, LLM Integration, Creasia"
-            image="/images/works/ai-center-thumb.webp"
+            image="/images/works/ai-center-cover-1280.webp"
         />
         <ProjectSchema
             project={{
@@ -18,7 +18,7 @@ const Work = () => (
                 description:
                     'Enterprise AI agent platform — multi-channel AI assistants with agent orchestration, custom skills & tools.',
                 year: '2026',
-                image: 'https://my-profile-jura69.vercel.app/images/works/ai-center-thumb.webp',
+                image: 'https://my-profile-jura69.vercel.app/images/works/ai-center-cover-1280.webp',
                 stack: 'Go, PostgreSQL'
             }}
         />

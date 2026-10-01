@@ -1,10 +1,11 @@
-import { IoChevronForward } from 'react-icons/io5'
+import { ChevronRight } from '../icons/kit-icons-interface'
 import Reveal from '../ui/reveal'
 import SectionHeading from '../ui/section-heading'
 import Badge from '../ui/badge'
 import { buttonClasses } from '../ui/button-styles'
 import { usePinnedIntro } from '../scene/use-pinned-intro'
 import { experiences, type ExperienceEntry, techIconMap } from './home-data'
+import { Acorn } from '../icons/kit-ornaments'
 
 function ExperienceCard({ entry }: { entry: ExperienceEntry }) {
     const Icon = entry.icon
@@ -64,7 +65,9 @@ export default function ExperienceDusk() {
         <section data-section="work" className="w-full px-4 py-16 md:py-20">
             <div className="mx-auto max-w-[1100px]">
                 <div ref={pinRef}>
-                    <SectionHeading as="h2">My Journey 🌳</SectionHeading>
+                    <SectionHeading as="h2" ornament={Acorn}>
+                        My Journey
+                    </SectionHeading>
                 </div>
 
                 <div className="relative mt-8">
@@ -91,7 +94,7 @@ export default function ExperienceDusk() {
                 <Reveal delay={0.1}>
                     <div className="mt-10 text-center">
                         <a href="/files/CV.pdf" download="TuanLoc_CV.pdf" className={buttonClasses('solid', 'lg')}>
-                            Download Full CV <IoChevronForward aria-hidden="true" />
+                            Download Full CV <ChevronRight aria-hidden="true" />
                         </a>
                     </div>
                 </Reveal>

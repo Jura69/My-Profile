@@ -1,9 +1,10 @@
 import { lazy, Suspense } from 'react'
 import { motion } from 'motion/react'
 import { Link as RouterLink } from 'react-router'
-import { IoArrowForward, IoChevronDown, IoDownloadOutline } from 'react-icons/io5'
+import { ArrowRight, ChevronDown, Download } from '../icons/kit-icons-interface'
 import { buttonClasses } from '../ui/button-styles'
 import TotoroLoader from '../totoro-loader'
+import { SprigLeaf } from '../icons/kit-ornaments'
 
 // Totoro stays lazy: the hero must render immediately, the GLB streams in after
 const LazyTotoro = lazy(() => import('../totoro'))
@@ -39,7 +40,8 @@ export default function HeroDawn() {
                 {...riseIn(0.05)}
                 className="mb-6 rounded-full border border-line bg-surface/60 px-4 py-2 font-rounded text-sm text-ink backdrop-blur-md"
             >
-                🌿 A Full-stack Dev Engineer 🍃
+                <SprigLeaf className="inline-block align-[-0.3em] text-accent" /> A Full-stack Dev Engineer{' '}
+                <SprigLeaf className="inline-block align-[-0.3em] text-accent -scale-x-100" />
             </motion.p>
 
             <h1 className="font-rounded text-5xl font-bold tracking-tight text-ink md:text-7xl">
@@ -62,7 +64,7 @@ export default function HeroDawn() {
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.97 }}
                 >
-                    View My Works <IoArrowForward aria-hidden="true" />
+                    View My Works <ArrowRight aria-hidden="true" />
                 </MotionRouterLink>
                 <motion.a
                     href="/files/CV.pdf"
@@ -71,7 +73,7 @@ export default function HeroDawn() {
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.97 }}
                 >
-                    <IoDownloadOutline aria-hidden="true" /> Download CV
+                    <Download aria-hidden="true" /> Download CV
                 </motion.a>
             </motion.div>
 
@@ -85,7 +87,7 @@ export default function HeroDawn() {
                     ease: 'easeInOut'
                 }}
             >
-                <IoChevronDown />
+                <ChevronDown />
             </motion.div>
         </section>
     )

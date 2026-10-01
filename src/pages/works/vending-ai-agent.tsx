@@ -10,14 +10,14 @@ const Work = () => (
             title="Vending Management - Enterprise Platform | Trương Tuấn Lộc"
             description="Vending machine management platform with sales analytics, inventory tracking, and restocking workflows for enterprise vending operations."
             keywords="Vending Management, Sales Analytics, Inventory Tracking, React, TypeScript, MUI, ApexCharts, C# .NET"
-            image="/images/works/vending-ai-agent-thumb.webp"
+            image="/images/works/vending-ai-agent-cover-1280.webp"
         />
         <ProjectSchema
             project={{
                 title: 'Vending Management',
                 description: 'Vending machine management platform with sales analytics & inventory tracking',
                 year: '2025',
-                image: 'https://my-profile-jura69.vercel.app/images/works/vending-ai-agent-thumb.webp',
+                image: 'https://my-profile-jura69.vercel.app/images/works/vending-ai-agent-cover-1280.webp',
                 stack: 'React 18, TypeScript, MUI, Redux Toolkit, ApexCharts, C# .NET'
             }}
         />

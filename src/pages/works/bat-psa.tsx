@@ -10,14 +10,14 @@ const Work = () => (
             title="BAT PSA - Enterprise Analytics Dashboard | Trương Tuấn Lộc"
             description="Administrative dashboard for problem statement analysis at British American Tobacco. Features advanced reporting, data visualization, and export capabilities."
             keywords="BAT PSA, Analytics Dashboard, Problem Statement Analysis, React, DevExtreme, TailwindCSS, Redux, C# .NET, Docker"
-            image="/images/works/bat-psa-thumb.webp"
+            image="/images/works/bat-psa-cover-1280.webp"
         />
         <ProjectSchema
             project={{
                 title: 'BAT PSA',
                 description: 'Admin dashboard for problem statement analysis with reporting',
                 year: '2024',
-                image: 'https://my-profile-jura69.vercel.app/images/works/bat-psa-thumb.webp',
+                image: 'https://my-profile-jura69.vercel.app/images/works/bat-psa-cover-1280.webp',
                 stack: 'React 18, DevExtreme, TailwindCSS, Redux Toolkit, C# .NET 7, Docker'
             }}
         />

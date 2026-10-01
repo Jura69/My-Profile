@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import { Link as RouterLink } from 'react-router'
-import { IoChevronForward, IoOpenOutline } from 'react-icons/io5'
+import { ChevronRight, ExternalLink } from '../icons/kit-icons-interface'
 import Badge from '../ui/badge'
 import { cn } from '../../lib/cn'
 
@@ -30,7 +30,7 @@ export function DetailTitle({ parentPath, parentLabel, year, children }: DetailT
                 >
                     {parentLabel}
                 </RouterLink>
-                <IoChevronForward aria-hidden="true" className="shrink-0" />
+                <ChevronRight aria-hidden="true" className="shrink-0" />
             </div>
             <h1 className="mt-1 flex flex-wrap items-center gap-2 font-rounded text-2xl font-bold text-ink">
                 {children}
@@ -92,7 +92,7 @@ export function DetailLink({ href, children }: { href: string; children: React.R
             className="inline-flex items-center gap-1 text-accent underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
             {children}
-            <IoOpenOutline aria-hidden="true" className="shrink-0" />
+            <ExternalLink aria-hidden="true" className="shrink-0" />
         </a>
     )
 }

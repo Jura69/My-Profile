@@ -10,14 +10,14 @@ const Work = () => (
             title="Castrol Fleet Management - Enterprise Platform | Trương Tuấn Lộc"
             description="Vehicle fleet tracking platform with real-time geolocation via Mapbox. Includes maintenance scheduling, route optimization, and logistics management."
             keywords="Castrol Fleet Management, Vehicle Tracking, Geolocation, Mapbox, React, TypeScript, MUI, Full Calendar, C# .NET"
-            image="/images/works/castrol-fleet-thumb.webp"
+            image="/images/works/castrol-fleet-cover-1280.webp"
         />
         <ProjectSchema
             project={{
                 title: 'Castrol Fleet Management',
                 description: 'Vehicle fleet tracking with geolocation & maintenance scheduling',
                 year: '2024',
-                image: 'https://my-profile-jura69.vercel.app/images/works/castrol-fleet-thumb.webp',
+                image: 'https://my-profile-jura69.vercel.app/images/works/castrol-fleet-cover-1280.webp',
                 stack: 'React 18, TypeScript, MUI, Mapbox GL, Full Calendar, C# .NET'
             }}
         />

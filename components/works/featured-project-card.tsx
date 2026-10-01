@@ -2,7 +2,7 @@ import { Link as RouterLink } from 'react-router'
 import { motion } from 'motion/react'
 import Badge from '../ui/badge'
 import { cn } from '../../lib/cn'
-import type { Project } from './works-data'
+import { coverSrcSet, type Project } from './works-data'
 
 /**
  * Large flagship card — 16:9 cover, title, blurb, tech badges. Hover lifts the
@@ -19,21 +19,26 @@ export default function FeaturedProjectCard({ project }: { project: Project }) {
             <RouterLink
                 to={`/works/${project.id}`}
                 className={cn(
-                    'flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface-elevated shadow-sm transition-shadow',
-                    'hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent'
+                    'flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface-elevated shadow-paper transition-shadow',
+                    'hover:shadow-paper-lift focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring'
                 )}
             >
                 <div className="aspect-video w-full overflow-hidden">
                     <img
                         src={project.thumbnail}
+                        srcSet={project.cover && coverSrcSet(project.cover)}
+                        sizes={project.cover && '(min-width:1024px) 540px, 100vw'}
                         alt={project.title}
                         loading="lazy"
                         width={640}
                         height={360}
-                        className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
+                        className={cn(
+                            'h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]',
+                            project.cover && 'dark:brightness-90'
+                        )}
                     />
                 </div>
-                <div className="flex flex-1 flex-col p-5">
+                <div className="paper-grain flex flex-1 flex-col p-5">
                     <h3 className="font-rounded text-lg font-bold text-ink">{project.title}</h3>
                     <p className="mt-2 flex-1 font-rounded text-sm leading-relaxed text-ink-muted">
                         {project.description}

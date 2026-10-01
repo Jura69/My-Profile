@@ -3,11 +3,11 @@ import { cn } from '../../lib/cn'
 export type BadgeTone = 'accent' | 'frontend' | 'backend' | 'ai' | 'tools' | 'neutral'
 
 const toneClasses: Record<BadgeTone, string> = {
-    accent: 'bg-accent/15 text-accent',
-    frontend: 'bg-skill-frontend/15 text-skill-frontend',
-    backend: 'bg-skill-backend/15 text-skill-backend',
-    ai: 'bg-skill-ai/15 text-skill-ai',
-    tools: 'bg-skill-tools/15 text-skill-tools',
+    accent: 'bg-accent-soft text-accent',
+    frontend: 'bg-skill-frontend/15 text-skill-frontend-ink',
+    backend: 'bg-skill-backend/15 text-skill-backend-ink',
+    ai: 'bg-skill-ai/15 text-skill-ai-ink',
+    tools: 'bg-skill-tools/15 text-skill-tools-ink',
     neutral: 'bg-ink/10 text-ink-muted'
 }
 

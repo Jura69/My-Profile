@@ -10,14 +10,14 @@ const Work = () => (
             title="AdvanceSystem - Retail Audit & Field-Force Platform | Trương Tuấn Lộc"
             description="Retail audit and trade-marketing field-force management platform for FMCG brands — mobile field apps, supervisor web portals, and consumer engagement."
             keywords="Retail Audit, Field Force Management, Trade Marketing, FMCG, .NET, SQL Server, Creasia"
-            image="/images/works/advance-system-thumb.webp"
+            image="/images/works/advance-system-cover-1280.webp"
         />
         <ProjectSchema
             project={{
                 title: 'AdvanceSystem',
                 description: 'Retail audit & field-force management platform for FMCG brands',
                 year: '2025',
-                image: 'https://my-profile-jura69.vercel.app/images/works/advance-system-thumb.webp',
+                image: 'https://my-profile-jura69.vercel.app/images/works/advance-system-cover-1280.webp',
                 stack: '.NET, ASP.NET Core, SQL Server'
             }}
         />

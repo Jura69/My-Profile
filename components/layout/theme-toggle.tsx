@@ -1,15 +1,17 @@
-import { AnimatePresence, motion } from 'motion/react'
-import { IoMoon, IoSunny } from 'react-icons/io5'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { Moon, Sun } from '../icons/kit-icons-interface'
 import { useTheme } from '../../providers/use-theme'
 import IconButton from '../ui/icon-button'
 
 /**
- * Theme switch with icon morph. Reads/writes the standalone ThemeProvider, which
+ * Theme switch: kit sun/moon crossfade + 30° rotate (instant under reduced motion). Reads/writes the standalone ThemeProvider, which
  * owns the `.dark` class on <html> and localStorage persistence.
  */
 export default function ThemeToggle() {
     const { mode, toggle } = useTheme()
     const isDark = mode === 'dark'
+    // MotionConfig reducedMotion="user" keeps opacity tweens, so gate the crossfade explicitly.
+    const reduceMotion = useReducedMotion()
 
     return (
         <IconButton
@@ -26,12 +28,12 @@ export default function ThemeToggle() {
                 <motion.span
                     key={mode}
                     className="grid place-items-center text-lg"
-                    initial={{ y: -16, opacity: 0, rotate: -90 }}
-                    animate={{ y: 0, opacity: 1, rotate: 0 }}
-                    exit={{ y: 16, opacity: 0, rotate: 90 }}
-                    transition={{ duration: 0.2 }}
+                    initial={reduceMotion ? false : { opacity: 0, rotate: -30 }}
+                    animate={{ opacity: 1, rotate: 0 }}
+                    exit={reduceMotion ? { opacity: 1 } : { opacity: 0, rotate: 30 }}
+                    transition={{ duration: reduceMotion ? 0 : 0.2 }}
                 >
-                    {isDark ? <IoSunny /> : <IoMoon />}
+                    {isDark ? <Sun /> : <Moon />}
                 </motion.span>
             </AnimatePresence>
         </IconButton>

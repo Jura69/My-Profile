@@ -28,15 +28,16 @@ import {
 } from 'react-icons/si'
 import { DiMsqlServer, DiDatabase } from 'react-icons/di'
 import {
-    HiOutlineBuildingOffice2,
-    HiOutlineCommandLine,
-    HiOutlineSignal,
-    HiOutlineAcademicCap,
-    HiOutlineShare,
-    HiOutlineChatBubbleBottomCenterText,
-    HiOutlineServerStack,
-    HiOutlineChartBarSquare
-} from 'react-icons/hi2'
+    Building,
+    Terminal,
+    SignalTower,
+    GraduationCap,
+    ServerStack,
+    ChartCheck,
+    AgentNetwork,
+    ChatSpark
+} from '../icons/kit-icons-topics'
+import type { IconComponent } from '../icons/kit-icon-base'
 import type { BadgeTone } from '../ui/badge'
 
 /**
@@ -45,7 +46,7 @@ import type { BadgeTone } from '../ui/badge'
  */
 
 export interface Skill {
-    icon: IconType
+    icon: IconComponent
     label: string
     /** Brand color for the icon glyph — preserved from the legacy skill cards. */
     color: string
@@ -72,11 +73,11 @@ export const skillGroups: SkillGroup[] = [
         skills: [
             // Core six only — mirrors the bio verbatim: operating AI leads,
             // agent-building follows, classic ML anchor last.
-            { icon: HiOutlineServerStack, label: 'AI Operations (LLMOps)', color: '#5a9dab' },
-            { icon: HiOutlineChartBarSquare, label: 'LLM Evaluation & Monitoring', color: '#6db86b' },
-            { icon: HiOutlineShare, label: 'Agent Orchestration', color: '#6db86b' },
+            { icon: ServerStack, label: 'AI Operations (LLMOps)', color: '#5a9dab' },
+            { icon: ChartCheck, label: 'LLM Evaluation & Monitoring', color: '#6db86b' },
+            { icon: AgentNetwork, label: 'Agent Orchestration', color: '#6db86b' },
             { icon: SiClaude, label: 'Agent Skill Building', color: '#D97757' },
-            { icon: HiOutlineChatBubbleBottomCenterText, label: 'Prompt & Context Engineering', color: '#d4a853' },
+            { icon: ChatSpark, label: 'Prompt & Context Engineering', color: '#d4a853' },
             { icon: SiTensorflow, label: 'TensorFlow', color: '#FF6F00' }
         ]
     },
@@ -127,7 +128,7 @@ export const skillGroups: SkillGroup[] = [
 ]
 
 export interface ExperienceEntry {
-    icon: IconType
+    icon: IconComponent
     company: string
     role: string
     period: string
@@ -141,7 +142,7 @@ export interface ExperienceEntry {
 
 export const experiences: ExperienceEntry[] = [
     {
-        icon: HiOutlineBuildingOffice2,
+        icon: Building,
         company: 'CREASIA',
         role: 'Full-stack Developer',
         period: 'June 2025 - Present · Full-time',
@@ -158,7 +159,7 @@ export const experiences: ExperienceEntry[] = [
         badges: ['AI Agents', 'LLM Integration', 'React', 'C#', '.NET', 'SQL Server']
     },
     {
-        icon: HiOutlineCommandLine,
+        icon: Terminal,
         company: 'Infodation Vietnam',
         role: 'Junior Backend Developer',
         period: 'Dec 2023 - Feb 2025 · 1 year 3 months',
@@ -175,7 +176,7 @@ export const experiences: ExperienceEntry[] = [
         badges: ['Node.js', 'Express', 'MongoDB', 'Redis', 'Docker', 'AWS']
     },
     {
-        icon: HiOutlineSignal,
+        icon: SignalTower,
         company: 'VNPT Khánh Hoà',
         role: 'Software Developer Intern',
         period: 'May 2023 - Jul 2023 · 3 months',
@@ -191,7 +192,7 @@ export const experiences: ExperienceEntry[] = [
         badges: ['React', 'C#', '.NET', 'SQL']
     },
     {
-        icon: HiOutlineAcademicCap,
+        icon: GraduationCap,
         company: 'Nha Trang University',
         role: "Bachelor's Degree in Information Technology",
         period: 'Graduated 2024',
@@ -222,7 +223,7 @@ export const hobbies: Hobby[] = [
 export interface SocialLink {
     label: string
     href: string
-    /** Icon name from react-icons/io5, resolved by the consuming component. */
+    /** Brand logo key; the consuming component resolves it to the matching react-icons/io5 logo. */
     icon: 'github' | 'linkedin' | 'facebook' | 'instagram' | 'google'
 }
 

@@ -2,12 +2,13 @@ import Reveal from '../ui/reveal'
 import SectionHeading from '../ui/section-heading'
 import type { BadgeTone } from '../ui/badge'
 import { skillGroups, type SkillGroup } from './home-data'
+import { SprigLeaf } from '../icons/kit-ornaments'
 
 const toneText: Record<BadgeTone, string> = {
-    frontend: 'text-skill-frontend',
-    backend: 'text-skill-backend',
-    ai: 'text-skill-ai',
-    tools: 'text-skill-tools',
+    frontend: 'text-skill-frontend-ink',
+    backend: 'text-skill-backend-ink',
+    ai: 'text-skill-ai-ink',
+    tools: 'text-skill-tools-ink',
     accent: 'text-accent',
     neutral: 'text-ink-muted'
 }
@@ -46,7 +47,9 @@ export default function SkillsBento() {
         <section data-section="skills" className="w-full px-4 py-16 md:py-20">
             <div className="mx-auto max-w-[1100px]">
                 <Reveal>
-                    <SectionHeading as="h2">Skills &amp; Technologies 🍃</SectionHeading>
+                    <SectionHeading as="h2" ornament={SprigLeaf}>
+                        Skills &amp; Technologies
+                    </SectionHeading>
                 </Reveal>
 
                 <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">

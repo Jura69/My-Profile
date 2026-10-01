@@ -1,13 +1,14 @@
 import { Link as RouterLink } from 'react-router'
-import { IoChevronForward } from 'react-icons/io5'
+import { ChevronRight } from '../../components/icons/kit-icons-interface'
 import SEO from '../../components/seo'
 import { BreadcrumbSchema } from '../../components/json-ld'
 import Reveal from '../../components/ui/reveal'
-import SectionHeading from '../../components/ui/section-heading'
+import PageBanner from '../../components/ui/page-banner'
 import { buttonClasses } from '../../components/ui/button-styles'
 import FeaturedProjectCard from '../../components/works/featured-project-card'
 import ProjectCard from '../../components/works/project-card'
 import WorksTabs from '../../components/works/works-tabs'
+import { WorksSatchel } from '../../components/icons/kit-icons-topics'
 import {
     featuredProjects,
     otherPersonalProjects,
@@ -74,9 +75,13 @@ const Works = () => (
 
         <section className="w-full px-4 py-8">
             <div className="mx-auto max-w-[1100px]">
-                <Reveal>
-                    <SectionHeading as="h1">My Works 💻</SectionHeading>
-                </Reveal>
+                <PageBanner
+                    page="works"
+                    alt="Painted forest veranda with a sketching desk"
+                    title="My Works"
+                    ornament={WorksSatchel}
+                    className="mb-8"
+                />
 
                 <Reveal delay={0.05}>
                     <WorksTabs panels={{ enterprise: enterprisePanel, personal: personalPanel }} />
@@ -85,7 +90,7 @@ const Works = () => (
                 <Reveal>
                     <div className="mt-12 text-center">
                         <RouterLink to="/activities" className={buttonClasses('ghost', 'md')}>
-                            Beyond code — my university activities <IoChevronForward aria-hidden="true" />
+                            Beyond code — my university activities <ChevronRight aria-hidden="true" />
                         </RouterLink>
                     </div>
                 </Reveal>

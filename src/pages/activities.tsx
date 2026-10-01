@@ -1,9 +1,10 @@
 import SEO from '../../components/seo'
 import { BreadcrumbSchema } from '../../components/json-ld'
 import Reveal from '../../components/ui/reveal'
-import SectionHeading from '../../components/ui/section-heading'
+import PageBanner from '../../components/ui/page-banner'
 import ProjectCard from '../../components/works/project-card'
 import { activities } from '../../components/works/works-data'
+import { Campfire } from '../../components/icons/kit-icons-topics'
 
 const Activities = () => (
     <>
@@ -21,11 +22,15 @@ const Activities = () => (
 
         <section className="w-full px-4 py-8">
             <div className="mx-auto max-w-[1100px]">
-                <Reveal>
-                    <SectionHeading as="h1">My Activities 🌿</SectionHeading>
-                </Reveal>
+                <PageBanner
+                    page="activities"
+                    alt="Painted hillside festival ground with bunting and a wooden stage"
+                    title="My Activities"
+                    ornament={Campfire}
+                    className="mb-8"
+                />
 
-                <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                     {activities.map((activity, i) => (
                         <Reveal key={activity.id} delay={0.05 + i * 0.05} className="h-full">
                             <ProjectCard project={activity} to={`/activities/${activity.id}`} />

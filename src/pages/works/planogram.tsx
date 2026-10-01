@@ -10,7 +10,7 @@ const Work = () => (
             title="Planogram AI - Retail Shelf Compliance | Trương Tuấn Lộc"
             description="AI-powered planogram compliance platform — computer vision verifies retail product placement automatically from shelf photos."
             keywords="Planogram Compliance, Computer Vision, Retail AI, Shelf Audit, Python, .NET, Creasia"
-            image="/images/works/planogram-thumb.webp"
+            image="/images/works/planogram-cover-1280.webp"
         />
         <ProjectSchema
             project={{
@@ -18,7 +18,7 @@ const Work = () => (
                 description:
                     'AI-powered retail shelf compliance — verifies product placement automatically from shelf photos with computer vision.',
                 year: '2026',
-                image: 'https://my-profile-jura69.vercel.app/images/works/planogram-thumb.webp',
+                image: 'https://my-profile-jura69.vercel.app/images/works/planogram-cover-1280.webp',
                 stack: 'Python, .NET, Computer Vision'
             }}
         />

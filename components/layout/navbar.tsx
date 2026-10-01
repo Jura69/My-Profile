@@ -1,7 +1,8 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { motion } from 'motion/react'
 import { Link as RouterLink, useLocation } from 'react-router'
-import { IoLogoGithub, IoMenu } from 'react-icons/io5'
+import { IoLogoGithub } from 'react-icons/io5'
+import { Menu } from '../icons/kit-icons-interface'
 import TotoroIcon from '../icons/totoro'
 import IconButton from '../ui/icon-button'
 import ThemeToggle from './theme-toggle'
@@ -54,7 +55,7 @@ function MobileMenu() {
         <DropdownMenu.Root>
             <DropdownMenu.Trigger asChild>
                 <IconButton aria-label="Open navigation menu" variant="outline" className="md:hidden">
-                    <IoMenu className="text-xl" />
+                    <Menu className="text-xl" />
                 </IconButton>
             </DropdownMenu.Trigger>
             <DropdownMenu.Portal>

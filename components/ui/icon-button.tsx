@@ -4,10 +4,11 @@ import { cn } from '../../lib/cn'
 
 export type IconButtonVariant = 'solid' | 'outline' | 'ghost'
 
+/* Color + focus ring only — no wash/mask (the theme toggle overrides the solid fill). */
 const variantClasses: Record<IconButtonVariant, string> = {
-    solid: 'bg-accent text-surface',
-    outline: 'border-2 border-line text-ink hover:border-accent hover:text-accent',
-    ghost: 'text-ink hover:bg-accent/10'
+    solid: 'bg-accent text-on-accent',
+    outline: 'border-2 border-line-strong text-ink hover:border-accent hover:text-accent',
+    ghost: 'text-ink hover:bg-accent-soft'
 }
 
 interface IconButtonProps extends HTMLMotionProps<'button'> {
@@ -28,7 +29,7 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconB
         <motion.button
             ref={ref}
             className={cn(
-                'grid size-10 cursor-pointer place-items-center rounded-xl transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+                'grid size-10 cursor-pointer place-items-center rounded-xl transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring',
                 variantClasses[variant],
                 className
             )}

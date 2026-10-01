@@ -10,14 +10,14 @@ const Work = () => (
             title="Warehouse Management - Enterprise Platform | Trương Tuấn Lộc"
             description="Inventory tracking system with barcode and QR scanning integration. Manages order workflows, stock movements, and warehouse operations for enterprise logistics."
             keywords="Warehouse Management, Inventory Tracking, Barcode Scanning, QR Code, React, MUI, DevExtreme, Redux, C# .NET"
-            image="/images/works/warehouse-management-thumb.webp"
+            image="/images/works/warehouse-management-cover-1280.webp"
         />
         <ProjectSchema
             project={{
                 title: 'Warehouse Management',
                 description: 'Inventory tracking with barcode scanning & order workflows',
                 year: '2024',
-                image: 'https://my-profile-jura69.vercel.app/images/works/warehouse-management-thumb.webp',
+                image: 'https://my-profile-jura69.vercel.app/images/works/warehouse-management-cover-1280.webp',
                 stack: 'React 18, MUI, DevExtreme, Redux, QR/Barcode scanning, C# .NET'
             }}
         />
