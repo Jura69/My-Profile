@@ -9,6 +9,7 @@ import { useScene } from '../components/scene/use-scene'
 import MainLayout from '../components/layout/main'
 import NotFound from '../components/layout/not-found'
 import RouteErrorBoundary from '../components/layout/route-error-boundary'
+import { SCENE_DEBUG } from '../components/scene/scene-debug-flag'
 
 // HomePage stays eager — it is the LCP-critical landing route. Every other
 // page is its own chunk; router navigations run in startTransition, so the
@@ -38,6 +39,8 @@ const Ea1000Page = lazy(() => import('./pages/audiophile/ea1000'))
 const MoondropPage = lazy(() => import('./pages/audiophile/moondrop-ssp'))
 const OnixPage = lazy(() => import('./pages/audiophile/onix'))
 const FiiokA11Page = lazy(() => import('./pages/audiophile/fiioka11'))
+// Dev/debug-only look-dev surface for the 3D world; null (and tree-shaken) in production builds.
+const LookdevPage = SCENE_DEBUG ? lazy(() => import('../components/scene/world/debug/lookdev-page')) : null
 
 // Restore scroll position on navigation
 if (typeof window !== 'undefined') {
@@ -77,6 +80,7 @@ function AnimatedRoutes() {
             <Route path="/audiophile/moondropSSP" element={<Navigate to="/audiophile/moondrop-ssp" replace />} />
             <Route path="/audiophile/onix" element={<OnixPage />} />
             <Route path="/audiophile/fiioka11" element={<FiiokA11Page />} />
+            {LookdevPage && <Route path="/__lookdev" element={<LookdevPage />} />}
             <Route path="*" element={<NotFound />} />
         </Routes>
     )
