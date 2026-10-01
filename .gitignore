@@ -80,3 +80,6 @@ plans
 .agent
 test
 __tests__
+
+# UI kit review assets (large AI-generated masters, kept local)
+/design/
