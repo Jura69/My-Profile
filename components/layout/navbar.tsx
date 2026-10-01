@@ -3,7 +3,7 @@ import { motion } from 'motion/react'
 import { Link as RouterLink, useLocation } from 'react-router'
 import { IoLogoGithub } from 'react-icons/io5'
 import { Menu } from '../icons/kit-icons-interface'
-import TotoroIcon from '../icons/totoro'
+import { SpiritIcon } from '../icons/spirit-mam-den'
 import IconButton from '../ui/icon-button'
 import ThemeToggle from './theme-toggle'
 import { cn } from '../../lib/cn'
@@ -89,7 +89,7 @@ export default function Navbar() {
             <div className="mx-auto flex w-full max-w-[1100px] items-center justify-between gap-2 p-2">
                 <RouterLink to="/" className="group flex items-center gap-2 p-2">
                     <span aria-hidden="true" className="transition-transform duration-200 group-hover:scale-125">
-                        <TotoroIcon />
+                        <SpiritIcon />
                     </span>
                     <span className="font-rounded text-lg font-bold text-ink">Jura69</span>
                 </RouterLink>
