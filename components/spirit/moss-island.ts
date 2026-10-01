@@ -105,8 +105,14 @@ function blobShadow(): THREE.Mesh {
         uniforms: { uColor: { value: new THREE.Color('#3b3f63') }, uOpacity: { value: 0.32 } },
         vertexShader:
             'varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-        fragmentShader:
-            'uniform vec3 uColor; uniform float uOpacity; varying vec2 vUv; void main() { float d = length(vUv - 0.5) * 2.0; gl_FragColor = vec4(uColor, uOpacity * (1.0 - smoothstep(0.25, 1.0, d))); }'
+        // colorspace_fragment: uColor is stored linear, so encode to the sRGB output like built-in materials
+        fragmentShader: /* glsl */ `
+uniform vec3 uColor; uniform float uOpacity; varying vec2 vUv;
+void main() {
+    float d = length(vUv - 0.5) * 2.0;
+    gl_FragColor = vec4(uColor, uOpacity * (1.0 - smoothstep(0.25, 1.0, d)));
+    #include <colorspace_fragment>
+}`
     })
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(1.25, 1.05), material)
     mesh.rotation.x = -Math.PI / 2

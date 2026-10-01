@@ -5,15 +5,17 @@
  * Loop policy: `setAnimationLoop` runs only when the stage is compiled, motion is allowed, the host is
  * in the viewport AND the tab is visible. Reduced motion never loops — it renders one still frame on
  * mount and again on theme/size changes. Theme switches lerp the rig over ~0.6 s (instant when still).
- * Lifecycle: render only after `compileAsync` settles (or a 4 s timeout — a failed compile poll never
- * rejects); teardown waits for the same settle before disposing, since tearing down mid-compile makes
- * the poll throw. Any WebGL failure (context lost, render throw) calls `onFail` once → 2D illustration.
+ * Lifecycle: render only after the abortable compile poll settles (`compile-settle.ts`, 4 s cap); teardown
+ * waits for the same settle before disposing GPU objects. Any WebGL failure (context lost, render throw)
+ * calls `onFail` once → 2D illustration; a throw after the context exists tears it down, then rethrows.
  */
 import * as THREE from 'three'
 import { createForestSpirit } from './forest-spirit'
 import { createMossIsland, ISLAND_TOP } from './moss-island'
 import { paintUniforms } from './painted-material'
 import { createSpiritLighting } from './spirit-lighting'
+import { settleCompile } from './compile-settle'
+import { createHeroCamera } from './hero-camera'
 
 export interface SpiritStageOptions {
     dark: boolean
@@ -26,11 +28,19 @@ export interface SpiritStageOptions {
 
 const COMPILE_TIMEOUT_MS = 4000
 const THEME_LERP_SECONDS = 0.6
-/** Three-quarter hero framing: spirit + island fill ~80 % of the square cell. */
-const CAMERA = { fov: 28, azimuth: -14, elevation: 11, distance: 4.7, target: new THREE.Vector3(0.04, 0.5, 0) }
 
 /** Throws when WebGL2 is unavailable (three's renderer constructor) — callers fall back to 2D. */
 export function createSpiritStage(container: HTMLElement, options: SpiritStageOptions) {
+    const scene = new THREE.Scene()
+    const camera = createHeroCamera()
+
+    const spirit = createForestSpirit()
+    spirit.group.position.y = ISLAND_TOP
+    const island = createMossIsland()
+    scene.add(island.group, spirit.group)
+    const lighting = createSpiritLighting(scene, spirit)
+
+    // Context last: everything above is CPU-only, so a throw there leaks no GPU state.
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
     renderer.setClearColor(0x000000, 0)
     const canvas = renderer.domElement
@@ -38,22 +48,6 @@ export function createSpiritStage(container: HTMLElement, options: SpiritStageOp
     canvas.style.width = canvas.style.height = '100%'
     canvas.setAttribute('aria-hidden', 'true')
     container.appendChild(canvas)
-
-    const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(CAMERA.fov, 1, 0.1, 30)
-    const az = THREE.MathUtils.degToRad(CAMERA.azimuth),
-        el = THREE.MathUtils.degToRad(CAMERA.elevation)
-    camera.position
-        .set(Math.sin(az) * Math.cos(el), Math.sin(el), Math.cos(az) * Math.cos(el))
-        .multiplyScalar(CAMERA.distance)
-        .add(CAMERA.target)
-    camera.lookAt(CAMERA.target)
-
-    const spirit = createForestSpirit()
-    spirit.group.position.y = ISLAND_TOP
-    const island = createMossIsland()
-    scene.add(island.group, spirit.group)
-    const lighting = createSpiritLighting(scene, spirit)
 
     let target = options.dark ? 1 : 0
     let mix = target
@@ -119,7 +113,18 @@ export function createSpiritStage(container: HTMLElement, options: SpiritStageOp
         renderer.setSize(w, h, false)
         camera.aspect = w / h
         camera.updateProjectionMatrix()
-        if (reducedMotion) drawStill()
+        // setSize clears the backing store: repaint now or the next paint shows an empty cell.
+        if (running) draw(elapsed(), 1)
+        else if (reducedMotion) drawStill()
+    }
+    let settled: Promise<void>
+    try {
+        settled = settleCompile(renderer, scene, camera, COMPILE_TIMEOUT_MS, () => disposed || lost)
+    } catch (error) {
+        renderer.dispose()
+        renderer.forceContextLoss()
+        canvas.remove()
+        throw error
     }
     resize()
     const resizeObserver = new ResizeObserver(resize)
@@ -136,13 +141,6 @@ export function createSpiritStage(container: HTMLElement, options: SpiritStageOp
     }
     canvas.addEventListener('webglcontextlost', onContextLost)
 
-    const settled = Promise.race([
-        renderer.compileAsync(scene, camera).then(
-            () => undefined,
-            () => undefined
-        ),
-        new Promise<void>(resolve => setTimeout(resolve, COMPILE_TIMEOUT_MS))
-    ])
     void settled.then(() => {
         if (disposed || failed) return
         compiled = true

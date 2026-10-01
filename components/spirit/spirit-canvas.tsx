@@ -54,7 +54,13 @@ export default function SpiritCanvas() {
 
     return (
         <div className="relative h-full w-full" onPointerDown={() => stageRef.current?.react()}>
-            {status !== 'ready' && <SpiritIllustration className="absolute inset-0 h-full w-full" />}
+            {/* Stays mounted so the swap is a crossfade, never an empty cell between the two */}
+            <SpiritIllustration
+                className={cn(
+                    'absolute inset-0 h-full w-full transition-opacity duration-500 motion-reduce:transition-none',
+                    status === 'ready' && 'opacity-0'
+                )}
+            />
             <div
                 ref={hostRef}
                 className={cn(
