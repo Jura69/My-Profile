@@ -202,8 +202,8 @@ document.documentElement.classList.toggle('dark', color === 'dark');
 Chunk profile (raw sizes from the 2026-07-30 build, except where marked gz):
 vendor-react ~342KB · vendor-gsap ~136KB · motion ~129KB · vendor-icons ~48KB ·
 per-page chunks ~2KB. Since the hero spirit rewrite (2026-10-01), gzipped:
-app `index.js` ~22.4KB · vendor-three ~125.8KB (loads only with the lazy
-spirit) · `spirit-canvas` chunk ~6.6KB gz. Re-measure with `yarn build` before
+app `index.js` ~22.4KB · vendor-three ~127.6KB (loads only with the lazy
+spirit) · `spirit-canvas` chunk ~8.8KB gz. Re-measure with `yarn build` before
 quoting any of these.
 
 **Hard-won constraint:** react + small glue libs MUST share one chunk. A
@@ -276,8 +276,9 @@ HeroDawn (components/home/hero-dawn.tsx)
         └── Suspense fallback={<SpiritIllustration/>}
               └── React.lazy(import components/spirit/spirit-canvas.tsx)
                     └── createSpiritStage()   components/spirit/spirit-stage.ts
-                          forest-spirit.ts · moss-island.ts · kit-geometry.ts
-                          painted-material.ts · spirit-lighting.ts · hero-camera.ts · compile-settle.ts
+                          spirit-scene.ts (content) → forest-spirit.ts · seed-lantern.ts
+                          moss-island.ts · fireflies.ts · spirit-lighting.ts · hero-camera.ts
+                          painted-material.ts · kit-geometry.ts · compile-settle.ts
 ```
 
 **Why this shape**
@@ -296,8 +297,14 @@ HeroDawn (components/home/hero-dawn.tsx)
   This keeps the gouache identity from [design-guidelines.md](./design-guidelines.md)
   and the 60fps / small-bundle budget.
 - **Light rig = one lerp.** `spirit-lighting.ts` drives day (key + hemisphere) and
-  night (moon + the seed's PointLight) from one mix value; a theme switch lerps
-  ~0.6s, instantly under reduced motion.
+  night (cool moon + the seed lantern) from one mix value; a theme switch lerps
+  ~0.6s, instantly under reduced motion. The lantern (`seed-lantern.ts`) fakes a
+  glow without post-processing: view-facing emissive gradient, a sprite halo, a warm
+  PointLight and a ground light-pool decal; night also widens the toon band edges
+  (`uBandSoftness`) so lantern light falls off softly.
+- **Idle motion is cheap.** Breathing, island bob, spring-pendulum lantern, leaf
+  flutter, pointer gaze / idle glances are group transforms; fireflies (14 points)
+  move in the vertex shader. ~10k tris, 1 extra draw call each for halo, pool, motes.
 
 **Lifecycle contract (owner: `spirit-stage.ts`; read its header before editing)**
 
@@ -308,7 +315,7 @@ HeroDawn (components/home/hero-dawn.tsx)
 - Any WebGL failure (constructor throws, `webglcontextlost`, render throw) calls
   `onFail` once and the cell shows the 2D illustration for good.
 - Decorative: canvas is `aria-hidden`, no tab stop; pointer-down triggers a ~1.2s
-  hop/squash/seed-swing reaction as a bonus, not a control.
+  hop/squash/seed-swing reaction and the gaze follows the pointer — a bonus, not a control.
 
 `SpiritIcon` (same file as `SpiritIllustration`, `components/icons/spirit-mam-den.tsx`)
 is also the navbar logo, so the 2D art is an authority surface shared by hero

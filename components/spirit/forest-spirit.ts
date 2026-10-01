@@ -2,22 +2,29 @@
  * "Mầm Đèn" — the site's original forest spirit (silhouette C, chosen 2026-10-01).
  * Body plan: squat mossy pebble on four root nubs (support polygon under the centre of mass), two
  * low dot eyes facing +Z, one sprout stalk rising from the moss and arcing forward with a glowing seed
- * hanging at its tip. The seed owns its emissive surface AND its PointLight (decay 2) — receivers
- * (body, moss, island) are lit by the light, never by the emissive. Rig = group transforms only:
- * body squash ≤ 6 % idle, stalk sway, seed pendulum, blink, plus a pointer `react()` hop that decays
- * over ~1.2 s. All motion is elapsed-time based; `motion` 0 freezes the rest pose (reduced motion).
+ * hanging at its tip (`seed-lantern.ts` owns the glow, light, pool and pendulum). Rig = group transforms:
+ * breathing squash ≤ 6 %, stalk sway, leaf flutter, blink, a gaze that follows the pointer (or glances
+ * around / up at its lantern when idle), plus a pointer `react()` hop that decays over ~1.2 s.
+ * All motion is elapsed-time based; `motion` 0 freezes the rest pose (reduced motion).
  */
 import * as THREE from 'three'
 import { createPaintedMaterial } from './painted-material'
 import { lumpify, taperedTube } from './kit-geometry'
-
-const SEED_COLOR = '#f1d999'
-const SEED_GLOW = '#e7c46d'
-/** Candela at full night; inverse-square falloff over the pool around the spirit. */
-const SEED_LIGHT_INTENSITY = 5
+import { createSeedLantern } from './seed-lantern'
 /** Close-up hero framing: a strong rim reads as a CG outline, so the spirit keeps it faint. */
 const SPIRIT_RIM = 0.3
 const REACT_SECONDS = 1.2
+/** Pointer gaze wins for this long after the last move, then the idle glances take over. */
+const POINTER_HOLD_SECONDS = 2.5
+
+/** Idle glance for time slot `slot`: centre, left, right, or up at the lantern (deterministic). */
+function idleGlance(slot: number): [number, number] {
+    const h = Math.abs(Math.sin(slot * 91.7) * 437.5) % 1
+    if (h < 0.35) return [0, 0]
+    if (h < 0.55) return [-0.7, -0.1]
+    if (h < 0.75) return [0.7, 0]
+    return [0.55, 0.9]
+}
 
 function ellipsoid(r: [number, number, number], lump: number, freq: number, seed: number): THREE.BufferGeometry {
     const g = new THREE.SphereGeometry(1, 48, 28)
@@ -102,39 +109,48 @@ export function createForestSpirit() {
     leaf.position.copy(stalkCurve.getPointAt(0.32))
     leaf.rotation.set(0.3, 0.4, 2.7)
 
-    const seedGroup = add(stalkPivot, new THREE.Group())
-    seedGroup.position.copy(stalkCurve.getPointAt(1))
-    add(seedGroup, new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.04, 0.035, 12), paint('#6d5640'))).position.y =
-        -0.02
-    const seedMat = paint(SEED_COLOR, { emissive: SEED_GLOW, emissiveIntensity: 0.25 })
-    const seed = add(seedGroup, new THREE.Mesh(new THREE.SphereGeometry(0.075, 20, 14), seedMat))
-    seed.position.y = -0.11
-    seed.scale.set(1, 1.2, 1)
-    const light = new THREE.PointLight('#f6d58e', 0, 6, 2)
-    light.position.y = -0.11
-    seedGroup.add(light)
+    const lantern = createSeedLantern(SPIRIT_RIM)
+    lantern.group.position.copy(stalkCurve.getPointAt(1))
+    stalkPivot.add(lantern.group)
+    group.add(lantern.pool)
 
     let reactAt = -Infinity
+    let lastT = 0,
+        prevStalk = 0,
+        prevYaw = 0
+    let pointerAt = -Infinity
+    const pointer = [0, 0]
+    const gaze = [0, 0]
 
     return {
         group,
         /** 0 = day (seed is a soft golden fruit), 1 = night (seed is a lantern lighting the island). */
         setGlow(amount: number) {
-            const glow = THREE.MathUtils.clamp(amount, 0, 1)
-            seedMat.emissiveIntensity = THREE.MathUtils.lerp(0.25, 2.4, glow)
-            light.intensity = SEED_LIGHT_INTENSITY * glow
+            lantern.setGlow(amount)
         },
         /** Start the pointer reaction at elapsed time `t`: hop + squash, seed swings hard, blink. */
         react(t: number) {
             reactAt = t
+            lantern.kick()
+        },
+        /** Pointer direction relative to the hero cell, each axis −1..1 (+y = up). */
+        lookAt(x: number, y: number, t: number) {
+            if (!Number.isFinite(x) || !Number.isFinite(y)) return
+            pointer[0] = THREE.MathUtils.clamp(x, -1, 1)
+            pointer[1] = THREE.MathUtils.clamp(y, -1, 1)
+            pointerAt = t
         },
         /** Pose at elapsed time `t` (seconds); `motion` 0 freezes in the rest pose. */
         update(t: number, motion = 1) {
+            const gap = t - lastT
+            const dt = THREE.MathUtils.clamp(gap, 0, 0.1)
+            lastT = t
+            // After a pause (offscreen, hidden tab, still frame) re-sync instead of reading the jump as motion.
+            const resync = gap > 0.1 || gap < 0
             const since = t - reactAt
             const k = motion > 0 ? THREE.MathUtils.clamp(1 - since / REACT_SECONDS, 0, 1) : 0
             // Guard on k: before the first react `since` is Infinity and sin(Infinity) is NaN.
             const bounce = k > 0 ? Math.sin(since * Math.PI * 2 * 2.2) * k : 0
-            const swing = k > 0 ? Math.sin(since * Math.PI * 2 * 1.6) * 0.5 * k : 0
             const hop = k > 0 && since < 0.35 ? Math.sin((since / 0.35) * Math.PI) * 0.08 * k : 0
 
             const breathe = (1 + Math.sin((t * Math.PI * 2) / 3.2)) * 0.5 * motion
@@ -143,13 +159,31 @@ export function createForestSpirit() {
             body.position.y = hop
             stalkPivot.rotation.z = Math.sin((t * Math.PI * 2) / 4.1) * 0.06 * motion + bounce * 0.12
             stalkPivot.rotation.x = Math.sin((t * Math.PI * 2) / 5.3) * 0.04 * motion
-            seedGroup.rotation.z = Math.sin((t * Math.PI * 2) / 2.6 + 1) * 0.12 * motion + swing
+            leaf.rotation.z = 2.7 + (Math.sin(t * 3.3) * 0.06 + Math.sin(t * 7.9) * 0.02) * motion + bounce * 0.2
+
+            // Gaze: ease toward the pointer (recent) or the idle glance for this ~3 s slot.
+            const [tx, ty] =
+                motion === 0 ? [0, 0] : t - pointerAt < POINTER_HOLD_SECONDS ? pointer : idleGlance(Math.floor(t / 3.2))
+            const ease = motion === 0 ? 1 : 1 - Math.exp(-dt * 5)
+            gaze[0] += (tx - gaze[0]) * ease
+            gaze[1] += (ty - gaze[1]) * ease
+            body.rotation.set(-gaze[1] * 0.06, gaze[0] * 0.32, 0)
+            eyes.forEach((eye, i) =>
+                eye.position.set((i ? 1 : -1) * 0.12 + gaze[0] * 0.025, 0.2 + gaze[1] * 0.02, 0.405)
+            )
             const blink = motion > 0 && (t % 4.6 < 0.13 || (k > 0 && since < 0.18)) ? 0.12 : 1
             for (const eye of eyes) eye.scale.y = blink
+
+            // The lantern lags whatever swings it: stalk sway + body turning.
+            const stalkSpeed =
+                !resync && dt > 0 ? (stalkPivot.rotation.z - prevStalk + (body.rotation.y - prevYaw) * 0.6) / dt : 0
+            prevStalk = stalkPivot.rotation.z
+            prevYaw = body.rotation.y
+            lantern.update(t, dt, motion, stalkSpeed)
         },
         dispose() {
             for (const d of new Set(disposables)) d.dispose()
-            light.dispose()
+            lantern.dispose()
         }
     }
 }

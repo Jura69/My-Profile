@@ -11,7 +11,7 @@ import type { ForestSpirit } from './forest-spirit'
 interface RigPreset {
     key: { color: string; intensity: number; azimuth: number; elevation: number }
     hemi: { sky: string; ground: string; intensity: number }
-    paint: { shadeTint: string; shadeFloor: number; rim: string; rimStrength: number }
+    paint: { shadeTint: string; shadeFloor: number; rim: string; rimStrength: number; softness: number }
     /** Seed lantern: 0 = golden fruit, 1 = lit lantern with its PointLight. */
     glow: number
 }
@@ -19,14 +19,14 @@ interface RigPreset {
 const DAY: RigPreset = {
     key: { color: '#fff2d8', intensity: 2.5, azimuth: 252, elevation: 50 },
     hemi: { sky: '#b3e2f5', ground: '#5d7f62', intensity: 1.3 },
-    paint: { shadeTint: '#9d9ccf', shadeFloor: 0.28, rim: '#e7c46d', rimStrength: 0.22 },
+    paint: { shadeTint: '#9d9ccf', shadeFloor: 0.28, rim: '#e7c46d', rimStrength: 0.22, softness: 0 },
     glow: 0
 }
 
 const NIGHT: RigPreset = {
-    key: { color: '#9fb4e0', intensity: 0.6, azimuth: 130, elevation: 45 },
+    key: { color: '#8ea8e0', intensity: 0.42, azimuth: 130, elevation: 45 },
     hemi: { sky: '#4a6aa8', ground: '#1c2e2a', intensity: 1.1 },
-    paint: { shadeTint: '#5a6aa0', shadeFloor: 0.25, rim: '#98d8c8', rimStrength: 0.18 },
+    paint: { shadeTint: '#5a6aa0', shadeFloor: 0.25, rim: '#98d8c8', rimStrength: 0.18, softness: 0.1 },
     glow: 1
 }
 
@@ -63,6 +63,7 @@ export function createSpiritLighting(scene: THREE.Scene, spirit: ForestSpirit) {
             paintUniforms.uShadeFloor.value = lerp(DAY.paint.shadeFloor, NIGHT.paint.shadeFloor, k)
             lerpColor(paintUniforms.uRimColor.value, DAY.paint.rim, NIGHT.paint.rim, k)
             paintUniforms.uRimStrength.value = lerp(DAY.paint.rimStrength, NIGHT.paint.rimStrength, k)
+            paintUniforms.uBandSoftness.value = lerp(DAY.paint.softness, NIGHT.paint.softness, k)
             spirit.setGlow(lerp(DAY.glow, NIGHT.glow, k))
         }
     }

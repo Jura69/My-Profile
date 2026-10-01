@@ -257,7 +257,7 @@ Linh vật rừng **original**: viên đá phủ rêu trên bốn mấu rễ, m�
 
 | Nơi dùng | Dạng | Nguồn |
 |---|---|---|
-| Hero (chính) | 3D painted, procedural trong three; đèn hạt sáng ấm; ánh sáng chuyển mượt theo theme (ngày: nắng + hemi; đêm: trăng + ánh đèn hạt) | `components/spirit/` |
+| Hero (chính) | 3D painted, procedural trong three; ánh sáng chuyển mượt theo theme (ngày: nắng + hemi, đèn hạt là quả mọng trong mờ; đêm: trăng lạnh + đèn hạt là nguồn ấm chính — lõi kem → viền hổ phách, quầng mềm, lập loè nhẹ, vũng sáng trên rêu, mép band mềm hơn ban ngày); motion: thở, đảo nổi nhấp nhô, đèn treo con lắc lò xo, lá rung, mắt/thân nhìn theo con trỏ (rảnh thì liếc quanh, ngước nhìn đèn), đom đóm đêm / phấn hoa ngày | `components/spirit/` |
 | Hero (placeholder, fallback no-WebGL/lỗi) | `SpiritIllustration` — 2D full-colour, khung hình khớp camera 3D để không nhảy layout | `components/icons/spirit-mam-den.tsx` |
 | Navbar logo (40px) | `SpiritIcon` — cùng art, crop sát, bỏ chi tiết < 2px | cùng file |
 

@@ -1,6 +1,6 @@
 /**
- * Owner of the hero spirit's WebGL stage (no React): renderer, camera, light rig, render loop,
- * observers, context loss and teardown. One stage = one WebGL context.
+ * Owner of the hero spirit's WebGL lifecycle (no React): renderer, render loop, observers, context
+ * loss and teardown; the scene content lives in `spirit-scene.ts`. One stage = one WebGL context.
  *
  * Loop policy: `setAnimationLoop` runs only when the stage is compiled, motion is allowed, the host is
  * in the viewport AND the tab is visible. Reduced motion never loops — it renders one still frame on
@@ -10,12 +10,9 @@
  * calls `onFail` once → 2D illustration; a throw after the context exists tears it down, then rethrows.
  */
 import * as THREE from 'three'
-import { createForestSpirit } from './forest-spirit'
-import { createMossIsland, ISLAND_TOP } from './moss-island'
 import { paintUniforms } from './painted-material'
-import { createSpiritLighting } from './spirit-lighting'
 import { settleCompile } from './compile-settle'
-import { createHeroCamera } from './hero-camera'
+import { createSpiritScene } from './spirit-scene'
 
 export interface SpiritStageOptions {
     dark: boolean
@@ -31,14 +28,8 @@ const THEME_LERP_SECONDS = 0.6
 
 /** Throws when WebGL2 is unavailable (three's renderer constructor) — callers fall back to 2D. */
 export function createSpiritStage(container: HTMLElement, options: SpiritStageOptions) {
-    const scene = new THREE.Scene()
-    const camera = createHeroCamera()
-
-    const spirit = createForestSpirit()
-    spirit.group.position.y = ISLAND_TOP
-    const island = createMossIsland()
-    scene.add(island.group, spirit.group)
-    const lighting = createSpiritLighting(scene, spirit)
+    const world = createSpiritScene()
+    const { scene, camera } = world
 
     // Context last: everything above is CPU-only, so a throw there leaks no GPU state.
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
@@ -58,7 +49,7 @@ export function createSpiritStage(container: HTMLElement, options: SpiritStageOp
         failed = false,
         inView = false,
         running = false
-    lighting.apply(mix)
+    world.setNight(mix)
     paintUniforms.uWind.value = reducedMotion ? 0 : 1
 
     const start = performance.now()
@@ -74,8 +65,7 @@ export function createSpiritStage(container: HTMLElement, options: SpiritStageOp
     }
     const draw = (t: number, motion: number) => {
         try {
-            paintUniforms.uTime.value = t
-            spirit.update(t, motion)
+            world.animate(t, motion, renderer.getPixelRatio())
             renderer.render(scene, camera)
         } catch {
             fail()
@@ -88,7 +78,7 @@ export function createSpiritStage(container: HTMLElement, options: SpiritStageOp
         if (mix !== target) {
             const step = dt / THEME_LERP_SECONDS
             mix = Math.abs(target - mix) <= step ? target : mix + Math.sign(target - mix) * step
-            lighting.apply(mix)
+            world.setNight(mix)
         }
         draw(t, 1)
     }
@@ -156,7 +146,7 @@ export function createSpiritStage(container: HTMLElement, options: SpiritStageOp
             target = dark ? 1 : 0
             if (running) return // the loop lerps toward the new target
             mix = target
-            lighting.apply(mix)
+            world.setNight(mix)
             if (reducedMotion) drawStill()
         },
         setReducedMotion(value: boolean) {
@@ -165,13 +155,19 @@ export function createSpiritStage(container: HTMLElement, options: SpiritStageOp
             syncLoop()
             if (value) {
                 mix = target
-                lighting.apply(mix)
+                world.setNight(mix)
                 drawStill()
             }
         },
         /** Pointer reaction; ignored while still (reduced motion) or before the first frame. */
         react() {
-            if (running) spirit.react(elapsed())
+            if (running) world.react(elapsed())
+        },
+        /** True while the loop runs — lets the pointer handler skip layout reads when idle. */
+        isRunning: () => running,
+        /** Pointer position relative to the cell centre (−1..1 per axis, +y up); ignored while still. */
+        lookAt(x: number, y: number) {
+            if (running) world.lookAt(x, y, elapsed())
         },
         /** Idempotent: the React mount calls it on failure and again on unmount. */
         dispose() {
@@ -185,8 +181,7 @@ export function createSpiritStage(container: HTMLElement, options: SpiritStageOp
             canvas.removeEventListener('webglcontextlost', onContextLost)
             canvas.remove()
             void settled.then(() => {
-                spirit.dispose()
-                island.dispose()
+                world.dispose()
                 renderer.dispose()
                 if (!lost) renderer.forceContextLoss()
             })

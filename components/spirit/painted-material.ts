@@ -26,6 +26,8 @@ export const paintUniforms = {
     uBandHigh: { value: 0.66 },
     uMidLevel: { value: 0.62 },
     uEdgeJitter: { value: 0.07 },
+    /** Extra band-edge width (light bands AND rim): 0 = crisp gouache edges (day); night widens it so lantern light falls off softly. */
+    uBandSoftness: { value: 0 },
     uAlbedoJitter: { value: 0.12 }
 }
 
@@ -34,7 +36,8 @@ export const paintUniforms = {
  * - vertexBody runs after begin_vertex and may edit `transformed` (wind, sway);
  * - vertexProject replaces project_vertex (must declare `mvPosition` and write gl_Position — billboards);
  * - fragmentBegin runs after clipping and may `discard` or set `diffuseColor.a` (SDF cut-outs);
- * - fragmentNormal runs after normal_fragment_begin and may override the view-space `normal`.
+ * - fragmentNormal runs after normal_fragment_begin and may override the view-space `normal`; in three 0.172
+ *   `totalEmissiveRadiance` is already declared there, so it may also rewrite emissive (seed lantern) — recheck on upgrade.
  */
 export interface PaintHook {
     key: string
@@ -79,8 +82,8 @@ ${NOISE_GLSL}
 uniform vec3 uShadeTint; uniform float uShadeFloor;
 uniform vec3 uRimColor; uniform float uRimStrength;
 uniform float uBandLow; uniform float uBandHigh; uniform float uMidLevel;
-uniform float uEdgeJitter; uniform float uAlbedoJitter; uniform float uRimScale;
-float paintBand(float x, float edge) { float w = max(fwidth(x), 1e-4) * 1.2; return smoothstep(edge - w, edge + w, x); }
+uniform float uEdgeJitter; uniform float uAlbedoJitter; uniform float uRimScale; uniform float uBandSoftness;
+float paintBand(float x, float edge) { float w = max(fwidth(x), 1e-4) * 1.2 + uBandSoftness; return smoothstep(edge - w, edge + w, x); }
 vec3 getGradientIrradiance(vec3 normal, vec3 lightDirection) {
     float x = dot(normal, lightDirection) * 0.5 + 0.5;
     float n = paintNoise(vPaintWorldPos * 0.7) * 0.5 + paintNoise(vPaintWorldPos * 5.3) * 0.5;

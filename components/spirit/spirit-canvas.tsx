@@ -43,6 +43,21 @@ export default function SpiritCanvas() {
         }
     }, [])
 
+    // Gaze follows the pointer anywhere on the page, measured from the cell centre in cell sizes.
+    useEffect(() => {
+        const host = hostRef.current
+        if (!host) return
+        const onMove = (e: PointerEvent) => {
+            const stage = stageRef.current
+            if (!stage?.isRunning()) return
+            const r = host.getBoundingClientRect()
+            if (!r.width || !r.height) return
+            stage.lookAt((e.clientX - r.left - r.width / 2) / r.width, -(e.clientY - r.top - r.height / 2) / r.height)
+        }
+        window.addEventListener('pointermove', onMove, { passive: true })
+        return () => window.removeEventListener('pointermove', onMove)
+    }, [])
+
     // A failed stage is torn down at once (its host div unmounts); the unmount cleanup is then a no-op.
     useEffect(() => {
         if (status === 'failed') stageRef.current?.dispose()
