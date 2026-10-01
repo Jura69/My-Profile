@@ -44,3 +44,27 @@ M1 was a known spike lesson applied halfway. "Dispose after compile settles" ass
 - Decide merge/push. Nothing is pushed.
 - Prettier still fails on 6 untouched works files (advance-system, ai-center, mondelez-display, ocr-cccd, planogram, works-data). This is pre-existing and needs a separate formatting commit.
 - Guardrail: never put `--ink-subtle` on the sky (2.4–3.9:1).
+
+## Follow-up (same evening): lantern light + idle motion
+
+User feedback: the lantern and its light looked fake, and the hero felt monotonous. Night captures showed why. The seed was a flat, near-white emissive disc with no halo. Its PointLight cut a hard cream toon band across the stone, and the moon lit the moss cap lime.
+
+Fix without post-processing (`f888747`):
+- `seed-lantern.ts` adds a view-facing emissive gradient (cream core → amber rim), a sprite halo, a warm PointLight, a ground light-pool decal that follows the seed, and a multi-sine flicker.
+- At night `uBandSoftness` widens the toon band edges, so the lantern light falls off softly.
+- The moon is dimmer and cooler.
+
+Motion added:
+- the island bobs;
+- the lantern swings on a spring pendulum;
+- the leaf flutters;
+- the gaze follows the pointer, and when idle the spirit glances around and up at its lantern;
+- 14 vertex-shader fireflies at night, pollen by day.
+
+Cost: 10k tris, +3 draw calls, spirit chunk 8.8 KB gz, still 60 fps.
+
+Review found two real pendulum bugs:
+- Taps stacked kick velocity until the seed could loop through the stalk. Fixed by capping the kick velocity and clamping the swing.
+- The stale previous-frame state after a loop pause injected a jolt on resume. Fixed by resyncing on time gaps.
+
+Lesson: any integrator driven by deltas needs gap handling whenever the loop can pause.
