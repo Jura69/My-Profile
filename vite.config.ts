@@ -16,9 +16,6 @@ export default defineConfig({
                 // vendor chunk too — the object form only matched package
                 // entries and left ~300KB of them inside the app chunk.
                 manualChunks(id) {
-                    // App code (incl. the lazy 3D world) is NOT bucketed here: a manual chunk drags its
-                    // shared deps (e.g. scene/zone-data) along and gets preloaded from index.html. The
-                    // world's lazy chunks are named after their dynamic-import entry modules instead.
                     if (!id.includes('node_modules')) return
                     // Match the segment AFTER node_modules/ so directory names in
                     // the checkout path can never hijack a vendor bucket.
