@@ -203,7 +203,7 @@ Chunk profile (raw sizes from the 2026-07-30 build, except where marked gz):
 vendor-react ~342KB · vendor-gsap ~136KB · motion ~129KB · vendor-icons ~48KB ·
 per-page chunks ~2KB. Since the hero spirit rewrite (2026-10-01), gzipped:
 app `index.js` ~22.4KB · vendor-three ~125.8KB (loads only with the lazy
-spirit) · `spirit-canvas` chunk ~6.4KB. Re-measure with `yarn build` before
+spirit) · `spirit-canvas` chunk ~6.6KB gz. Re-measure with `yarn build` before
 quoting any of these.
 
 **Hard-won constraint:** react + small glue libs MUST share one chunk. A
@@ -277,7 +277,7 @@ HeroDawn (components/home/hero-dawn.tsx)
               └── React.lazy(import components/spirit/spirit-canvas.tsx)
                     └── createSpiritStage()   components/spirit/spirit-stage.ts
                           forest-spirit.ts · moss-island.ts · kit-geometry.ts
-                          painted-material.ts · spirit-lighting.ts
+                          painted-material.ts · spirit-lighting.ts · hero-camera.ts · compile-settle.ts
 ```
 
 **Why this shape**
@@ -303,8 +303,8 @@ HeroDawn (components/home/hero-dawn.tsx)
 
 - One WebGL context. The render loop runs only while the host is in the viewport
   AND the tab is visible; reduced motion renders a still frame (no loop).
-- First render waits for `compileAsync` (4s timeout); teardown waits for the same
-  compile to settle before disposing.
+- First render waits for an abortable compile poll (`compile-settle.ts`, 4s cap — three's
+  `compileAsync` poll cannot be stopped); teardown waits for the same settle before disposing.
 - Any WebGL failure (constructor throws, `webglcontextlost`, render throw) calls
   `onFail` once and the cell shows the 2D illustration for good.
 - Decorative: canvas is `aria-hidden`, no tab stop; pointer-down triggers a ~1.2s

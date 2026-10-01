@@ -55,7 +55,7 @@ My-Profile/
 │   │                         #   spirit-mam-den (SpiritIcon navbar logo + SpiritIllustration)
 │   ├── spirit/               # Hero 3D (raw three): spirit-canvas (React mount),
 │   │                         #   spirit-stage (renderer/loop), forest-spirit, moss-island,
-│   │                         #   painted-material, spirit-lighting, kit-geometry
+│   │                         #   painted-material, spirit-lighting, kit-geometry, hero-camera, compile-settle
 │   ├── seo.tsx               # Per-page meta (React 19 hoists to <head>)
 │   └── json-ld.tsx           # Person/Website/ProfilePage/Project/Breadcrumb schemas
 ├── lib/
