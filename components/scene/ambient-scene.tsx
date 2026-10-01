@@ -99,7 +99,7 @@ const AmbientScene = memo(function AmbientScene() {
             <div
                 className="absolute inset-0"
                 style={{
-                    background: 'linear-gradient(to bottom, var(--sky-top, #e8f4f8), var(--sky-bottom, #f5f0e8))'
+                    background: 'linear-gradient(to bottom, var(--sky-top, #c4dceb), var(--sky-bottom, #f3e9dc))'
                 }}
             />
             <Stars />

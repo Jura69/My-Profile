@@ -21,8 +21,8 @@ const DARK_ZONES: ZoneStop[] = [
     {
         at: 0.0,
         style: {
-            skyTop: '#0a0e1a',
-            skyBottom: '#0f1b2d',
+            skyTop: '#1b2a55',
+            skyBottom: '#2a3d68',
             particleColor: '#4fd1c5',
             particleOpacity: 0.4,
             starOpacity: 0.15
@@ -31,8 +31,8 @@ const DARK_ZONES: ZoneStop[] = [
     {
         at: 0.15,
         style: {
-            skyTop: '#0d1f3c',
-            skyBottom: '#1a2a4a',
+            skyTop: '#1f3160',
+            skyBottom: '#2b3f6a',
             particleColor: '#f6e05e',
             particleOpacity: 0.35,
             starOpacity: 0.05
@@ -41,8 +41,8 @@ const DARK_ZONES: ZoneStop[] = [
     {
         at: 0.3,
         style: {
-            skyTop: '#1a2332',
-            skyBottom: '#1a2e3a',
+            skyTop: '#22355f',
+            skyBottom: '#2a4068',
             particleColor: '#63b3ed',
             particleOpacity: 0.3,
             starOpacity: 0.0
@@ -51,8 +51,8 @@ const DARK_ZONES: ZoneStop[] = [
     {
         at: 0.5,
         style: {
-            skyTop: '#1a1a2e',
-            skyBottom: '#2d1b30',
+            skyTop: '#2a2f5c',
+            skyBottom: '#3a3466',
             particleColor: '#ed8936',
             particleOpacity: 0.3,
             starOpacity: 0.0
@@ -61,8 +61,8 @@ const DARK_ZONES: ZoneStop[] = [
     {
         at: 0.7,
         style: {
-            skyTop: '#0f0f24',
-            skyBottom: '#1a0d2b',
+            skyTop: '#1d2552',
+            skyBottom: '#302f60',
             particleColor: '#b794f4',
             particleOpacity: 0.4,
             starOpacity: 0.3
@@ -71,8 +71,8 @@ const DARK_ZONES: ZoneStop[] = [
     {
         at: 0.9,
         style: {
-            skyTop: '#08081a',
-            skyBottom: '#0c0c24',
+            skyTop: '#121c3e',
+            skyBottom: '#273c6c',
             particleColor: '#d6bcfa',
             particleOpacity: 0.5,
             starOpacity: 0.9
@@ -84,8 +84,8 @@ const LIGHT_ZONES: ZoneStop[] = [
     {
         at: 0.0,
         style: {
-            skyTop: '#e8f4f8',
-            skyBottom: '#f5f0e8',
+            skyTop: '#c4dceb',
+            skyBottom: '#f3e9dc',
             particleColor: '#319795',
             particleOpacity: 0.12,
             starOpacity: 0.0
@@ -94,8 +94,8 @@ const LIGHT_ZONES: ZoneStop[] = [
     {
         at: 0.15,
         style: {
-            skyTop: '#fef5e7',
-            skyBottom: '#fff8f0',
+            skyTop: '#b8d6ea',
+            skyBottom: '#e6f0ea',
             particleColor: '#d69e2e',
             particleOpacity: 0.1,
             starOpacity: 0.0
@@ -104,8 +104,8 @@ const LIGHT_ZONES: ZoneStop[] = [
     {
         at: 0.3,
         style: {
-            skyTop: '#ebf8ff',
-            skyBottom: '#f0fff4',
+            skyTop: '#b0d2ea',
+            skyBottom: '#dcebf0',
             particleColor: '#3182ce',
             particleOpacity: 0.12,
             starOpacity: 0.0
@@ -114,8 +114,8 @@ const LIGHT_ZONES: ZoneStop[] = [
     {
         at: 0.5,
         style: {
-            skyTop: '#fffaf0',
-            skyBottom: '#fefcbf',
+            skyTop: '#bcd3e4',
+            skyBottom: '#f2e6c8',
             particleColor: '#c05621',
             particleOpacity: 0.1,
             starOpacity: 0.0
@@ -124,8 +124,8 @@ const LIGHT_ZONES: ZoneStop[] = [
     {
         at: 0.7,
         style: {
-            skyTop: '#faf5ff',
-            skyBottom: '#e9d8fd',
+            skyTop: '#d6cce6',
+            skyBottom: '#f0d3dc',
             particleColor: '#805ad5',
             particleOpacity: 0.12,
             starOpacity: 0.0
@@ -134,8 +134,8 @@ const LIGHT_ZONES: ZoneStop[] = [
     {
         at: 0.9,
         style: {
-            skyTop: '#edf2f7',
-            skyBottom: '#e2e8f0',
+            skyTop: '#c6cfe6',
+            skyBottom: '#dcd3e6',
             particleColor: '#718096',
             particleOpacity: 0.08,
             starOpacity: 0.0
