@@ -260,7 +260,7 @@ must degrade through one of these three paths — no unguarded infinite animatio
 
 ### Images
 
-- Format: WebP, max 1200px, quality ~80 (exceptions: `og-image.jpg` — OG
+- Format: WebP, max 1200px, quality ~80 (exceptions: `og-image-forest.jpg` — OG
   scrapers, `apple-touch-icon.png` — iOS requirement)
 - `<img loading="lazy">` below the fold; explicit dimensions where layout shift
   is possible

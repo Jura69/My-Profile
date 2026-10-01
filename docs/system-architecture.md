@@ -77,7 +77,8 @@
 | Scroll animation | GSAP 3.15 + ScrollTrigger + Lenis | One rAF loop (Lenis driven by GSAP ticker); confined to `components/scene/` |
 | 3D | Three.js 0.172 + GLTFLoader/DRACOLoader | Hand-rolled setup, no react-three-fiber (avoids abstraction cost for one model) |
 | UI primitive | @radix-ui/react-dropdown-menu | Mobile nav menu only |
-| Icons | react-icons (tree-shaken per-icon) | ~44 icons used → own `vendor-icons` chunk |
+| Icons | Custom kit SVGs (`components/icons/kit-*.tsx`) + react-icons only for `si`/`di` tech logos and `io5` `IoLogo*` social logos | Kit icons ship in app code; react-icons stays in its own `vendor-icons` chunk. See [design-guidelines.md](./design-guidelines.md) |
+| Materials | `.paper-grain` / `.material-wash` utilities + `shadow-paper` tokens in `src/styles/global.css` | Textures from `public/images/ui/` |
 | Analytics | @vercel/analytics + @vercel/speed-insights | Core Web Vitals field data |
 | Hosting | Vercel | `vercel.json`: framework vite, `dist` output, SPA rewrite; default immutable caching for hashed assets |
 
@@ -117,6 +118,13 @@ Homepage composition (day→night scroll narrative): `HeroDawn` (lazy-loads the
 Three.js `Totoro`), `AboutMorning`, `SkillsBento`, `ExperienceDusk`,
 `NightContact` — each owns an inner `max-w-[1100px]` column; the fixed
 `AmbientScene` runs behind all of them.
+
+**Page banners:** `components/ui/page-banner.tsx` renders the day/night gouache banner
+(`public/images/banners/`) for works, audiophile, activities and 404. It decodes the
+incoming theme's image then crossfades (instant swap under reduced motion) and preloads the
+other theme at idle. Optional `title`/`ornament` props overlay the page `<h1>` on a dark scrim
+(used by works, audiophile, activities). Enterprise work detail pages use `<id>-cover-1280.webp` for SEO/JSON-LD
+images; default OG image is `/images/og-image-forest.jpg` (`components/seo.tsx`).
 
 **Single layout rule:** `MainLayout` wraps once at the app root. Pages return
 fragments — there is no per-page layout wrapper (the old `layouts/article` shim

@@ -128,7 +128,7 @@ yarn analyze   # Bundle size visualization (fetches vite-bundle-visualizer via n
 │   ├── home/                    # Homepage scenes + home-data.ts (skills, experience, socials)
 │   ├── works/                   # Cards + works-data.ts (projects, activities, audio gear)
 │   ├── scene/                   # Ambient scene system (GSAP, Lenis, particles)
-│   ├── icons/                   # Inline SVG icons
+│   ├── icons/                   # Custom kit SVG icons/ornaments (kit-*.tsx)
 │   ├── seo.tsx                  # Per-page meta (React 19 hoists to <head>)
 │   ├── json-ld.tsx              # JSON-LD structured data
 │   └── totoro.tsx               # Three.js Totoro viewer
@@ -137,7 +137,7 @@ yarn analyze   # Bundle size visualization (fetches vite-bundle-visualizer via n
 ├── scripts/
 │   └── vite-plugin-sitemap.ts   # Emits dist/sitemap.xml from works-data at build
 ├── public/                      # Static assets
-│   ├── images/                  # WebP project images (+ og-image.jpg)
+│   ├── images/                  # WebP images: works covers, banners, ui textures (+ og-image-forest.jpg)
 │   ├── apple-touch-icon.png
 │   ├── totoro-compressed.glb    # Draco-compressed 3D model
 │   └── robots.txt
@@ -238,7 +238,7 @@ MIT License - see [LICENSE](LICENSE) file
 
 - **Design Inspiration** - [Takuya Matsuyama](https://www.craftz.dog/)
 - **3D Model** - Totoro (open-source)
-- **Icons** - [React Icons](https://react-icons.github.io/react-icons/)
+- **Icons** - custom kit SVGs; tech and social brand logos from [React Icons](https://react-icons.github.io/react-icons/)
 - **Font** - [M PLUS Rounded 1c](https://fonts.google.com/specimen/M+PLUS+Rounded+1c)
 
 ---

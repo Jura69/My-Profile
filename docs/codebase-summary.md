@@ -41,7 +41,7 @@ My-Profile/
 │   └── three-modules.d.ts    # Ambient types for three example modules
 ├── components/               # (repo root, NOT src/)
 │   ├── ui/                   # Primitives: badge, button(+styles), card, container,
-│   │                         #   icon-button, reveal, section-heading
+│   │                         #   icon-button, page-banner, reveal, section-heading
 │   ├── layout/               # main (app shell), navbar, footer, detail-page,
 │   │                         #   not-found, route-error-boundary, theme-toggle
 │   ├── home/                 # hero-dawn, about-morning, skills-bento,
@@ -51,7 +51,9 @@ My-Profile/
 │   ├── scene/                # ambient-scene, celestial-arc, parallax-hills, stars,
 │   │                         #   zone-particles, zone-data, scene-provider,
 │   │                         #   use-scene, use-pinned-intro, svg/{hills,moon}
-│   ├── icons/                # totoro.tsx, ghibli-icons.tsx (inline SVG)
+│   ├── icons/                # kit-icon-base (IconComponent type), kit-icons-interface,
+│   │                         #   kit-icons-topics, kit-ornaments, kit-dividers (inline SVG)
+│   │                         #   totoro.tsx = navbar logo (kept by user decision)
 │   ├── seo.tsx               # Per-page meta (React 19 hoists to <head>)
 │   ├── json-ld.tsx           # Person/Website/ProfilePage/Project/Breadcrumb schemas
 │   ├── totoro.tsx            # Three.js viewer (lazy-loaded from hero-dawn)
@@ -67,7 +69,10 @@ My-Profile/
 │   └── optimize-images.mjs     # One-off sharp-based image pipeline
 ├── public/                   # apple-touch-icon.png, cv.html, favicon.ico,
 │   │                         #   robots.txt, totoro-compressed.glb, files/CV.pdf
-│   └── images/               # WebP (exceptions: og-image.jpg, apple-touch-icon.png)
+│   └── images/               # WebP (exceptions: og-image-forest.jpg, apple-touch-icon.png)
+│       ├── ui/               # Kit materials (paper grain, button wash, brush mask, wreath)
+│       ├── banners/          # <page>-<day|night>-{800,1600,2400}.webp
+│       └── works/            # <id>-cover-{480,640,1280}.webp
 ├── index.html                # Static OG/description fallback + pre-paint theme script
 ├── vite.config.ts            # Plugins + function-form manualChunks
 ├── vercel.json               # SPA rewrite /(.*) → /index.html, framework vite
@@ -87,7 +92,7 @@ Notable absences (deleted as cruft, do not reference): `components/layouts/`
 ## Data Model (single sources of truth)
 
 **`components/works/works-data.ts`** — drives listings, detail hrefs, AND the sitemap:
-- `projects: Project[]` — 16 projects (4 personal, of which 3 `featured`; 12 enterprise `@ Creasia`, of which 2 `featured` AI flagships)
+- `projects: Project[]` — 16 projects, each with `thumbnail` (640w cover) and `cover` (base path; `coverSrcSet()` builds the 640/1280 srcset) (4 personal, of which 3 `featured`; 12 enterprise `@ Creasia`, of which 2 `featured` AI flagships)
 - `activities: CardItem[]` — 1 activity (YTC NTU)
 - `audioGear: CardItem[]` — 4 devices (`ea1000`, `moondrop-ssp`, `onix`, `fiioka11`)
 - Derived exports: `featuredProjects`, `otherPersonalProjects`, `enterpriseProjects`
@@ -134,7 +139,7 @@ The active tab is a search param — `/works` (no param, or an unknown value) op
 Enterprise, `/works?tab=personal` opens Personal — so tabs are linkable and Back
 steps between them. Both panels stay mounted; the inactive one is only `hidden`,
 which keeps all 16 projects in the DOM for crawlers on this CSR-only SPA while
-lazy thumbnails inside it skip their fetch until shown.
+lazy cover images inside it skip their fetch until shown.
 
 ### Failure path (deploy invalidates chunks)
 
@@ -176,7 +181,7 @@ following the OS on later visits. `useTheme()` lives in `providers/use-theme.ts`
 - Vite/Rollup — SWC transpile, tree-shake, function-form `manualChunks` matches
   the path segment AFTER the package directory: `vendor-three` (~590KB, loaded
   only with the lazy Totoro), `vendor-gsap` (~136KB incl. ScrollTrigger + Lenis),
-  `motion` (~129KB), `vendor-icons` (~48KB), everything else (react, react-dom,
+  `motion` (~129KB), `vendor-icons` (~48KB, now only `si`/`di` brand logos + `IoLogo*`; kit icons live in app code), everything else (react, react-dom,
   router, glue) → `vendor-react` (~342KB). Glue libs share the react chunk on
   purpose — a separate misc chunk caused a circular-init TypeError that silently
   prevented mount.
