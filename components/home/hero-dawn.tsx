@@ -1,13 +1,25 @@
-import { lazy, Suspense } from 'react'
+import { Component, lazy, Suspense, type ReactNode } from 'react'
 import { motion } from 'motion/react'
 import { Link as RouterLink } from 'react-router'
 import { ArrowRight, ChevronDown, Download } from '../icons/kit-icons-interface'
 import { buttonClasses } from '../ui/button-styles'
-import TotoroLoader from '../totoro-loader'
 import { SprigLeaf } from '../icons/kit-ornaments'
+import { SpiritIllustration } from '../icons/spirit-mam-den'
 
-// Totoro stays lazy: the hero must render immediately, the GLB streams in after
-const LazyTotoro = lazy(() => import('../totoro'))
+// The 3D spirit stays lazy: the hero must render immediately, three + the stage stream in after.
+const LazySpiritCanvas = lazy(() => import('../spirit/spirit-canvas'))
+
+/** Local boundary (eager, outside the lazy chunk so it also catches a failed chunk load): any
+ *  spirit error falls back to the 2D illustration instead of bubbling to the route boundary. */
+class SpiritBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+    state = { failed: false }
+    static getDerivedStateFromError() {
+        return { failed: true }
+    }
+    render() {
+        return this.state.failed ? <SpiritIllustration /> : this.props.children
+    }
+}
 
 const MotionRouterLink = motion.create(RouterLink)
 
@@ -21,7 +33,7 @@ const riseIn = (delay: number) => ({
 
 /**
  * Scene 1 of the day→night homepage: dawn hero. Full-bleed, composes with the
- * ambient scene behind it, Totoro sits bottom-right between the hill layers.
+ * ambient scene behind it, the Mầm Đèn spirit (3D, 2D fallback) stands above the name.
  */
 export default function HeroDawn() {
     return (
@@ -29,11 +41,13 @@ export default function HeroDawn() {
             data-section="hero"
             className="relative flex min-h-[85svh] flex-col items-center justify-center px-4 pb-24 text-center"
         >
-            {/* Totoro — centered block, part of vertical flow */}
+            {/* Spirit — centered block, part of vertical flow; fixed cell so the 3D swap never shifts layout */}
             <div className="relative mb-6 h-[220px] w-[220px] md:h-[320px] md:w-[320px] lg:h-[360px] lg:w-[360px]">
-                <Suspense fallback={<TotoroLoader />}>
-                    <LazyTotoro />
-                </Suspense>
+                <SpiritBoundary>
+                    <Suspense fallback={<SpiritIllustration />}>
+                        <LazySpiritCanvas />
+                    </Suspense>
+                </SpiritBoundary>
             </div>
 
             <motion.p

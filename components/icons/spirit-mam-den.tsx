@@ -16,9 +16,31 @@ type PartsProps = {
     glowId: string
     /** Stroke width of the sprout stalk; the icon needs it thicker to survive at 40 px. */
     stalkWidth: number
-    /** Eye highlights, seed cap and island are < 2 px at icon size, so the icon drops them. */
+    /** Eye highlights and seed cap are < 2 px at icon size, so the icon drops them. */
     detail: boolean
 }
+
+/**
+ * Moss island in cell coordinates, matched to the 3D stage's camera (measured from captures): top
+ * ellipse centred under the feet, earth lip visible below, tufts and pebbles toward the rim.
+ */
+const MossIsland = () => (
+    <>
+        <ellipse cx="98" cy="157" rx="74" ry="23" fill="#6d5640" />
+        <ellipse cx="98" cy="148" rx="74" ry="21" fill="#5e9a64" />
+        <ellipse cx="80" cy="152" rx="40" ry="10" fill="#7eb77f" opacity=".35" />
+        <path
+            d="M34 152 l3 -11 l2 11 M40 153 l4 -9 l1 9 M150 150 l3 -10 l2 10 M157 149 l4 -12 l1 12 M66 163 l2 -9 l2 9"
+            stroke="#3d6a4b"
+            strokeWidth="2"
+            fill="none"
+        />
+        <ellipse cx="148" cy="157" rx="6" ry="3.5" fill="#b4c2b9" />
+        <ellipse cx="52" cy="160" rx="4.5" ry="2.5" fill="#a3b4ad" />
+        {/* Blob shadow under the feet */}
+        <ellipse cx="97" cy="141" rx="45" ry="7" fill="#3b3f63" opacity=".3" />
+    </>
+)
 
 const SpiritParts = ({ glowId, stalkWidth, detail }: PartsProps) => (
     <>
@@ -28,19 +50,6 @@ const SpiritParts = ({ glowId, stalkWidth, detail }: PartsProps) => (
                 <stop offset="1" stopColor="#e7c46d" stopOpacity="0" />
             </radialGradient>
         </defs>
-        {detail && (
-            <>
-                {/* Moss island: earth rim, moss top, a few tufts and pebbles */}
-                <ellipse cx="100" cy="186" rx="80" ry="12" fill="#6d5640" />
-                <ellipse cx="100" cy="182" rx="78" ry="10" fill="#5e9a64" />
-                <path d="M34 182 l3 -9 l2 9 M40 183 l4 -7 l1 7" stroke="#3d6a4b" strokeWidth="2" fill="none" />
-                <path d="M158 183 l3 -8 l2 8 M165 182 l4 -10 l1 10" stroke="#3d6a4b" strokeWidth="2" fill="none" />
-                <ellipse cx="150" cy="186" rx="5" ry="3" fill="#b4c2b9" />
-                <ellipse cx="44" cy="188" rx="4" ry="2.5" fill="#a3b4ad" />
-                {/* Blob shadow under the feet */}
-                <ellipse cx="100" cy="182" rx="54" ry="6" fill="#4a4f6e" opacity=".3" />
-            </>
-        )}
         {/* Sprout stalk + leaf */}
         <path
             d="M104 104 C98 70 110 42 136 34 C152 30 162 40 160 50"
@@ -93,7 +102,11 @@ export const SpiritIllustration = ({ className }: { className?: string }) => {
             aria-hidden="true"
             focusable="false"
         >
-            <SpiritParts glowId={glowId} stalkWidth={5} detail />
+            <MossIsland />
+            {/* Spirit art is authored at ground y≈185; scale/shift it onto the island like the 3D frame */}
+            <g transform="translate(18 -4) scale(0.8)">
+                <SpiritParts glowId={glowId} stalkWidth={5} detail />
+            </g>
         </svg>
     )
 }

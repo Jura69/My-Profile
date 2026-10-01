@@ -1,5 +1,5 @@
 /**
- * Shared "painted, not rendered" surface for every world mesh.
+ * Shared "painted, not rendered" surface for every mesh of the hero spirit stage.
  *
  * MeshToonMaterial + onBeforeCompile:
  * - Own `vPaintWorldPos` varying (model × instance × transformed). three's `worldPosition` only exists
