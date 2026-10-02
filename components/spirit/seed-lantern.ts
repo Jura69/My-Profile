@@ -4,7 +4,8 @@
  * - a soft camera-facing halo, a warm light pool on the moss that follows the swinging seed, and a
  *   warm PointLight (decay 2) for the body/moss — all scaled by `glow` (0 day fruit → 1 night lantern);
  * - a gentle multi-sine flicker so the light breathes like a flame, never strobes;
- * - a damped spring pendulum: the seed lags the stalk, settles, and swings hard on `kick()`.
+ * - a damped spring pendulum: the seed lags the stalk, settles, and swings hard on `kick()`;
+ * - `setFlare` brightens or dims it on top of the theme glow (theme reaction, posed stills).
  * Everything is elapsed-time driven; `motion` 0 holds the rest pose (reduced motion).
  */
 import * as THREE from 'three'
@@ -111,7 +112,8 @@ export function createSeedLantern(rim: number) {
     group.add(cap, seed, halo, light)
     const pool = lightPool()
 
-    let glow = 0
+    let glow = 0,
+        flare = 0
     let swingZ = 0,
         swingX = 0,
         velZ = 0,
@@ -126,10 +128,14 @@ export function createSeedLantern(rim: number) {
         setGlow(amount: number) {
             glow = THREE.MathUtils.clamp(amount, 0, 1)
         },
-        /** Impulse for the pointer reaction. */
-        kick() {
-            velZ = Math.min(velZ + 4.5, 5)
-            velX = Math.max(velX - 2, -2.5)
+        /** Extra brightness relative to the theme glow (−1..1); the expression layer drives it. */
+        setFlare(amount: number) {
+            flare = THREE.MathUtils.clamp(amount, -1, 1)
+        },
+        /** Impulse for the pointer reaction (`strength` 1) or a lighter nudge. */
+        kick(strength = 1) {
+            velZ = Math.min(velZ + 4.5 * strength, 5)
+            velX = Math.max(velX - 2 * strength, -2.5)
         },
         /**
          * @param stalkSpeed angular speed of the stalk (rad/s) — drives the pendulum lag.
@@ -155,9 +161,10 @@ export function createSeedLantern(rim: number) {
                 motion > 0
                     ? 1 + Math.sin(t * 4.4) * 0.04 + Math.sin(t * 14.5 + 1.3) * 0.02 + Math.sin(t * 1.7) * 0.03
                     : 1
-            const lit = glow * flicker
-            lanternGlow.value = THREE.MathUtils.lerp(0.14, 1.05, glow) * flicker
+            const lit = glow * flicker * (1 + flare)
+            lanternGlow.value = THREE.MathUtils.lerp(0.14, 1.05, glow) * flicker * (1 + flare * glow)
             halo.material.opacity = lit * 0.9
+            halo.scale.setScalar(HALO_SIZE * (1 + Math.max(flare, 0) * 0.5))
             halo.visible = lit > 0.01
             light.intensity = LIGHT_INTENSITY * lit
             pool.material.uniforms.uOpacity.value = lit * 0.42

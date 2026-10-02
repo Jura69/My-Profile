@@ -11,6 +11,7 @@ import { createFireflies } from './fireflies'
 import { paintUniforms } from './painted-material'
 import { createSpiritLighting } from './spirit-lighting'
 import { createHeroCamera } from './hero-camera'
+import type { SpiritPose } from './spirit-expression'
 
 export function createSpiritScene() {
     const scene = new THREE.Scene()
@@ -46,6 +47,12 @@ export function createSpiritScene() {
         },
         lookAt(x: number, y: number, t: number) {
             spirit.lookAt(x, y, t)
+        },
+        themeShift(t: number, night: boolean) {
+            spirit.themeShift(t, night)
+        },
+        setPose(pose: SpiritPose | null) {
+            spirit.setPose(pose)
         },
         dispose() {
             spirit.dispose()

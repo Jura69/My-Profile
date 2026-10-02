@@ -5,26 +5,20 @@
  * hanging at its tip (`seed-lantern.ts` owns the glow, light, pool and pendulum). Rig = group transforms:
  * breathing squash ≤ 6 %, stalk sway, leaf flutter, blink, a gaze that follows the pointer (or glances
  * around / up at its lantern when idle), plus a pointer `react()` hop that decays over ~1.2 s.
+ * On top sits the expression layer (`spirit-expression.ts`): a theme-switch reaction, or a fixed pose for stills.
  * All motion is elapsed-time based; `motion` 0 freezes the rest pose (reduced motion).
  */
 import * as THREE from 'three'
 import { createPaintedMaterial } from './painted-material'
 import { lumpify, taperedTube } from './kit-geometry'
 import { createSeedLantern } from './seed-lantern'
+import { createSpiritEyes } from './spirit-eyes'
+import { idleGlance, NEUTRAL_POSE, themeReaction, type SpiritPose } from './spirit-expression'
 /** Close-up hero framing: a strong rim reads as a CG outline, so the spirit keeps it faint. */
 const SPIRIT_RIM = 0.3
 const REACT_SECONDS = 1.2
 /** Pointer gaze wins for this long after the last move, then the idle glances take over. */
 const POINTER_HOLD_SECONDS = 2.5
-
-/** Idle glance for time slot `slot`: centre, left, right, or up at the lantern (deterministic). */
-function idleGlance(slot: number): [number, number] {
-    const h = Math.abs(Math.sin(slot * 91.7) * 437.5) % 1
-    if (h < 0.35) return [0, 0]
-    if (h < 0.55) return [-0.7, -0.1]
-    if (h < 0.75) return [0.7, 0]
-    return [0.55, 0.9]
-}
 
 function ellipsoid(r: [number, number, number], lump: number, freq: number, seed: number): THREE.BufferGeometry {
     const g = new THREE.SphereGeometry(1, 48, 28)
@@ -62,18 +56,8 @@ export function createForestSpirit() {
     const moss = add(body, new THREE.Mesh(ellipsoid([0.47, 0.25, 0.41], 0.09, 8.5, 4), paint('#5e9a64')))
     moss.position.y = 0.47 // cap sits inside the pebble outline (no mushroom brim); eyes stay on bare stone
 
-    // --- eyes (low on the front, like the silhouette), blink by scaling Y ----------------------
-    const ink = new THREE.MeshBasicMaterial({ color: '#2d2a24' })
-    const shine = new THREE.MeshBasicMaterial({ color: '#ffffff' })
-    const eyes: THREE.Group[] = []
-    for (const side of [-1, 1]) {
-        const eye = add(body, new THREE.Group())
-        eye.position.set(side * 0.12, 0.2, 0.405)
-        const pupil = add(eye, new THREE.Mesh(new THREE.SphereGeometry(0.045, 16, 12), ink))
-        pupil.scale.set(1, 1.15, 0.5)
-        add(eye, new THREE.Mesh(new THREE.SphereGeometry(0.014, 8, 6), shine)).position.set(0.014, 0.02, 0.02)
-        eyes.push(eye)
-    }
+    // --- eyes (low on the front, like the silhouette) ------------------------------------------
+    const eyes = createSpiritEyes(body)
 
     // --- root nubs (three in front as drawn, one behind): the support polygon ----------------
     const rootMat = paint('#6f8a80')
@@ -121,6 +105,10 @@ export function createForestSpirit() {
     let pointerAt = -Infinity
     const pointer = [0, 0]
     const gaze = [0, 0]
+    let themeAt = -Infinity,
+        toNight = false
+    let fixedPose: SpiritPose | null = null
+    const live: SpiritPose = { ...NEUTRAL_POSE }
 
     return {
         group,
@@ -132,6 +120,16 @@ export function createForestSpirit() {
         react(t: number) {
             reactAt = t
             lantern.kick()
+        },
+        /** Theme switched at elapsed time `t`: play the day/night reaction (lantern nudged awake at night). */
+        themeShift(t: number, night: boolean) {
+            themeAt = t
+            toNight = night
+            if (night) lantern.kick(0.35)
+        },
+        /** Hold a fixed expression (stills); null returns to the live rig. */
+        setPose(pose: SpiritPose | null) {
+            fixedPose = pose
         },
         /** Pointer direction relative to the hero cell, each axis −1..1 (+y = up). */
         lookAt(x: number, y: number, t: number) {
@@ -153,26 +151,28 @@ export function createForestSpirit() {
             const bounce = k > 0 ? Math.sin(since * Math.PI * 2 * 2.2) * k : 0
             const hop = k > 0 && since < 0.35 ? Math.sin((since / 0.35) * Math.PI) * 0.08 * k : 0
 
+            const pose = fixedPose ?? (motion > 0 ? themeReaction(t - themeAt, toNight, live) : NEUTRAL_POSE)
             const breathe = (1 + Math.sin((t * Math.PI * 2) / 3.2)) * 0.5 * motion
-            const squash = breathe * 0.05 + bounce * 0.07
+            const squash = breathe * 0.05 + bounce * 0.07 + pose.droop * 0.06
             body.scale.set(1 + squash * 0.5, 1 - squash, 1 + squash * 0.5)
             body.position.y = hop
-            stalkPivot.rotation.z = Math.sin((t * Math.PI * 2) / 4.1) * 0.06 * motion + bounce * 0.12
-            stalkPivot.rotation.x = Math.sin((t * Math.PI * 2) / 5.3) * 0.04 * motion
+            // Droop bows the sprout forward and sags the lantern down to its side (nodding off).
+            stalkPivot.rotation.z = Math.sin((t * Math.PI * 2) / 4.1) * 0.06 * motion + bounce * 0.12 - pose.droop * 0.3
+            stalkPivot.rotation.x = Math.sin((t * Math.PI * 2) / 5.3) * 0.04 * motion + pose.droop * 0.18
             leaf.rotation.z = 2.7 + (Math.sin(t * 3.3) * 0.06 + Math.sin(t * 7.9) * 0.02) * motion + bounce * 0.2
 
             // Gaze: ease toward the pointer (recent) or the idle glance for this ~3 s slot.
-            const [tx, ty] =
+            const [rx, ry] =
                 motion === 0 ? [0, 0] : t - pointerAt < POINTER_HOLD_SECONDS ? pointer : idleGlance(Math.floor(t / 3.2))
+            const tx = THREE.MathUtils.lerp(rx, pose.gaze[0], pose.gazeWeight),
+                ty = THREE.MathUtils.lerp(ry, pose.gaze[1], pose.gazeWeight)
             const ease = motion === 0 ? 1 : 1 - Math.exp(-dt * 5)
             gaze[0] += (tx - gaze[0]) * ease
             gaze[1] += (ty - gaze[1]) * ease
-            body.rotation.set(-gaze[1] * 0.06, gaze[0] * 0.32, 0)
-            eyes.forEach((eye, i) =>
-                eye.position.set((i ? 1 : -1) * 0.12 + gaze[0] * 0.025, 0.2 + gaze[1] * 0.02, 0.405)
-            )
+            body.rotation.set(-gaze[1] * 0.06, gaze[0] * 0.32, pose.tilt)
             const blink = motion > 0 && (t % 4.6 < 0.13 || (k > 0 && since < 0.18)) ? 0.12 : 1
-            for (const eye of eyes) eye.scale.y = blink
+            eyes.update(gaze[0], gaze[1], blink < 1 ? Math.min(blink, pose.eyes) : pose.eyes)
+            lantern.setFlare(pose.flare)
 
             // The lantern lags whatever swings it: stalk sway + body turning.
             const stalkSpeed =
@@ -183,6 +183,7 @@ export function createForestSpirit() {
         },
         dispose() {
             for (const d of new Set(disposables)) d.dispose()
+            eyes.dispose()
             lantern.dispose()
         }
     }

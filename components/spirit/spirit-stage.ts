@@ -4,7 +4,8 @@
  *
  * Loop policy: `setAnimationLoop` runs only when the stage is compiled, motion is allowed, the host is
  * in the viewport AND the tab is visible. Reduced motion never loops — it renders one still frame on
- * mount and again on theme/size changes. Theme switches lerp the rig over ~0.6 s (instant when still).
+ * mount and again on theme/size changes. Theme switches lerp the rig over ~0.6 s (instant when still)
+ * while the spirit plays its day/night reaction.
  * Lifecycle: render only after the abortable compile poll settles (`compile-settle.ts`, 4 s cap); teardown
  * waits for the same settle before disposing GPU objects. Any WebGL failure (context lost, render throw)
  * calls `onFail` once → 2D illustration; a throw after the context exists tears it down, then rethrows.
@@ -143,8 +144,13 @@ export function createSpiritStage(container: HTMLElement, options: SpiritStageOp
 
     return {
         setDark(dark: boolean) {
-            target = dark ? 1 : 0
-            if (running) return // the loop lerps toward the new target
+            const next = dark ? 1 : 0
+            if (next === target) return
+            target = next
+            if (running) {
+                world.themeShift(elapsed(), dark)
+                return // the loop lerps toward the new target
+            }
             mix = target
             world.setNight(mix)
             if (reducedMotion) drawStill()
