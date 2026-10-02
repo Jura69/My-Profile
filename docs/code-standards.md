@@ -260,12 +260,13 @@ must degrade through one of these three paths — no unguarded infinite animatio
 
 ### Images
 
-- Format: WebP, max 1200px, quality ~80 (exceptions: `og-image-forest.jpg` — OG
+- Format: WebP, max 1200px, quality ~80 (exceptions: `og-image-*.jpg` — OG
   scrapers, `apple-touch-icon.png` — iOS requirement)
 - `<img loading="lazy">` below the fold; explicit dimensions where layout shift
   is possible
 - New images go through the same constraint before commit (ImageMagick/sharp;
-  `scripts/optimize-images.mjs` exists for batch runs)
+  `scripts/optimize-images.mjs` exists for batch runs; spirit stills come from
+  `scripts/render-spirit-stills.mjs`)
 
 ### Code splitting
 

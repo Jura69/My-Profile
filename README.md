@@ -134,9 +134,10 @@ yarn analyze   # Bundle size visualization (fetches vite-bundle-visualizer via n
 ├── lib/                         # Utilities (cn.ts)
 ├── providers/                   # Theme provider + use-theme hook
 ├── scripts/
-│   └── vite-plugin-sitemap.ts   # Emits dist/sitemap.xml from works-data at build
+│   ├── vite-plugin-sitemap.ts   # Emits dist/sitemap.xml from works-data at build
+│   └── render-spirit-stills.mjs # Renders Mầm Đèn stills + OG image from the hero scene
 ├── public/                      # Static assets
-│   ├── images/                  # WebP images: works covers, banners, ui textures (+ og-image-forest.jpg)
+│   ├── images/                  # WebP images: works covers, banners, ui textures, spirit stills (+ og-image-spirit.jpg)
 │   ├── apple-touch-icon.png
 │   └── robots.txt
 ├── vite.config.ts               # Vite config (plugins, vendor chunking)
@@ -167,7 +168,7 @@ Edit `src/styles/global.css` (Tailwind 4 theme tokens):
 ```
 
 ### Change the Hero 3D Spirit
-The spirit has no model file: it is built in code. Edit `components/spirit/forest-spirit.ts` (shape, motion, gaze), `components/spirit/seed-lantern.ts` (lantern glow/light), `components/spirit/moss-island.ts` (ground), and `components/spirit/spirit-lighting.ts` (day/night light). Keep the 2D art in `components/icons/spirit-mam-den.tsx` in sync — it is the loading placeholder, the no-WebGL fallback and the navbar logo.
+The spirit has no model file: it is built in code. Edit `components/spirit/forest-spirit.ts` (shape, motion, gaze), `components/spirit/seed-lantern.ts` (lantern glow/light), `components/spirit/moss-island.ts` (ground), and `components/spirit/spirit-lighting.ts` (day/night light). Keep the 2D art in `components/icons/spirit-mam-den.tsx` in sync — it is the loading placeholder, the no-WebGL fallback and the navbar logo. Then re-render the stills used on the 404 page, the contact section and the OG image: `node scripts/render-spirit-stills.mjs` (needs Chrome; set `CHROME_PATH` off Windows).
 
 ---
 

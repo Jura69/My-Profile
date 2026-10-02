@@ -58,7 +58,8 @@ My-Profile/
 │   ├── spirit/               # Hero 3D (raw three): spirit-canvas (React mount),
 │   │                         #   spirit-stage (renderer/loop), spirit-scene (content), forest-spirit,
 │   │                         #   seed-lantern, moss-island, fireflies, painted-material, spirit-lighting,
-│   │                         #   kit-geometry, hero-camera, compile-settle
+│   │                         #   kit-geometry, hero-camera, compile-settle, spirit-eyes,
+│   │                         #   spirit-expression (theme reaction + still poses)
 │   ├── seo.tsx               # Per-page meta (React 19 hoists to <head>)
 │   └── json-ld.tsx           # Person/Website/ProfilePage/Project/Breadcrumb schemas
 ├── lib/
@@ -68,10 +69,13 @@ My-Profile/
 │   └── use-theme.ts          # ThemeContext + useTheme() (react-refresh split)
 ├── scripts/
 │   ├── vite-plugin-sitemap.ts  # Emits dist/sitemap.xml from works-data
-│   └── optimize-images.mjs     # One-off sharp-based image pipeline
+│   ├── optimize-images.mjs     # One-off sharp-based image pipeline
+│   ├── render-spirit-stills.mjs # Renders Mầm Đèn stills + OG from the hero scene (Vite + CDP + sharp)
+│   └── spirit-stills/          # Render page for the script above (dev server only, not built)
 ├── public/                   # apple-touch-icon.png, cv.html, favicon.ico,
 │   │                         #   robots.txt, files/CV.pdf
-│   └── images/               # WebP (exceptions: og-image-forest.jpg, apple-touch-icon.png)
+│   └── images/               # WebP (exceptions: og-image-*.jpg, apple-touch-icon.png)
+│       ├── spirit/           # Rendered Mầm Đèn stills (404 puzzled, contact sleepy; day/night)
 │       ├── ui/               # Kit materials (paper grain, button wash, brush mask, wreath)
 │       ├── banners/          # <page>-<day|night>-{800,1600,2400}.webp
 │       └── works/            # <id>-cover-{480,640,1280}.webp

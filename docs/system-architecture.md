@@ -125,7 +125,8 @@ Three.js `SpiritCanvas`), `AboutMorning`, `SkillsBento`, `ExperienceDusk`,
 incoming theme's image then crossfades (instant swap under reduced motion) and preloads the
 other theme at idle. Optional `title`/`ornament` props overlay the page `<h1>` on a dark scrim
 (used by works, audiophile, activities). Enterprise work detail pages use `<id>-cover-1280.webp` for SEO/JSON-LD
-images; default OG image is `/images/og-image-forest.jpg` (`components/seo.tsx`).
+images; default OG image is `/images/og-image-spirit.jpg` (`components/seo.tsx`), rendered from the
+spirit scene (see *Spirit stills* below).
 
 **Single layout rule:** `MainLayout` wraps once at the app root. Pages return
 fragments — there is no per-page layout wrapper (the old `layouts/article` shim
@@ -278,6 +279,7 @@ HeroDawn (components/home/hero-dawn.tsx)
               └── React.lazy(import components/spirit/spirit-canvas.tsx)
                     └── createSpiritStage()   components/spirit/spirit-stage.ts
                           spirit-scene.ts (content) → forest-spirit.ts · seed-lantern.ts
+                          spirit-eyes.ts · spirit-expression.ts (theme reaction, still poses)
                           moss-island.ts · fireflies.ts · spirit-lighting.ts · hero-camera.ts
                           painted-material.ts · kit-geometry.ts · compile-settle.ts
 ```
@@ -317,6 +319,18 @@ HeroDawn (components/home/hero-dawn.tsx)
   `onFail` once and the cell shows the 2D illustration for good.
 - Decorative: canvas is `aria-hidden`, no tab stop; pointer-down triggers a ~1.2s
   hop/squash/seed-swing reaction and the gaze follows the pointer — a bonus, not a control.
+- Theme switch while the loop runs plays a ~1.9s reaction (`spirit-expression.ts`): to night it
+  looks up at the lantern, which flares once after the light lerp; to day it blinks, squints and
+  turns from the sun. Still / off-screen / reduced motion: no reaction, the rig just snaps.
+
+**Spirit stills (404, night contact, OG)**
+
+`node scripts/render-spirit-stills.mjs` renders posed stills with the hero's own scene
+(`scripts/spirit-stills/` page on a Vite dev server, headless Chrome over raw CDP, sharp) into
+`public/images/spirit/spirit-{puzzled,sleepy}-{day,night}.webp` and `public/images/og-image-spirit.jpg`.
+Poses live in `STILL_POSES` (`spirit-expression.ts`; tree-shaken from the hero chunk). Re-run it after
+changing the spirit's look. `components/ui/spirit-still.tsx` swaps the day/night file by theme class
+(the hidden one is lazy + `display:none`, so it is not fetched); no three.js at runtime.
 
 `SpiritIcon` (same file as `SpiritIllustration`, `components/icons/spirit-mam-den.tsx`)
 is also the navbar logo, so the 2D art is an authority surface shared by hero

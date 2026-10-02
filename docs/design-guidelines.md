@@ -254,11 +254,12 @@ công nghệ, vẽ lại làm giảm độ nhận biết. Nằm ngoài phạm vi
 ### 6.4 Mầm Đèn — nhân vật gốc của site
 
 Linh vật rừng **original**: viên đá phủ rêu trên bốn mấu rễ, một chồi non cong mang đèn lồng hạt (seed lantern) phía trước;
-đứng trên đảo rêu nhỏ. Một bộ hình, hai cách thể hiện:
+đứng trên đảo rêu nhỏ. Một bộ hình, ba cách thể hiện (3D sống, ảnh render tĩnh, 2D SVG):
 
 | Nơi dùng | Dạng | Nguồn |
 |---|---|---|
-| Hero (chính) | 3D painted, procedural trong three; ánh sáng chuyển mượt theo theme (ngày: nắng + hemi, đèn hạt là quả mọng trong mờ; đêm: trăng lạnh + đèn hạt là nguồn ấm chính — lõi kem → viền hổ phách, quầng mềm, lập loè nhẹ, vũng sáng trên rêu, mép band mềm hơn ban ngày); motion: thở, đảo nổi nhấp nhô, đèn treo con lắc lò xo, lá rung, mắt/thân nhìn theo con trỏ (rảnh thì liếc quanh, ngước nhìn đèn), đom đóm đêm / phấn hoa ngày | `components/spirit/` |
+| Hero (chính) | 3D painted, procedural trong three; ánh sáng chuyển mượt theo theme (ngày: nắng + hemi, đèn hạt là quả mọng trong mờ; đêm: trăng lạnh + đèn hạt là nguồn ấm chính — lõi kem → viền hổ phách, quầng mềm, lập loè nhẹ, vũng sáng trên rêu, mép band mềm hơn ban ngày); motion: thở, đảo nổi nhấp nhô, đèn treo con lắc lò xo, lá rung, mắt/thân nhìn theo con trỏ (rảnh thì liếc quanh, ngước nhìn đèn), đom đóm đêm / phấn hoa ngày; đổi theme: sang đêm ngước nhìn đèn + đèn bùng sáng 1 nhịp, sang ngày chớp mắt + nheo + quay khỏi nắng; chớp/nhắm mắt = mí cung ∪ | `components/spirit/` |
+| 404 ("lạc đường": nghiêng đầu, ngó về biển chỉ đường) · cuối trang chủ ("ngủ gật": mắt nhắm, mầm rũ, đèn dịu, chữ z) | Ảnh tĩnh render từ chính scene 3D, bản day/night theo theme | `public/images/spirit/`, `components/ui/spirit-still.tsx`; pose trong `spirit-expression.ts` |
 | Hero (placeholder, fallback no-WebGL/lỗi) | `SpiritIllustration` — 2D full-colour, khung hình khớp camera 3D để không nhảy layout | `components/icons/spirit-mam-den.tsx` |
 | Navbar logo (40px) | `SpiritIcon` — cùng art, crop sát, bỏ chi tiết < 2px | cùng file |
 
@@ -356,7 +357,8 @@ Mỗi cover là 1 cảnh gouache ẩn dụ cho domain dự án. Không chữ, kh
 | `banner-audiophile-day/night` | 2400×800 | Máy hát + tai nghe trên bậu cửa sổ gỗ mở ra thung lũng |
 | `banner-activities-day/night` | 2400×800 | Lửa trại sân trường bên đồi, cờ đuôi nheo, sân khấu nhỏ |
 | `banner-404-day/night` | 2400×800 | Đường mòn rừng rẽ nhánh, biển chỉ đường gỗ trống chữ |
-| `og-image-forest.jpg` | 1200×630 | Đồi cỏ lúc golden hour, cây lớn đơn độc, mây cumulus; nửa trái để trống cho chữ khi compose |
+| `og-image-spirit.jpg` | 1200×630 | **Đang dùng** (2026-10-02, user chọn): trời bình minh của hero, tên bên trái, Mầm Đèn render 3D bên phải nhìn về phía tên. Sinh bằng `scripts/render-spirit-stills.mjs` |
+| `og-image-forest.jpg` | 1200×630 | Bản gouache cũ (đồi cỏ, cây lớn). Giữ file để link đã chia sẻ không vỡ; phương án ghép Mầm Đèn lên nó bị loại vì đảo 3D trông như dán lên tranh |
 
 **Tiêu đề trên banner** (works / audiophile / activities): `<h1>` + ornament đặt góc dưới-trái banner qua prop `title` /
 `ornament` của `PageBanner`, chữ trắng 30→48px, scrim `from-black/65 via-black/25 to-transparent` + text-shadow nhẹ.
@@ -441,7 +443,7 @@ File kebab-case, không dấu, không khoảng trắng. Folder này là master r
 - [x] 1. Thêm scale + semantic token mới vào `src/styles/global.css` (giữ tên token cũ làm alias).
 - [x] 2. Đổi `accent` light → `#3d6a4b`; badge text → bậc 700/300.
 - [x] 3. Icon/ornament SVG thành component `components/icons/kit-*.tsx`; gỡ `react-icons/hi2`; `io5` chỉ còn `IoLogo*` (§6.2).
-- [x] 4. Raster WebP: materials `public/images/ui/`, covers `public/images/works/`, banners `public/images/banners/`, OG `public/images/og-image-forest.jpg`.
+- [x] 4. Raster WebP: materials `public/images/ui/`, covers `public/images/works/`, banners `public/images/banners/`, OG `public/images/og-image-spirit.jpg`.
 - [x] 5. Cập nhật `button-styles.ts`, `card.tsx`, `badge.tsx` theo §7.
 - [ ] 6. Smoke test routes light/dark + reduced-motion; đo bundle/LCP không tăng > 5% (kết quả ở báo cáo verify của plan, không lặp ở đây).
 - [ ] Washi tape: chưa áp dụng (§7.3).
