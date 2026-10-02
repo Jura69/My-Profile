@@ -1,98 +1,104 @@
+import { useRef } from 'react'
+import { motion } from 'motion/react'
 import { ChevronRight } from '../icons/kit-icons-interface'
 import Reveal from '../ui/reveal'
 import SectionHeading from '../ui/section-heading'
-import Badge from '../ui/badge'
 import { buttonClasses } from '../ui/button-styles'
-import { usePinnedIntro } from '../scene/use-pinned-intro'
-import { experiences, type ExperienceEntry, techIconMap } from './home-data'
+import { experiences, splitPeriod } from './home-data'
 import { Acorn } from '../icons/kit-ornaments'
+import JourneyCard from './journey-card'
+import JourneyTrail, { JOURNEY_NODE_ATTR } from './journey-trail'
 
-function ExperienceCard({ entry }: { entry: ExperienceEntry }) {
-    const Icon = entry.icon
-    return (
-        <div className="rounded-2xl border border-line bg-surface-elevated/80 p-5 backdrop-blur-sm">
-            <h3 className="flex items-center gap-2 font-rounded text-base font-bold text-ink">
-                <Icon className="shrink-0 text-xl" style={{ color: entry.color }} aria-hidden="true" />
-                {entry.company}
-            </h3>
-            <p className="mt-1 text-sm font-semibold" style={{ color: entry.color }}>
-                {entry.role}
-            </p>
-            <span
-                className="mt-2 inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold"
-                style={{ backgroundColor: `${entry.color}22`, color: entry.color }}
-            >
-                {entry.period}
-            </span>
-            {entry.summary && <p className="mt-3 text-sm leading-relaxed text-ink-muted">{entry.summary}</p>}
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink-muted">
-                {entry.bullets.map(bullet => (
-                    <li key={bullet}>{bullet}</li>
-                ))}
-            </ul>
-            {entry.badges.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-2">
-                    {entry.badges.map(badge => {
-                        const tech = techIconMap[badge]
-                        return (
-                            <Badge key={badge} tone={entry.tone} className="gap-1.5 px-2.5 py-1">
-                                {tech && (
-                                    <tech.icon
-                                        className="shrink-0 text-[10px]"
-                                        style={{ color: tech.color }}
-                                        aria-hidden="true"
-                                    />
-                                )}
-                                {badge}
-                            </Badge>
-                        )
-                    })}
-                </div>
-            )}
-        </div>
-    )
-}
+const EASE_OUT = [0.22, 1, 0.36, 1] as const
+// Whole transform strings (not x/y) let Motion run the reveals as compositor animations
+const SETTLED = 'translate3d(0px, 0px, 0)'
 
 /**
- * Scene 4 — dusk. Work experience as a left-rail timeline. The heading is the
- * homepage's single pinned moment: it holds for ~half a viewport while the
- * first cards scroll in (disabled on touch / reduced-motion via usePinnedIntro).
+ * Scene 4 — dusk. Work history as a forest trail: a meandering path runs down
+ * a narrow lane (left edge on phones) and a seed lantern walks it with the
+ * reader, lighting each milestone it reaches (JourneyTrail). Desktop reads
+ * left→right as period | trail | card, so the cards keep the full width;
+ * cards glide in from the right, periods from the left.
  */
 export default function ExperienceDusk() {
-    const pinRef = usePinnedIntro<HTMLDivElement>()
+    const listRef = useRef<HTMLDivElement>(null)
 
     return (
-        <section data-section="work" className="w-full px-4 py-16 md:py-20">
+        <section data-section="work" className="w-full px-4 py-16 md:py-24">
             <div className="mx-auto max-w-[1100px]">
-                <div ref={pinRef}>
-                    <SectionHeading as="h2" ornament={Acorn}>
+                <div className="text-center">
+                    <SectionHeading as="h2" ornament={Acorn} align="center">
                         My Journey
                     </SectionHeading>
                 </div>
 
-                <div className="relative mt-8">
-                    {/* Rail line */}
-                    <span aria-hidden="true" className="absolute top-2 bottom-2 left-[10px] w-px bg-line" />
-                    <ol className="list-none space-y-8">
-                        {experiences.map((entry, i) => (
-                            <li key={entry.company} className="relative pl-10">
-                                <span
-                                    aria-hidden="true"
-                                    className="absolute top-1.5 left-0 grid h-5 w-5 place-items-center rounded-full ring-4 ring-surface"
-                                    style={{ backgroundColor: entry.color }}
+                {/* Trail container: the SVG sits under the list (later positioned siblings paint on top) */}
+                <div ref={listRef} className="relative mt-10">
+                    <JourneyTrail containerRef={listRef} />
+                    <ol className="relative list-none space-y-12 md:space-y-14">
+                        {experiences.map(entry => {
+                            const Icon = entry.icon
+                            const { when, note } = splitPeriod(entry.period)
+                            return (
+                                <li
+                                    key={entry.company}
+                                    className="relative grid grid-cols-[44px_1fr] gap-x-3 md:grid-cols-[220px_88px_minmax(0,1fr)] md:gap-x-0"
                                 >
-                                    <span className="h-1.5 w-1.5 rounded-full bg-surface-elevated" />
-                                </span>
-                                <Reveal delay={i * 0.05}>
-                                    <ExperienceCard entry={entry} />
-                                </Reveal>
-                            </li>
-                        ))}
+                                    {/* Milestone marker — lit by the trail once the lantern reaches it */}
+                                    <div className="relative z-10 col-start-1 row-start-1 flex justify-center pt-4 md:col-start-2">
+                                        <span
+                                            {...{ [JOURNEY_NODE_ATTR]: '' }}
+                                            data-lit="false"
+                                            className="grid size-11 place-items-center rounded-full border-2 bg-surface-elevated text-xl shadow-paper transition-[background-color,box-shadow,transform] duration-500 ease-out data-[lit=true]:scale-110 data-[lit=true]:bg-[color-mix(in_srgb,var(--node)_22%,var(--surface-elevated))] data-[lit=true]:shadow-[0_0_0_7px_color-mix(in_srgb,var(--node)_18%,transparent),0_0_22px_color-mix(in_srgb,var(--color-ghibli-golden-dust)_55%,transparent)]"
+                                            style={
+                                                {
+                                                    '--node': entry.color,
+                                                    borderColor: entry.color
+                                                } as React.CSSProperties
+                                            }
+                                        >
+                                            <Icon aria-hidden="true" style={{ color: entry.color }} />
+                                        </span>
+                                    </div>
+
+                                    <motion.div
+                                        className="col-start-2 row-start-1 min-w-0 md:col-start-3 md:pl-2"
+                                        initial={{ opacity: 0, transform: 'translate3d(32px, 12px, 0)' }}
+                                        whileInView={{ opacity: 1, transform: SETTLED }}
+                                        viewport={{ once: true, margin: '0px 0px -12% 0px' }}
+                                        transition={{ duration: 0.8, ease: EASE_OUT }}
+                                    >
+                                        <JourneyCard entry={entry} />
+                                    </motion.div>
+
+                                    {/* Period on the near side of the trail (desktop; phones show it inside the card) */}
+                                    <motion.div
+                                        aria-hidden="true"
+                                        className="hidden pt-5 pr-5 text-right md:col-start-1 md:row-start-1 md:block"
+                                        initial={{ opacity: 0, transform: 'translate3d(-16px, 0px, 0)' }}
+                                        whileInView={{ opacity: 1, transform: SETTLED }}
+                                        viewport={{ once: true, margin: '0px 0px -12% 0px' }}
+                                        transition={{ duration: 0.8, delay: 0.15, ease: EASE_OUT }}
+                                    >
+                                        {/* Each end of the range stays on one line; a narrow column breaks after the dash */}
+                                        <p className="font-rounded text-lg leading-snug font-bold text-ink">
+                                            {when.split(' – ').map((part, k) => (
+                                                <span key={part} className="whitespace-nowrap">
+                                                    {k > 0 && ' – '}
+                                                    {part}
+                                                </span>
+                                            ))}
+                                        </p>
+                                        {note && <p className="mt-1 text-sm text-ink-muted">{note}</p>}
+                                    </motion.div>
+                                </li>
+                            )
+                        })}
                     </ol>
                 </div>
 
                 <Reveal delay={0.1}>
-                    <div className="mt-10 text-center">
+                    <div className="mt-14 text-center">
                         <a href="/files/CV.pdf" download="TuanLoc_CV.pdf" className={buttonClasses('solid', 'lg')}>
                             Download Full CV <ChevronRight aria-hidden="true" />
                         </a>

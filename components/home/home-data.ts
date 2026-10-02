@@ -37,6 +37,7 @@ import {
     AgentNetwork,
     ChatSpark
 } from '../icons/kit-icons-topics'
+import { Camera, MusicNotes, OpenBook, Sakura } from '../icons/kit-icons-hobbies'
 import type { IconComponent } from '../icons/kit-icon-base'
 import type { BadgeTone } from '../ui/badge'
 
@@ -140,6 +141,12 @@ export interface ExperienceEntry {
     badges: string[]
 }
 
+/** "June 2025 - Present · Full-time" → { when: "June 2025 – Present", note: "Full-time" } */
+export function splitPeriod(period: string) {
+    const [when, note] = period.split('·').map(s => s.trim())
+    return { when: when.replace(' - ', ' – '), note }
+}
+
 export const experiences: ExperienceEntry[] = [
     {
         icon: Building,
@@ -207,17 +214,18 @@ export const experiences: ExperienceEntry[] = [
 ]
 
 export interface Hobby {
-    emoji: string
+    icon: IconComponent
     label: string
+    /** Pill border + icon tint (the icon mixes it toward --ink so it reads in both themes). */
     color: string
 }
 
 export const hobbies: Hobby[] = [
-    { emoji: '🎵', label: 'Music', color: '#E8A87C' },
-    { emoji: '📷', label: 'Photography', color: '#95B8D1' },
-    { emoji: '🤖', label: 'Machine Learning', color: '#B8E0D2' },
-    { emoji: '📖', label: 'Manga', color: '#D4A5A5' },
-    { emoji: '🌸', label: 'Anime', color: '#C3AED6' }
+    { icon: MusicNotes, label: 'Music', color: '#E8A87C' },
+    { icon: Camera, label: 'Photography', color: '#95B8D1' },
+    { icon: AgentNetwork, label: 'Machine Learning', color: '#7fc4ad' },
+    { icon: OpenBook, label: 'Manga', color: '#D4A5A5' },
+    { icon: Sakura, label: 'Anime', color: '#e8a0b4' }
 ]
 
 export interface SocialLink {

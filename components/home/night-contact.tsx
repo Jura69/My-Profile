@@ -6,7 +6,7 @@ import SectionHeading from '../ui/section-heading'
 import { ButtonLink } from '../ui/button'
 import { buttonClasses } from '../ui/button-styles'
 import { hobbies, socialLinks, type SocialLink } from './home-data'
-import { PaperLantern } from '../icons/kit-ornaments'
+import { LeafHeart, PaperLantern } from '../icons/kit-ornaments'
 
 const socialIcon: Record<SocialLink['icon'], IconType> = {
     github: IoLogoGithub,
@@ -26,23 +26,35 @@ export default function NightContact() {
         <section data-section="contact" className="w-full px-4 py-16 md:py-20">
             <div className="mx-auto max-w-[1100px] text-center">
                 <Reveal>
-                    <SectionHeading as="h2" className="inline-block" align="center">
-                        Things I Love <span className="text-ghibli-soft-pink">♥</span>
+                    <SectionHeading as="h2" className="inline-block" align="center" ornament={LeafHeart}>
+                        Things I Love
                     </SectionHeading>
                 </Reveal>
 
                 <div className="mt-5 flex flex-wrap justify-center gap-3">
-                    {hobbies.map((hobby, i) => (
-                        <Reveal key={hobby.label} delay={i * 0.06}>
-                            <span
-                                className="inline-flex items-center gap-2 rounded-full border bg-surface-elevated/70 px-5 py-2.5 text-sm font-semibold text-ink backdrop-blur-sm transition-transform duration-200 hover:-translate-y-0.5"
-                                style={{ borderColor: `${hobby.color}55` }}
-                            >
-                                <span className="text-lg">{hobby.emoji}</span>
-                                {hobby.label}
-                            </span>
-                        </Reveal>
-                    ))}
+                    {hobbies.map((hobby, i) => {
+                        const Icon = hobby.icon
+                        return (
+                            <Reveal key={hobby.label} delay={i * 0.06}>
+                                <span
+                                    className="inline-flex items-center gap-2 rounded-full border bg-surface-elevated/70 py-2 pr-5 pl-2.5 text-sm font-semibold text-ink backdrop-blur-sm transition-transform duration-200 hover:-translate-y-0.5"
+                                    style={{ borderColor: `${hobby.color}66` }}
+                                >
+                                    {/* Tint pulled toward --ink so the pastel keeps contrast in both themes */}
+                                    <span
+                                        className="grid size-8 place-items-center rounded-full text-lg"
+                                        style={{
+                                            backgroundColor: `${hobby.color}2e`,
+                                            color: `color-mix(in srgb, ${hobby.color} 62%, var(--ink))`
+                                        }}
+                                    >
+                                        <Icon aria-hidden="true" />
+                                    </span>
+                                    {hobby.label}
+                                </span>
+                            </Reveal>
+                        )
+                    })}
                 </div>
 
                 <div className="mt-14">
