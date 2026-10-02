@@ -6,6 +6,7 @@ import { useGSAP } from '@gsap/react'
 import { useScene } from './use-scene'
 import { getInterpolatedZone, lerpColor, lerp, clamp01, dawnAlpha, nightAlpha } from './zone-data'
 import CelestialArc from './celestial-arc'
+import DriftingClouds from './drifting-clouds'
 import ParallaxHills from './parallax-hills'
 import Stars from './stars'
 import ZoneParticles from './zone-particles'
@@ -13,6 +14,17 @@ import ZoneParticles from './zone-particles'
 gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 const MOON_START = 0.58
+
+/**
+ * Cloud tones derived from the live sky so they repaint with every zone. Day: cream cap
+ * lit from the sky's warm bottom, lavender shade. Night: moonlit slate a touch above the
+ * sky top, dark navy shade. Mix ratios and opacities are capped so --ink / --ink-muted
+ * keep ≥ 4.5:1 over the blended cloud at every scroll progress.
+ */
+const CLOUD_TONES = {
+    light: { lit: '#fffaf0', litK: 0.8, shade: '#dcd6ec', shadeK: 0.55, alpha: 0.85, nightFade: 0 },
+    dark: { lit: '#384a82', litK: 0.45, shade: '#0b1229', shadeK: 0.35, alpha: 0.65, nightFade: 0.55 }
+} as const
 
 const HILL_COLORS = {
     light: { back: '#cfe3cf', front: '#9fc49f', tree: '#6a9c6a', shade: '#7d95a8' },
@@ -37,9 +49,17 @@ const AmbientScene = memo(function AmbientScene() {
             if (!root) return
 
             const moonEl = root.querySelector<HTMLElement>('[data-scene="moon"]')
+            const cloudsEl = root.querySelector<HTMLElement>('[data-scene="clouds"]')
             const hillsBack = root.querySelector<HTMLElement>('[data-scene="hills-back"]')
             const hillsFront = root.querySelector<HTMLElement>('[data-scene="hills-front"]')
-            const setVar = (name: string, value: string) => root.style.setProperty(name, value)
+            // Write only real changes: every custom-property write restyles the whole scene subtree,
+            // and most vars hold still between scroll frames (colors move in whole RGB steps)
+            const written = new Map<string, string>()
+            const setVar = (name: string, value: string) => {
+                if (written.get(name) === value) return
+                written.set(name, value)
+                root.style.setProperty(name, value)
+            }
 
             const apply = (p: number) => {
                 const zone = getInterpolatedZone(p, isDark)
@@ -66,6 +86,14 @@ const AmbientScene = memo(function AmbientScene() {
                     moonEl.style.opacity = (0.9 * clamp01((p - MOON_START) / 0.1)).toFixed(3)
                     setVar('--moon-glow-o', (0.4 + t * 0.6).toFixed(3))
                 }
+
+                // Clouds: tones follow the sky; at night they thin out so the stars read, and
+                // the layer sinks a little (less than the hills — it is farther away)
+                const ct = CLOUD_TONES[isDark ? 'dark' : 'light']
+                setVar('--cloud-lit', lerpColor(isDark ? zone.skyTop : zone.skyBottom, ct.lit, ct.litK))
+                setVar('--cloud-shade', lerpColor(zone.skyTop, ct.shade, ct.shadeK))
+                setVar('--cloud-a', (ct.alpha * (1 - ct.nightFade * night)).toFixed(3))
+                if (cloudsEl) cloudsEl.style.transform = `translateY(${lerp(0, 5, p).toFixed(2)}vh)`
 
                 // Hills: shade toward night and sink slightly for parallax depth
                 const hc = HILL_COLORS[isDark ? 'dark' : 'light']
@@ -104,6 +132,7 @@ const AmbientScene = memo(function AmbientScene() {
             />
             <Stars />
             <CelestialArc />
+            <DriftingClouds />
             <ParallaxHills />
             <ZoneParticles />
         </div>

@@ -347,6 +347,24 @@
     }
 }
 
+/* Sprites fade in once painted (they are generated after first paint) */
+@keyframes scene-fade-in {
+    from {
+        opacity: 0;
+    }
+}
+
+/* Each cloud's left is var(--cx), so the travel is offset by it: the crossing
+   always spans off-screen left → off-screen right regardless of resting spot. */
+@keyframes scene-cloud-drift {
+    from {
+        transform: translate3d(calc(-40vw - var(--cx, 0vw)), 0, 0);
+    }
+    to {
+        transform: translate3d(calc(105vw - var(--cx, 0vw)), 0, 0);
+    }
+}
+
 @keyframes scene-scroll-hint {
     0%,
     100% {
