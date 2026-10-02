@@ -1,0 +1,96 @@
+<!doctype html>
+<!--
+  Render page for Mầm Đèn stills, driven by scripts/render-spirit-stills.mjs (served by the Vite dev
+  server, never part of the site build). ?shot=still renders one transparent square; ?shot=og lays out
+  the 1200×630 share card around the spirit.
+-->
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Mầm Đèn stills</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&display=block"
+        />
+        <style>
+            html,
+            body {
+                margin: 0;
+                background: transparent;
+            }
+            #still canvas {
+                display: block;
+            }
+            #og {
+                position: relative;
+                display: none;
+                width: 1200px;
+                height: 630px;
+                overflow: hidden;
+                font-family: 'M PLUS Rounded 1c', sans-serif;
+                color: #2d2a24;
+                /* Hero dawn sky stop (zone-data LIGHT_ZONES[0]) with a low warm sun behind the spirit */
+                background:
+                    radial-gradient(circle at 76% 62%, rgb(255 236 196 / 0.9), rgb(255 236 196 / 0) 34%),
+                    linear-gradient(#c4dceb, #f3e9dc);
+            }
+            .og #og {
+                display: block;
+            }
+            #og .copy {
+                position: absolute;
+                left: 76px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            #og .eyebrow {
+                margin: 0;
+                font-size: 22px;
+                font-weight: 500;
+                letter-spacing: 0.32em;
+                color: #3d6a4b;
+            }
+            #og h1 {
+                margin: 14px 0 0;
+                font-size: 66px;
+                font-weight: 800;
+                line-height: 1.1;
+            }
+            #og .role {
+                margin: 18px 0 0;
+                font-size: 30px;
+                font-weight: 500;
+                color: #5c564c;
+            }
+            #og .rule {
+                width: 84px;
+                height: 4px;
+                margin-top: 30px;
+                border-radius: 2px;
+                background: #3d6a4b;
+            }
+            #og .spirit {
+                position: absolute;
+                right: 40px;
+                bottom: 10px;
+                width: 560px;
+                height: 560px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="still"></div>
+        <div id="og">
+            <div class="copy">
+                <p class="eyebrow">JURA69</p>
+                <h1>Trương Tuấn Lộc</h1>
+                <p class="role">Full-stack Developer</p>
+                <div class="rule"></div>
+            </div>
+            <div class="spirit"></div>
+        </div>
+        <script type="module" src="./stills-entry.ts"></script>
+    </body>
+</html>

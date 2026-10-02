@@ -3,10 +3,12 @@ import { ChevronRight } from '../icons/kit-icons-interface'
 import SEO from '../seo'
 import { buttonClasses } from '../ui/button-styles'
 import PageBanner from '../ui/page-banner'
+import SpiritStill from '../ui/spirit-still'
 
 /**
  * 404 page — a Ghibli-lite "lost in the forest" moment with a painted day/night
- * forest-path banner and a route home. Rendered by the `*` route in app.tsx.
+ * forest-path banner, Mầm Đèn stepping out of it looking around, and a route home.
+ * Rendered by the `*` route in app.tsx.
  */
 export default function NotFound() {
     return (
@@ -21,7 +23,13 @@ export default function NotFound() {
                         className="w-full"
                     />
 
-                    <p className="mt-6 font-rounded text-5xl font-bold text-ink">404</p>
+                    {/* Steps out over the banner's lower-right edge, peering back at the signpost */}
+                    <SpiritStill
+                        pose="puzzled"
+                        className="relative -mt-20 -mr-2 size-40 self-end sm:-mt-24 sm:-mr-10 sm:size-48"
+                    />
+
+                    <p className="font-rounded text-5xl font-bold text-ink">404</p>
                     <h1 className="mt-2 font-rounded text-xl font-bold text-ink">Lost in the forest?</h1>
                     <p className="mt-3 font-rounded text-base leading-relaxed text-ink-muted">
                         This path doesn&apos;t lead anywhere. Let&apos;s head back to familiar ground.

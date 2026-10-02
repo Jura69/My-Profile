@@ -7,6 +7,7 @@ import { ButtonLink } from '../ui/button'
 import { buttonClasses } from '../ui/button-styles'
 import { hobbies, socialLinks, type SocialLink } from './home-data'
 import { LeafHeart, PaperLantern } from '../icons/kit-ornaments'
+import SpiritStill from '../ui/spirit-still'
 
 const socialIcon: Record<SocialLink['icon'], IconType> = {
     github: IoLogoGithub,
@@ -19,7 +20,8 @@ const socialIcon: Record<SocialLink['icon'], IconType> = {
 /**
  * Scene 5 — night. Things-I-love pills and the contact block. Sits at the
  * bottom of the page, so the ambient scene's fireflies (scroll-driven
- * --night-a) are lit here; no per-section wiring needed.
+ * --night-a) are lit here; no per-section wiring needed. The page ends on Mầm Đèn
+ * dozing by its lantern — the day is over.
  */
 export default function NightContact() {
     return (
@@ -88,6 +90,19 @@ export default function NightContact() {
                         <a href="mailto:Loctruongtuan@gmail.com" className={`${buttonClasses('solid', 'lg')} mt-8`}>
                             <Mail aria-hidden="true" /> Get in touch
                         </a>
+                    </Reveal>
+
+                    <Reveal delay={0.15}>
+                        <div className="relative mx-auto mt-12 size-36 md:size-44">
+                            <SpiritStill pose="sleepy" className="size-full" />
+                            <span
+                                aria-hidden="true"
+                                className="absolute top-[24%] left-[16%] font-rounded font-bold text-ink-muted select-none"
+                            >
+                                <span className="ml-3 block text-lg leading-none">z</span>
+                                <span className="block text-sm leading-none">z</span>
+                            </span>
+                        </div>
                     </Reveal>
                 </div>
             </div>
