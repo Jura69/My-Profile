@@ -83,3 +83,15 @@ export const MonogramLt: IconComponent = props => (
         />
     </KitIcon>
 )
+
+/** Heart-shaped leaf (midrib, two veins, little stem) — the "love" mark in the forest kit's voice. */
+export const LeafHeart: IconComponent = props => (
+    <KitIcon {...props}>
+        <path d="M 12.0 19.0 C 8.6 16.4 4.2 13.2 3.4 9.4 C 2.8 6.4 4.9 4.4 7.4 4.5 C 9.4 4.6 11.2 5.9 12.0 7.8 C 12.9 5.8 14.6 4.5 16.7 4.6 C 19.2 4.7 21.1 6.6 20.6 9.5 C 19.8 13.3 15.4 16.5 12.0 19.0 Z M 12.0 19.0 C 11.8 15.4 11.9 11.9 12.0 8.6 M 11.9 14.4 C 10.4 13.4 8.9 12.9 7.4 12.8 M 12.0 11.6 C 13.5 10.6 15.0 10.1 16.5 10.0 M 12.0 19.0 C 12.2 19.9 12.6 20.6 13.3 21.0" />
+        <path
+            d="M 12.0 19.0 C 8.6 16.4 4.2 13.2 3.4 9.4 C 2.8 6.4 4.9 4.4 7.4 4.5 C 9.4 4.6 11.2 5.9 12.0 7.8 C 12.9 5.8 14.6 4.5 16.7 4.6 C 19.2 4.7 21.1 6.6 20.6 9.5 C 19.8 13.3 15.4 16.5 12.0 19.0 Z"
+            fill="currentColor"
+            opacity="0.18"
+        />
+    </KitIcon>
+)
