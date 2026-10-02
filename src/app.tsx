@@ -92,7 +92,7 @@ function AnimatedRoutes() {
     // reliably completed with this Router + motion@12 setup and left the old page
     // stuck (same failure mode as framer-motion 11), so we keep the enter only.
     // Opacity-only (no transform): a transformed ancestor would become the
-    // containing block for the homepage's position:fixed GSAP pin (ExperienceDusk)
+    // containing block for any position:fixed descendant (e.g. a ScrollTrigger pin)
     // and misalign it. SceneProvider handles scroll reset + ScrollTrigger refresh.
     return (
         <Suspense fallback={null}>
