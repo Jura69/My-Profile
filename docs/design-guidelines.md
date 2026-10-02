@@ -231,6 +231,7 @@ Mép gồ ghề ≤ 2px — đủ cảm, không làm layout trông lỗi.
 | AI skills | `server-stack`, `chart-check`, `agent-network`, `chat-spark` | HiOutline* |
 | Nav pages | `leaf-home`, `works-satchel`, `headphones`, `campfire` | mới (About, Works, Audiophile, Activities) |
 | Hi-Fi | `hifi-dial` | HiFi |
+| Things I Love | `MusicNotes`, `Camera`, `OpenBook`, `Sakura` (`components/icons/kit-icons-hobbies.tsx`, vẽ tay theo cùng quy tắc) + `agent-network` cho ML | emoji 🎵📷🤖📖🌸 |
 
 Logo mạng xã hội: vẽ lại theo chất kit nhưng **giữ silhouette nhận diện** (chữ "in", con mèo GitHub, máy ảnh IG)
 — thay đổi chỉ ở độ dày nét và bo góc.
@@ -243,7 +244,7 @@ công nghệ, vẽ lại làm giảm độ nhận biết. Nằm ngoài phạm vi
 ### 6.3 Ornaments (SVG trang trí)
 
 `divider-vine`, `divider-brush`, `divider-firefly-trail` (viewBox 240×24, stretch ngang) · `sprig-leaf`,
-`acorn`, `paper-lantern`, `firefly`, `cloud-puff`, `sparkle-star` (24×24) · `monogram-lt` (mark cá nhân,
+`acorn`, `paper-lantern`, `firefly`, `cloud-puff`, `sparkle-star`, `LeafHeart` (lá hình tim, tiêu đề Things I Love; vẽ thêm trong code) (24×24) · `monogram-lt` (mark cá nhân,
 32×32 viewBox; từng được đề xuất làm logo navbar). **Quyết định user (2026-10-01): navbar dùng `SpiritIcon` (Mầm Đèn,
 `components/icons/spirit-mam-den.tsx`)**, thay icon nhân vật cũ (đã gỡ khỏi repo cùng model 3D cũ); `MonogramLt` vẫn có trong
 `kit-ornaments` nhưng chưa dùng.
@@ -369,6 +370,24 @@ Giữ **Animation Discipline Contract** của plan rebuild trước
 ([plan](../plans/260707-1414-ghibli-ui-rebuild-day-in-forest/plan.md)): GSAP chỉ trong `components/scene/`,
 Motion cho component, Lenis cho scroll, content không animate liên tục, tôn trọng reduced-motion.
 Asset mới không thêm animation chạy liên tục; texture tĩnh.
+
+**Nền ambient — mây cumulus trôi** (`components/scene/drifting-clouds.tsx`, `cloud-sprite.ts`): ≤ 5 đám (3 trên
+màn cảm ứng) ở nửa trên bầu trời. Sprite vẽ procedural 1 lần trên canvas (seed cố định): metaball các cụm nhỏ
+trong một vòm (lõi to, mép nhỏ → viền súp-lơ), đáy tan dần, mép gouache hơi xơ; độ sáng = độ dày mây theo hướng
+nắng trên-trái (self-shadow), chia 3 dải mềm. Xuất 2 alpha mask, DOM tô bằng `mask-image` trên 2 màu phẳng
+(`--cloud-shade` dưới `--cloud-lit`) nên đổi màu theo trời không phải vẽ lại sprite. Trôi trái→phải 230–340s/lượt (~6–9px/s ở 1440px), xa = nhỏ, nhạt, chậm hơn.
+Màu suy từ sky stop đang chạy (ngày: mũ kem, bụng lavender; đêm: slate trăng, bụng navy, mỏng dần qua zone đêm
+để sao đọc được). Ràng buộc: `--ink` / `--ink-muted` ≥ 4.5:1 trên mây đã blend ở mọi progress — đổi hệ số
+`CLOUD_TONES` (`ambient-scene.tsx`) thì đo lại. Reduced-motion: mây đứng yên đúng vị trí nghỉ (khung đầu của animation).
+
+**My Journey — đường mòn đèn hạt** (`components/home/experience-dusk.tsx`, `journey-trail.tsx`, `journey-card.tsx`):
+đường mòn chấm uốn lượn nhẹ trong một làn hẹp qua các mốc (mép trái trên điện thoại).
+Một đèn hạt (motif Mầm Đèn) đi theo dòng đọc (62% viewport) qua `useScrollProgress` (ScrollTrigger + Lenis, không
+đọc layout mỗi frame); đoạn đã đi được tô màu accent, mốc nào đèn tới thì sáng (`data-lit`). Mọi cập nhật mỗi frame
+chỉ là transform (khung clip trượt lên + SVG trượt xuống; đèn là layer HTML) — không repaint. Desktop đọc
+trái→phải: thời gian (220px, căn phải) | đường mòn | card (chiếm phần còn lại) — không so le, để không bỏ trống nửa
+màn hình; card trượt vào từ phải, thời gian từ trái. Không còn pin heading. Reduced-motion:
+đường vẽ sẵn, mọi mốc sáng, không có đèn.
 
 ---
 

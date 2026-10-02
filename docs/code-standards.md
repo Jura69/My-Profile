@@ -90,7 +90,7 @@ The codebase uses relative imports throughout; follow that.
 kebab-case .tsx/.ts, descriptive names
 ✅ components/ui/section-heading.tsx
 ✅ components/layout/route-error-boundary.tsx
-✅ components/scene/use-pinned-intro.ts   (hooks: use-*.ts)
+✅ components/scene/use-scroll-progress.ts (hooks: use-*.ts)
 ✅ src/pages/audiophile/moondrop-ssp.tsx  (route slugs kebab-case too)
 ❌ moondropSSP.tsx (camelCase — renamed away, redirect kept)
 ❌ AnimatedBadge.tsx (PascalCase files)
@@ -228,8 +228,8 @@ category passed as data.
 
 Entrance-only fade (0.25s, keyed by pathname). Deliberately NOT
 AnimatePresence exit-mode (exit never completed reliably with this Router +
-motion@12) and opacity-only (a transform would break the homepage's
-position:fixed GSAP pin). The Suspense boundary sits ABOVE the keyed wrapper so
+motion@12) and opacity-only (a transform would become the containing block for
+position:fixed descendants). The Suspense boundary sits ABOVE the keyed wrapper so
 lazy-chunk loads keep the old page visible.
 
 ### 3. Hover/tap micro-interactions

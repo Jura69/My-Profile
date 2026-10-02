@@ -44,12 +44,14 @@ My-Profile/
 │   ├── layout/               # main (app shell), navbar, footer, detail-page,
 │   │                         #   not-found, route-error-boundary, theme-toggle
 │   ├── home/                 # hero-dawn, about-morning, skills-bento,
-│   │                         #   experience-dusk, night-contact + home-data.ts
+│   │                         #   experience-dusk (+ journey-trail, journey-card),
+│   │                         #   night-contact + home-data.ts
 │   ├── works/                # project-card, featured-project-card, works-tabs
 │   │                         #   + works-data.ts
-│   ├── scene/                # ambient-scene, celestial-arc, parallax-hills, stars,
-│   │                         #   zone-particles, zone-data, scene-provider,
-│   │                         #   use-scene, use-pinned-intro, svg/{hills,moon}
+│   ├── scene/                # ambient-scene, celestial-arc, drifting-clouds,
+│   │                         #   parallax-hills, stars, zone-particles, zone-data,
+│   │                         #   cloud-sprite, scene-provider, use-scene,
+│   │                         #   use-scroll-progress, svg/{hills,moon}
 │   ├── icons/                # kit-icon-base (IconComponent type), kit-icons-interface,
 │   │                         #   kit-icons-topics, kit-ornaments, kit-dividers (inline SVG),
 │   │                         #   spirit-mam-den (SpiritIcon navbar logo + SpiritIllustration)

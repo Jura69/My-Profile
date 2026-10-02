@@ -94,7 +94,8 @@ App (src/app.tsx — BrowserRouter)
 │       └── MainLayout (components/layout/main.tsx, memoized,
 │           │           <MotionConfig reducedMotion="user">)
 │           ├── AmbientScene (fixed background: sky gradient, moon arc,
-│           │                 parallax hills, stars, zone particles — GSAP-driven)
+│           │                 drifting clouds, parallax hills, stars, zone
+│           │                 particles — GSAP-driven)
 │           ├── Navbar (fixed; desktop links + Radix dropdown mobile menu;
 │           │           NAV_LINKS = Works, Audiophile — Activities off-nav by design)
 │           ├── RouteErrorBoundary (stale-chunk auto-reload guard)
