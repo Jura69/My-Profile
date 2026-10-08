@@ -2,9 +2,9 @@
 
 **Project Name:** Personal Portfolio Website
 **Owner:** Trương Tuấn Lộc (Jura69)
-**Version:** 2.x (Vite SPA)
+**Version:** 2.x (Vite SPA, prerendered at build)
 **Status:** Production (Live)
-**Last Updated:** 2026-07-30
+**Last Updated:** 2026-10-08
 **Live URL:** https://my-profile-jura69.vercel.app
 
 ---
@@ -228,7 +228,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 - Mobile menu opens/closes smoothly
 - Theme toggle instant without flash
 - Active link styled differently
-- Footer year updates automatically
+- Footer year is set at build time (refreshed by every deploy)
 
 ### FR-06: SEO & Metadata
 **Priority:** P0 (Critical)
@@ -239,15 +239,18 @@ Create a modern, high-performance portfolio website that showcases professional 
 - Twitter Card metadata
 - JSON-LD structured data (Person, Website, ProfilePage, Project, Breadcrumb schemas)
 - Canonical URLs for all pages
-- Static OG/description fallback in index.html for no-JS crawlers (FB/Zalo/LinkedIn)
-- robots.txt allowing all crawlers
-- sitemap.xml generated at build time from works-data (cannot drift from routes)
+- Every route prerendered to static HTML with its own `<head>`, so no-JS crawlers (FB/Zalo/LinkedIn) read per-page content and meta
+- Per-project 1200×630 social cards; `og:image:alt`/`twitter:image:alt`; 404 page `noindex` and served with a real 404 status
+- robots.txt with an explicit allow-all policy for search, AI answer and AI training crawlers (rationale in its comments)
+- sitemap.xml generated at build time from the prerendered route list (derived from works-data), `lastmod` from git history
+- Agent-readable surfaces: a markdown twin per page (`<link rel="alternate" type="text/markdown">`), `/llms.txt`, `/llms-full.txt` (served noindex)
 - Mobile-optimized viewport and theme color
 
 **Acceptance Criteria:**
 - Social share previews show correct title, description, image
 - Google Rich Results test passes for all schemas
 - Sitemap validates in Google Search Console
+- View-source of any route shows its full content and per-page meta
 - All pages indexed by search engines
 
 ### FR-07: Performance & Loading
@@ -339,8 +342,8 @@ Create a modern, high-performance portfolio website that showcases professional 
 ## Technical Constraints
 
 ### Technology Stack
-- **Build Tool:** Vite 6 - SPA build, no server-side rendering
-- **Framework:** React 19 + React Router 7 - Client-side routing only
+- **Build Tool:** Vite 6 - SPA build + build-time prerender to static HTML (no runtime server)
+- **Framework:** React 19 + React Router 7 - Hydrates prerendered pages, then client-side routing
 - **Styling:** Tailwind CSS 4 - Utility-first, minimal CSS output
 - **Animation:** Motion 12 + GSAP + Lenis - Lightweight and performant
 - **3D Graphics:** Three.js 0.172 - Necessary for the procedural hero spirit
@@ -415,10 +418,11 @@ Create a modern, high-performance portfolio website that showcases professional 
 - Vercel immutable caching for hashed build assets
 
 **SEO:**
-- Static OG fallback (index.html) + per-page meta hoisted by React 19
+- Prerendered HTML per route with per-page meta (React 19 `<SEO>` tags written into the static head)
 - JSON-LD structured data (5 schema types)
-- Canonical URLs
-- robots.txt + build-time sitemap.xml (derived from works-data)
+- Canonical URLs; per-project social cards
+- robots.txt + build-time sitemap.xml (derived from works-data, git-based lastmod)
+- Markdown twins + llms.txt / llms-full.txt for AI agents
 - Mobile-optimized viewport
 
 **Analytics:**
@@ -513,7 +517,7 @@ Lighthouse audits before/after changes. Real user metrics (Core Web Vitals) driv
 **Mitigation:**
 - Add blog content for long-tail keywords
 - Build backlinks through guest posts
-- Update sitemap dynamically
+- Keep sitemap `lastmod` truthful (git-derived, never the build date)
 - Monitor Google Search Console
 
 ### Risk 5: Browser Compatibility Issues

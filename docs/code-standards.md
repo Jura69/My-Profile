@@ -1,7 +1,7 @@
 # Code Standards & Development Guidelines
 
 **Project:** Personal Portfolio Website
-**Last Updated:** 2026-07-30
+**Last Updated:** 2026-10-08
 **Framework:** Vite 6 + React 19 + React Router 7
 **Styling:** Tailwind CSS 4
 **Enforcement:** ESLint (`.eslintrc.cjs`) + Prettier (`prettier.config.js`) + TypeScript strict
@@ -136,8 +136,11 @@ import { cn } from '../../lib/cn'
 - Route pages return a fragment directly (`MainLayout` wraps once in `src/app.tsx`;
   there is no per-page layout wrapper)
 - Data lives beside its section: `components/works/works-data.ts`,
-  `components/home/home-data.ts` — never inline arrays in pages (the sitemap
-  plugin imports works-data; inline data would drift out of the sitemap)
+  `components/home/home-data.ts` — never inline arrays in pages
+  (`lib/site-routes.ts` derives the prerendered routes, sitemap and llms.txt
+  from works-data; inline data would drift out of them)
+- Site-wide constants (origin, site name, markdown twin path) live in
+  `lib/site.ts` — import them, never re-type the URL
 - GSAP/Lenis code is ONLY allowed inside `components/scene/` (animation
   discipline contract — keeps scroll work off the React render path)
 
@@ -177,8 +180,10 @@ Conventions embedded in that skeleton:
 
 ## Component Patterns
 
-**App shell** (`components/layout/main.tsx`): AmbientScene + Navbar + children +
-Footer inside `<MotionConfig reducedMotion="user">`. Applied once.
+**App shell** (`components/layout/main.tsx`): AmbientScene + Navbar +
+`<main className="pt-18">` (route content only) + Footer as sibling landmarks
+inside `<MotionConfig reducedMotion="user">`. Applied once. Keep page content
+inside `<main>` — the markdown twins are built from exactly that element.
 
 **UI primitives** (`components/ui/`): small, prop-driven, no data fetching.
 Button styling is a composable function (`buttonClasses(variant, size)`) so
@@ -190,8 +195,9 @@ create section-specific card clones — the Chakra-era triplets
 (WorkGridItem/AudioGridItem/ActivitiesGridItem) were deleted for 90% duplication.
 
 **Detail pages**: shared pieces from `components/layout/detail-page.tsx`
-(`DetailImage`, `DetailMeta`, `DetailProse`…). Same rule: one implementation,
-category passed as data.
+(`DetailTitle`, `DetailImage`, `DetailMeta`, `DetailProse`…). Same rule: one
+implementation, category passed as data. `DetailTitle` renders the breadcrumb as
+`<nav aria-label="Breadcrumb">` and keeps the year badge beside the `h1`, not in it.
 
 **Memoization**: used where re-render cost is real — `MainLayout`, `Navbar`,
 `AmbientScene`, card lists. Don't memo trivial components.
@@ -211,6 +217,31 @@ category passed as data.
 - The `index.html` pre-paint theme script and `readInitialMode()` in
   `providers/theme.tsx` MUST stay logic-identical (first paint vs hydrated state)
 
+### Hydration safety (production pages are prerendered, then hydrated)
+
+The first client render MUST produce the same markup as the build-time render
+(`src/entry-server.tsx`). React does not patch mismatched attributes on hydration.
+
+- Anything the server cannot know — stored theme, OS preferences, query string,
+  `Math.random()`, pointer, viewport — switches in only after hydration via
+  `useHydrated()` (`lib/use-hydrated.ts`). Existing owners: `PageBanner`
+  (theme image), `WorksTabs` (`?tab=`), `AmbientScene` (random decor),
+  `HeroDawn` (3D canvas). `ThemeToggle` needs no gate: it is styled with `dark:`.
+- Providers above the routes (`ThemeProvider`, `SceneProvider`) must keep a
+  memoized context value that does not change at hydration time: a context
+  change reaching a lazy route's not-yet-hydrated Suspense boundary makes React
+  silently discard the prerendered HTML and client-render it (blank `<main>`,
+  layout shift). Never gate a provider value with `useHydrated()`.
+- No `typeof window` branches in render output; read browser state in effects
+  or behind `useHydrated()`.
+- Unavoidable text drift (footer year) gets `suppressHydrationWarning` on that
+  one element only.
+- Both entries render `AppShell` (`src/app.tsx`); providers and even null-output
+  components (analytics) go inside it so `useId` trees match.
+- Never ship content hidden in markup (`opacity: 0` initial styles): crawlers,
+  no-JS readers and the twins must see it. Hide only after mount, as `Reveal` does.
+- Verify with `yarn build && yarn preview` (dev never hydrates).
+
 ---
 
 ## Animation Patterns
@@ -218,11 +249,18 @@ category passed as data.
 ### 1. Entrance reveals — use the shared wrapper
 
 ```tsx
-// components/ui/reveal.tsx — fade + 14px rise, fires in view, 0.5s easeOut
+// components/ui/reveal.tsx — fade + rise (y, optional x), fires in view, 0.5s easeOut by default
 <Reveal delay={0.05 + i * 0.05}>
   <ProjectCard project={p} />
 </Reveal>
+// journey cards (experience-dusk.tsx): <Reveal x={32} y={12} duration={0.8} ease={EASE_OUT}>
 ```
+
+`Reveal` renders a plain `div` (visible in prerendered HTML) and hides only
+content that is below the fold at mount, then reveals it via motion's
+`inView`/`animate`. Reduced motion: never hidden. Above-the-fold hero entrance is
+the CSS `.hero-rise` keyframe (`src/styles/global.css`), not Motion, so it plays
+from the HTML without JS.
 
 ### 2. Page transitions — owned by `src/app.tsx`, do not add per-page
 
@@ -230,7 +268,8 @@ Entrance-only fade (0.25s, keyed by pathname). Deliberately NOT
 AnimatePresence exit-mode (exit never completed reliably with this Router +
 motion@12) and opacity-only (a transform would become the containing block for
 position:fixed descendants). The Suspense boundary sits ABOVE the keyed wrapper so
-lazy-chunk loads keep the old page visible.
+lazy-chunk loads keep the old page visible. The fade is skipped on the landing
+route (`useIsLandingPath`): that page is already painted from prerendered HTML.
 
 ### 3. Hover/tap micro-interactions
 
@@ -251,7 +290,8 @@ re-renders on scroll. Lenis + ScrollTrigger share one rAF via
 
 `MotionConfig reducedMotion="user"` covers Motion; `SceneProvider` exposes
 `reducedMotion` and skips Lenis/ScrollTrigger entirely (static composition at
-`apply(0.18)`); CSS keyframes use the `motion-safe:` variant. New animation code
+`apply(0.18)`); CSS keyframes use the `motion-safe:` variant or a
+`prefers-reduced-motion: reduce` override (`.hero-rise`). New animation code
 must degrade through one of these three paths — no unguarded infinite animation.
 
 ---
@@ -260,13 +300,14 @@ must degrade through one of these three paths — no unguarded infinite animatio
 
 ### Images
 
-- Format: WebP, max 1200px, quality ~80 (exceptions: `og-image-*.jpg` — OG
-  scrapers, `apple-touch-icon.png` — iOS requirement)
+- Format: WebP, max 1200px, quality ~80 (exceptions: `og-image-*.jpg` and
+  `og/<id>.jpg` — OG scrapers, `apple-touch-icon.png` — iOS requirement)
 - `<img loading="lazy">` below the fold; explicit dimensions where layout shift
   is possible
 - New images go through the same constraint before commit (ImageMagick/sharp;
   `scripts/optimize-images.mjs` exists for batch runs; spirit stills come from
-  `scripts/render-spirit-stills.mjs`)
+  `scripts/render-spirit-stills.mjs`; per-project social cards from
+  `scripts/generate-og-images.mjs` — re-run after changing a works cover)
 
 ### Code splitting
 
@@ -291,33 +332,45 @@ must degrade through one of these three paths — no unguarded infinite animatio
   description="150–160 char description"
   keywords="5–10 comma-separated keywords"
   type="article"            // or "website" / "profile"
+  image="/images/og/<id>.jpg" // detail pages: their 1200×630 social card
 />
 ```
 
-React 19 hoists these tags AHEAD of the static fallbacks in `index.html`; the
-static copies stay in the DOM as the answer for no-JS crawlers (FB/Zalo). When
-homepage copy changes, update BOTH `src/pages/index.tsx` SEO props and the
-static block in `index.html`.
+Optional props: `imageAlt` (defaults to the title), `noindex` (404 only — drops
+canonical and the markdown alternate link). The build-time prerender writes
+these tags into each page's static `<head>`, so crawlers that never run JS read
+the per-page values. The block between the `seo-fallback` markers in
+`index.html` is only the dev-server default; keep the markers (the prerender
+requires them) and keep its copy in step with the homepage SEO props.
 
 ### Structured data
 
 Homepage: `PersonSchema` + `WebsiteSchema` + `ProfilePageSchema`.
 Detail pages: `ProjectSchema` + `BreadcrumbSchema` (see `components/json-ld.tsx`).
 
-### Routes & sitemap
+### Routes, sitemap & AX files
 
 - Clean kebab-case URLs (`/works/foodlover`, `/audiophile/moondrop-ssp`)
 - Renaming a route REQUIRES a `<Navigate replace>` redirect from the old path
-- The sitemap is generated at build time from `works-data.ts` — new detail pages
-  are picked up automatically once their data entry exists; redirect-only and
-  404 routes are excluded by design
+  AND a permanent redirect in `vercel.json` (there is no SPA catch-all, so the
+  old URL would otherwise be a hard 404)
+- The prerendered pages, sitemap, markdown twins and `llms.txt`/`llms-full.txt`
+  all come from `listSiteRoutes()` (`lib/site-routes.ts`), which derives from
+  `works-data.ts` — new detail pages are picked up once their data entry exists
+  and their `<Route>` is in `src/app.tsx` (the prerender fails the build
+  otherwise); redirect-only and 404 routes are excluded by design
+- Every indexable page needs exactly one `h1` inside `<main>`: the prerender
+  requires it and the twin takes its name from it
 
 ---
 
 ## Accessibility Requirements
 
-- Semantic landmarks: `nav` / `main` / `footer` (see `main.tsx`, `navbar.tsx`);
-  exactly one `h1` per page, hierarchy h1 → h2 → h3 (`SectionHeading as=`)
+- Semantic landmarks: `nav` / `main` / `footer` as siblings (see `main.tsx`,
+  `navbar.tsx`); exactly one `h1` per page, hierarchy h1 → h2 → h3
+  (`SectionHeading as=`); breadcrumbs are `<nav aria-label="Breadcrumb">`
+- Visual-only separators get an `sr-only` equivalent (`DetailMeta` labels carry
+  a hidden ": " so screen readers and twins read "Stack: Go")
 - Descriptive `alt` on every image; `aria-hidden="true"` on decorative icons
   and the ambient scene root
 - Icon-only buttons carry `aria-label` (e.g. "Toggle color theme"); active nav
@@ -334,8 +387,8 @@ Detail pages: `ProjectSchema` + `BreadcrumbSchema` (see `components/json-ld.tsx`
   (`components/spirit/spirit-canvas.tsx` falls back to the 2D illustration on any WebGL failure)
 - Route-level: `components/layout/route-error-boundary.tsx` wraps the lazy
   route tree — auto-reloads once on stale-chunk import rejections (deploys
-  invalidate hashed chunks; the SPA rewrite otherwise turns that into a blank
-  page), then falls back to a manual reload prompt
+  delete old hashed chunks, so a long-lived tab's lazy import 404s), then falls
+  back to a manual reload prompt
 - No silent catches: log with context (`console.error('Failed to load 3D model:', error)`)
 
 ---
@@ -343,13 +396,15 @@ Detail pages: `ProjectSchema` + `BreadcrumbSchema` (see `components/json-ld.tsx`
 ## Testing Status
 
 **There is no automated test suite.** Quality gates that DO exist and are
-enforced: `tsc -b` strict, ESLint 0/0, real-build smoke test via `yarn preview`,
+enforced: `tsc -b` strict, ESLint 0/0, the prerender's own build-time checks
+(every listed route renders with an `h1`, not the 404 page), real-build smoke
+test via `yarn preview` (mirrors Vercel headers + 404),
 manual pre-deploy checklist (routes navigate, console clean, both themes, mobile
 layout, 3D loads, CV downloads).
 
 If a suite is introduced, prefer Vitest (Vite-native) + React Testing Library;
 the highest-value first assertions are the invariants most likely to rot
-silently: sitemap ⟷ route-table parity, and `index.html` theme script ⟷
+silently: every `src/app.tsx` route derivable from works-data, and `index.html` theme script ⟷
 `readInitialMode()` logic equality. Jest configs found in the repo earlier were
 dead artifacts and have been deleted — do not resurrect them by copy-paste.
 

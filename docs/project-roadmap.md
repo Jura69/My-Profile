@@ -1,8 +1,8 @@
 # Project Roadmap & Technical Debt
 
 **Project:** Personal Portfolio Website
-**Current Version:** v2.x (Vite SPA)
-**Last Updated:** 2026-07-30
+**Current Version:** v2.x (Vite SPA, prerendered at build)
+**Last Updated:** 2026-10-08
 **Status:** Production (Live) — https://my-profile-jura69.vercel.app
 
 ---
@@ -14,13 +14,15 @@ plus the review-v2 fixes plan (2026-07-30, plan `260729-1350`) closed out every
 tech-debt item from the v1 roadmap: homepage modularized into scene components,
 grid/detail component triplets unified (`ProjectCard`, `detail-page.tsx`),
 TypeScript everywhere, images WebP-optimized, sitemap generated at build time,
-lint 0/0, dead configs deleted.
+lint 0/0, dead configs deleted. Every route now ships as prerendered HTML that
+the browser hydrates, with markdown twins, `llms.txt` and per-project social
+cards (see [system-architecture.md](./system-architecture.md#rendering-strategy)).
 
 ```
 Feature Categories:
-├── Core Website (100%) ✅  homepage scenes · 11 projects · 1 activity · 4 audio reviews
+├── Core Website (100%) ✅  homepage scenes · projects · activities · audio reviews
 ├── Performance   (100%) ✅  lazy routes · vendor chunks · WebP · procedural 3D (no model file)
-├── SEO           (100%) ✅  static OG fallback · per-page meta · JSON-LD · build-time sitemap
+├── SEO / AX      (100%) ✅  prerendered HTML · per-page meta + social cards · JSON-LD · sitemap · markdown twins + llms.txt
 ├── Design        (100%) ✅  system-preference theme · day→night scenes · 3D Mầm Đèn spirit
 └── Future Enhancements 🔨  blog · contact form · PWA · CMS (below)
 ```
@@ -39,43 +41,32 @@ Ordered by value; all are LOW severity — none block production.
 ### 1. No automated test suite
 
 Quality rests on `tsc -b` strict + ESLint 0/0 + manual checklist + real-build
-`yarn preview` smoke tests. The two invariants most likely to rot silently:
+`yarn preview` smoke tests. The prerender fails the build when a route listed by
+`lib/site-routes.ts` is missing from `src/app.tsx`. Invariants that can still
+rot silently:
 
-- `dist/sitemap.xml` ⟷ `src/app.tsx` route-table parity
+- a route added to `src/app.tsx` but not derivable from `works-data.ts`
+  (never prerendered, missing from sitemap/llms.txt)
 - `index.html` pre-paint theme script ⟷ `readInitialMode()` logic equality
 
 Both are ~20-line node assertions. If a suite lands, prefer Vitest
 (Vite-native) + React Testing Library. **Effort:** 2–4h for the two
 assertions; more for a real suite.
 
-### 2. Cold deep-link to a lazy route shows a blank content area
-
-`Suspense fallback={null}` — navbar/footer render (MainLayout is outside) but
-content is empty until the chunk arrives. In-app navigations are unaffected
-(startTransition keeps the old page). A minimal skeleton matching the page
-background would read better on slow connections. **Effort:** 1h.
-
-### 3. Three legacy WebP files exceed the 150KB budget
+### 2. Three legacy WebP files exceed the 150KB budget
 
 `ka11-2.webp` (~185KB), `Ticket2.webp` (~194KB), `Ticket3.webp` (~165KB) — they
 predate the 2026-07-30 conversion pass, which only re-encoded the two files
 named in its scope. Re-encode at q≤80 / max 1200px. **Effort:** 15m.
 
-### 4. Dead `--color-timeline-*` tokens in `global.css`
+### 3. Dead `--color-timeline-*` tokens in `global.css`
 
 Four tokens defined but unreferenced (experience colors are inline in
 `home-data.ts`). Delete or wire up — owner's call (they were deliberately
 renamed in a recent content fix, so confirm intent before removing).
 **Effort:** 10m.
 
-### 5. `tsconfig.node.json` transitively type-checks `works-data.ts`
-
-The sitemap plugin imports works-data into the no-DOM node program. Fine today
-(pure data); a future React/DOM type in that file would break `tsc -b` with a
-confusing error. Mitigation if hit: split route data from card data.
-**Watch, no action.**
-
-### 6. `yarn analyze` shells out to `npx`
+### 4. `yarn analyze` shells out to `npx`
 
 `vite-bundle-visualizer` is not a devDependency; `npx` fetches it on demand in
 a yarn-1 repo. Accepted inconsistency (yarn 1 has no dlx). **No action.**
@@ -86,11 +77,8 @@ a yarn-1 repo. Accepted inconsistency (yarn 1 has no dlx). **No action.**
 
 Explicitly deferred, do not re-litigate without new evidence:
 
-- **Prerender/SSG for per-page OG** — crawler-visible per-page previews
-  currently limited to the homepage's static fallback; revisit if link-sharing
-  of detail pages becomes a real use case
 - **Data-driven routes** (`/works/:id` from works-data) — hand-written detail
-  pages are fine at 11 projects; revisit at ~20+
+  pages are fine at the current project count; revisit at ~20+
 - **AVIF images** — WebP is sufficient; AVIF adds encode complexity for
   marginal gains at this asset volume
 - **New Activities content** — route exists off-nav (linked from works page);
@@ -104,31 +92,30 @@ Quarters are aspirational, not commitments.
 
 ### Near-term — polish & safety nets
 
-1. **Parity assertions** (debt #1's cheap half) — sitemap/routes + theme-script
+1. **Parity assertions** (debt #1's cheap half) — route-table + theme-script
    equality checks wired into `yarn build` or CI. Effort: 2–4h
-2. **Suspense skeleton** (debt #2) — Effort: 1h
-3. **Contact form** — first server-side surface (Vercel function or EmailJS),
+2. **Contact form** — first server-side surface (Vercel function or EmailJS),
    validation + spam protection. Effort: ~6h
 
 ### Mid-term — content & reach
 
-4. **Blog section** — `/blog` listing + markdown posts (MDX or react-markdown),
+3. **Blog section** — `/blog` listing + markdown posts (MDX or react-markdown),
    syntax highlighting, RSS; biggest SEO lever available. Effort: ~12h
    - Candidate topics (updated to the real stack): the manualChunks
      circular-init postmortem · building the day→night GSAP scene · Draco
      96.7% compression walkthrough · React 19 metadata hoisting vs static OG
      fallbacks · WebP pipeline with sharp/ImageMagick
-5. **PWA / service worker** — design TOGETHER with the stale-chunk reload
+4. **PWA / service worker** — design TOGETHER with the stale-chunk reload
    strategy in `route-error-boundary.tsx` (a bad SW cache can turn one blank
    page into a persistent one). Effort: ~8h
-6. **Custom CSP headers** in `vercel.json`. Effort: 2h
+5. **Custom CSP headers** in `vercel.json`. Effort: 2h
 
 ### Long-term — only if the site's role grows
 
-7. **CMS** (Sanity/Contentful) — only when hardcoded TS data becomes a real
+6. **CMS** (Sanity/Contentful) — only when hardcoded TS data becomes a real
    bottleneck; it is currently a feature (typed, versioned, zero latency)
-8. **i18n** (en/vi)
-9. **Image CDN** — likely unnecessary: full image payload is ~2.5MB WebP served
+7. **i18n** (en/vi)
+8. **Image CDN** — likely unnecessary: full image payload is ~2.5MB WebP served
    from Vercel CDN; re-evaluate only with order-of-magnitude more images
 
 ---

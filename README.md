@@ -32,26 +32,28 @@
 - **Contact & Social** - GitHub, LinkedIn, Facebook, Instagram, Email
 
 ### Performance & SEO
-- **Full SEO Optimization** - Static OG/description fallback for no-JS crawlers + per-page meta (React 19 native), Twitter Card, JSON-LD
+- **Prerendered Pages** - Every route is rendered to real HTML at build time (full content + its own title, description, canonical, Open Graph, Twitter Card), then hydrated in the browser; crawlers and no-JS readers never see an empty shell
+- **Structured Data & Social Cards** - JSON-LD (Person, Website, Project, Breadcrumb); per-project 1200×630 social cards
+- **Agent-Readable (AX)** - A markdown twin of every page (`/works.md`, root `/index.md`, announced via `<link rel="alternate" type="text/markdown">`), plus `/llms.txt` and `/llms-full.txt`
+- **Sitemap & Robots** - `sitemap.xml` built from the same route list the pages render, with `lastmod` from git history; `robots.txt` allows search, AI answer and AI training crawlers (policy documented in the file)
 - **Core Web Vitals Optimized** - WebP images, route-level code splitting, lazy loading
 - **Analytics** - Vercel Analytics + Speed Insights
-- **Sitemap & Robots** - `sitemap.xml` generated at build time from the same data the pages render (no drift)
 
 ---
 
 ## Tech Stack
 
 **Frontend**
-- [Vite 6](https://vitejs.dev/) - Build tool & dev server (SPA)
+- [Vite 6](https://vitejs.dev/) - Build tool & dev server (SPA + build-time prerender)
 - [React 19](https://react.dev/) - UI library
-- [React Router 7](https://reactrouter.com/) - Client-side routing
+- [React Router 7](https://reactrouter.com/) - Routing (static render at build, client-side after hydration)
 - [Tailwind CSS 4](https://tailwindcss.com/) - Utility-first styling
 - [Motion 12](https://motion.dev/) - Component animations
 - [GSAP + Lenis](https://gsap.com/) - Scroll animations & smooth scrolling
 - [Three.js 0.172](https://threejs.org/) - 3D rendering
 
 **Deployment & Analytics**
-- [Vercel](https://vercel.com/) - Hosting (static SPA)
+- [Vercel](https://vercel.com/) - Hosting (static prerendered pages, clean URLs)
 - [@vercel/analytics](https://vercel.com/analytics) - Traffic analytics
 - [@vercel/speed-insights](https://vercel.com/docs/speed-insights) - Core Web Vitals
 
@@ -95,12 +97,15 @@ yarn preview
 
 ```bash
 yarn dev       # Start Vite dev server at http://localhost:5173
-yarn build     # TypeScript check + Vite production build (also emits dist/sitemap.xml)
-yarn preview   # Preview production build locally
+yarn build     # Type check, client build, SSR build, then prerender every route
+               #   → dist/<route>.html, 404.html, <route>.md twins, sitemap.xml, llms.txt, llms-full.txt
+yarn preview   # Serve dist/ locally with production parity (vercel.json headers, real 404)
 yarn lint      # ESLint check (0 errors / 0 warnings expected)
 yarn prettier  # Format code with Prettier
 yarn analyze   # Bundle size visualization (fetches vite-bundle-visualizer via npx)
 ```
+
+The dev server client-renders; prerendering and hydration only happen in `yarn build` output, so check those with `yarn build && yarn preview`.
 
 ---
 
@@ -109,8 +114,9 @@ yarn analyze   # Bundle size visualization (fetches vite-bundle-visualizer via n
 ```
 /
 ├── src/
-│   ├── main.tsx                 # Entry point (Vite + React 19)
-│   ├── app.tsx                  # App root: BrowserRouter, lazy routes, Suspense
+│   ├── main.tsx                 # Browser entry: hydrates prerendered HTML (client render in dev)
+│   ├── entry-server.tsx         # Build-time render of one route (used by the prerender)
+│   ├── app.tsx                  # AppShell (shared by both entries) + BrowserRouter, lazy routes
 │   ├── pages/                   # Route components (all lazy except index)
 │   │   ├── index.tsx            # Homepage
 │   │   ├── works.tsx            # Projects listing
@@ -129,20 +135,24 @@ yarn analyze   # Bundle size visualization (fetches vite-bundle-visualizer via n
 │   ├── scene/                   # Ambient scene system (GSAP, Lenis, particles)
 │   ├── icons/                   # Custom kit SVG icons/ornaments (kit-*.tsx) + spirit-mam-den.tsx (navbar logo, hero fallback)
 │   ├── spirit/                  # Hero 3D spirit (raw three: stage, painted material, spirit, moss island)
-│   ├── seo.tsx                  # Per-page meta (React 19 hoists to <head>)
+│   ├── seo.tsx                  # Per-page meta + markdown alternate link
 │   └── json-ld.tsx              # JSON-LD structured data
-├── lib/                         # Utilities (cn.ts)
+├── lib/                         # site.ts (site URL/name), site-routes.ts (route list), use-hydrated.ts, cn.ts
 ├── providers/                   # Theme provider + use-theme hook
 ├── scripts/
-│   ├── vite-plugin-sitemap.ts   # Emits dist/sitemap.xml from works-data at build
+│   ├── prerender-routes.mjs     # Last build step: route HTML, 404, markdown twins, sitemap, llms files
+│   ├── prerender/               # Helpers: HTML→markdown, git content dates, discovery files
+│   ├── vite-plugin-preview-vercel-parity.ts # Makes `vite preview` match Vercel (headers, 404)
+│   ├── generate-og-images.mjs   # Per-project social cards → public/images/og/
 │   └── render-spirit-stills.mjs # Renders Mầm Đèn stills + OG image from the hero scene
 ├── public/                      # Static assets
-│   ├── images/                  # WebP images: works covers, banners, ui textures, spirit stills (+ og-image-spirit.jpg)
+│   ├── images/                  # WebP images: works covers, banners, ui textures, spirit stills (+ og-image-spirit.jpg, og/<id>.jpg)
 │   ├── apple-touch-icon.png
 │   └── robots.txt
-├── vite.config.ts               # Vite config (plugins, vendor chunking)
+├── vite.config.ts               # Vite config (plugins, SSR bundling, vendor chunking)
+├── vercel.json                  # Clean URLs, redirects, markdown/llms headers (no SPA rewrite)
 ├── tsconfig.json                # TypeScript project references
-├── index.html                   # HTML entry: static OG meta + pre-paint theme script
+├── index.html                   # HTML template: dev-only fallback meta + pre-paint theme script
 └── docs/                        # Project documentation
 ```
 
@@ -152,9 +162,9 @@ yarn analyze   # Bundle size visualization (fetches vite-bundle-visualizer via n
 
 ### Update Personal Info
 1. **Profile Photo** - Replace `public/images/loc.webp` (also referenced by `components/json-ld.tsx`)
-2. **Projects / Activities / Audio Gear** - Edit `components/works/works-data.ts` (listing pages and the build-time sitemap both derive from it)
+2. **Projects / Activities / Audio Gear** - Edit `components/works/works-data.ts` (listing pages, prerendered routes, sitemap and llms.txt all derive from it). After adding or changing a project cover, run `node scripts/generate-og-images.mjs`
 3. **Skills, Experience, Social Links** - Edit `components/home/home-data.ts`
-4. **Meta defaults & site URL** - `components/seo.tsx`, the static fallback meta in `index.html`, and `ORIGIN` in `scripts/vite-plugin-sitemap.ts`
+4. **Meta defaults & site URL** - Site URL and name in `lib/site.ts` (`SITE_ORIGIN`, `SITE_NAME`); meta defaults in `components/seo.tsx`; also the fallback meta in `index.html` and the `Sitemap:` line in `public/robots.txt`
 
 ### Change Theme Colors
 Edit `src/styles/global.css` (Tailwind 4 theme tokens):
@@ -186,19 +196,20 @@ The spirit has no model file: it is built in code. Edit `components/spirit/fores
 1. Vercel Dashboard → Project Settings → Domains
 2. Add custom domain
 3. Update DNS records
-4. Update the site URL in `components/seo.tsx`, `index.html` static meta, and `ORIGIN` in `scripts/vite-plugin-sitemap.ts`
+4. Update the site URL in `lib/site.ts` (`SITE_ORIGIN`), the `index.html` fallback meta, and the `Sitemap:` line in `public/robots.txt`
 
 ---
 
 ## Performance
 
 **Optimizations:**
+- Prerendered HTML: content and the 2D spirit paint before any JS runs; the hero entrance is pure CSS
 - Vite's fast ESM-based dev server & lightning-fast HMR; SWC transpilation
 - Route-level code splitting: every page lazy-loads its own ~2KB chunk (homepage stays eager for LCP); app chunk is ~52KB
 - Vendor chunking: React, GSAP, Three.js, Motion, react-icons isolated — app edits don't invalidate cached vendor bytes
 - Tailwind CSS 4 JIT compiler (minimal CSS output)
 - GSAP ScrollTrigger + Lenis confined to scene components (zero re-renders on scroll)
-- Hero 3D spirit is procedural (no model download) and lazy-loaded: three.js and the stage stream in after the hero paints, and its render loop pauses off-screen or in a hidden tab
+- Hero 3D spirit is procedural (no model download) and lazy-loaded: three.js and the stage stream in after hydration, and its render loop pauses off-screen or in a hidden tab
 - WebP images (max 1200px), lazy loading and responsive sizing
 - Vercel immutable caching for hashed build assets
 

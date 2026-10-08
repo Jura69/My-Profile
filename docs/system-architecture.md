@@ -1,8 +1,8 @@
 # System Architecture Documentation
 
 **Project:** Personal Portfolio Website
-**Architecture Style:** Vite SPA (static, client-rendered)
-**Last Updated:** 2026-10-01
+**Architecture Style:** Vite SPA, prerendered to static HTML at build time, hydrated in the browser
+**Last Updated:** 2026-10-08
 **Build Tool:** Vite 6
 **Runtime:** React 19 + React Router 7 (client-side routing)
 
@@ -44,16 +44,19 @@
                     ┌────────▼────────┐
                     │  Vercel CDN     │
                     │  static dist/   │
-                    │  SPA rewrite    │
+                    │  <route>.html + │
+                    │  404.html       │
                     │  (vercel.json)  │
                     └─────────────────┘
 ```
 
 **Key decisions:**
 
-1. **Pure static SPA** — no server, no API; all content is TypeScript data.
-   React Router 7 handles navigation client-side; Vercel rewrites every path
-   to `index.html` (`vercel.json`).
+1. **Static SPA, prerendered** — no server, no API; all content is TypeScript
+   data. `yarn build` renders every route to real HTML (crawlers and no-JS
+   readers get full content + per-page `<head>`), the browser hydrates it, and
+   React Router 7 handles later navigation client-side. Unknown URLs get
+   `404.html` with a real 404 status — there is no SPA catch-all rewrite.
 2. **TypeScript + Tailwind 4** — strict TS everywhere; design tokens live in
    `src/styles/global.css` under `@theme` (Tailwind 4 has no config file here).
 3. **Two-tier animation system** — Motion 12 for component-level
@@ -80,39 +83,44 @@
 | Icons | Custom kit SVGs (`components/icons/kit-*.tsx`) + react-icons only for `si`/`di` tech logos and `io5` `IoLogo*` social logos | Kit icons ship in app code; react-icons stays in its own `vendor-icons` chunk. See [design-guidelines.md](./design-guidelines.md) |
 | Materials | `.paper-grain` / `.material-wash` utilities + `shadow-paper` tokens in `src/styles/global.css` | Textures from `public/images/ui/` |
 | Analytics | @vercel/analytics + @vercel/speed-insights | Core Web Vitals field data |
-| Hosting | Vercel | `vercel.json`: framework vite, `dist` output, SPA rewrite; default immutable caching for hashed assets |
+| Hosting | Vercel | `vercel.json`: framework vite, `dist` output, `cleanUrls`, no catch-all rewrite, markdown/llms headers; default immutable caching for hashed assets |
 
 ---
 
 ## Component Hierarchy
 
 ```
-App (src/app.tsx — BrowserRouter)
-├── ThemeProvider (providers/theme.tsx; context in providers/use-theme.ts)
-│   └── SceneProvider (components/scene/scene-provider.tsx — Lenis instance,
-│       │              ScrollTrigger sync, reducedMotion state, scroll reset per route)
-│       └── MainLayout (components/layout/main.tsx, memoized,
-│           │           <MotionConfig reducedMotion="user">)
-│           ├── AmbientScene (fixed background: sky gradient, moon arc,
-│           │                 drifting clouds, parallax hills, stars, zone
-│           │                 particles — GSAP-driven)
-│           ├── Navbar (fixed; desktop links + Radix dropdown mobile menu;
-│           │           NAV_LINKS = Works, Audiophile — Activities off-nav by design)
-│           ├── RouteErrorBoundary (stale-chunk auto-reload guard)
-│           │   └── AnimatedRoutes
-│           │       └── Suspense fallback={null}        ← ABOVE the keyed wrapper
-│           │           └── motion.div key={pathname}   (0.25s entrance fade)
-│           │               └── Routes (all static paths, no URL params)
-│           │                   ├── /                    HomePage (EAGER — LCP route)
-│           │                   ├── /works               + 11 detail routes (lazy)
-│           │                   ├── /activities          + /activities/ytc (lazy)
-│           │                   ├── /audiophile          + 4 detail routes (lazy)
-│           │                   ├── /audiophile/moondropSSP → Navigate replace
-│           │                   │                          → /audiophile/moondrop-ssp
-│           │                   └── *                    NotFound
-│           └── Footer
-├── Vercel Analytics
-└── Vercel Speed Insights
+App (src/app.tsx — BrowserRouter; the prerender wraps AppShell in StaticRouter)
+└── AppShell (shared by src/main.tsx and src/entry-server.tsx — identical tree,
+    │         so useId values match on hydration)
+    ├── ThemeProvider (providers/theme.tsx; context in providers/use-theme.ts)
+    │   └── SceneProvider (components/scene/scene-provider.tsx — Lenis instance,
+    │       │              ScrollTrigger sync, reducedMotion state, scroll reset per route)
+    │       └── MainLayout (components/layout/main.tsx, memoized,
+    │           │           <MotionConfig reducedMotion="user">)
+    │           ├── AmbientScene (fixed background: sky gradient, moon arc,
+    │           │                 drifting clouds, parallax hills, stars, zone
+    │           │                 particles — GSAP-driven; random decor after hydration)
+    │           ├── Navbar (fixed, 72px; desktop links + Radix dropdown mobile menu;
+    │           │           NAV_LINKS = Works, Audiophile — Activities off-nav by design)
+    │           ├── <main class="pt-18">  route content only; nav/main/footer are sibling
+    │           │   │                     landmarks (the markdown twins read this element)
+    │           │   └── RouteErrorBoundary (stale-chunk auto-reload guard)
+    │           │       └── AnimatedRoutes
+    │           │           └── Suspense fallback={null}        ← ABOVE the keyed wrapper
+    │           │               └── motion.div key={pathname}   (0.25s entrance fade; skipped
+    │           │                   │                            on the landing route + reduced motion)
+    │           │                   └── Routes (all static paths, no URL params)
+    │           │                       ├── /                    HomePage (EAGER — LCP route)
+    │           │                       ├── /works               + project detail routes (lazy)
+    │           │                       ├── /activities          + activity detail routes (lazy)
+    │           │                       ├── /audiophile          + device detail routes (lazy)
+    │           │                       ├── /audiophile/moondropSSP → Navigate replace
+    │           │                       │                          → /audiophile/moondrop-ssp
+    │           │                       └── *                    NotFound
+    │           └── Footer
+    ├── Vercel Analytics
+    └── Vercel Speed Insights
 ```
 
 Homepage composition (day→night scroll narrative): `HeroDawn` (lazy-loads the
@@ -125,8 +133,10 @@ Three.js `SpiritCanvas`), `AboutMorning`, `SkillsBento`, `ExperienceDusk`,
 incoming theme's image then crossfades (instant swap under reduced motion) and preloads the
 other theme at idle. Optional `title`/`ornament` props overlay the page `<h1>` on a dark scrim
 (used by works, audiophile, activities). Enterprise work detail pages use `<id>-cover-1280.webp` for SEO/JSON-LD
-images; default OG image is `/images/og-image-spirit.jpg` (`components/seo.tsx`), rendered from the
-spirit scene (see *Spirit stills* below).
+images; project detail pages use their own 1200×630 social card `/images/og/<id>.jpg`
+(`scripts/generate-og-images.mjs`, re-run after changing a cover); the default OG image is
+`/images/og-image-spirit.jpg` (`components/seo.tsx`), rendered from the spirit scene (see
+*Spirit stills* below).
 
 **Single layout rule:** `MainLayout` wraps once at the app root. Pages return
 fragments — there is no per-page layout wrapper (the old `layouts/article` shim
@@ -138,8 +148,12 @@ was a no-op and was deleted).
 
 ### Content (all hardcoded TypeScript)
 
-- `components/works/works-data.ts` — 11 projects, 1 activity, 4 audio devices;
-  single source for listing cards, detail hrefs AND the build-time sitemap
+- `components/works/works-data.ts` — projects, activities, audio devices;
+  single source for listing cards, detail hrefs AND (via `lib/site-routes.ts`
+  `listSiteRoutes`) the prerendered route list, sitemap and llms.txt
+- `lib/site.ts` — `SITE_ORIGIN`, `SITE_NAME`, `markdownPathFor`; the site URL
+  lives here (plus the `index.html` fallback meta and the `public/robots.txt`
+  Sitemap line)
 - `components/home/home-data.ts` — 23 skills / 4 groups, 4 experience entries,
   5 social links, tech-icon map
 
@@ -147,7 +161,7 @@ was a no-op and was deleted).
 
 | State | Owner | Mechanism |
 |---|---|---|
-| Theme mode | `ThemeProvider` | React context + localStorage (`theme` key; legacy `chakra-ui-color-mode` migrated). Persists ONLY explicit choices — OS-derived mode is never auto-written |
+| Theme mode | `ThemeProvider` | React context + localStorage (`theme` key; legacy `chakra-ui-color-mode` migrated). Persists ONLY explicit choices — OS-derived mode is never auto-written. Memoized value, always the real mode (hydration-safe) |
 | Reduced motion | `SceneProvider` | `matchMedia('(prefers-reduced-motion: reduce)')` + change listener |
 | Scroll progress | GSAP ScrollTrigger | CSS custom properties + data-attrs on the scene root — never React state |
 | 3D status (loading / ready / failed) | `SpiritCanvas` component | Local `useState`; the 2D illustration holds the cell until the first frame |
@@ -158,17 +172,38 @@ No Redux/Zustand — nothing crosses more than one context boundary.
 
 ## Rendering Strategy
 
-**Everything is CSR.** `src/main.tsx` calls `createRoot` (mount, not
-hydration — there is no SSR HTML to hydrate). Implications, and how each is
-mitigated:
+**Prerendered HTML, hydrated client.** `yarn build` renders every route to static
+HTML; in production `src/main.tsx` sees a non-empty `#root` and calls
+`hydrateRoot`. The dev server serves the empty `index.html` shell, so dev
+client-renders with `createRoot`. Implications, and how each is handled:
 
-1. **No-JS crawlers see only `index.html`** → static description/OG/Twitter
-   fallback block is maintained in `index.html`, kept in sync with the homepage
-   SEO props. JS-capable bots get per-page tags which React 19 hoists AHEAD of
-   the static copies (first-occurrence wins; verified in DOM).
-2. **First paint could flash the wrong theme** → inline pre-paint script in
+1. **Crawlers and no-JS readers get the real page** → each `dist/<route>.html`
+   carries the full page body and that page's own title/description/canonical/
+   OG/markdown-alternate tags (moved into `<head>` by the prerender). The
+   static fallback block in `index.html` (between the `seo-fallback` markers)
+   only serves the dev server. On hydration React reuses those head tags, also
+   for lazy routes (one title, one canonical).
+2. **Hydration must reproduce the server markup.** The server cannot know the
+   stored theme, OS motion preference, query string or random decor, so those
+   switch in only after hydration via `lib/use-hydrated.ts`
+   (`useSyncExternalStore`: false on the server and during hydration). Owners:
+   `PageBanner` (theme image), `WorksTabs` (`?tab=`), `AmbientScene` (stars,
+   clouds, particles), `HeroDawn` (2D `SpiritIllustration` in the HTML, lazy 3D
+   canvas after hydration). The footer year uses `suppressHydrationWarning`.
+   Providers above the routes keep memoized values that never change at
+   hydration time — a context change reaching a lazy route's still-dehydrated
+   Suspense boundary makes React discard its HTML and client-render it — so
+   `ThemeProvider` always carries the real mode and `ThemeToggle` is styled with
+   `dark:` variants. `SceneProvider` skips its scroll-to-top on the landing
+   route so a reader who scrolled before hydration is not pulled back up.
+   Entrance motion never hides content in the markup: `components/ui/reveal.tsx`
+   renders a plain `div` and hides only below-the-fold content after mount; the
+   hero entrance is the CSS `.hero-rise` keyframe (`src/styles/global.css`).
+3. **First paint could flash the wrong theme** → inline pre-paint script in
    `<head>` applies `.dark` before render; MUST stay logic-identical with
-   `readInitialMode()` (`providers/theme.tsx`):
+   `readInitialMode()` (`providers/theme.tsx`). `html` carries the theme
+   surface/ink/color-scheme and `.dark` sets first-paint sky/hill vars
+   (`src/styles/global.css`), so prerendered dark pages never flash day:
 
 ```javascript
 var stored = localStorage.getItem('theme') || localStorage.getItem('chakra-ui-color-mode');
@@ -177,29 +212,41 @@ var color = stored === 'light' ? 'light' : stored === 'dark' ? 'dark'
 document.documentElement.classList.toggle('dark', color === 'dark');
 ```
 
-3. **Deep links must resolve** → Vercel SPA rewrite serves `index.html` for any
-   path; React Router renders the matching route (or NotFound).
+4. **Deep links resolve to their own HTML** → Vercel `cleanUrls` serves
+   `/works` from `works.html`; unknown URLs get `404.html` (noindex) with a 404
+   status. React Router takes over navigation after hydration.
 
 ---
 
 ## Build & Deployment Pipeline
 
-### `yarn build` = `tsc -b && vite build`
+### `yarn build` (see `package.json`)
 
 ```
 1. tsc -b                    project references: tsconfig.app.json (src/components/
                              lib/providers) + tsconfig.node.json (vite.config.ts,
-                             which pulls scripts/vite-plugin-sitemap.ts + works-data)
+                             which pulls scripts/vite-plugin-preview-vercel-parity.ts
+                             + vercel.json)
 2. vite build                SWC transpile → tree-shake → Rollup chunks →
                              esbuild minify → content-hash filenames
 3. manualChunks              function form, matches path segment AFTER the
                              package dir (checkout-path-proof):
                                three→vendor-three · gsap/lenis→vendor-gsap ·
                                motion*→motion · react-icons→vendor-icons ·
-                               everything else→vendor-react
-4. sitemap plugin            generateBundle + emitFile → dist/sitemap.xml
-                             (20 URLs from works-data; redirects/404 excluded)
+                               everything else→vendor-react (client build only)
+4. vite build --ssr          src/entry-server.tsx → .ssr-build/ (all deps bundled)
+5. prerender                 scripts/prerender-routes.mjs: every route from
+                             lib/site-routes.ts#listSiteRoutes → dist/<route>.html
+                             (root index.html) + 404.html, markdown twins, sitemap.xml,
+                             llms.txt, llms-full.txt; then deletes .ssr-build/
 ```
+
+The prerender fails the build if a listed route renders the 404 page or has no
+`<h1>` (route missing from `src/app.tsx`). Helpers in `scripts/prerender/`:
+`html-to-markdown.mjs` (twins from each page's `<main>`), `content-dates.mjs`
+(sitemap `lastmod` / twin "Last updated" = last git commit touching the route's
+sources; omitted in a shallow clone, never the build date), `discovery-files.mjs`
+(sitemap, llms files).
 
 Chunk profile (raw sizes from the 2026-07-30 build, except where marked gz):
 vendor-react ~342KB · vendor-gsap ~136KB · motion ~129KB · vendor-icons ~48KB ·
@@ -213,6 +260,9 @@ separate misc chunk produced `TypeError: Cannot read properties of undefined
 (reading 'useLayoutEffect')` at module-eval and the app silently failed to
 mount — zero console errors on load. The dev server ignores `manualChunks`, so
 any chunking change requires a `yarn preview` smoke test of the real build.
+`vite preview` mirrors production through `scripts/vite-plugin-preview-vercel-parity.ts`:
+it applies the `vercel.json` `headers` rules and serves `dist/404.html` with a 404
+status for unknown URLs instead of Vite's SPA fallback.
 
 ### Deployment
 
@@ -220,12 +270,14 @@ any chunking change requires a `yarn preview` smoke test of the real build.
 git push master → Vercel builds (yarn build) → atomic deploy to CDN
 ```
 
-- `vercel.json`: `framework: vite`, `outputDirectory: dist`, SPA rewrite
-  `/(.*) → /index.html`. No custom cache headers are configured — hashed
-  `/assets/*` files rely on Vercel's default immutable caching; `public/`
-  files are etag-cached.
+- `vercel.json`: `framework: vite`, `outputDirectory: dist`, `cleanUrls: true`,
+  `trailingSlash: false`, no catch-all rewrite, permanent redirect
+  `/audiophile/moondropSSP` → `/audiophile/moondrop-ssp`, and headers giving
+  `*.md` / `llms*.txt` `text/markdown` + `X-Robots-Tag: noindex`. No custom
+  cache headers — hashed `/assets/*` files rely on Vercel's default immutable
+  caching; `public/` files are etag-cached.
 - Deploy-time failure mode: a redeploy deletes old hashed chunks; a long-lived
-  tab's next lazy import gets `index.html` (rewrite) and rejects →
+  tab's next lazy import gets a 404 and rejects →
   `RouteErrorBoundary` auto-reloads once (sessionStorage-guarded), else shows
   a manual reload prompt.
 
@@ -247,26 +299,39 @@ Assets    no 3D model file (spirit is procedural) · three + spirit chunk load
 
 Reduced motion: `SceneProvider` skips Lenis/ScrollTrigger and renders a static
 mid-morning composition; `MotionConfig reducedMotion="user"` disables Motion
-transforms; CSS keyframes are `motion-safe:`-gated.
+transforms; `Reveal` never hides content; CSS keyframes are `motion-safe:`-gated
+or switched off under `prefers-reduced-motion` (`.hero-rise`).
 
 ---
 
 ## SEO Architecture
 
 ```
-Layer 1  index.html          static description/OG/Twitter fallback (no-JS
-                             crawlers: FB/Zalo/LinkedIn) + canonical head setup
-Layer 2  <SEO> per page      React 19 hoists title/meta ahead of static copies;
-                             unique title/description/keywords/canonical per route
+Layer 1  prerendered HTML    every route ships its full body + own <head> tags
+                             (title, description, canonical, OG/Twitter incl.
+                             image alt/size, markdown alternate); index.html's
+                             fallback block is only the dev-server default
+Layer 2  <SEO> per page      components/seo.tsx: React 19 hoists title/meta on the
+                             client; same tags the prerender wrote; `noindex`
+                             prop (404: no canonical, no twin link)
 Layer 3  JSON-LD             PersonSchema · WebsiteSchema · ProfilePageSchema
                              (homepage) · ProjectSchema + BreadcrumbSchema (details)
-Layer 4  crawl surface       robots.txt (allow all + sitemap URL) ·
-                             dist/sitemap.xml generated at build from works-data
-                             (cannot drift from real routes)
+Layer 4  crawl surface       robots.txt (allow-all policy for search, AI answer
+                             and training bots, documented in its comments +
+                             sitemap URL) · dist/sitemap.xml from the prerendered
+                             route list, truthful lastmod
+Layer 5  AX (agent) surface  markdown twin per page (<route>.md, root /index.md)
+                             linked by <link rel="alternate" type="text/markdown">
+                             · /llms.txt (index) · /llms-full.txt (all twins);
+                             served noindex so they never compete with the HTML
 ```
 
+Social cards: `scripts/generate-og-images.mjs` turns each works cover into
+`public/images/og/<id>.jpg` (1200×630 JPG, the size every unfurler accepts).
+
 Route hygiene: kebab-case slugs; renames ship with a `<Navigate replace>`
-redirect (`/audiophile/moondropSSP` → `/audiophile/moondrop-ssp`).
+client redirect AND a permanent `vercel.json` redirect
+(`/audiophile/moondropSSP` → `/audiophile/moondrop-ssp`).
 
 ---
 
@@ -274,7 +339,8 @@ redirect (`/audiophile/moondropSSP` → `/audiophile/moondrop-ssp`).
 
 ```
 HeroDawn (components/home/hero-dawn.tsx)
-  └── SpiritBoundary            eager local error boundary → SpiritIllustration
+  ├── server + hydration pass: SpiritIllustration (2D) only
+  └── after hydration: SpiritBoundary            eager local error boundary → SpiritIllustration
         └── Suspense fallback={<SpiritIllustration/>}
               └── React.lazy(import components/spirit/spirit-canvas.tsx)
                     └── createSpiritStage()   components/spirit/spirit-stage.ts
@@ -355,11 +421,12 @@ fallback and navbar.
 Kept in `docs/project-roadmap.md` (single source). Architecture-relevant
 candidates there: contact form (first server-side surface — Vercel function),
 PWA/service worker (interacts with the stale-chunk reload strategy — design
-together), custom CSP headers, and an assertion-level test for
-sitemap ⟷ route-table parity.
+together), custom CSP headers, and a theme-script ⟷ `readInitialMode`
+parity assertion.
 
 ---
 
 **Maintained By:** Trương Tuấn Lộc
-**Verify against:** `src/app.tsx`, `vite.config.ts`, `vercel.json`,
+**Verify against:** `src/app.tsx`, `src/main.tsx`, `src/entry-server.tsx`,
+`scripts/prerender-routes.mjs`, `vite.config.ts`, `vercel.json`,
 `providers/theme.tsx`, `components/scene/*` before editing claims here.

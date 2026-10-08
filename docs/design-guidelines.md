@@ -373,6 +373,11 @@ Giữ **Animation Discipline Contract** của plan rebuild trước
 Motion cho component, Lenis cho scroll, content không animate liên tục, tôn trọng reduced-motion.
 Asset mới không thêm animation chạy liên tục; texture tĩnh.
 
+**Prerender-safe (2026-10):** trang được prerender ra HTML thật, nên markup không bao giờ chứa `opacity: 0`
+(crawler, người tắt JS và first paint sẽ thấy trống). Reveal dùng `components/ui/reveal.tsx` (div thường, chỉ ẩn
+phần dưới màn hình sau khi mount rồi hiện khi cuộn tới); entrance của hero là keyframe CSS `.hero-rise`.
+Reduced-motion: không ẩn gì cả. Chi tiết: [DESIGN.md](../DESIGN.md#motion-principles).
+
 **Nền ambient — mây cumulus trôi** (`components/scene/drifting-clouds.tsx`, `cloud-sprite.ts`): ≤ 5 đám (3 trên
 màn cảm ứng) ở nửa trên bầu trời. Sprite vẽ procedural 1 lần trên canvas (seed cố định): metaball các cụm nhỏ
 trong một vòm (lõi to, mép nhỏ → viền súp-lơ), đáy tan dần, mép gouache hơi xơ; độ sáng = độ dày mây theo hướng
