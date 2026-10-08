@@ -10,7 +10,7 @@ const Work = () => (
             title="Food Lover - Next.js Food Ordering Platform | Trương Tuấn Lộc"
             description="A full-stack food ordering and recipe discovery platform built with Next.js, Node.js, and MongoDB. Features Stripe payment integration, AWS S3 storage, and comprehensive admin dashboard."
             keywords="Next.js Food App, Food Ordering Platform, React Food App, Node.js Backend, MongoDB, Stripe Payment, AWS S3, Full-stack Project"
-            image="/images/works/Food1.webp"
+            image="/images/og/foodlover.jpg"
         />
         <ProjectSchema
             project={{

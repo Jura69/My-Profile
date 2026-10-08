@@ -10,7 +10,7 @@ const Work = () => (
             title="BAT Loyalty Program - Enterprise Platform | Trương Tuấn Lộc"
             description="Customer loyalty rewards and points management system for British American Tobacco. Handles point accumulation, redemption workflows, and reward catalog management."
             keywords="BAT Loyalty Program, Customer Loyalty, Rewards System, React, MUI, Redux, C# .NET, Enterprise"
-            image="/images/works/bat-loyalty-cover-1280.webp"
+            image="/images/og/bat-loyalty.jpg"
         />
         <ProjectSchema
             project={{

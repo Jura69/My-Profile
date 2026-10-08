@@ -10,7 +10,7 @@ const Work = () => (
             title="Warehouse Management - Enterprise Platform | Trương Tuấn Lộc"
             description="Inventory tracking system with barcode and QR scanning integration. Manages order workflows, stock movements, and warehouse operations for enterprise logistics."
             keywords="Warehouse Management, Inventory Tracking, Barcode Scanning, QR Code, React, MUI, DevExtreme, Redux, C# .NET"
-            image="/images/works/warehouse-management-cover-1280.webp"
+            image="/images/og/warehouse-management.jpg"
         />
         <ProjectSchema
             project={{

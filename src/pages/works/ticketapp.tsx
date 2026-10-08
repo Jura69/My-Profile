@@ -10,7 +10,7 @@ const Work = () => (
             title="Flutter Ticket Booking App | Trương Tuấn Lộc"
             description="A modern mobile application for booking movie tickets, built with Flutter for cross-platform compatibility. Features seat selection, secure booking, and intuitive user interface."
             keywords="Flutter App, Ticket Booking App, Mobile App Development, Flutter Projects, Movie Ticket App, Cross-platform App"
-            image="/images/works/Ticket1.webp"
+            image="/images/og/ticketapp.jpg"
         />
         <ProjectSchema
             project={{

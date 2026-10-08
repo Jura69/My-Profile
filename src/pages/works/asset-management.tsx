@@ -10,7 +10,7 @@ const Work = () => (
             title="Asset Management - Enterprise Platform | Trương Tuấn Lộc"
             description="Enterprise asset tracking and lifecycle management platform built at Creasia. Monitor, maintain, and optimize physical and digital assets from acquisition to disposal."
             keywords="Asset Management, Enterprise, React, TypeScript, MUI, Redux Toolkit, C# .NET, Entity Framework Core"
-            image="/images/works/asset-management-cover-1280.webp"
+            image="/images/og/asset-management.jpg"
         />
         <ProjectSchema
             project={{

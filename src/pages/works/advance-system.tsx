@@ -10,7 +10,7 @@ const Work = () => (
             title="AdvanceSystem - Retail Audit & Field-Force Platform | Trương Tuấn Lộc"
             description="Retail audit and trade-marketing field-force management platform for FMCG brands — mobile field apps, supervisor web portals, and consumer engagement."
             keywords="Retail Audit, Field Force Management, Trade Marketing, FMCG, .NET, SQL Server, Creasia"
-            image="/images/works/advance-system-cover-1280.webp"
+            image="/images/og/advance-system.jpg"
         />
         <ProjectSchema
             project={{

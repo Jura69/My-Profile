@@ -10,7 +10,7 @@ const Work = () => (
             title="Castrol Fleet Management - Enterprise Platform | Trương Tuấn Lộc"
             description="Vehicle fleet tracking platform with real-time geolocation via Mapbox. Includes maintenance scheduling, route optimization, and logistics management."
             keywords="Castrol Fleet Management, Vehicle Tracking, Geolocation, Mapbox, React, TypeScript, MUI, Full Calendar, C# .NET"
-            image="/images/works/castrol-fleet-cover-1280.webp"
+            image="/images/og/castrol-fleet.jpg"
         />
         <ProjectSchema
             project={{

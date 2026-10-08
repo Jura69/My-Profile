@@ -10,7 +10,7 @@ const Work = () => (
             title="E-commerce Microservices Platform | Trương Tuấn Lộc"
             description="A full-stack e-commerce platform built with microservices architecture. Features include a Node.js/Express backend with MongoDB & Redis, a React storefront, and supporting services for email, notifications (RabbitMQ), and media uploads."
             keywords="E-commerce, Microservices, Full-stack, Node.js, React, Express.js, MongoDB, Redis, RabbitMQ, REST API, Scalable Architecture"
-            image="/images/works/ecommerce.webp"
+            image="/images/og/ecommerce.jpg"
         />
         <ProjectSchema
             project={{

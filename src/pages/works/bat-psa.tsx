@@ -10,7 +10,7 @@ const Work = () => (
             title="BAT PSA - Enterprise Analytics Dashboard | Trương Tuấn Lộc"
             description="Administrative dashboard for problem statement analysis at British American Tobacco. Features advanced reporting, data visualization, and export capabilities."
             keywords="BAT PSA, Analytics Dashboard, Problem Statement Analysis, React, DevExtreme, TailwindCSS, Redux, C# .NET, Docker"
-            image="/images/works/bat-psa-cover-1280.webp"
+            image="/images/og/bat-psa.jpg"
         />
         <ProjectSchema
             project={{

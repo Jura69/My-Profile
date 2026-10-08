@@ -10,7 +10,7 @@ const Work = () => (
             title="Creasia ERP - Enterprise Resource Planning | Trương Tuấn Lộc"
             description="Comprehensive enterprise resource planning platform covering finance, HR, procurement, and supply chain modules. Features Gantt-based project planning and multi-language support."
             keywords="Creasia ERP, Enterprise Resource Planning, Finance, HR, Procurement, Supply Chain, React, TypeScript, MUI, Gantt, i18next, C# .NET"
-            image="/images/works/creasia-erp-cover-1280.webp"
+            image="/images/og/creasia-erp.jpg"
         />
         <ProjectSchema
             project={{

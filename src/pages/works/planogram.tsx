@@ -10,7 +10,7 @@ const Work = () => (
             title="Planogram AI - Retail Shelf Compliance | Trương Tuấn Lộc"
             description="AI-powered planogram compliance platform — computer vision verifies retail product placement automatically from shelf photos."
             keywords="Planogram Compliance, Computer Vision, Retail AI, Shelf Audit, Python, .NET, Creasia"
-            image="/images/works/planogram-cover-1280.webp"
+            image="/images/og/planogram.jpg"
         />
         <ProjectSchema
             project={{

@@ -10,7 +10,7 @@ const Work = () => (
             title="Mondelez Display Management - Retail Program Operations | Trương Tuấn Lộc"
             description="Enterprise retail display management for Mondelez — outlet exhibition programs with mobile field operations, compliance auditing, and licensing workflows."
             keywords="Display Management, Retail Operations, Compliance Audit, Mondelez, React, .NET, SQL Server, Creasia"
-            image="/images/works/mondelez-display-cover-1280.webp"
+            image="/images/og/mondelez-display.jpg"
         />
         <ProjectSchema
             project={{

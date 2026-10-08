@@ -10,7 +10,7 @@ const Work = () => (
             title="OCR CCCD - Vietnamese ID Card Data Extraction | Trương Tuấn Lộc"
             description="AI-powered OCR extracting structured data from Vietnamese citizen ID cards — supports both CCCD and the 2024 Căn cước format."
             keywords="OCR, CCCD, Vietnamese ID Card, Document AI, Data Extraction, Python"
-            image="/images/works/ocr-cccd-cover-1280.webp"
+            image="/images/og/ocr-cccd.jpg"
         />
         <ProjectSchema
             project={{
