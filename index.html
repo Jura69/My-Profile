@@ -48,13 +48,11 @@
       })();
     </script>
 
+    <!-- Static SEO/OG fallback, used only by the dev server: `yarn build` prerenders every
+         route (scripts/prerender-routes.mjs) and swaps this marked block for that page's own
+         title, description, canonical, OG and markdown-alternate tags. Keep the markers. -->
+    <!-- seo-fallback:start -->
     <title>Trương Tuấn Lộc (Jura69) – Full-stack Developer</title>
-
-    <!-- Static SEO/OG fallback for crawlers that never run JS (FB/Zalo/LinkedIn).
-         The per-page <SEO> component hoists its tags AHEAD of these (verified:
-         document.title follows the page), so JS-capable bots read the per-page
-         values first; these static copies remain in the DOM as the no-JS answer.
-         Keep title/description in sync with the homepage SEO props in src/pages/index.tsx. -->
     <meta name="description" content="Full-stack developer with 2+ years of experience in React, Node.js, and C#. Currently at CREASIA, building scalable web applications and backend services." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://my-profile-jura69.vercel.app/" />
@@ -66,6 +64,7 @@
     <meta name="twitter:title" content="Trương Tuấn Lộc (Jura69) – Full-stack Developer" />
     <meta name="twitter:description" content="Full-stack developer with 2+ years of experience in React, Node.js, and C#. Currently at CREASIA, building scalable web applications and backend services." />
     <meta name="twitter:image" content="https://my-profile-jura69.vercel.app/images/og-image-spirit.jpg" />
+    <!-- seo-fallback:end -->
   </head>
   <body>
     <div id="root"></div>

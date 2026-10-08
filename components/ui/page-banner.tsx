@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode, type SyntheticEvent } from
 import { useReducedMotion } from 'motion/react'
 import { useTheme, type Mode } from '../../providers/use-theme'
 import { cn } from '../../lib/cn'
+import { useHydrated } from '../../lib/use-hydrated'
 import type { IconComponent } from '../icons/kit-icon-base'
 
 type BannerPage = 'works' | 'audiophile' | 'activities' | '404'
@@ -44,7 +45,11 @@ export default function PageBanner({
     title,
     ornament: Ornament
 }: PageBannerProps) {
-    const { mode } = useTheme()
+    const { mode: themeMode } = useTheme()
+    // The prerendered <img> is the day banner (the server has no theme); a dark visitor's night
+    // banner fades in once hydrated — switching earlier would leave a stale src (React does not
+    // patch attributes during hydration).
+    const mode: Mode = useHydrated() ? themeMode : 'light'
     const reduceMotion = useReducedMotion()
     const [shown, setShown] = useState<Mode>(mode)
     // Mode whose incoming image is decoded and fading in; stale once the user toggles back.

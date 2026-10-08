@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir .ssr-build && node scripts/prerender-routes.mjs",
     "preview": "vite preview",
     "lint": "eslint src components lib providers scripts vite.config.ts --ext .ts,.tsx,.js,.jsx",
     "prettier": "prettier --write src components lib providers scripts vite.config.ts",

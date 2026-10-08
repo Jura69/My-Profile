@@ -13,7 +13,7 @@ import SpiritStill from '../ui/spirit-still'
 export default function NotFound() {
     return (
         <>
-            <SEO title="Page Not Found | Trương Tuấn Lộc" description="This page could not be found." />
+            <SEO title="Page Not Found | Trương Tuấn Lộc" description="This page could not be found." noindex />
             <section className="w-full px-4 py-16">
                 <div className="mx-auto flex max-w-md flex-col items-center text-center">
                     <PageBanner

@@ -83,3 +83,6 @@ __tests__
 
 # UI kit review assets (large AI-generated masters, kept local)
 /design/
+
+# Build-time prerender SSR bundle (removed after a successful build)
+/.ssr-build/

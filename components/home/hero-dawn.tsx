@@ -1,10 +1,11 @@
-import { Component, lazy, Suspense, type ReactNode } from 'react'
+import { Component, Fragment, lazy, Suspense, type ReactNode } from 'react'
 import { motion } from 'motion/react'
 import { Link as RouterLink } from 'react-router'
 import { ArrowRight, ChevronDown, Download } from '../icons/kit-icons-interface'
 import { buttonClasses } from '../ui/button-styles'
 import { SprigLeaf } from '../icons/kit-ornaments'
 import { SpiritIllustration } from '../icons/spirit-mam-den'
+import { useHydrated } from '../../lib/use-hydrated'
 
 // The 3D spirit stays lazy: the hero must render immediately, three + the stage stream in after.
 const LazySpiritCanvas = lazy(() => import('../spirit/spirit-canvas'))
@@ -25,17 +26,18 @@ const MotionRouterLink = motion.create(RouterLink)
 
 const NAME_WORDS = ['Trương', 'Tuấn', 'Lộc']
 
-const riseIn = (delay: number) => ({
-    initial: { opacity: 0, y: 16 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.5, delay, ease: 'easeOut' as const }
-})
+/** CSS entrance (`.hero-rise` in global.css): runs straight from the prerendered HTML, needs no
+ *  JS, survives hydration untouched and is off under reduced motion. */
+const riseIn = (delay: number) => ({ style: { animationDelay: `${delay}s` } })
 
 /**
  * Scene 1 of the day→night homepage: dawn hero. Full-bleed, composes with the
  * ambient scene behind it, the Mầm Đèn spirit (3D, 2D fallback) stands above the name.
  */
 export default function HeroDawn() {
+    // Server HTML carries the 2D spirit (visible without JS); the 3D canvas loads after hydration.
+    const hydrated = useHydrated()
+
     return (
         <section
             data-section="hero"
@@ -43,35 +45,42 @@ export default function HeroDawn() {
         >
             {/* Spirit — centered block, part of vertical flow; fixed cell so the 3D swap never shifts layout */}
             <div className="relative mb-6 h-[220px] w-[220px] md:h-[320px] md:w-[320px] lg:h-[360px] lg:w-[360px]">
-                <SpiritBoundary>
-                    <Suspense fallback={<SpiritIllustration />}>
-                        <LazySpiritCanvas />
-                    </Suspense>
-                </SpiritBoundary>
+                {hydrated ? (
+                    <SpiritBoundary>
+                        <Suspense fallback={<SpiritIllustration />}>
+                            <LazySpiritCanvas />
+                        </Suspense>
+                    </SpiritBoundary>
+                ) : (
+                    <SpiritIllustration />
+                )}
             </div>
 
-            <motion.p
+            <p
                 {...riseIn(0.05)}
-                className="mb-6 rounded-full border border-line bg-surface/60 px-4 py-2 font-rounded text-sm text-ink backdrop-blur-md"
+                className="hero-rise mb-6 rounded-full border border-line bg-surface/60 px-4 py-2 font-rounded text-sm text-ink backdrop-blur-md"
             >
                 <SprigLeaf className="inline-block align-[-0.3em] text-accent" /> A Full-stack Dev Engineer{' '}
                 <SprigLeaf className="inline-block align-[-0.3em] text-accent -scale-x-100" />
-            </motion.p>
+            </p>
 
-            <h1 className="font-rounded text-5xl font-bold tracking-tight text-ink md:text-7xl">
+            <h1 className="font-rounded text-5xl font-bold tracking-tight text-balance text-ink md:text-7xl">
+                {/* Spaces sit between the inline-block words: trailing space inside one is collapsed */}
                 {NAME_WORDS.map((word, i) => (
-                    <motion.span key={word} {...riseIn(0.15 + i * 0.12)} className="inline-block">
-                        {word}
-                        {i < NAME_WORDS.length - 1 ? ' ' : ''}
-                    </motion.span>
+                    <Fragment key={word}>
+                        {i > 0 && ' '}
+                        <span {...riseIn(0.15 + i * 0.12)} className="hero-rise inline-block">
+                            {word}
+                        </span>
+                    </Fragment>
                 ))}
             </h1>
 
-            <motion.p {...riseIn(0.55)} className="mt-4 font-rounded text-lg text-ink-muted">
-                Jura69 · Developer / Audiophile / Designer
-            </motion.p>
+            <p {...riseIn(0.55)} className="hero-rise mt-4 max-w-xl font-rounded text-lg text-balance text-ink-muted">
+                Jura69 · I build enterprise AI agent platforms and full-stack web apps
+            </p>
 
-            <motion.div {...riseIn(0.7)} className="mt-10 flex flex-wrap items-center justify-center gap-3">
+            <div {...riseIn(0.7)} className="hero-rise mt-10 flex flex-wrap items-center justify-center gap-3">
                 <MotionRouterLink
                     to="/works"
                     className={buttonClasses('solid', 'lg')}
@@ -89,7 +98,7 @@ export default function HeroDawn() {
                 >
                     <Download aria-hidden="true" /> Download CV
                 </motion.a>
-            </motion.div>
+            </div>
 
             <motion.div
                 aria-hidden="true"

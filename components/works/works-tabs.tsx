@@ -1,6 +1,7 @@
 import { useId, useRef, type ReactNode } from 'react'
 import { useSearchParams } from 'react-router'
 import { cn } from '../../lib/cn'
+import { useHydrated } from '../../lib/use-hydrated'
 
 export type WorksTabId = 'enterprise' | 'personal'
 
@@ -26,12 +27,14 @@ function parseTab(value: string | null): WorksTabId {
  * clean by dropping the param entirely.
  *
  * Both panels stay mounted and the inactive one is only `hidden`, which keeps
- * every project in the DOM for crawlers (this is a client-rendered SPA) while
+ * every project in the prerendered HTML for crawlers while
  * lazy images inside a hidden panel still skip their fetch until it is shown.
  */
 export default function WorksTabs({ panels }: { panels: Record<WorksTabId, ReactNode> }) {
     const [searchParams, setSearchParams] = useSearchParams()
-    const active = parseTab(searchParams.get('tab'))
+    // The prerender has no query string: hydrate on the default tab, then apply ?tab=.
+    const hydrated = useHydrated()
+    const active = hydrated ? parseTab(searchParams.get('tab')) : DEFAULT_TAB
     const baseId = useId()
     const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({})
 

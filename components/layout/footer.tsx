@@ -4,7 +4,7 @@ export default function Footer() {
     const year = new Date().getFullYear()
 
     return (
-        <footer className="mt-8 text-center">
+        <footer className="mt-8 pb-8 text-center">
             <div className="mb-3 text-ghibli-forest-green opacity-35 dark:text-[#4a6741]">
                 <svg
                     viewBox="0 0 400 40"
@@ -30,7 +30,8 @@ export default function Footer() {
                     <rect x="0" y="38" width="400" height="2" fill="currentColor" rx="1" />
                 </svg>
             </div>
-            <p className="font-rounded text-sm text-ink-muted opacity-50">
+            {/* Year is baked in at build time; a client in a newer year keeps it until the next build */}
+            <p className="font-rounded text-sm text-ink-muted opacity-50" suppressHydrationWarning>
                 <SprigLeaf className="inline-block align-[-0.3em] text-accent" /> &copy; {year} Jura69. All Rights
                 Reserved. <SprigLeaf className="inline-block align-[-0.3em] text-accent -scale-x-100" />
             </p>

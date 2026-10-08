@@ -1,13 +1,12 @@
-# Allow all search engines to crawl the site
+# Crawler policy (owner decision, 2026-10): the whole public site is open to every crawler —
+# search engines, AI answer/search bots (OAI-SearchBot, Claude-SearchBot, PerplexityBot),
+# user-requested fetches (ChatGPT-User, Claude-User) and training crawlers (GPTBot,
+# ClaudeBot, CCBot, Google-Extended). To opt out of AI training only, add a group such as:
+#   User-agent: GPTBot
+#   Disallow: /
+# Markdown twins (*.md), llms.txt and llms-full.txt stay crawlable; they send
+# X-Robots-Tag: noindex (vercel.json) so they never compete with the HTML pages.
 User-agent: *
 Allow: /
 
-# Sitemap location
 Sitemap: https://my-profile-jura69.vercel.app/sitemap.xml
-
-# Crawl-delay (optional, helps prevent server overload)
-Crawl-delay: 1
-
-# Disallow specific paths if needed
-# Disallow: /api/
-# Disallow: /_next/

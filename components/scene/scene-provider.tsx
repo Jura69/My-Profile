@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import Lenis from 'lenis'
 import { gsap } from 'gsap'
@@ -49,8 +49,16 @@ export default function SceneProvider({ children }: { children: React.ReactNode 
     }, [reducedMotion])
 
     // Route change: jump to top before paint, then refresh triggers once the
-    // new page has laid out (scroll distance depends on page height).
+    // new page has laid out (scroll distance depends on page height). Not on the
+    // first run: the landing page is prerendered and may already be scrolled when
+    // hydration mounts this provider — resetting it would yank the reader up.
+    const landingPath = useRef<string | null>(pathname)
     useLayoutEffect(() => {
+        if (landingPath.current === pathname) {
+            const raf = requestAnimationFrame(() => ScrollTrigger.refresh())
+            return () => cancelAnimationFrame(raf)
+        }
+        landingPath.current = null
         const lenis = lenisRef.current
         if (lenis) {
             lenis.scrollTo(0, { immediate: true, force: true })
@@ -61,5 +69,7 @@ export default function SceneProvider({ children }: { children: React.ReactNode 
         return () => cancelAnimationFrame(raf)
     }, [pathname])
 
-    return <SceneContext.Provider value={{ reducedMotion }}>{children}</SceneContext.Provider>
+    // Stable value: a context change above a not-yet-hydrated route boundary forces a client re-render
+    const value = useMemo(() => ({ reducedMotion }), [reducedMotion])
+    return <SceneContext.Provider value={value}>{children}</SceneContext.Provider>
 }

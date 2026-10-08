@@ -10,18 +10,17 @@ interface MainProps {
 
 /**
  * App shell. No width wrapper here — each page owns its own container
- * (homepage is full-bleed for the scene). pt-16 keeps content clear of the
- * fixed navbar, matching the spacing the old Chakra Container provided.
+ * (homepage is full-bleed for the scene). Landmarks stay siblings: <nav>,
+ * <main> (the route content only — also what the build-time markdown twins
+ * read) and <footer>. pt-18 keeps content clear of the fixed 72px navbar.
  */
 const Main = memo(function Main({ children }: MainProps) {
     return (
         <MotionConfig reducedMotion="user">
-            <main className="pt-16 pb-8">
-                <AmbientScene />
-                <Navbar />
-                {children}
-                <Footer />
-            </main>
+            <AmbientScene />
+            <Navbar />
+            <main className="pt-18">{children}</main>
+            <Footer />
         </MotionConfig>
     )
 })

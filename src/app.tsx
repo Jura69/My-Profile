@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useRef } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router'
 import { motion } from 'motion/react'
 import { Analytics } from '@vercel/analytics/react'
@@ -44,9 +44,21 @@ if (typeof window !== 'undefined') {
     window.history.scrollRestoration = 'manual'
 }
 
+/**
+ * True only while the first-rendered (landing) path is still shown. The landing page
+ * arrives as prerendered HTML that is already on screen, so fading it in again would
+ * blank it for a frame; only client-side navigations get the entrance fade.
+ */
+function useIsLandingPath(pathname: string) {
+    const landing = useRef<string | null>(pathname)
+    if (landing.current !== null && landing.current !== pathname) landing.current = null
+    return landing.current !== null
+}
+
 function AnimatedRoutes() {
     const location = useLocation()
     const { reducedMotion } = useScene()
+    const isLanding = useIsLandingPath(location.pathname)
 
     const routes = (
         <Routes location={location}>
@@ -81,12 +93,11 @@ function AnimatedRoutes() {
         </Routes>
     )
 
-    // Reduced-motion users get instant, always-visible page swaps — no transition.
     // Suspense sits ABOVE the keyed transition wrapper: the boundary stays
     // mounted across navigations, so in-transition chunk loads keep the old
-    // page on screen instead of flashing the null fallback.
-    if (reducedMotion) return <Suspense fallback={null}>{routes}</Suspense>
-
+    // page on screen instead of flashing the null fallback. During hydration a
+    // lazy route that has not loaded yet keeps its prerendered HTML in place.
+    //
     // Entrance-only page transition: a keyed motion element remounts per route and
     // fades in. Deliberately NOT AnimatePresence exit/mode="wait" — the exit never
     // reliably completed with this Router + motion@12 setup and left the old page
@@ -94,11 +105,13 @@ function AnimatedRoutes() {
     // Opacity-only (no transform): a transformed ancestor would become the
     // containing block for any position:fixed descendant (e.g. a ScrollTrigger pin)
     // and misalign it. SceneProvider handles scroll reset + ScrollTrigger refresh.
+    // The wrapper is always rendered (same tree on server, hydration and later
+    // renders); reduced motion and the landing page simply skip the fade.
     return (
         <Suspense fallback={null}>
             <motion.div
                 key={location.pathname}
-                initial={{ opacity: 0 }}
+                initial={reducedMotion || isLanding ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.25, ease: 'easeInOut' }}
             >
@@ -108,9 +121,12 @@ function AnimatedRoutes() {
     )
 }
 
-export default function App() {
+/** Everything inside the router. Shared by the browser entry and the build-time prerender
+ *  (src/entry-server.tsx): both must render the exact same tree — useId values depend on
+ *  sibling positions — so the analytics components (null output) live here too. */
+export function AppShell() {
     return (
-        <BrowserRouter>
+        <>
             <ThemeProvider>
                 <SceneProvider>
                     <MainLayout>
@@ -122,6 +138,14 @@ export default function App() {
             </ThemeProvider>
             <Analytics />
             <SpeedInsights />
+        </>
+    )
+}
+
+export default function App() {
+    return (
+        <BrowserRouter>
+            <AppShell />
         </BrowserRouter>
     )
 }

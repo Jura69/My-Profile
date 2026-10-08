@@ -23,7 +23,7 @@ interface DetailTitleProps {
 export function DetailTitle({ parentPath, parentLabel, year, children }: DetailTitleProps) {
     return (
         <div className="mb-6">
-            <div className="flex items-center gap-1 text-sm text-ink-muted">
+            <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-ink-muted">
                 <RouterLink
                     to={parentPath}
                     className="text-accent underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
@@ -31,11 +31,12 @@ export function DetailTitle({ parentPath, parentLabel, year, children }: DetailT
                     {parentLabel}
                 </RouterLink>
                 <ChevronRight aria-hidden="true" className="shrink-0" />
-            </div>
-            <h1 className="mt-1 flex flex-wrap items-center gap-2 font-rounded text-2xl font-bold text-ink">
-                {children}
+            </nav>
+            {/* Year pill sits beside the h1, not inside it, so the page title stays just the name */}
+            <div className="mt-1 flex flex-wrap items-center gap-2">
+                <h1 className="font-rounded text-2xl font-bold text-ink">{children}</h1>
                 {year && <Badge tone="accent">{year}</Badge>}
-            </h1>
+            </div>
         </div>
     )
 }
@@ -72,6 +73,8 @@ export function DetailMeta({ title, rows }: { title?: string; rows: MetaRow[] })
                         <li key={i} className="font-rounded text-sm text-ink">
                             <Badge tone={row.tone === 'red' ? 'neutral' : 'accent'} className="mr-2 align-middle">
                                 {row.label}
+                                {/* Reads "Stack: Go" to screen readers and in the markdown twin */}
+                                <span className="sr-only">: </span>
                             </Badge>
                             <span className="align-middle">{row.value}</span>
                         </li>

@@ -1,5 +1,4 @@
 import { useRef } from 'react'
-import { motion } from 'motion/react'
 import { ChevronRight } from '../icons/kit-icons-interface'
 import Reveal from '../ui/reveal'
 import SectionHeading from '../ui/section-heading'
@@ -10,8 +9,6 @@ import JourneyCard from './journey-card'
 import JourneyTrail, { JOURNEY_NODE_ATTR } from './journey-trail'
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const
-// Whole transform strings (not x/y) let Motion run the reveals as compositor animations
-const SETTLED = 'translate3d(0px, 0px, 0)'
 
 /**
  * Scene 4 — dusk. Work history as a forest trail: a meandering path runs down
@@ -61,36 +58,39 @@ export default function ExperienceDusk() {
                                         </span>
                                     </div>
 
-                                    <motion.div
+                                    <Reveal
                                         className="col-start-2 row-start-1 min-w-0 md:col-start-3 md:pl-2"
-                                        initial={{ opacity: 0, transform: 'translate3d(32px, 12px, 0)' }}
-                                        whileInView={{ opacity: 1, transform: SETTLED }}
-                                        viewport={{ once: true, margin: '0px 0px -12% 0px' }}
-                                        transition={{ duration: 0.8, ease: EASE_OUT }}
+                                        x={32}
+                                        y={12}
+                                        duration={0.8}
+                                        ease={EASE_OUT}
                                     >
                                         <JourneyCard entry={entry} />
-                                    </motion.div>
+                                    </Reveal>
 
                                     {/* Period on the near side of the trail (desktop; phones show it inside the card) */}
-                                    <motion.div
-                                        aria-hidden="true"
+                                    <Reveal
                                         className="hidden pt-5 pr-5 text-right md:col-start-1 md:row-start-1 md:block"
-                                        initial={{ opacity: 0, transform: 'translate3d(-16px, 0px, 0)' }}
-                                        whileInView={{ opacity: 1, transform: SETTLED }}
-                                        viewport={{ once: true, margin: '0px 0px -12% 0px' }}
-                                        transition={{ duration: 0.8, delay: 0.15, ease: EASE_OUT }}
+                                        x={-16}
+                                        y={0}
+                                        duration={0.8}
+                                        delay={0.15}
+                                        ease={EASE_OUT}
                                     >
-                                        {/* Each end of the range stays on one line; a narrow column breaks after the dash */}
-                                        <p className="font-rounded text-lg leading-snug font-bold text-ink">
-                                            {when.split(' – ').map((part, k) => (
-                                                <span key={part} className="whitespace-nowrap">
-                                                    {k > 0 && ' – '}
-                                                    {part}
-                                                </span>
-                                            ))}
-                                        </p>
-                                        {note && <p className="mt-1 text-sm text-ink-muted">{note}</p>}
-                                    </motion.div>
+                                        {/* Duplicate of the card's own period, so screen readers skip it */}
+                                        <div aria-hidden="true">
+                                            {/* Each end of the range stays on one line; a narrow column breaks after the dash */}
+                                            <p className="font-rounded text-lg leading-snug font-bold text-ink">
+                                                {when.split(' – ').map((part, k) => (
+                                                    <span key={part} className="whitespace-nowrap">
+                                                        {k > 0 && ' – '}
+                                                        {part}
+                                                    </span>
+                                                ))}
+                                            </p>
+                                            {note && <p className="mt-1 text-sm text-ink-muted">{note}</p>}
+                                        </div>
+                                    </Reveal>
                                 </li>
                             )
                         })}

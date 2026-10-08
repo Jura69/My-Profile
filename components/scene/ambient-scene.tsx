@@ -4,6 +4,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useScene } from './use-scene'
+import { useHydrated } from '../../lib/use-hydrated'
 import { getInterpolatedZone, lerpColor, lerp, clamp01, dawnAlpha, nightAlpha } from './zone-data'
 import CelestialArc from './celestial-arc'
 import DriftingClouds from './drifting-clouds'
@@ -42,6 +43,9 @@ const AmbientScene = memo(function AmbientScene() {
     const { reducedMotion } = useScene()
     const { mode } = useTheme()
     const isDark = mode === 'dark'
+    // Stars, clouds and particles are random / pointer-dependent, so they cannot match the
+    // prerendered HTML: they join the scene once hydration is done (decorative, aria-hidden).
+    const hydrated = useHydrated()
 
     useGSAP(
         () => {
@@ -119,7 +123,7 @@ const AmbientScene = memo(function AmbientScene() {
             })
             return () => trigger.kill()
         },
-        { scope: rootRef, dependencies: [isDark, reducedMotion], revertOnUpdate: true }
+        { scope: rootRef, dependencies: [isDark, reducedMotion, hydrated], revertOnUpdate: true }
     )
 
     return (
@@ -130,11 +134,11 @@ const AmbientScene = memo(function AmbientScene() {
                     background: 'linear-gradient(to bottom, var(--sky-top, #c4dceb), var(--sky-bottom, #f3e9dc))'
                 }}
             />
-            <Stars />
+            {hydrated && <Stars />}
             <CelestialArc />
-            <DriftingClouds />
+            {hydrated && <DriftingClouds />}
             <ParallaxHills />
-            <ZoneParticles />
+            {hydrated && <ZoneParticles />}
         </div>
     )
 })

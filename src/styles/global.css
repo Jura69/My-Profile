@@ -218,6 +218,50 @@
     --skill-tools-ink: #c4b5d8;
 }
 
+/* Page ground. The painted sky is a fixed layer that only exists once JS runs, so the root
+   carries the theme surface + ink itself: prerendered HTML, no-JS readers and full-page
+   captures never show dark-mode ink on a white canvas. scroll-padding clears the fixed
+   72px navbar (h-18) for in-page anchors. */
+@layer base {
+    html {
+        background-color: var(--surface);
+        color: var(--ink);
+        color-scheme: light;
+        scroll-padding-top: 5rem;
+    }
+    html.dark {
+        color-scheme: dark;
+    }
+}
+
+/* First-paint night sky: the scene's inline fallbacks are the day palette, and the scroll
+   script only writes its live values after hydration. Dark mode starts from the dawn-zone
+   night stops (zone-data.ts / ambient-scene HILL_COLORS) so prerendered pages never flash day. */
+.dark {
+    --sky-top: #1b2a55;
+    --sky-bottom: #2a3d68;
+    --hill-back: #16203a;
+    --hill-front: #0f1830;
+    --hill-tree: #0b1226;
+}
+
+/* Hero entrance (hero-dawn.tsx): pure CSS so it plays from the prerendered HTML without
+   waiting for JS, and is never re-run by hydration. Per-element delays come inline. */
+@keyframes hero-rise {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+}
+.hero-rise {
+    animation: hero-rise 0.5s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+    .hero-rise {
+        animation: none;
+    }
+}
+
 /* Paper texture: ::before sits behind content (z-index:-1 inside the host's own
    stacking context) so text is never covered and Reveal transforms carry it along. */
 @layer components {

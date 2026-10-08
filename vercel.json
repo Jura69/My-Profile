@@ -2,10 +2,36 @@
     "buildCommand": "yarn build",
     "outputDirectory": "dist",
     "framework": "vite",
-    "rewrites": [
+    "cleanUrls": true,
+    "trailingSlash": false,
+    "redirects": [
         {
-            "source": "/(.*)",
-            "destination": "/index.html"
+            "source": "/audiophile/moondropSSP",
+            "destination": "/audiophile/moondrop-ssp",
+            "permanent": true
+        }
+    ],
+    "headers": [
+        {
+            "source": "/(.*)\\.md",
+            "headers": [
+                { "key": "Content-Type", "value": "text/markdown; charset=utf-8" },
+                { "key": "X-Robots-Tag", "value": "noindex" }
+            ]
+        },
+        {
+            "source": "/llms.txt",
+            "headers": [
+                { "key": "Content-Type", "value": "text/markdown; charset=utf-8" },
+                { "key": "X-Robots-Tag", "value": "noindex" }
+            ]
+        },
+        {
+            "source": "/llms-full.txt",
+            "headers": [
+                { "key": "Content-Type", "value": "text/markdown; charset=utf-8" },
+                { "key": "X-Robots-Tag", "value": "noindex" }
+            ]
         }
     ]
 }
