@@ -17,15 +17,15 @@ const Work = () => (
                 title: 'Warehouse Management',
                 description: 'Inventory tracking with barcode scanning & order workflows',
                 year: '2024',
-                image: 'https://my-profile-jura69.vercel.app/images/works/warehouse-management-cover-1280.webp',
+                image: 'https://jura69.vercel.app/images/works/warehouse-management-cover-1280.webp',
                 stack: 'React 18, MUI, DevExtreme, Redux, QR/Barcode scanning, C# .NET'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'Warehouse Management', url: 'https://my-profile-jura69.vercel.app/works/warehouse-management' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'Warehouse Management', url: 'https://jura69.vercel.app/works/warehouse-management' }
             ]}
         />
         <Container>

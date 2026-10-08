@@ -17,15 +17,15 @@ const Work = () => (
                 title: 'BAT Loyalty Program',
                 description: 'Customer loyalty rewards & points management system',
                 year: '2024',
-                image: 'https://my-profile-jura69.vercel.app/images/works/bat-loyalty-cover-1280.webp',
+                image: 'https://jura69.vercel.app/images/works/bat-loyalty-cover-1280.webp',
                 stack: 'React 18, MUI, Redux, C# .NET, RESTful API'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'BAT Loyalty Program', url: 'https://my-profile-jura69.vercel.app/works/bat-loyalty' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'BAT Loyalty Program', url: 'https://jura69.vercel.app/works/bat-loyalty' }
             ]}
         />
         <Container>

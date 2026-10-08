@@ -13,9 +13,9 @@ const Audios = () => (
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Audiophile', url: 'https://my-profile-jura69.vercel.app/audiophile' },
-                { name: 'Shanling Onix XI1', url: 'https://my-profile-jura69.vercel.app/audiophile/onix' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Audiophile', url: 'https://jura69.vercel.app/audiophile' },
+                { name: 'Shanling Onix XI1', url: 'https://jura69.vercel.app/audiophile/onix' }
             ]}
         />
         <Container>

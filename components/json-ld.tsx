@@ -16,8 +16,8 @@ export const PersonSchema = () => (
             '@type': 'Person',
             name: 'Trương Tuấn Lộc',
             alternateName: 'Jura69',
-            url: 'https://my-profile-jura69.vercel.app',
-            image: 'https://my-profile-jura69.vercel.app/images/loc.webp',
+            url: 'https://jura69.vercel.app',
+            image: 'https://jura69.vercel.app/images/loc.webp',
             jobTitle: 'Full-stack Developer',
             worksFor: { '@type': 'Organization', name: 'CREASIA' },
             alumniOf: { '@type': 'EducationalOrganization', name: 'Nha Trang University' },
@@ -52,7 +52,7 @@ export const WebsiteSchema = () => (
             '@context': 'https://schema.org',
             '@type': 'WebSite',
             name: 'Trương Tuấn Lộc Portfolio',
-            url: 'https://my-profile-jura69.vercel.app',
+            url: 'https://jura69.vercel.app',
             description:
                 'Personal portfolio website of Trương Tuấn Lộc, a Full-stack Developer specializing in React, Node.js, and C#',
             author: { '@type': 'Person', name: 'Trương Tuấn Lộc' },
@@ -72,7 +72,7 @@ export const ProfilePageSchema = () => (
                 alternateName: 'Jura69',
                 description:
                     'Full-stack developer with expertise in building scalable web applications and backend services',
-                image: 'https://my-profile-jura69.vercel.app/images/loc.webp',
+                image: 'https://jura69.vercel.app/images/loc.webp',
                 sameAs: [
                     'https://github.com/Jura69',
                     'https://www.linkedin.com/in/tuấn-lộc-b24b391ab/',

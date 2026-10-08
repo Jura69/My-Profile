@@ -17,15 +17,15 @@ const Work = () => (
                 title: 'OCR CCCD',
                 description: 'AI-powered OCR that extracts structured data from Vietnamese ID cards',
                 year: '2026',
-                image: 'https://my-profile-jura69.vercel.app/images/works/ocr-cccd-cover-1280.webp',
+                image: 'https://jura69.vercel.app/images/works/ocr-cccd-cover-1280.webp',
                 stack: 'Python, OCR, Vietnamese NLP'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'OCR CCCD', url: 'https://my-profile-jura69.vercel.app/works/ocr-cccd' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'OCR CCCD', url: 'https://jura69.vercel.app/works/ocr-cccd' }
             ]}
         />
         <Container>

@@ -17,15 +17,15 @@ const Work = () => (
                 title: 'BAT PSA',
                 description: 'Admin dashboard for problem statement analysis with reporting',
                 year: '2024',
-                image: 'https://my-profile-jura69.vercel.app/images/works/bat-psa-cover-1280.webp',
+                image: 'https://jura69.vercel.app/images/works/bat-psa-cover-1280.webp',
                 stack: 'React 18, DevExtreme, TailwindCSS, Redux Toolkit, C# .NET 7, Docker'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'BAT PSA', url: 'https://my-profile-jura69.vercel.app/works/bat-psa' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'BAT PSA', url: 'https://jura69.vercel.app/works/bat-psa' }
             ]}
         />
         <Container>

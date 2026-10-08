@@ -18,15 +18,15 @@ const Work = () => (
                 description: 'Machine learning app for real-time sign language detection',
                 year: '2024',
                 github: 'https://github.com/Jura69/TensorflowProject',
-                image: 'https://my-profile-jura69.vercel.app/images/works/Tensorflow.webp',
+                image: 'https://jura69.vercel.app/images/works/Tensorflow.webp',
                 stack: 'Python, TensorFlow, Machine Learning, Computer Vision'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'TensorFlow SignLanguage', url: 'https://my-profile-jura69.vercel.app/works/tensorflow' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'TensorFlow SignLanguage', url: 'https://jura69.vercel.app/works/tensorflow' }
             ]}
         />
         <Container>

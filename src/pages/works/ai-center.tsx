@@ -18,15 +18,15 @@ const Work = () => (
                 description:
                     'Enterprise AI agent platform — multi-channel AI assistants with agent orchestration, custom skills & tools.',
                 year: '2026',
-                image: 'https://my-profile-jura69.vercel.app/images/works/ai-center-cover-1280.webp',
+                image: 'https://jura69.vercel.app/images/works/ai-center-cover-1280.webp',
                 stack: 'Go, PostgreSQL'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'Creasia AI Center', url: 'https://my-profile-jura69.vercel.app/works/ai-center' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'Creasia AI Center', url: 'https://jura69.vercel.app/works/ai-center' }
             ]}
         />
         <Container>

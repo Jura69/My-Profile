@@ -1,5 +1,5 @@
 /** Production origin: canonical URLs, sitemap, OG images, markdown twins and llms.txt. */
-export const SITE_ORIGIN = 'https://my-profile-jura69.vercel.app'
+export const SITE_ORIGIN = 'https://jura69.vercel.app'
 
 export const SITE_NAME = 'Trương Tuấn Lộc Portfolio'
 

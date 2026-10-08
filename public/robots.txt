@@ -9,4 +9,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://my-profile-jura69.vercel.app/sitemap.xml
+Sitemap: https://jura69.vercel.app/sitemap.xml

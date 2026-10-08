@@ -17,17 +17,17 @@ const Work = () => (
                 title: 'Mondelez Display Management',
                 description: 'Retail display program management with field operations & compliance auditing',
                 year: '2025',
-                image: 'https://my-profile-jura69.vercel.app/images/works/mondelez-display-cover-1280.webp',
+                image: 'https://jura69.vercel.app/images/works/mondelez-display-cover-1280.webp',
                 stack: 'React, .NET, SQL Server'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
                 {
                     name: 'Mondelez Display Management',
-                    url: 'https://my-profile-jura69.vercel.app/works/mondelez-display'
+                    url: 'https://jura69.vercel.app/works/mondelez-display'
                 }
             ]}
         />

@@ -15,8 +15,8 @@ const Activities = () => (
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Activities', url: 'https://my-profile-jura69.vercel.app/activities' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Activities', url: 'https://jura69.vercel.app/activities' }
             ]}
         />
 

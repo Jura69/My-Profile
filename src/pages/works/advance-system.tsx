@@ -17,15 +17,15 @@ const Work = () => (
                 title: 'AdvanceSystem',
                 description: 'Retail audit & field-force management platform for FMCG brands',
                 year: '2025',
-                image: 'https://my-profile-jura69.vercel.app/images/works/advance-system-cover-1280.webp',
+                image: 'https://jura69.vercel.app/images/works/advance-system-cover-1280.webp',
                 stack: '.NET, ASP.NET Core, SQL Server'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'AdvanceSystem', url: 'https://my-profile-jura69.vercel.app/works/advance-system' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'AdvanceSystem', url: 'https://jura69.vercel.app/works/advance-system' }
             ]}
         />
         <Container>

@@ -9,7 +9,7 @@
 
 ## Live Demo
 
-**[View Live Website →](https://my-profile-jura69.vercel.app)**
+**[View Live Website →](https://jura69.vercel.app)**
 
 ---
 
@@ -259,14 +259,14 @@ MIT License - see [LICENSE](LICENSE) file
 
 - GitHub: [@Jura69](https://github.com/Jura69)
 - LinkedIn: [Trương Tuấn Lộc](https://www.linkedin.com/in/tuấn-lộc-b24b391ab/)
-- Website: [Portfolio](https://my-profile-jura69.vercel.app)
+- Website: [Portfolio](https://jura69.vercel.app)
 - Email: Loctruongtuan@gmail.com
 
 ---
 
 <div align="center">
 
-**[Live Demo](https://my-profile-jura69.vercel.app)** | **[Report Bug](https://github.com/Jura69/My-Profile/issues)** | **[Request Feature](https://github.com/Jura69/My-Profile/issues)**
+**[Live Demo](https://jura69.vercel.app)** | **[Report Bug](https://github.com/Jura69/My-Profile/issues)** | **[Request Feature](https://github.com/Jura69/My-Profile/issues)**
 
 Made with ❤️ using Vite, React 19, and Tailwind CSS 4
 

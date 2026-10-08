@@ -17,15 +17,15 @@ const Work = () => (
                 title: 'Vending Management',
                 description: 'Vending machine management platform with sales analytics & inventory tracking',
                 year: '2025',
-                image: 'https://my-profile-jura69.vercel.app/images/works/vending-ai-agent-cover-1280.webp',
+                image: 'https://jura69.vercel.app/images/works/vending-ai-agent-cover-1280.webp',
                 stack: 'React 18, TypeScript, MUI, Redux Toolkit, ApexCharts, C# .NET'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'Vending Management', url: 'https://my-profile-jura69.vercel.app/works/vending-ai-agent' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'Vending Management', url: 'https://jura69.vercel.app/works/vending-ai-agent' }
             ]}
         />
         <Container>

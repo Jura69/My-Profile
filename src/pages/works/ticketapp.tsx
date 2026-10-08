@@ -18,15 +18,15 @@ const Work = () => (
                 description: 'A modern mobile application for booking movie tickets',
                 year: '2024',
                 github: 'https://github.com/Jura69/Flutter-TicketApp',
-                image: 'https://my-profile-jura69.vercel.app/images/works/Ticket1.webp',
+                image: 'https://jura69.vercel.app/images/works/Ticket1.webp',
                 stack: 'Flutter, Node.js, Express, MongoDB'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'Flutter Ticket App', url: 'https://my-profile-jura69.vercel.app/works/ticketapp' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'Flutter Ticket App', url: 'https://jura69.vercel.app/works/ticketapp' }
             ]}
         />
         <Container>

@@ -3,7 +3,7 @@
 **Project:** Personal Portfolio Website
 **Current Version:** v2.x (Vite SPA, prerendered at build)
 **Last Updated:** 2026-10-08
-**Status:** Production (Live) — https://my-profile-jura69.vercel.app
+**Status:** Production (Live) — https://jura69.vercel.app
 
 ---
 

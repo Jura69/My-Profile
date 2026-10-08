@@ -17,15 +17,15 @@ const Work = () => (
                 title: 'Asset Management',
                 description: 'Enterprise asset tracking & lifecycle management platform',
                 year: '2024',
-                image: 'https://my-profile-jura69.vercel.app/images/works/asset-management-cover-1280.webp',
+                image: 'https://jura69.vercel.app/images/works/asset-management-cover-1280.webp',
                 stack: 'React 18, TypeScript, MUI, Redux Toolkit, C# .NET 7, Entity Framework Core'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'Asset Management', url: 'https://my-profile-jura69.vercel.app/works/asset-management' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'Asset Management', url: 'https://jura69.vercel.app/works/asset-management' }
             ]}
         />
         <Container>

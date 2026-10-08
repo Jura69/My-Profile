@@ -5,7 +5,7 @@
 **Version:** 2.x (Vite SPA, prerendered at build)
 **Status:** Production (Live)
 **Last Updated:** 2026-10-08
-**Live URL:** https://my-profile-jura69.vercel.app
+**Live URL:** https://jura69.vercel.app
 
 ---
 
@@ -646,7 +646,7 @@ Lighthouse audits before/after changes. Real user metrics (Core Web Vitals) driv
 
 ### C. Key URLs
 
-- **Production:** https://my-profile-jura69.vercel.app
+- **Production:** https://jura69.vercel.app
 - **GitHub Repo:** https://github.com/Jura69/My-Profile
 - **LinkedIn:** https://www.linkedin.com/in/tuấn-lộc-b24b391ab/
 - **Email:** Loctruongtuan@gmail.com

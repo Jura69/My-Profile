@@ -43,7 +43,7 @@ Run against a local preview (it mirrors Vercel headers and 404s):
 ```bash
 yarn build && yarn preview --port 4173
 node <ak-enhance-ux-ax>/scripts/check-discovery-surfaces.mjs http://localhost:4173 \
-  --site-origin https://my-profile-jura69.vercel.app --sample 12
+  --site-origin https://jura69.vercel.app --sample 12
 ```
 
 - Exit 0 with no warnings. Accepted info: no `Accept: text/markdown` negotiation (twins are

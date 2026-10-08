@@ -18,15 +18,15 @@ const Work = () => (
                 description:
                     'AI-powered retail shelf compliance — verifies product placement automatically from shelf photos with computer vision.',
                 year: '2026',
-                image: 'https://my-profile-jura69.vercel.app/images/works/planogram-cover-1280.webp',
+                image: 'https://jura69.vercel.app/images/works/planogram-cover-1280.webp',
                 stack: 'Python, .NET, Computer Vision'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'Planogram AI', url: 'https://my-profile-jura69.vercel.app/works/planogram' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'Planogram AI', url: 'https://jura69.vercel.app/works/planogram' }
             ]}
         />
         <Container>

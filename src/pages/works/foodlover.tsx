@@ -18,15 +18,15 @@ const Work = () => (
                 description: 'A full-stack food ordering and recipe discovery platform',
                 year: '2023',
                 github: 'https://github.com/Jura69/Nextjs-FoodOrder',
-                image: 'https://my-profile-jura69.vercel.app/images/works/Food1.webp',
+                image: 'https://jura69.vercel.app/images/works/Food1.webp',
                 stack: 'Next.js, Node.js, MongoDB, AWS S3, Stripe'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'Food Lover', url: 'https://my-profile-jura69.vercel.app/works/foodlover' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'Food Lover', url: 'https://jura69.vercel.app/works/foodlover' }
             ]}
         />
         <Container>

@@ -18,15 +18,15 @@ const Work = () => (
                 description: 'Full-stack e-commerce platform with microservices architecture',
                 year: '2024',
                 github: 'https://github.com/Jura69/E-com-NodeBE',
-                image: 'https://my-profile-jura69.vercel.app/images/works/ecommerce.webp',
+                image: 'https://jura69.vercel.app/images/works/ecommerce.webp',
                 stack: 'Node.js, Express.js, React, MongoDB, Redis, RabbitMQ'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'E-commerce Platform', url: 'https://my-profile-jura69.vercel.app/works/ecommerce' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'E-commerce Platform', url: 'https://jura69.vercel.app/works/ecommerce' }
             ]}
         />
         <Container>

@@ -17,15 +17,15 @@ const Work = () => (
                 title: 'Creasia ERP',
                 description: 'Comprehensive ERP covering finance, HR, procurement & supply chain',
                 year: '2025',
-                image: 'https://my-profile-jura69.vercel.app/images/works/creasia-erp-cover-1280.webp',
+                image: 'https://jura69.vercel.app/images/works/creasia-erp-cover-1280.webp',
                 stack: 'React 18, TypeScript, MUI, Gantt charts, Full Calendar, i18next, C# .NET'
             }}
         />
         <BreadcrumbSchema
             items={[
-                { name: 'Home', url: 'https://my-profile-jura69.vercel.app/' },
-                { name: 'Works', url: 'https://my-profile-jura69.vercel.app/works' },
-                { name: 'Creasia ERP', url: 'https://my-profile-jura69.vercel.app/works/creasia-erp' }
+                { name: 'Home', url: 'https://jura69.vercel.app/' },
+                { name: 'Works', url: 'https://jura69.vercel.app/works' },
+                { name: 'Creasia ERP', url: 'https://jura69.vercel.app/works/creasia-erp' }
             ]}
         />
         <Container>
