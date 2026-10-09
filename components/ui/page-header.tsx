@@ -26,7 +26,7 @@ interface PageHeaderProps {
  */
 export default function PageHeader({ crumbs, title, eyebrow, lead, ornament: Ornament, media }: PageHeaderProps) {
     return (
-        <Container size="page" className="pt-8 md:pt-14">
+        <Container size="page" className="pt-8 md:pt-14 short:pt-6">
             <header>
                 <Breadcrumb items={crumbs} />
                 {media?.kind === 'banner' && (

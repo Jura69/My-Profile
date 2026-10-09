@@ -184,7 +184,9 @@ export default function PageBanner({
                           // Room for a 2-line H1 + eyebrow on phones. min-w-0: otherwise the min-height is
                           // transferred through the aspect ratio into a min-width and the frame overflows.
                           aspect === 'cover' ? 'min-h-[260px]' : 'min-h-[240px]',
-                          'w-full min-w-0'
+                          // Short desktops: cap the height so the lead below stays above the fold. The
+                          // image is object-cover, so this only crops more of the painting.
+                          'w-full min-w-0 short:max-h-[52svh]'
                       ]
                     : 'relative aspect-[2/1] overflow-hidden rounded-2xl border border-line bg-surface-sunken sm:aspect-[3/1]',
                 className
