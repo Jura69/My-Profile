@@ -55,14 +55,21 @@ function writeOut(path, content) {
 
 const htmlPathFor = route => (route === '/' ? '/index.html' : `${route}.html`)
 
-/** Markdown twin: name, summary, canonical and date up top, then the page content. */
+/** Markdown twin: name, summary, canonical and date up top, then the page content.
+ *  The name is the page's first H1, unless that H1 carries `data-twin-name` (Home: the H1 is the
+ *  value line, while the twin and llms files are named after the owner); its text then stays as a line. */
 function buildTwin({ body, head, route, url, date }) {
     const main = body.match(/<main\b[^>]*>([\s\S]*)<\/main>/)?.[1] ?? ''
     const markdown = htmlToMarkdown(main, origin)
     const description = decode(head.match(/<meta\b[^>]*\bname="description" content="([^"]*)"/)?.[1] ?? '')
     const h1 = markdown.match(/^# (.+)$/m)
-    const name = h1 ? h1[1].trim() : decode(head.match(/<title\b[^>]*>([^<]*)<\/title>/)?.[1] ?? route)
-    const rest = h1 ? markdown.replace(h1[0], '').trim() : markdown
+    const twinName = main.match(/<h1\b[^>]*\bdata-twin-name="([^"]*)"/)?.[1]
+    const name = twinName
+        ? decode(twinName)
+        : h1
+          ? h1[1].trim()
+          : decode(head.match(/<title\b[^>]*>([^<]*)<\/title>/)?.[1] ?? route)
+    const rest = h1 ? markdown.replace(h1[0], twinName ? h1[1].trim() : '').trim() : markdown
     const meta = [`Canonical: ${url}`, date && `Last updated: ${date}`].filter(Boolean).join('\n')
     const twin = `# ${name}\n\n> ${description}\n\n${meta}\n\n${rest}\n`.replace(/\n{3,}/g, '\n\n')
     return { name, description, markdown: twin }

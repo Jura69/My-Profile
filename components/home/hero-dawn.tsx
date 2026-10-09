@@ -1,11 +1,13 @@
-import { Component, Fragment, lazy, Suspense, type ReactNode } from 'react'
+import { Component, lazy, Suspense, type ReactNode } from 'react'
 import { motion } from 'motion/react'
 import { Link as RouterLink } from 'react-router'
 import { ArrowRight, ChevronDown, Download } from '../icons/kit-icons-interface'
 import { buttonClasses } from '../ui/button-styles'
-import { SprigLeaf } from '../icons/kit-ornaments'
+import Container from '../ui/container'
 import { SpiritIllustration } from '../icons/spirit-mam-den'
 import { useHydrated } from '../../lib/use-hydrated'
+import HeroProofStats from './hero-proof-stats'
+import HeroNowBuilding from './hero-now-building'
 
 // The 3D spirit stays lazy: the hero must render immediately, three + the stage stream in after.
 const LazySpiritCanvas = lazy(() => import('../spirit/spirit-canvas'))
@@ -24,94 +26,120 @@ class SpiritBoundary extends Component<{ children: ReactNode }, { failed: boolea
 
 const MotionRouterLink = motion.create(RouterLink)
 
-const NAME_WORDS = ['Trương', 'Tuấn', 'Lộc']
-
 /** CSS entrance (`.hero-rise` in global.css): runs straight from the prerendered HTML, needs no
  *  JS, survives hydration untouched and is off under reduced motion. */
 const riseIn = (delay: number) => ({ style: { animationDelay: `${delay}s` } })
 
+/** The markdown twin and llms files name Home after the owner, not the value line (owner decision). */
+const TWIN_NAME = 'Trương Tuấn Lộc (Jura69) – Full-stack Developer'
+
 /**
- * Scene 1 of the day→night homepage: dawn hero. Full-bleed, composes with the
- * ambient scene behind it, the Mầm Đèn spirit (3D, 2D fallback) stands above the name.
+ * Scene 1 of the day→night homepage: dawn hero on the ambient sky. Desktop is split — the value
+ * line, proof and CTAs on the left; the Mầm Đèn spirit (3D, 2D fallback) and the "Now building"
+ * card on the right. Phones stack spirit → text → card. One node per grid area, in reading order
+ * (text, spirit, card): the grid only moves the spirit up visually on phones.
  */
 export default function HeroDawn() {
     // Server HTML carries the 2D spirit (visible without JS); the 3D canvas loads after hydration.
     const hydrated = useHydrated()
 
     return (
-        <section
-            data-section="hero"
-            className="relative flex min-h-[85svh] flex-col items-center justify-center px-4 pb-24 text-center"
-        >
-            {/* Spirit — centered block, part of vertical flow; fixed cell so the 3D swap never shifts layout */}
-            <div className="relative mb-6 h-[220px] w-[220px] md:h-[320px] md:w-[320px] lg:h-[360px] lg:w-[360px]">
-                {hydrated ? (
-                    <SpiritBoundary>
-                        <Suspense fallback={<SpiritIllustration />}>
-                            <LazySpiritCanvas />
-                        </Suspense>
-                    </SpiritBoundary>
-                ) : (
-                    <SpiritIllustration />
-                )}
-            </div>
-
-            <p
-                {...riseIn(0.05)}
-                className="hero-rise mb-6 rounded-full border border-line bg-surface/60 px-4 py-2 font-rounded text-sm text-ink backdrop-blur-md"
+        <section data-section="hero" className="relative flex flex-col pb-24 lg:min-h-[calc(100svh-4.5rem)] lg:pb-20">
+            <Container
+                size="page"
+                className="grid [grid-template-areas:'spirit'_'text'_'card'] flex-1 gap-x-10 gap-y-6 pt-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(440px,1fr)] lg:grid-rows-[1fr_auto] lg:gap-y-4 lg:pt-8 lg:[grid-template-areas:'text_spirit'_'text_card']"
             >
-                <SprigLeaf className="inline-block align-[-0.3em] text-accent" /> A Full-stack Dev Engineer{' '}
-                <SprigLeaf className="inline-block align-[-0.3em] text-accent -scale-x-100" />
-            </p>
+                <div className="[grid-area:text] lg:self-start">
+                    <p
+                        {...riseIn(0.05)}
+                        className="hero-rise flex flex-wrap items-center gap-x-2.5 gap-y-1 font-rounded text-base font-bold text-ink"
+                    >
+                        <img
+                            src="/images/loc-72.webp"
+                            alt=""
+                            width={36}
+                            height={36}
+                            className="size-9 rounded-full border-2 border-surface-elevated object-cover"
+                        />
+                        Trương Tuấn Lộc{' '}
+                        <span className="font-medium text-ink-muted">· Full-stack developer at CREASIA</span>
+                    </p>
 
-            <h1 className="font-rounded text-5xl font-bold tracking-tight text-balance text-ink md:text-7xl">
-                {/* Spaces sit between the inline-block words: trailing space inside one is collapsed */}
-                {NAME_WORDS.map((word, i) => (
-                    <Fragment key={word}>
-                        {i > 0 && ' '}
-                        <span {...riseIn(0.15 + i * 0.12)} className="hero-rise inline-block">
-                            {word}
-                        </span>
-                    </Fragment>
-                ))}
-            </h1>
+                    <h1
+                        data-twin-name={TWIN_NAME}
+                        {...riseIn(0.15)}
+                        className="hero-rise mt-5 font-rounded text-display font-extrabold text-balance text-ink"
+                    >
+                        I build enterprise <span className="hero-highlight">AI agent platforms</span>.
+                    </h1>
 
-            <p {...riseIn(0.55)} className="hero-rise mt-4 max-w-xl font-rounded text-lg text-balance text-ink-muted">
-                Jura69 · I build enterprise AI agent platforms and full-stack web apps
-            </p>
+                    <p
+                        {...riseIn(0.3)}
+                        className="hero-rise mt-5 max-w-[46ch] font-rounded text-lead text-ink-muted"
+                    >
+                        Multi-channel assistants, agent orchestration, computer vision and OCR — shipped full-stack on
+                        React, C# and Node.js.
+                    </p>
 
-            <div {...riseIn(0.7)} className="hero-rise mt-10 flex flex-wrap items-center justify-center gap-3">
-                <MotionRouterLink
-                    to="/works"
-                    className={buttonClasses('solid', 'lg')}
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.97 }}
-                >
-                    View My Works <ArrowRight aria-hidden="true" />
-                </MotionRouterLink>
-                <motion.a
-                    href="/files/CV.pdf"
-                    download="TuanLoc_CV.pdf"
-                    className={buttonClasses('outline', 'lg')}
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.97 }}
-                >
-                    <Download aria-hidden="true" /> Download CV
-                </motion.a>
-            </div>
+                    <div {...riseIn(0.45)} className="hero-rise mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                        <MotionRouterLink
+                            to="/works"
+                            className={buttonClasses('solid', 'lg')}
+                            whileHover={{ y: -2 }}
+                            whileTap={{ scale: 0.97 }}
+                        >
+                            View my works <ArrowRight aria-hidden="true" />
+                        </MotionRouterLink>
+                        <motion.a
+                            href="/files/CV.pdf"
+                            download="TuanLoc_CV.pdf"
+                            className={buttonClasses('outline', 'lg', 'bg-surface-elevated/85')}
+                            whileHover={{ y: -2 }}
+                            whileTap={{ scale: 0.97 }}
+                        >
+                            <Download aria-hidden="true" /> Download CV
+                        </motion.a>
+                    </div>
 
-            <motion.div
-                aria-hidden="true"
-                className="absolute bottom-6 left-1/2 -translate-x-1/2 text-2xl text-ink-muted"
-                animate={{ y: [0, 8, 0] }}
-                transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: 'easeInOut'
-                }}
+                    <HeroProofStats {...riseIn(0.6)} className="hero-rise mt-10 lg:mt-9" />
+                </div>
+
+                {/* Spirit: fixed cell so the 3D swap never shifts layout */}
+                <div className="relative mx-auto size-[220px] [grid-area:spirit] sm:size-[300px] lg:size-[440px] lg:self-end">
+                    {/* Night: the lantern lights the scene. Its radius stays inside the cell, away from the text. */}
+                    <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute top-[6%] right-[4%] hidden size-[55%] rounded-full bg-[radial-gradient(circle,rgb(241_217_153/0.45)_0%,rgb(241_217_153/0.15)_45%,transparent_70%)] dark:block"
+                    />
+                    {hydrated ? (
+                        <SpiritBoundary>
+                            <Suspense fallback={<SpiritIllustration />}>
+                                <LazySpiritCanvas />
+                            </Suspense>
+                        </SpiritBoundary>
+                    ) : (
+                        <SpiritIllustration />
+                    )}
+                </div>
+
+                <HeroNowBuilding {...riseIn(0.75)} className="hero-rise [grid-area:card] lg:self-start lg:justify-self-center" />
+            </Container>
+
+            {/* Ink label: the cue sits on the scene's front hill, where accent-on-sky drops to 4.3:1 */}
+            <a
+                href="#work"
+                className="absolute bottom-5 left-1/2 flex min-h-11 -translate-x-1/2 flex-col items-center font-rounded text-sm font-bold text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring"
             >
-                <ChevronDown />
-            </motion.div>
+                Selected work
+                <motion.span
+                    aria-hidden="true"
+                    className="text-xl text-accent-on-sky"
+                    animate={{ y: [0, 6, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                    <ChevronDown />
+                </motion.span>
+            </a>
         </section>
     )
 }
