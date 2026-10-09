@@ -1,8 +1,13 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
+import { findProject, projectsInCategory } from '../../../components/works/works-data'
+
+const project = findProject('creasia-erp')
 
 const Work = () => (
     <>
@@ -16,7 +21,7 @@ const Work = () => (
             project={{
                 title: 'Creasia ERP',
                 description: 'Comprehensive ERP covering finance, HR, procurement & supply chain',
-                year: '2025',
+                year: project.year,
                 image: 'https://jura69.vercel.app/images/works/creasia-erp-cover-1280.webp',
                 stack: 'React 18, TypeScript, MUI, Gantt charts, Full Calendar, i18next, C# .NET'
             }}
@@ -28,11 +33,27 @@ const Work = () => (
                 { name: 'Creasia ERP', url: 'https://jura69.vercel.app/works/creasia-erp' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works" year="2025">
-                Creasia ERP
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[{ label: 'Home', to: '/' }, { label: 'Works', to: '/works' }, { label: 'Creasia ERP' }]}
+            title="Creasia ERP"
+            eyebrow={`Enterprise · CREASIA · ${project.year}`}
+            lead={project.description}
+            media={{ kind: 'cover', project }}
+        />
+        <DetailBody
+            factsTitle="Project facts"
+            facts={[
+                { label: 'Year', value: project.year },
+                { label: 'Built at', value: 'CREASIA' },
+                { label: 'Platform', value: 'Web application (Enterprise)' },
+                {
+                    label: 'Stack',
+                    value: 'React 18, TypeScript, MUI, Gantt charts, Full Calendar, i18next, C# .NET',
+                    badges: ['React 18', 'TypeScript', 'MUI', 'Gantt charts', 'Full Calendar', 'i18next', 'C# .NET']
+                }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
                     Comprehensive enterprise resource planning platform built at Creasia covering finance, HR,
@@ -41,22 +62,17 @@ const Work = () => (
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
-                <DetailMeta
-                    rows={[
-                        { label: 'Platform', value: 'Web application (Enterprise)' },
-                        {
-                            label: 'Stack',
-                            value: 'React 18, TypeScript, MUI, Gantt charts, Full Calendar, i18next, C# .NET'
-                        }
-                    ]}
-                />
-            </Reveal>
-
-            <Reveal delay={0.1}>
+            <DetailHeading>Screens</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/works/creasia-erp-detail.webp" alt="Creasia ERP" />
             </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={projectsInCategory(project.category)}
+            currentId={project.id}
+            basePath="/works"
+            allLabel="All projects"
+        />
     </>
 )
 

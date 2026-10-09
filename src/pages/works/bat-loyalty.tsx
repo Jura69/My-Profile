@@ -1,8 +1,13 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
+import { findProject, projectsInCategory } from '../../../components/works/works-data'
+
+const project = findProject('bat-loyalty')
 
 const Work = () => (
     <>
@@ -16,7 +21,7 @@ const Work = () => (
             project={{
                 title: 'BAT Loyalty Program',
                 description: 'Customer loyalty rewards & points management system',
-                year: '2024',
+                year: project.year,
                 image: 'https://jura69.vercel.app/images/works/bat-loyalty-cover-1280.webp',
                 stack: 'React 18, MUI, Redux, C# .NET, RESTful API'
             }}
@@ -28,11 +33,27 @@ const Work = () => (
                 { name: 'BAT Loyalty Program', url: 'https://jura69.vercel.app/works/bat-loyalty' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works" year="2024">
-                BAT Loyalty Program
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[{ label: 'Home', to: '/' }, { label: 'Works', to: '/works' }, { label: 'BAT Loyalty Program' }]}
+            title="BAT Loyalty Program"
+            eyebrow={`Enterprise · CREASIA · ${project.year}`}
+            lead={project.description}
+            media={{ kind: 'cover', project }}
+        />
+        <DetailBody
+            factsTitle="Project facts"
+            facts={[
+                { label: 'Year', value: project.year },
+                { label: 'Built at', value: 'CREASIA' },
+                { label: 'Platform', value: 'Web application (Enterprise)' },
+                {
+                    label: 'Stack',
+                    value: 'React 18, MUI, Redux, C# .NET, RESTful API',
+                    badges: ['React 18', 'MUI', 'Redux', 'C# .NET', 'RESTful API']
+                }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
                     Customer loyalty rewards and points management system for British American Tobacco. Handles point
@@ -41,19 +62,17 @@ const Work = () => (
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
-                <DetailMeta
-                    rows={[
-                        { label: 'Platform', value: 'Web application (Enterprise)' },
-                        { label: 'Stack', value: 'React 18, MUI, Redux, C# .NET, RESTful API' }
-                    ]}
-                />
-            </Reveal>
-
-            <Reveal delay={0.1}>
+            <DetailHeading>Screens</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/works/bat-loyalty-detail.webp" alt="BAT Loyalty Program" />
             </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={projectsInCategory(project.category)}
+            currentId={project.id}
+            basePath="/works"
+            allLabel="All projects"
+        />
     </>
 )
 

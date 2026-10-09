@@ -1,12 +1,9 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import {
-    DetailTitle,
-    DetailProse,
-    DetailMeta,
-    DetailImage,
-    DetailHeading
-} from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
+import { audioGear } from '../../../components/works/works-data'
 import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -24,11 +21,28 @@ const Audios = () => (
                 { name: 'EA1000 Fermat', url: 'https://jura69.vercel.app/audiophile/ea1000' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/audiophile" parentLabel="Audiophile">
-                Simgot EA1000 Fermat
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[
+                { label: 'Home', to: '/' },
+                { label: 'Audiophile', to: '/audiophile' },
+                { label: 'Simgot EA1000 Fermat' }
+            ]}
+            eyebrow="Audiophile"
+            title="Simgot EA1000 Fermat"
+        />
+        <DetailBody
+            factsTitle="Specifications"
+            facts={[
+                { label: 'Driver', value: '2nd generation DMDC™10mm dual-magnet dual-cavity dynamic' },
+                { label: 'Diaphragm', value: 'sputter deposition purple-gold diaphragm' },
+                { label: 'Sensitivity', value: '127dB/Vrms(@1kHz)' },
+                { label: 'Impedance', value: '16Ω±15%(@1kHz)' },
+                { label: 'Headphone jack', value: '0.78mm 2-pin' },
+                { label: 'Frequency response', value: '10Hz-50kHz' },
+                { label: 'Effective frequency response', value: '20Hz-20kHz' }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
                     Upgraded from the EA2000, the EA1000 utilizes cutting-edge technology, including the vibrant SDPGD
@@ -37,27 +51,13 @@ const Audios = () => (
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
+            <DetailHeading>Photos</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/audiophile/ea1000-2.webp" alt="EA1000" />
             </Reveal>
 
-            <Reveal delay={0.1}>
-                <DetailMeta
-                    title="Specifications"
-                    rows={[
-                        { label: 'Driver', value: '2nd generation DMDC™10mm dual-magnet dual-cavity dynamic' },
-                        { label: 'Diaphragm', value: 'sputter deposition purple-gold diaphragm' },
-                        { label: 'Sensitivity', value: '127dB/Vrms(@1kHz)' },
-                        { label: 'Impedance', value: '16Ω±15%(@1kHz)' },
-                        { label: 'Headphone jack', value: '0.78mm 2-pin' },
-                        { label: 'Frequency response', value: '10Hz-50kHz' },
-                        { label: 'Effective frequency response', value: '20Hz-20kHz' }
-                    ]}
-                />
-            </Reveal>
-
-            <Reveal delay={0.15}>
-                <DetailHeading>My Review</DetailHeading>
+            <DetailHeading>My Review</DetailHeading>
+            <Reveal>
                 <DetailProse>
                     After spending some time with the Simgot EA1000, I feel compelled to share my thoughts. The EA1000
                     leans towards a bright sound signature, with detailed treble that may come off as sharp for those
@@ -100,7 +100,14 @@ const Audios = () => (
                     products firsthand to make the best choice. Thank you for reading!
                 </DetailProse>
             </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={audioGear}
+            currentId="ea1000"
+            basePath="/audiophile"
+            allLabel="All devices"
+            label="More devices"
+        />
     </>
 )
 

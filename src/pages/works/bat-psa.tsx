@@ -1,8 +1,13 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
+import { findProject, projectsInCategory } from '../../../components/works/works-data'
+
+const project = findProject('bat-psa')
 
 const Work = () => (
     <>
@@ -16,7 +21,7 @@ const Work = () => (
             project={{
                 title: 'BAT PSA',
                 description: 'Admin dashboard for problem statement analysis with reporting',
-                year: '2024',
+                year: project.year,
                 image: 'https://jura69.vercel.app/images/works/bat-psa-cover-1280.webp',
                 stack: 'React 18, DevExtreme, TailwindCSS, Redux Toolkit, C# .NET 7, Docker'
             }}
@@ -28,11 +33,27 @@ const Work = () => (
                 { name: 'BAT PSA', url: 'https://jura69.vercel.app/works/bat-psa' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works" year="2024">
-                BAT PSA
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[{ label: 'Home', to: '/' }, { label: 'Works', to: '/works' }, { label: 'BAT PSA' }]}
+            title="BAT PSA"
+            eyebrow={`Enterprise · CREASIA · ${project.year}`}
+            lead={project.description}
+            media={{ kind: 'cover', project }}
+        />
+        <DetailBody
+            factsTitle="Project facts"
+            facts={[
+                { label: 'Year', value: project.year },
+                { label: 'Built at', value: 'CREASIA' },
+                { label: 'Platform', value: 'Web application (Enterprise)' },
+                {
+                    label: 'Stack',
+                    value: 'React 18, DevExtreme, TailwindCSS, Redux Toolkit, C# .NET 7, Docker',
+                    badges: ['React 18', 'DevExtreme', 'TailwindCSS', 'Redux Toolkit', 'C# .NET 7', 'Docker']
+                }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
                     Administrative dashboard for problem statement analysis at British American Tobacco. Features
@@ -41,19 +62,17 @@ const Work = () => (
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
-                <DetailMeta
-                    rows={[
-                        { label: 'Platform', value: 'Web application (Enterprise)' },
-                        { label: 'Stack', value: 'React 18, DevExtreme, TailwindCSS, Redux Toolkit, C# .NET 7, Docker' }
-                    ]}
-                />
-            </Reveal>
-
-            <Reveal delay={0.1}>
+            <DetailHeading>Screens</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/works/bat-psa-detail.webp" alt="BAT PSA" />
             </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={projectsInCategory(project.category)}
+            currentId={project.id}
+            basePath="/works"
+            allLabel="All projects"
+        />
     </>
 )
 

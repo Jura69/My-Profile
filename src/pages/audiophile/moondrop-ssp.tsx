@@ -1,6 +1,9 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
+import { audioGear } from '../../../components/works/works-data'
 import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -18,11 +21,27 @@ const Audios = () => (
                 { name: 'Moondrop SSP', url: 'https://jura69.vercel.app/audiophile/moondrop-ssp' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/audiophile" parentLabel="Audiophile">
-                Moondrop SSP
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[{ label: 'Home', to: '/' }, { label: 'Audiophile', to: '/audiophile' }, { label: 'Moondrop SSP' }]}
+            eyebrow="Audiophile"
+            title="Moondrop SSP"
+        />
+        <DetailBody
+            factsTitle="Specifications"
+            facts={[
+                { label: 'Diaphragm', value: 'Beryllium-Coated Dome + PU Suspension Ring' },
+                { label: 'Sensitivity', value: '112dB/Vrms@1kHz' },
+                { label: 'Impedance', value: '16Ω@1kHz' },
+                { label: 'Headphone jack', value: '0.78mm 2-pin' },
+                { label: 'Frequency response', value: '20-20000Hz (IEC60318-4)' },
+                { label: 'THD', value: '≤1% @1kHz' },
+                { label: 'Housing Material', value: 'Amorphous Metal Alloy Housing' },
+                { label: 'Coil', value: '0.035mm-CCAW (Daikoku)' },
+                { label: 'Magnet', value: 'N52-Neodymium High Density Magnetic Circuit' },
+                { label: 'Acoustic Filter', value: 'Patented Anti-blocking Filter' }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
                     Unlike some other IEMs on the market. MOONDROP implements acoustical damper and filter into one
@@ -30,28 +49,18 @@ const Audios = () => (
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
+            <DetailHeading>Photos</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/audiophile/ssp-2.webp" alt="SSP" />
             </Reveal>
-
-            <Reveal delay={0.1}>
-                <DetailMeta
-                    title="Specifications"
-                    rows={[
-                        { label: 'Diaphragm', value: 'Beryllium-Coated Dome + PU Suspension Ring' },
-                        { label: 'Sensitivity', value: '112dB/Vrms@1kHz' },
-                        { label: 'Impedance', value: '16Ω@1kHz' },
-                        { label: 'Headphone jack', value: '0.78mm 2-pin' },
-                        { label: 'Frequency response', value: '20-20000Hz (IEC60318-4)' },
-                        { label: 'THD', value: '≤1% @1kHz' },
-                        { label: 'Housing Material', value: 'Amorphous Metal Alloy Housing' },
-                        { label: 'Coil', value: '0.035mm-CCAW (Daikoku)' },
-                        { label: 'Magnet', value: 'N52-Neodymium High Density Magnetic Circuit' },
-                        { label: 'Acoustic Filter', value: 'Patented Anti-blocking Filter' }
-                    ]}
-                />
-            </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={audioGear}
+            currentId="moondrop-ssp"
+            basePath="/audiophile"
+            allLabel="All devices"
+            label="More devices"
+        />
     </>
 )
 

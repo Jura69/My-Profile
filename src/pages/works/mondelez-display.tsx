@@ -1,8 +1,13 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
+import { findProject, projectsInCategory } from '../../../components/works/works-data'
+
+const project = findProject('mondelez-display')
 
 const Work = () => (
     <>
@@ -16,7 +21,7 @@ const Work = () => (
             project={{
                 title: 'Mondelez Display Management',
                 description: 'Retail display program management with field operations & compliance auditing',
-                year: '2025',
+                year: project.year,
                 image: 'https://jura69.vercel.app/images/works/mondelez-display-cover-1280.webp',
                 stack: 'React, .NET, SQL Server'
             }}
@@ -31,33 +36,47 @@ const Work = () => (
                 }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works" year="2025">
-                Mondelez Display Management
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[
+                { label: 'Home', to: '/' },
+                { label: 'Works', to: '/works' },
+                { label: 'Mondelez Display Management' }
+            ]}
+            title="Mondelez Display Management"
+            eyebrow={`Enterprise · CREASIA · ${project.year}`}
+            lead={project.description}
+            media={{ kind: 'cover', project }}
+        />
+        <DetailBody
+            factsTitle="Project facts"
+            facts={[
+                { label: 'Year', value: project.year },
+                { label: 'Built at', value: 'CREASIA' },
+                { label: 'Platform', value: 'Web + mobile field operations (Enterprise)' },
+                { label: 'Stack', value: 'React, .NET, SQL Server', badges: ['React', '.NET', 'SQL Server'] }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
                     Enterprise system managing retail outlet exhibition programs for Mondelez end-to-end — program
                     registration, mobile field operations, photo-based compliance auditing, and licensing workflows
-                    across retail outlets nationwide. It keeps display investments verifiable from head office
-                    down to every store shelf.
+                    across retail outlets nationwide. It keeps display investments verifiable from head office down to
+                    every store shelf.
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
-                <DetailMeta
-                    rows={[
-                        { label: 'Platform', value: 'Web + mobile field operations (Enterprise)' },
-                        { label: 'Stack', value: 'React, .NET, SQL Server' }
-                    ]}
-                />
-            </Reveal>
-
-            <Reveal delay={0.1}>
+            <DetailHeading>Screens</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/works/mondelez-display-detail.webp" alt="Mondelez Display Management" />
             </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={projectsInCategory(project.category)}
+            currentId={project.id}
+            basePath="/works"
+            allLabel="All projects"
+        />
     </>
 )
 

@@ -1,8 +1,13 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
+import { findProject, projectsInCategory } from '../../../components/works/works-data'
+
+const project = findProject('vending-ai-agent')
 
 const Work = () => (
     <>
@@ -16,7 +21,7 @@ const Work = () => (
             project={{
                 title: 'Vending Management',
                 description: 'Vending machine management platform with sales analytics & inventory tracking',
-                year: '2025',
+                year: project.year,
                 image: 'https://jura69.vercel.app/images/works/vending-ai-agent-cover-1280.webp',
                 stack: 'React 18, TypeScript, MUI, Redux Toolkit, ApexCharts, C# .NET'
             }}
@@ -28,11 +33,27 @@ const Work = () => (
                 { name: 'Vending Management', url: 'https://jura69.vercel.app/works/vending-ai-agent' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works" year="2025">
-                Vending Management
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[{ label: 'Home', to: '/' }, { label: 'Works', to: '/works' }, { label: 'Vending Management' }]}
+            title="Vending Management"
+            eyebrow={`Enterprise · CREASIA · ${project.year}`}
+            lead={project.description}
+            media={{ kind: 'cover', project }}
+        />
+        <DetailBody
+            factsTitle="Project facts"
+            facts={[
+                { label: 'Year', value: project.year },
+                { label: 'Built at', value: 'CREASIA' },
+                { label: 'Platform', value: 'Web application (Enterprise)' },
+                {
+                    label: 'Stack',
+                    value: 'React 18, TypeScript, MUI, Redux Toolkit, ApexCharts, C# .NET',
+                    badges: ['React 18', 'TypeScript', 'MUI', 'Redux Toolkit', 'ApexCharts', 'C# .NET']
+                }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
                     Vending machine management platform built at Creasia. Provides sales analytics, inventory tracking,
@@ -40,19 +61,17 @@ const Work = () => (
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
-                <DetailMeta
-                    rows={[
-                        { label: 'Platform', value: 'Web application (Enterprise)' },
-                        { label: 'Stack', value: 'React 18, TypeScript, MUI, Redux Toolkit, ApexCharts, C# .NET' }
-                    ]}
-                />
-            </Reveal>
-
-            <Reveal delay={0.1}>
+            <DetailHeading>Screens</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/works/vending-ai-agent-detail.webp" alt="Vending Management" />
             </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={projectsInCategory(project.category)}
+            currentId={project.id}
+            basePath="/works"
+            allLabel="All projects"
+        />
     </>
 )
 

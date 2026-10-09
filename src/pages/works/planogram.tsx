@@ -1,8 +1,13 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
+import { findProject, projectsInCategory } from '../../../components/works/works-data'
+
+const project = findProject('planogram')
 
 const Work = () => (
     <>
@@ -17,7 +22,7 @@ const Work = () => (
                 title: 'Planogram AI',
                 description:
                     'AI-powered retail shelf compliance — verifies product placement automatically from shelf photos with computer vision.',
-                year: '2026',
+                year: project.year,
                 image: 'https://jura69.vercel.app/images/works/planogram-cover-1280.webp',
                 stack: 'Python, .NET, Computer Vision'
             }}
@@ -29,33 +34,47 @@ const Work = () => (
                 { name: 'Planogram AI', url: 'https://jura69.vercel.app/works/planogram' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works" year="2026">
-                Planogram AI
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[{ label: 'Home', to: '/' }, { label: 'Works', to: '/works' }, { label: 'Planogram AI' }]}
+            title="Planogram AI"
+            eyebrow={`Enterprise · CREASIA · ${project.year}`}
+            lead={project.description}
+            media={{ kind: 'cover', project }}
+        />
+        <DetailBody
+            factsTitle="Project facts"
+            facts={[
+                { label: 'Year', value: project.year },
+                { label: 'Built at', value: 'CREASIA' },
+                { label: 'Platform', value: 'AI service + web dashboard (Enterprise)' },
+                {
+                    label: 'Stack',
+                    value: 'Python, .NET, Computer Vision',
+                    badges: ['Python', '.NET', 'Computer Vision']
+                }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
-                    Shelf-verification platform that automates planogram compliance checking for retail. Field
-                    teams photograph shelves, computer-vision models detect and identify the products on display,
-                    and the system scores each shelf against the planned layout — turning a slow manual audit
-                    into an instant, photo-driven report.
+                    Shelf-verification platform that automates planogram compliance checking for retail. Field teams
+                    photograph shelves, computer-vision models detect and identify the products on display, and the
+                    system scores each shelf against the planned layout — turning a slow manual audit into an instant,
+                    photo-driven report.
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
-                <DetailMeta
-                    rows={[
-                        { label: 'Platform', value: 'AI service + web dashboard (Enterprise)' },
-                        { label: 'Stack', value: 'Python, .NET, Computer Vision' }
-                    ]}
-                />
-            </Reveal>
-
-            <Reveal delay={0.1}>
+            <DetailHeading>Screens</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/works/planogram-detail.webp" alt="Planogram AI" />
             </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={projectsInCategory(project.category)}
+            currentId={project.id}
+            basePath="/works"
+            allLabel="All projects"
+        />
     </>
 )
 

@@ -1,6 +1,9 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
+import { activities } from '../../../components/works/works-data'
 import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -18,11 +21,17 @@ const Activities = () => (
                 { name: 'YTC NTU', url: 'https://jura69.vercel.app/activities/ytc' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/activities" parentLabel="Activities">
-                YTC Nha Trang University
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[
+                { label: 'Home', to: '/' },
+                { label: 'Activities', to: '/activities' },
+                { label: 'YTC Nha Trang University' }
+            ]}
+            eyebrow="Activities"
+            title="YTC Nha Trang University"
+        />
+        <DetailBody factsTitle="Details" facts={[{ label: 'Period', value: '2021 – 2023' }]}>
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
                     Designed media publications and event promotional materials. Captured event photography to document
@@ -30,20 +39,20 @@ const Activities = () => (
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
-                <DetailMeta title="Details" rows={[{ label: 'Period', value: '2021 – 2023' }]} />
-            </Reveal>
-
-            <Reveal delay={0.1}>
+            <DetailHeading>Photos</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/activities/Ytc2.webp" alt="YTC" />
-            </Reveal>
-            <Reveal delay={0.15}>
                 <DetailImage src="/images/activities/Ytc3.webp" alt="YTC" />
-            </Reveal>
-            <Reveal delay={0.2}>
                 <DetailImage src="/images/activities/Ytc4.webp" alt="YTC" />
             </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={activities}
+            currentId="ytc"
+            basePath="/activities"
+            allLabel="All activities"
+            label="More activities"
+        />
     </>
 )
 

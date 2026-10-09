@@ -1,6 +1,9 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
+import { audioGear } from '../../../components/works/works-data'
 import SEO from '../../../components/seo'
 import { BreadcrumbSchema } from '../../../components/json-ld'
 
@@ -18,11 +21,29 @@ const Audios = () => (
                 { name: 'Shanling Onix XI1', url: 'https://jura69.vercel.app/audiophile/onix' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/audiophile" parentLabel="Audiophile">
-                Shanling Onix XI1
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[
+                { label: 'Home', to: '/' },
+                { label: 'Audiophile', to: '/audiophile' },
+                { label: 'Shanling Onix XI1' }
+            ]}
+            eyebrow="Audiophile"
+            title="Shanling Onix XI1"
+        />
+        <DetailBody
+            factsTitle="Specifications"
+            facts={[
+                { label: 'Dimensions', value: '62.5*23*14.6mm' },
+                { label: 'Weight', value: '37.8g' },
+                { label: 'DAC', value: 'CS43198 * 2' },
+                { label: '3.5mm Output', value: '300mW@32Ω' },
+                { label: '4.4mm Output', value: '500mW@32Ω' },
+                { label: 'Frequency response', value: '20Hz-80kHz (-3dB)' },
+                { label: 'SNR', value: '133dB' },
+                { label: 'Screen', value: '0.87 inches OLED' }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
                     The Shanling ONIX XI1 is a high-end DAC/AMP featuring a dual Cirrus Logic CS43198 DAC chipset,
@@ -34,26 +55,18 @@ const Audios = () => (
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
+            <DetailHeading>Photos</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/audiophile/onix-2.webp" alt="onix" />
             </Reveal>
-
-            <Reveal delay={0.1}>
-                <DetailMeta
-                    title="Specifications"
-                    rows={[
-                        { label: 'Dimensions', value: '62.5*23*14.6mm' },
-                        { label: 'Weight', value: '37.8g' },
-                        { label: 'DAC', value: 'CS43198 * 2' },
-                        { label: '3.5mm Output', value: '300mW@32Ω' },
-                        { label: '4.4mm Output', value: '500mW@32Ω' },
-                        { label: 'Frequency response', value: '20Hz-80kHz (-3dB)' },
-                        { label: 'SNR', value: '133dB' },
-                        { label: 'Screen', value: '0.87 inches OLED' }
-                    ]}
-                />
-            </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={audioGear}
+            currentId="onix"
+            basePath="/audiophile"
+            allLabel="All devices"
+            label="More devices"
+        />
     </>
 )
 

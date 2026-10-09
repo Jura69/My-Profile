@@ -147,7 +147,9 @@ export const projects: Project[] = [
         category: 'enterprise',
         year: '2026',
         coverAlt: 'Gouache wooden desk with a card under a brass magnifier',
-        kicker: 'Document AI'
+        kicker: 'Document AI',
+        // The card and magnifier sit low in the painting: keep them above the title band
+        coverPosition: '50% 75%'
     },
     {
         id: 'advance-system',

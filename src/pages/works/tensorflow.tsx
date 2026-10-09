@@ -1,8 +1,13 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailLink, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage, DetailLink } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
+import { findProject, projectsInCategory } from '../../../components/works/works-data'
+
+const project = findProject('tensorflow')
 
 const Work = () => (
     <>
@@ -16,7 +21,7 @@ const Work = () => (
             project={{
                 title: 'TensorFlow Sign Language Detection',
                 description: 'Machine learning app for real-time sign language detection',
-                year: '2024',
+                year: project.year,
                 github: 'https://github.com/Jura69/TensorflowProject',
                 image: 'https://jura69.vercel.app/images/works/Tensorflow.webp',
                 stack: 'Python, TensorFlow, Machine Learning, Computer Vision'
@@ -29,11 +34,39 @@ const Work = () => (
                 { name: 'TensorFlow SignLanguage', url: 'https://jura69.vercel.app/works/tensorflow' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works" year="2024">
-                Tensorflow SignLanguage Detect
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[
+                { label: 'Home', to: '/' },
+                { label: 'Works', to: '/works' },
+                { label: 'Tensorflow SignLanguage Detect' }
+            ]}
+            title="Tensorflow SignLanguage Detect"
+            eyebrow={`Personal project · ${project.year}`}
+            lead={project.description}
+            media={{ kind: 'cover', project }}
+        />
+        <DetailBody
+            factsTitle="Project facts"
+            facts={[
+                { label: 'Year', value: project.year },
+                { label: 'Built at', value: 'Personal project' },
+                {
+                    label: 'Github',
+                    value: (
+                        <DetailLink href="https://github.com/Jura69/TensorflowProject">
+                            https://github.com/Jura69/TensorflowProject
+                        </DetailLink>
+                    )
+                },
+                { label: 'Platform', value: 'Python application' },
+                {
+                    label: 'Stack',
+                    value: 'Python, Tensorflow, Machine learning',
+                    badges: ['Python', 'Tensorflow', 'Machine learning']
+                }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
                     A machine learning application that uses TensorFlow and computer vision to detect and interpret sign
@@ -43,27 +76,17 @@ const Work = () => (
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
-                <DetailMeta
-                    rows={[
-                        {
-                            label: 'Github',
-                            value: (
-                                <DetailLink href="https://github.com/Jura69/TensorflowProject">
-                                    https://github.com/Jura69/TensorflowProject
-                                </DetailLink>
-                            )
-                        },
-                        { label: 'Platform', value: 'Python application' },
-                        { label: 'Stack', value: 'Python, Tensorflow, Machine learning' }
-                    ]}
-                />
-            </Reveal>
-
-            <Reveal delay={0.1}>
+            <DetailHeading>Screens</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/works/Tensorflow1.webp" alt="Tensorflow" />
             </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={projectsInCategory(project.category)}
+            currentId={project.id}
+            basePath="/works"
+            allLabel="All projects"
+        />
     </>
 )
 

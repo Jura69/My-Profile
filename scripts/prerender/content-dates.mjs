@@ -15,9 +15,12 @@ const LISTING_SOURCES = {
     '/audiophile': ['src/pages/audiophile.tsx', 'components/works/works-data.ts']
 }
 
-/** Source files whose edits change what a route shows. Detail pages own their prose. */
+/** Detail pages own their prose; their header (cover, year, lead), facts layout and pager come from these. */
+const DETAIL_SOURCES = ['components/works/works-data.ts', 'components/layout/detail-layout.tsx']
+
+/** Source files whose edits change what a route shows. */
 function sourcesFor(route) {
-    return LISTING_SOURCES[route] ?? [`src/pages${route}.tsx`]
+    return LISTING_SOURCES[route] ?? [`src/pages${route}.tsx`, ...DETAIL_SOURCES]
 }
 
 function git(args) {

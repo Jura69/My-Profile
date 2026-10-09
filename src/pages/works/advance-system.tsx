@@ -1,8 +1,13 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
+import { findProject, projectsInCategory } from '../../../components/works/works-data'
+
+const project = findProject('advance-system')
 
 const Work = () => (
     <>
@@ -16,7 +21,7 @@ const Work = () => (
             project={{
                 title: 'AdvanceSystem',
                 description: 'Retail audit & field-force management platform for FMCG brands',
-                year: '2025',
+                year: project.year,
                 image: 'https://jura69.vercel.app/images/works/advance-system-cover-1280.webp',
                 stack: '.NET, ASP.NET Core, SQL Server'
             }}
@@ -28,33 +33,47 @@ const Work = () => (
                 { name: 'AdvanceSystem', url: 'https://jura69.vercel.app/works/advance-system' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works" year="2025">
-                AdvanceSystem
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[{ label: 'Home', to: '/' }, { label: 'Works', to: '/works' }, { label: 'AdvanceSystem' }]}
+            title="AdvanceSystem"
+            eyebrow={`Enterprise · CREASIA · ${project.year}`}
+            lead={project.description}
+            media={{ kind: 'cover', project }}
+        />
+        <DetailBody
+            factsTitle="Project facts"
+            facts={[
+                { label: 'Year', value: project.year },
+                { label: 'Built at', value: 'CREASIA' },
+                { label: 'Platform', value: 'Web portals + mobile field apps (Enterprise)' },
+                {
+                    label: 'Stack',
+                    value: '.NET, ASP.NET Core, SQL Server',
+                    badges: ['.NET', 'ASP.NET Core', 'SQL Server']
+                }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
-                    Retail audit and trade-marketing field-force management platform serving major FMCG brands
-                    across Vietnam. It powers mobile field apps for sales representatives, supervisor and admin web
-                    portals, and consumer engagement through Zalo minigames and landing pages — with role-based
-                    workflows for every tier of the field organization.
+                    Retail audit and trade-marketing field-force management platform serving major FMCG brands across
+                    Vietnam. It powers mobile field apps for sales representatives, supervisor and admin web portals,
+                    and consumer engagement through Zalo minigames and landing pages — with role-based workflows for
+                    every tier of the field organization.
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
-                <DetailMeta
-                    rows={[
-                        { label: 'Platform', value: 'Web portals + mobile field apps (Enterprise)' },
-                        { label: 'Stack', value: '.NET, ASP.NET Core, SQL Server' }
-                    ]}
-                />
-            </Reveal>
-
-            <Reveal delay={0.1}>
+            <DetailHeading>Screens</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/works/advance-system-detail.webp" alt="AdvanceSystem" />
             </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={projectsInCategory(project.category)}
+            currentId={project.id}
+            basePath="/works"
+            allLabel="All projects"
+        />
     </>
 )
 

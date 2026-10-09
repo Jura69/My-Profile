@@ -1,8 +1,13 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailLink, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage, DetailLink } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
+import { findProject, projectsInCategory } from '../../../components/works/works-data'
+
+const project = findProject('foodlover')
 
 const Work = () => (
     <>
@@ -16,7 +21,7 @@ const Work = () => (
             project={{
                 title: 'Food Lover',
                 description: 'A full-stack food ordering and recipe discovery platform',
-                year: '2023',
+                year: project.year,
                 github: 'https://github.com/Jura69/Nextjs-FoodOrder',
                 image: 'https://jura69.vercel.app/images/works/Food1.webp',
                 stack: 'Next.js, Node.js, MongoDB, AWS S3, Stripe'
@@ -29,11 +34,31 @@ const Work = () => (
                 { name: 'Food Lover', url: 'https://jura69.vercel.app/works/foodlover' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works" year="2023">
-                Food Lover
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[{ label: 'Home', to: '/' }, { label: 'Works', to: '/works' }, { label: 'Food Lover' }]}
+            title="Food Lover"
+            eyebrow={`Personal project · ${project.year}`}
+            lead={project.description}
+            media={{ kind: 'cover', project }}
+        />
+        <DetailBody
+            factsTitle="Project facts"
+            facts={[
+                { label: 'Year', value: project.year },
+                { label: 'Built at', value: 'Personal project' },
+                {
+                    label: 'Github',
+                    value: <DetailLink href="https://github.com/Jura69/Nextjs-FoodOrder">Nextjs-FoodOrder</DetailLink>
+                },
+                { label: 'Platform', value: 'Web application' },
+                {
+                    label: 'Stack',
+                    value: 'NodeJS, Nextjs, MongoDB, AWS s3 cloudservices, Stripe payment',
+                    badges: ['NodeJS', 'Nextjs', 'MongoDB', 'AWS s3 cloudservices', 'Stripe payment']
+                }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
                     A full-stack food ordering and recipe discovery platform built with Next.js, Node.js, and MongoDB.
@@ -43,29 +68,19 @@ const Work = () => (
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
-                <DetailMeta
-                    rows={[
-                        {
-                            label: 'Github',
-                            value: (
-                                <DetailLink href="https://github.com/Jura69/Nextjs-FoodOrder">
-                                    Nextjs-FoodOrder
-                                </DetailLink>
-                            )
-                        },
-                        { label: 'Platform', value: 'Web application' },
-                        { label: 'Stack', value: 'NodeJS, Nextjs, MongoDB, AWS s3 cloudservices, Stripe payment' }
-                    ]}
-                />
-            </Reveal>
-
-            <Reveal delay={0.1}>
+            <DetailHeading>Screens</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/works/Food2.webp" alt="Foodlover" />
                 <DetailImage src="/images/works/Food3.webp" alt="Foodlover" />
                 <DetailImage src="/images/works/Food4.webp" alt="Foodlover" />
             </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={projectsInCategory(project.category)}
+            currentId={project.id}
+            basePath="/works"
+            allLabel="All projects"
+        />
     </>
 )
 

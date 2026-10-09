@@ -8,7 +8,7 @@
 const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'])
 // nav: breadcrumbs repeat what the twin's header already says (canonical URL)
 const SKIP = new Set(['script', 'style', 'svg', 'noscript', 'template', 'canvas', 'button', 'nav'])
-const BLOCK = new Set(['div', 'section', 'article', 'header', 'footer', 'main', 'figure', 'figcaption', 'dl', 'dt', 'dd', 'blockquote'])
+const BLOCK = new Set(['div', 'section', 'article', 'aside', 'header', 'footer', 'main', 'figure', 'figcaption', 'dl', 'dt', 'dd', 'blockquote'])
 const BACKTICK = '`'
 
 const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' }
@@ -151,6 +151,29 @@ export function htmlToMarkdown(html, origin) {
         if (items.length) out.push(items.join(items.some(item => item.includes('\n')) ? '\n\n' : '\n'))
     }
 
+    /** A description list (facts, stats): each dt/dd pair is one line, "**Label:** value". The dt's
+     *  sr-only ": " is dropped; a dd made only of separate elements (stack pills) joins them with ", ". */
+    const definitions = node => {
+        const pairs = []
+        const walk = n =>
+            n.children?.forEach(c => {
+                if (c.tag === 'dt') pairs.push({ label: textOf(c).replace(/\s*:\s*$/, ''), values: [] })
+                else if (c.tag === 'dd') pairs.at(-1)?.values.push(c)
+                else if (c.tag && !isHidden(c)) walk(c)
+            })
+        walk(node)
+        for (const { label, values } of pairs) {
+            const value = values
+                .map(dd => {
+                    const parts = dd.children.filter(c => c.tag && !isHidden(c))
+                    const loneElements = parts.length > 1 && !dd.children.some(c => c.text?.trim())
+                    return loneElements ? parts.map(p => inline(p).trim()).filter(Boolean).join(', ') : inline(dd).trim()
+                })
+                .join(', ')
+            flush(`**${label}:** ${value}`)
+        }
+    }
+
     /** Block walk: headings, paragraphs and lists become their own markdown blocks. */
     const block = node => {
         if (node.text !== undefined) return flush(node.text)
@@ -169,6 +192,7 @@ export function htmlToMarkdown(html, origin) {
         if (node.tag === 'img' && cardHref) return
         if (node.tag === 'p' || node.tag === 'img' || node.tag === 'a') return flush(inline(node))
         if (node.tag === 'ul' || node.tag === 'ol') return list(node)
+        if (node.tag === 'dl') return definitions(node)
         if (node.attrs.role === 'tabpanel' && tabLabels[node.attrs['aria-labelledby']]) {
             flush(`## ${tabLabels[node.attrs['aria-labelledby']]}`)
         }

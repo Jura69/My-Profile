@@ -1,8 +1,13 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
+import { findProject, projectsInCategory } from '../../../components/works/works-data'
+
+const project = findProject('ocr-cccd')
 
 const Work = () => (
     <>
@@ -16,7 +21,7 @@ const Work = () => (
             project={{
                 title: 'OCR CCCD',
                 description: 'AI-powered OCR that extracts structured data from Vietnamese ID cards',
-                year: '2026',
+                year: project.year,
                 image: 'https://jura69.vercel.app/images/works/ocr-cccd-cover-1280.webp',
                 stack: 'Python, OCR, Vietnamese NLP'
             }}
@@ -28,32 +33,42 @@ const Work = () => (
                 { name: 'OCR CCCD', url: 'https://jura69.vercel.app/works/ocr-cccd' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works" year="2026">
-                OCR CCCD
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[{ label: 'Home', to: '/' }, { label: 'Works', to: '/works' }, { label: 'OCR CCCD' }]}
+            title="OCR CCCD"
+            eyebrow={`Enterprise · CREASIA · ${project.year}`}
+            lead={project.description}
+            media={{ kind: 'cover', project }}
+        />
+        <DetailBody
+            factsTitle="Project facts"
+            facts={[
+                { label: 'Year', value: project.year },
+                { label: 'Built at', value: 'CREASIA' },
+                { label: 'Platform', value: 'OCR pipeline + API (Internal)' },
+                { label: 'Stack', value: 'Python, OCR, Vietnamese NLP', badges: ['Python', 'OCR', 'Vietnamese NLP'] }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
-                    OCR system that extracts structured data from Vietnamese citizen ID cards — both CCCD and the
-                    2024 Căn cước format. Recognition is tuned for Vietnamese text with full diacritics, and
-                    post-processing validates and normalizes every field into clean, machine-readable records.
+                    OCR system that extracts structured data from Vietnamese citizen ID cards — both CCCD and the 2024
+                    Căn cước format. Recognition is tuned for Vietnamese text with full diacritics, and post-processing
+                    validates and normalizes every field into clean, machine-readable records.
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
-                <DetailMeta
-                    rows={[
-                        { label: 'Platform', value: 'OCR pipeline + API (Internal)' },
-                        { label: 'Stack', value: 'Python, OCR, Vietnamese NLP' }
-                    ]}
-                />
-            </Reveal>
-
-            <Reveal delay={0.1}>
+            <DetailHeading>Screens</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/works/ocr-cccd-detail.webp" alt="OCR CCCD" />
             </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={projectsInCategory(project.category)}
+            currentId={project.id}
+            basePath="/works"
+            allLabel="All projects"
+        />
     </>
 )
 

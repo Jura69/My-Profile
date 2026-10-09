@@ -1,8 +1,13 @@
-import Container from '../../../components/ui/container'
 import Reveal from '../../../components/ui/reveal'
-import { DetailTitle, DetailProse, DetailMeta, DetailLink, DetailImage } from '../../../components/layout/detail-page'
+import { DetailHeading, DetailProse, DetailImage, DetailLink } from '../../../components/layout/detail-page'
+import { DetailBody } from '../../../components/layout/detail-layout'
+import DetailPager from '../../../components/layout/detail-pager'
+import PageHeader from '../../../components/ui/page-header'
 import SEO from '../../../components/seo'
 import { ProjectSchema, BreadcrumbSchema } from '../../../components/json-ld'
+import { findProject, projectsInCategory } from '../../../components/works/works-data'
+
+const project = findProject('ticketapp')
 
 const Work = () => (
     <>
@@ -16,7 +21,7 @@ const Work = () => (
             project={{
                 title: 'Flutter Ticket Booking App',
                 description: 'A modern mobile application for booking movie tickets',
-                year: '2024',
+                year: project.year,
                 github: 'https://github.com/Jura69/Flutter-TicketApp',
                 image: 'https://jura69.vercel.app/images/works/Ticket1.webp',
                 stack: 'Flutter, Node.js, Express, MongoDB'
@@ -29,11 +34,39 @@ const Work = () => (
                 { name: 'Flutter Ticket App', url: 'https://jura69.vercel.app/works/ticketapp' }
             ]}
         />
-        <Container>
-            <DetailTitle parentPath="/works" parentLabel="Works" year="2024">
-                Flutter Ticket Booking App
-            </DetailTitle>
-
+        <PageHeader
+            crumbs={[
+                { label: 'Home', to: '/' },
+                { label: 'Works', to: '/works' },
+                { label: 'Flutter Ticket Booking App' }
+            ]}
+            title="Flutter Ticket Booking App"
+            eyebrow={`Personal project · ${project.year}`}
+            lead={project.description}
+            media={{ kind: 'cover', project }}
+        />
+        <DetailBody
+            factsTitle="Project facts"
+            facts={[
+                { label: 'Year', value: project.year },
+                { label: 'Built at', value: 'Personal project' },
+                {
+                    label: 'Github',
+                    value: (
+                        <DetailLink href="https://github.com/Jura69/Flutter-TicketApp">
+                            https://github.com/Jura69/Flutter-TicketApp
+                        </DetailLink>
+                    )
+                },
+                { label: 'Platform', value: 'Android, iOS' },
+                {
+                    label: 'Stack',
+                    value: 'Flutter, Nodejs Express, MongoDB',
+                    badges: ['Flutter', 'Nodejs Express', 'MongoDB']
+                }
+            ]}
+        >
+            <DetailHeading>Overview</DetailHeading>
             <Reveal>
                 <DetailProse>
                     A modern mobile application for booking movie tickets, built with Flutter for cross-platform
@@ -42,28 +75,18 @@ const Work = () => (
                 </DetailProse>
             </Reveal>
 
-            <Reveal delay={0.05}>
-                <DetailMeta
-                    rows={[
-                        {
-                            label: 'Github',
-                            value: (
-                                <DetailLink href="https://github.com/Jura69/Flutter-TicketApp">
-                                    https://github.com/Jura69/Flutter-TicketApp
-                                </DetailLink>
-                            )
-                        },
-                        { label: 'Platform', value: 'Android, iOS' },
-                        { label: 'Stack', value: 'Flutter, Nodejs Express, MongoDB' }
-                    ]}
-                />
-            </Reveal>
-
-            <Reveal delay={0.1}>
+            <DetailHeading>Screens</DetailHeading>
+            <Reveal>
                 <DetailImage src="/images/works/Ticket2.webp" alt="Ticket" />
                 <DetailImage src="/images/works/Ticket3.webp" alt="Ticket" />
             </Reveal>
-        </Container>
+        </DetailBody>
+        <DetailPager
+            items={projectsInCategory(project.category)}
+            currentId={project.id}
+            basePath="/works"
+            allLabel="All projects"
+        />
     </>
 )
 

@@ -63,7 +63,7 @@ export default function ProjectRowCard({
                     {project.title}
                 </Title>
                 {project.description && (
-                    <span className="mt-1 line-clamp-2 block font-rounded text-sm leading-normal text-ink-muted">
+                    <span className="mt-1 line-clamp-2 font-rounded text-sm leading-normal text-ink-muted">
                         {project.description}
                     </span>
                 )}
