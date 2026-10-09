@@ -215,7 +215,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 **Priority:** P0 (Critical)
 
 **Requirements:**
-- Fixed navigation bar at top (blur backdrop), content column 1100px aligned with pages
+- Fixed navigation bar at top (transparent over the sky, solid paper once scrolled), content column 1100px aligned with pages
 - Logo clickable → returns to homepage
 - Desktop: horizontal links (Works, Audiophile, GitHub — Activities off-nav by decision)
 - Mobile: hamburger button opening a Radix dropdown menu

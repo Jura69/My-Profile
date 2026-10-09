@@ -119,6 +119,11 @@ const isDark = mode === 'dark'
 import { cn } from '../../lib/cn'
 <div className={cn('rounded-xl border border-line', active && 'text-accent')} />
 
+// Type scale: text-display / text-page-title / text-section / text-lead (global.css @theme --text-*).
+// cn() runs tailwind-merge extended with these names (lib/cn.ts): a new --text-* token must be added
+// there too, or tailwind-merge reads it as a color and drops it next to text-ink.
+<h2 className={cn('font-rounded text-section font-extrabold text-ink', className)} />
+
 // Semantic tokens (defined in src/styles/global.css) over raw palette values:
 // bg-surface / bg-surface-elevated, text-ink / text-ink-muted,
 // text-accent, border-line — these flip automatically under `.dark`
@@ -149,6 +154,8 @@ import { cn } from '../../lib/cn'
 ```tsx
 import SEO from '../../components/seo'
 import { BreadcrumbSchema } from '../../components/json-ld'
+import Container from '../../components/ui/container'
+import PageHeader from '../../components/ui/page-header'
 import Reveal from '../../components/ui/reveal'
 import SectionHeading from '../../components/ui/section-heading'
 
@@ -156,13 +163,21 @@ const Activities = () => (
   <>
     <SEO title="Activities & Clubs | Trương Tuấn Lộc Portfolio" description="…" keywords="…" />
     <BreadcrumbSchema items={[...]} />
-    <section className="w-full px-4 py-8">
-      <div className="mx-auto max-w-[1100px]">
+    <PageHeader
+      crumbs={[{ label: 'Home', to: '/' }, { label: 'Activities' }]}
+      eyebrow="Beyond code"
+      title="My activities"
+      ornament={Campfire}
+      media={{ kind: 'banner', page: 'activities', alt: '…' }}
+      lead="Clubs and events from my years at Nha Trang University."
+    />
+    <section className="w-full py-16 md:py-24">
+      <Container size="page">
         <Reveal>
-          <SectionHeading as="h1">My Activities 🌿</SectionHeading>
+          <SectionHeading as="h2" eyebrow="Beyond code">Off the clock</SectionHeading>
         </Reveal>
         {/* content */}
-      </div>
+      </Container>
     </section>
   </>
 )
@@ -171,9 +186,11 @@ export default Activities
 ```
 
 Conventions embedded in that skeleton:
-- First heading of a listing page renders `as="h1"` (exactly one h1 per page)
-- Content column: `mx-auto max-w-[1100px]` inside a full-bleed `px-4` section
-  (the navbar uses the same 1100px column so the logo gutters align)
+- The page's only h1 comes from `PageHeader` (on the banner, on a project cover, or plain); sections use
+  `SectionHeading` (eyebrow required) as h2
+- One content column: `Container size="page"` (1100px + gutter) — the navbar and footer use it too, so the
+  logo, headers and content align. Never hand-write `max-w-[1100px]` again
+- Section rhythm `py-16 md:py-24`; no `backdrop-blur` on UI surfaces
 - Entrance animation via the shared `<Reveal>` wrapper, not ad-hoc motion divs
 
 ---
@@ -189,15 +206,26 @@ inside `<main>` — the markdown twins are built from exactly that element.
 Button styling is a composable function (`buttonClasses(variant, size)`) so
 router links can be styled as buttons without a wrapper component.
 
-**Cards**: `ProjectCard` (compact, reused by works/activities/audiophile via the
-`to` prop) and `FeaturedProjectCard` (large, homepage/works flagships). Do not
-create section-specific card clones — the Chakra-era triplets
-(WorkGridItem/AudioGridItem/ActivitiesGridItem) were deleted for 90% duplication.
+**Cards** (`components/works/`) — pick by context, never clone one per section (the Chakra-era
+WorkGridItem/AudioGridItem/ActivitiesGridItem triplet was deleted for 90% duplication):
+- `FeaturedProjectCard`: flagship in a Works tab — 16:9 cover, `kicker`, title, blurb, tech badges.
+- `OverlayProjectCard`: Home "Selected work" — title on the painting over `.cover-scrim`, `size="flagship" | "compact"`.
+- `ProjectRowCard`: lists ("More from CREASIA") and the detail pager — thumbnail, title, 2-line blurb, arrow;
+  `kicker`/`reverse`/`titleAs="span"` for previous/next.
+- `ProjectCard`: audiophile and activities grids, via the `to` prop.
+Each card is one link named by its title, so its image takes `alt=""`. Project data (year, cover alt,
+`coverPosition`, kicker) lives in `works-data.ts`; look projects up with `findProject(id)` (throws on a typo,
+so the prerender fails) and `projectsInCategory(category)`.
 
-**Detail pages**: shared pieces from `components/layout/detail-page.tsx`
-(`DetailTitle`, `DetailImage`, `DetailMeta`, `DetailProse`…). Same rule: one
-implementation, category passed as data. `DetailTitle` renders the breadcrumb as
-`<nav aria-label="Breadcrumb">` and keeps the year badge beside the `h1`, not in it.
+**Page headers and detail pages**: `PageHeader` (`components/ui/page-header.tsx`) is the one header for listing
+and detail pages — `crumbs`, `title`, `eyebrow`, `lead`, `ornament`, `media` (`{ kind: 'banner', page, alt }`,
+`{ kind: 'cover', project }` or none). Detail bodies use `DetailBody` (`components/layout/detail-layout.tsx`,
+`facts: FactRow[]` beside the prose children) and end with `DetailPager` (`components/layout/detail-pager.tsx`,
+`items`, `currentId`, `basePath`, `allLabel`). Prose pieces stay in `detail-page.tsx` (`DetailHeading`,
+`DetailProse`, `DetailImage`, `DetailLink`). Pages keep their own H1 text, SEO and JSON-LD; the year comes from works-data.
+
+**Icon buttons as links**: `IconButton` is a `<button>`; for an icon-only link use `<a className={iconButtonClasses('ghost')}>`
+(`components/ui/icon-button-styles.ts`) with an `aria-label`.
 
 **Memoization**: used where re-render cost is real — `MainLayout`, `Navbar`,
 `AmbientScene`, card lists. Don't memo trivial components.
@@ -368,9 +396,11 @@ Detail pages: `ProjectSchema` + `BreadcrumbSchema` (see `components/json-ld.tsx`
 
 - Semantic landmarks: `nav` / `main` / `footer` as siblings (see `main.tsx`,
   `navbar.tsx`); exactly one `h1` per page, hierarchy h1 → h2 → h3
-  (`SectionHeading as=`); breadcrumbs are `<nav aria-label="Breadcrumb">`
-- Visual-only separators get an `sr-only` equivalent (`DetailMeta` labels carry
-  a hidden ": " so screen readers and twins read "Stack: Go")
+  (`SectionHeading as=`); breadcrumbs are `Breadcrumb` (`<nav aria-label="Breadcrumb"><ol>`, last item
+  `aria-current="page"`)
+- Label/value pairs are `<dl>`: `FactRow` (detail facts) and the hero stats put a hidden `<span className="sr-only">: </span>`
+  in each `dt`, so screen readers read "Stack: Go" and the markdown twin renders "**Stack:** Go". Decorative
+  counts (the Works tab pills) are `aria-hidden` with an `sr-only` sentence instead ("(12 projects)")
 - Descriptive `alt` on every image; `aria-hidden="true"` on decorative icons
   and the ambient scene root
 - Icon-only buttons carry `aria-label` (e.g. "Toggle color theme"); active nav

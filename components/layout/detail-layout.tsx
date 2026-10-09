@@ -37,7 +37,7 @@ export function DetailBody({ facts, factsTitle, children }: DetailBodyProps) {
                 <article className="min-w-0">{children}</article>
                 <aside
                     aria-labelledby={titleId}
-                    className="paper-grain order-first rounded-2xl border border-line bg-surface-elevated p-5 shadow-paper sm:p-6 lg:order-none"
+                    className="order-first rounded-2xl border border-line bg-surface-elevated p-5 shadow-paper sm:p-6 lg:order-none"
                 >
                     <h2 id={titleId} className="eyebrow text-accent">
                         {factsTitle}

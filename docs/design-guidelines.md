@@ -1,7 +1,7 @@
 # Design Guidelines — "A Day in the Forest" UI Kit
 
 **Status:** Applied (2026-10-01) — kit đã được áp dụng vào code; mục nào lệch spec gốc có ghi chú "Áp dụng" tại chỗ
-**Last Updated:** 2026-10-01
+**Last Updated:** 2026-10-09 (design-system refactor: type tokens, `Container`, scrim, `PageHeader`, detail layout)
 **Token source hiện tại:** [`src/styles/global.css`](../src/styles/global.css) · sky narrative: [`components/scene/zone-data.ts`](../components/scene/zone-data.ts)
 **Review folder:** `design/ui-kit-review/` (mở `index.html`)
 
@@ -110,6 +110,7 @@ Mỗi màu hiện có trong `@theme` được giữ nguyên vị trí trong scal
 | `ink-subtle` *(mới)* | parchment-600 `#8b7e68` | night-400 `#737b92` | caption ≥ 18px, icon phụ — **không** dùng cho body |
 | `accent` | **moss-700 `#3d6a4b`** *(đổi từ #4a7c59)* | spirit-teal-300 `#98d8c8` | link, nút chính, focus |
 | `accent-hover` *(mới)* | moss-800 `#30543b` | spirit-teal-200 `#b4e6d9` | hover nút/link |
+| `accent-on-sky` | moss-800 `#30543b` | spirit-teal-300 `#98d8c8` | chữ accent đặt **thẳng trên bầu trời**: link nav đang chọn, eyebrow, link "All …" của section, breadcrumb — `accent` light chỉ còn 3.9:1 trên stop trời sáng nhất |
 | `on-accent` *(mới)* | parchment-100 `#fbf7ee` | night-900 `#1a1e2e` | chữ trên nền accent |
 | `accent-soft` *(mới)* | moss-100 `#dcebd6` | spirit-teal-900 `#1f3a42` | nền badge, hover ghost |
 | `highlight` *(mới)* | golden-dust-400 `#d4a853` | golden-dust-300 `#e7c46d` | ngôi sao, điểm nhấn trang trí — **không** cho chữ nhỏ |
@@ -130,6 +131,12 @@ Mỗi màu hiện có trong `@theme` được giữ nguyên vị trí trong scal
 | on-accent / accent | 5.8:1 | 10.2:1 | AA |
 | ink-subtle / surface | 3.5:1 | 3.9:1 | chỉ large text / UI (≥ 3:1) |
 | badge text bậc 700 (moss/sky/golden) / lavender-600 trên surface light | 5.5–5.9:1 / 5.1:1 | — | AA |
+| accent-on-sky / mọi stop trời | min 5.39:1 | min 6.38:1 | AA (`sky-contrast-tokens.cjs`) |
+| golden-dust-200 (chữ highlight hero đêm) / mọi stop trời | — | min 7.43:1 | AA |
+| chữ trắng / vàng nhỏ trên `.cover-scrim` (16 cover, 3 banner, thẻ overlay; 375 + 1440) | tiêu đề ≥ 6.8:1, eyebrow vàng ≥ 5.5:1 | như light (cover thêm `brightness-90`) | AA (`cover-contrast.cjs`, p5 trên pixel thật) |
+
+Đồi cố định của scene ở đáy viewport: `ink-muted` trên đồi trước chỉ 3.76:1 và trên cây 2.28:1. Chữ nằm sẵn ở đó
+khi trang mở (hero) phải đo bằng pixel thật (`text-contrast.mjs`); vì vậy chữ của mũi tên "Selected work" là `ink`, không phải `accent-on-sky`.
 
 ### 3.4 Category tokens (giữ tên, map vào scale)
 
@@ -152,8 +159,8 @@ Badge hiện dùng `text-skill-*` trên nền `/15` → chữ màu 400 trên par
 Gradient bầu trời theo scroll vẫn do `zone-data.ts` sở hữu (6 stop light + 6 stop dark) — không copy ở đây.
 Palette image trích các stop đó để xem cùng token. Stop được vẽ lại theo banner gouache: light = đỉnh xanh nhạt
 (~`#b0d2ea`–`#d6cce6`) xuống đáy ấm (kem/hồng/vàng bơ); dark = **chàm có màu** (~`#121c3e`–`#3a3466`), không còn gần-đen.
-Ràng buộc cứng: mọi stop giữ `--ink` và `--ink-muted` ≥ 4.5:1 đặt thẳng trên bầu trời (đo lúc áp dụng: min 4.58 light, 4.59 dark) —
-đổi stop phải đo lại. Artwork banner phải khớp 5 cảnh: dawn (đào-kem),
+Ràng buộc cứng: mọi stop giữ `--ink`, `--ink-muted` và `--accent-on-sky` (cùng `golden-dust-200` ở dark) ≥ 4.5:1 đặt thẳng
+trên bầu trời (đo lúc áp dụng: ink-muted min 4.58 light, 4.59 dark) — đổi stop phải đo lại bằng `sky-contrast-tokens.cjs` của plan design-system. Artwork banner phải khớp 5 cảnh: dawn (đào-kem),
 morning (xanh trời nhạt), golden afternoon (vàng bơ), dusk (lavender-sakura), night (chàm-đen + đốm vàng).
 
 ### 3.6 Tỷ lệ dùng màu
@@ -165,18 +172,28 @@ Mỗi màn hình tối đa **1** màu nhấn nóng ngoài accent.
 
 ## 4. Typography
 
-Giữ **M PLUS Rounded 1c** (đã load 300/400/500/700/800) — nét tròn hợp chất "vẽ tay ấm". Không thêm font
-(YAGNI, tiết kiệm request).
+Giữ **M PLUS Rounded 1c**, chỉ load **400 / 500 / 700** — CSS Google Fonts của font CJK này ~30KB nén mỗi weight và nằm
+trên đường LCP của Home (H1 hero vẽ lại khi web font về). Không thêm font.
 
-| Role | Size (mobile → desktop) | Weight | Line-height | Tracking |
-|---|---|---|---|---|
-| Display (hero name) | 40 → 64px | 800 | 1.05 | -0.02em |
-| H1 page | 32 → 44px | 800 | 1.15 | -0.01em |
-| H2 section | 24 → 32px | 700 | 1.2 | 0 |
-| H3 card title | 18 → 20px | 700 | 1.3 | 0 |
-| Body | 16 → 17px | 400 | 1.7 | 0 |
-| Small / meta | 14px | 500 | 1.5 | 0.01em |
-| Eyebrow / label | 12px | 700 | 1.4 | 0.12em, uppercase |
+Cỡ chữ là token trong `@theme` (`--text-*`, fluid bằng `clamp`) → utility `text-display`, `text-page-title`,
+`text-section`, `text-lead`. **Token cỡ mới phải đăng ký thêm trong `lib/cn.ts`** (`extendTailwindMerge`), nếu không
+tailwind-merge coi `text-section` là màu và xóa nó khi đứng cạnh `text-ink`.
+
+| Role | Utility / class | Size (mobile → desktop) | Weight | Line-height | Tracking |
+|---|---|---|---|---|---|
+| Display (H1 hero, câu giá trị) | `text-display` | 42 → 84px | extrabold | 1.03 | -0.03em |
+| H1 page (banner, cover, header phẳng) | `text-page-title` | 36 → 56px | extrabold | 1.05 | -0.02em |
+| H2 section | `text-section` | 28 → 36px | extrabold | 1.15 | -0.01em |
+| H2 trong panel / trang chi tiết | `text-xl` / `text-2xl` | 20 / 24px | extrabold | 1.25 | 0 |
+| H3 card title | `text-lg`–`text-[22px]` (overlay: 24 → 38px) | 16 → 22px | extrabold | 1.25 | 0 |
+| Lead | `text-lead` | 17 → 20px | 400 | 1.6 | 0 |
+| Body prose (chi tiết) | `text-[17px] leading-[1.75]` | 17px | 400 | 1.75 | 0 |
+| Small / meta | `text-sm` | 14px | 500 | 1.5 | 0 |
+| Eyebrow / label | `.eyebrow` | 12px | extrabold | 1.33 | 0.12em, uppercase |
+
+**Weight "extrabold":** markup dùng `font-extrabold` đúng như canvas (800), nhưng token `--font-weight-extrabold` đang map về
+**700**: một file 800 thật cộng ~0.9s LCP trên Slow 4G (đo bằng `vitals-breakdown.mjs`). Muốn khôi phục 800: xóa dòng token
+trong `global.css` và thêm 800 vào URL font trong `index.html` (nên làm khi self-host font).
 
 - Prose tối đa ~65ch; không justify (tránh khe hở chữ) — **ngoại lệ:** bio ở About dùng `text-justify` (quyết định của user, commit `1b8dc72`); số liệu dùng `tabular-nums`.
 - Heading section có thể kèm 1 ornament SVG (lá/đom đóm) đặt **sau** chữ — xem §6.3.
@@ -191,8 +208,9 @@ Giữ **M PLUS Rounded 1c** (đã load 300/400/500/700/800) — nét tròn hợp
 | radius-md | 12px (`rounded-xl`) | nút |
 | radius-lg | 16px (`rounded-2xl`) | card |
 | radius-pill | 9999px | badge, chip, toggle |
-| spacing base | 4px scale Tailwind | section gap 96–128px desktop, 64px mobile |
-| container | ~1100px content, prose 65ch | |
+| spacing base | 4px scale Tailwind | |
+| section rhythm | `py-16 md:py-24` | mọi section Home và khối "Off the clock"; header trang `pt-8 md:pt-14` |
+| container | `Container` (`components/ui/container.tsx`) = 1100px, gutter `px-4 sm:px-6 lg:px-8` | **một** cột cho navbar, footer, section, trang danh sách và chi tiết; prose tối đa 68ch |
 
 **Elevation = giấy chồng giấy, không phải bóng đen.** Shadow tint theo màu nền:
 
@@ -290,19 +308,63 @@ mobile. Chữ trên nút không bao giờ nằm trong ảnh.
 
 `surface-elevated` + `paper-grain` overlay (opacity 0.5 light / 0.35 dark) + shadow §5. Cover 16:9 ở trên,
 bo `radius-lg` đồng bộ, mép ảnh có viền trong 1px `line`. Hover: nhấc 3px, cover zoom 1.03 (khớp code: `group-hover:scale-[1.03]`, 300ms).
+Không blur (`backdrop-blur`) trên bất kỳ bề mặt UI nào.
+
+Bốn công thức card (khi nào dùng: [code-standards.md](./code-standards.md)):
+
+| Card | Dùng | Đặc điểm |
+|---|---|---|
+| `FeaturedProjectCard` | flagship trong tab Works | cover 16:9, kicker `.eyebrow` accent, H3 22px, badge `md` |
+| `OverlayProjectCard` | "Selected work" ở Home | tiêu đề **trên tranh**: `.cover-scrim`, kicker vàng `golden-dust-200`, H3 trắng, blurb 2 dòng, pill tech chỉ ở lg |
+| `ProjectRowCard` | danh sách "More from …" và pager trang chi tiết | thumbnail 136×77 (96×64 mobile), tiêu đề, blurb 2 dòng (bỏ nếu không có), mũi tên |
+| `ProjectCard` | lưới audiophile / activities | thumbnail 16:9, tiêu đề, blurb tùy chọn |
+
+Cả card là một link được đặt tên bằng tiêu đề → ảnh trong card là trang trí (`alt=""`). Thẻ facts của trang chi tiết là giấy
+phẳng (không `paper-grain`): texture 95KB phủ cả thẻ từng thành phần tử LCP trên điện thoại.
 
 ### 7.3 Badge / chip
 
-Pill, nền tint 400/15%, chữ bậc 700 (light) / 300 (dark), weight 600, 12px. Biến thể **washi tape** (ảnh
-`washi-tape-*`) chỉ cho nhãn nổi bật ("Featured") — tối đa 1/card. **Chưa áp dụng:** UI hiện không có nhãn "Featured" nên không có chỗ dùng.
+- **Badge** (`components/ui/badge.tsx`): pill nền tint, chữ bậc 700 (light) / 300 (dark), 12px. `size="sm"` (mặc định, nhãn inline)
+  hoặc `size="md"` = pill 26px, weight 700 — dùng cho tech tag trên card và stack trong facts. Tone `neutral` cho trạng thái ("Under development").
+- **Chip** (`components/ui/chip.tsx`): pill 36px nền `surface`, viền `line`, icon brand (màu kéo về `--ink` 25% để đọc được ở cả hai theme)
+  hoặc chấm màu. **Một** kiểu chip cho skills và hobbies; render `<li>`, đặt trong `<ul>`.
+- Biến thể **washi tape** (ảnh `washi-tape-*`) chỉ cho nhãn nổi bật ("Featured") — tối đa 1/card. **Chưa áp dụng:** UI hiện không có nhãn "Featured".
 
 ### 7.4 Section heading
 
-Eyebrow 12px uppercase + H2 + ornament nhỏ. Divider giữa section dùng `divider-*` SVG màu `line-strong`.
+`SectionHeading` (`components/ui/section-heading.tsx`): `.eyebrow` (chương "01 · Morning" … "05 · Night", hoặc nhãn loại
+"Beyond code") + H2 `text-section` + `DividerVine` accent bên dưới. Căn trái mặc định; `eyebrow` là prop bắt buộc. Thứ tự
+chương Home: hero → 01 Morning (Selected work) → 02 Noon (About) → 03 Afternoon (Skills) → 04 Dusk (Journey) → 05 Night (Say hello).
 
 ### 7.5 Theme toggle
 
 Icon `sun`/`moon` mới; chuyển icon bằng crossfade + rotate 30° (Motion), tắt khi reduced-motion.
+
+### 7.6 Navbar & footer
+
+- **Navbar** 72px cố định: **trong suốt** trên bầu trời ở đầu trang, thành **giấy đặc** (`bg-surface` + viền `line`) khi
+  `scrollY > 8`; không glass. Render đầu luôn "chưa cuộn" (an toàn hydration), đồng bộ ngay sau mount cho deep link
+  (`/#work`) và scroll được khôi phục. Link: About · Works · Audiophile, active = `accent-on-sky` đậm + gạch dưới, target ≥ 44px;
+  GitHub là `<a>` dùng `iconButtonClasses('ghost')`. Menu mobile: cùng link + GitHub, item 48px. Activities không có trên nav.
+- **Footer** trên `surface-sunken`: tên + câu giới thiệu, `<nav aria-label="Footer">` hai cột (Pages, Elsewhere), link `accent`, chữ `ink-muted` đầy đủ độ đậm.
+
+### 7.7 Page header
+
+`PageHeader` (`components/ui/page-header.tsx`) là header **duy nhất** cho trang danh sách và chi tiết: breadcrumb
+(`Breadcrumb`, link ≥ 32px, mục cuối `aria-current`) → tranh có eyebrow vàng + H1 `text-page-title` trắng đè trên `.cover-scrim`
+→ lead `text-lead`. Tranh là banner ngày/đêm (works, audiophile, activities) hoặc cover dự án 2.4:1 (16 trang works,
+`coverPosition` khi chủ thể bị cắt; điện thoại nhận bản 640w vì cover là LCP); không tranh (audiophile chi tiết, YTC) = eyebrow +
+H1 phẳng cùng thang. Khung có `min-h` 240/260px để H1 hai dòng + eyebrow vẫn nằm trong dải scrim ở 375px.
+
+**`.cover-scrim`** — scrim duy nhất cho chữ trên tranh: đặt trên **khối chữ neo đáy** kèm `pt-24`; gradient
+.85 ở đáy → .7 tại mép trên của chữ → mờ hết trong 6rem phía trên. Dải đậm luôn phủ chữ dù tiêu đề xuống mấy dòng.
+
+### 7.8 Detail layout
+
+`DetailBody` (`components/layout/detail-layout.tsx`): cột prose (`<article>`) + thẻ facts 300px (`<aside>`, `h2.eyebrow`)
+ở lg; trên điện thoại thẻ facts lên trước (chỉ đổi thứ tự hiển thị). Mỗi fact là cặp `dt`/`dd` (`FactRow`): giá trị đậm, stack thành
+badge `md`, trạng thái thành badge neutral; giá trị ngắn đứng hai cột trên điện thoại. `DetailPager` kết trang: thẻ trước/sau
+(`ProjectRowCard`, vòng quanh danh sách cùng category) + link "All …" `accent-on-sky`.
 
 ---
 
@@ -360,9 +422,10 @@ Mỗi cover là 1 cảnh gouache ẩn dụ cho domain dự án. Không chữ, kh
 | `og-image-spirit.jpg` | 1200×630 | **Đang dùng** (2026-10-02, user chọn): trời bình minh của hero, tên bên trái, Mầm Đèn render 3D bên phải nhìn về phía tên. Sinh bằng `scripts/render-spirit-stills.mjs` |
 | `og-image-forest.jpg` | 1200×630 | Bản gouache cũ (đồi cỏ, cây lớn). Giữ file để link đã chia sẻ không vỡ; phương án ghép Mầm Đèn lên nó bị loại vì đảo 3D trông như dán lên tranh |
 
-**Tiêu đề trên banner** (works / audiophile / activities): `<h1>` + ornament đặt góc dưới-trái banner qua prop `title` /
-`ornament` của `PageBanner`, chữ trắng 30→48px, scrim `from-black/65 via-black/25 to-transparent` + text-shadow nhẹ.
-Đo trên 6 banner (desktop + crop mobile): p5 contrast ≥ 3.66:1 (chữ lớn cần 3:1), trung vị ≥ 6.8:1. 404 không có tiêu đề overlay.
+**Tiêu đề trên banner/cover** (quyết định của chủ sở hữu: tiêu đề đè lên tranh là có chủ đích): eyebrow + `<h1>` +
+ornament ở góc dưới-trái qua `PageHeader` (§7.7), chữ trắng `text-page-title` trên `.cover-scrim` + text-shadow nhẹ.
+Đo bằng `cover-contrast.cjs` trên 3 banner × ngày/đêm và 16 cover (375 + 1440): tiêu đề p5 ≥ 6.8:1, eyebrow vàng ≥ 5.5:1.
+404 không có tiêu đề overlay (khung banner cũ).
 
 ---
 
@@ -377,6 +440,10 @@ Asset mới không thêm animation chạy liên tục; texture tĩnh.
 (crawler, người tắt JS và first paint sẽ thấy trống). Reveal dùng `components/ui/reveal.tsx` (div thường, chỉ ẩn
 phần dưới màn hình sau khi mount rồi hiện khi cuộn tới); entrance của hero là keyframe CSS `.hero-rise`.
 Reduced-motion: không ẩn gì cả. Chi tiết: [DESIGN.md](../DESIGN.md#motion-principles).
+
+**Hero (split):** dòng tên + avatar → H1 câu giá trị → lead → CTA → stats → thẻ "Now building" lần lượt `.hero-rise` với delay
+0.05 → 0.75s (inline `animationDelay`). Mũi tên "Selected work" nảy nhẹ (chỉ icon, Motion), đứng yên khi reduced-motion. Ban đêm
+thêm quầng đèn lồng (radial gradient `hidden dark:block`, bán kính nằm trong ô spirit) và chữ highlight vàng phát sáng.
 
 **Nền ambient — mây cumulus trôi** (`components/scene/drifting-clouds.tsx`, `cloud-sprite.ts`): ≤ 5 đám (3 trên
 màn cảm ứng) ở nửa trên bầu trời. Sprite vẽ procedural 1 lần trên canvas (seed cố định): metaball các cụm nhỏ

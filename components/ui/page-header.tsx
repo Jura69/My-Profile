@@ -41,7 +41,7 @@ export default function PageHeader({ crumbs, title, eyebrow, lead, ornament: Orn
                         className="mt-3"
                     />
                 )}
-                {media?.kind === 'cover' && media.project.cover && (
+                {media?.kind === 'cover' && (
                     <PageBanner
                         image={{
                             src: `${media.project.cover}-1280.webp`,
@@ -51,6 +51,9 @@ export default function PageHeader({ crumbs, title, eyebrow, lead, ornament: Orn
                             alt: media.project.coverAlt,
                             position: media.project.coverPosition
                         }}
+                        // Phones get the 640w cover (it is the page's LCP; 1280w is 2.3× the bytes for a
+                        // soft gouache painting under a scrim), tablets and desktops the 1280w one.
+                        sizes="(min-width:1100px) 1036px, (min-width:640px) 100vw, 320px"
                         title={title}
                         eyebrow={eyebrow}
                         ornament={Ornament}

@@ -40,15 +40,19 @@ My-Profile/
 │   │   └── audiophile.tsx    # Audio listing (+ audiophile/ detail pages)
 │   └── styles/global.css     # Tailwind 4 @theme tokens, html ground, scene + .hero-rise keyframes
 ├── components/               # (repo root, NOT src/)
-│   ├── ui/                   # Primitives: badge, button(+styles), card, container,
-│   │                         #   icon-button, page-banner, reveal, section-heading
-│   ├── layout/               # main (app shell), navbar, footer, detail-page,
+│   ├── ui/                   # Primitives: badge, breadcrumb, button(+styles), card, chip,
+│   │                         #   container (one 1100px column), icon-button(+styles),
+│   │                         #   page-banner (theme banner | project cover), page-header,
+│   │                         #   reveal, section-heading (eyebrow + H2 + vine), spirit-still
+│   ├── layout/               # main (app shell), navbar, footer, detail-page (prose pieces),
+│   │                         #   detail-layout (DetailBody + FactRow), detail-pager,
 │   │                         #   not-found, route-error-boundary, theme-toggle
-│   ├── home/                 # hero-dawn, about-morning, skills-bento,
+│   ├── home/                 # hero-dawn (+ hero-proof-stats, hero-now-building),
+│   │                         #   selected-work, about-morning, skills-bento,
 │   │                         #   experience-dusk (+ journey-trail, journey-card),
 │   │                         #   night-contact + home-data.ts
-│   ├── works/                # project-card, featured-project-card, works-tabs
-│   │                         #   + works-data.ts
+│   ├── works/                # featured-project-card, overlay-project-card, project-row-card,
+│   │                         #   project-card, works-tabs + works-data.ts
 │   ├── scene/                # ambient-scene, celestial-arc, drifting-clouds,
 │   │                         #   parallax-hills, stars, zone-particles, zone-data,
 │   │                         #   cloud-sprite, scene-provider, use-scene,
@@ -107,7 +111,8 @@ Notable absences (deleted as cruft, do not reference): `components/layouts/`
 ## Data Model (single sources of truth)
 
 **`components/works/works-data.ts`** — drives listings, detail hrefs, AND (through `lib/site-routes.ts`) the prerendered routes, sitemap and llms.txt:
-- `projects: Project[]` — 16 projects, each with `thumbnail` (640w cover) and `cover` (base path; `coverSrcSet()` builds the 640/1280 srcset) (4 personal, of which 3 `featured`; 12 enterprise `@ Creasia`, of which 2 `featured` AI flagships)
+- `projects: Project[]` — 16 projects, each with `thumbnail` (640w cover) and `cover` (base path; `coverSrcSet()` builds the 480/640/1280 srcset), `year`, `coverAlt`, optional `coverPosition` (detail-cover crop) and `kicker` (card eyebrow) (4 personal, of which 3 `featured`; 12 enterprise at CREASIA, of which 2 `featured` AI flagships). Ids are the `ProjectId` union
+- Lookups: `findProject(id)` (throws on a missing id, failing the prerender) and `projectsInCategory(category)` (Works tabs, detail pager)
 - `activities: CardItem[]` — 1 activity (YTC NTU)
 - `audioGear: CardItem[]` — 4 devices (`ea1000`, `moondrop-ssp`, `onix`, `fiioka11`)
 - Derived exports: `featuredProjects`, `otherPersonalProjects`, `enterpriseProjects`
@@ -115,7 +120,8 @@ Notable absences (deleted as cruft, do not reference): `components/layouts/`
 **`components/home/home-data.ts`** — homepage content:
 - `skillGroups` — 28 skills in 4 groups, AI-first order (AI & Agent Engineering 6, Frontend 8, Backend 8, DevOps 6)
 - `experiences` — 4 timeline entries (CREASIA, Infodation, VNPT, university)
-- `socialLinks` — 5 links (GitHub, LinkedIn, Facebook, Instagram, Email)
+- `socialLinks` — 5 links with `name` (GitHub, LinkedIn, Facebook, Instagram, Email), `label` (handle), `href`; `socialIcon` maps each to its io5 logo; `GITHUB_URL` is derived from it (navbar); the footer filters `socialLinks` by `name`
+- `selectedWork` — the 3 Home "Selected work" project ids (flagship first); `featuredBrands` — client brands named under it
 - `techIconMap` — tech-name → icon/color for experience badges
 
 Adding a project/device: append to the array — listing card, route href,
@@ -166,6 +172,13 @@ so `?tab=` is applied only after hydration (`lib/use-hydrated.ts`).
 A long-lived tab requesting a deleted hashed chunk gets a 404 (no catch-all
 rewrite) → dynamic import rejects → `RouteErrorBoundary` auto-reloads once
 (sessionStorage-guarded), else renders a manual reload prompt.
+
+### Detail pages
+
+Every detail route (16 works, 4 audiophile, YTC) is `PageHeader` (cover for works, plain for the rest) →
+`DetailBody` (prose children + `facts: FactRow[]`) → `DetailPager`. `DetailTitle` and `DetailMeta` were
+removed in the 2026-10-09 design-system refactor. The markdown converter (`scripts/prerender/html-to-markdown.mjs`)
+renders each `dt`/`dd` pair as "**Label:** value"; the Home twin takes its name from the H1's `data-twin-name`.
 
 ### 3D scene
 

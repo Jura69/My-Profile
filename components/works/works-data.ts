@@ -38,6 +38,8 @@ export type ProjectId =
 
 export interface Project extends CardItem {
     id: ProjectId
+    /** Required for projects: the cover heads the detail page (and carries its H1). */
+    cover: string
     description: string
     category: 'personal' | 'enterprise'
     featured?: boolean

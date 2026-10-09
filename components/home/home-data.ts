@@ -254,7 +254,7 @@ export const socialLinks: SocialLink[] = [
     { name: 'Email', label: 'Loctruongtuan@gmail.com', href: 'mailto:Loctruongtuan@gmail.com', icon: 'google' }
 ]
 
-/** Profile URL for the navbar and footer GitHub links — derived so it never drifts from socialLinks. */
+/** Profile URL for the navbar GitHub links — derived so it never drifts from socialLinks. */
 export const GITHUB_URL = socialLinks.find(link => link.name === 'GitHub')!.href
 
 export const techIconMap: Record<string, { icon: IconType; color: string }> = {

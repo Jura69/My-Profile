@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { Link as RouterLink } from 'react-router'
 import { ArrowRight } from '../icons/kit-icons-interface'
 import { SprigLeaf } from '../icons/kit-ornaments'
@@ -47,10 +48,10 @@ export default function SelectedWork() {
                         <span>
                             Enterprise work at CREASIA for brands including{' '}
                             {featuredBrands.map((brand, i) => (
-                                <span key={brand}>
+                                <Fragment key={brand}>
                                     {i > 0 && (i === featuredBrands.length - 1 ? ' and ' : ', ')}
                                     <strong className="font-bold text-ink">{brand}</strong>
-                                </span>
+                                </Fragment>
                             ))}
                             .
                         </span>
