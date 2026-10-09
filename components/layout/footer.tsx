@@ -1,40 +1,80 @@
-/** Footer with forest silhouette divider — Tailwind rebuild of the legacy Chakra footer. */
+import { Link as RouterLink } from 'react-router'
 import { SprigLeaf } from '../icons/kit-ornaments'
+import Container from '../ui/container'
+import { socialLinks } from '../home/home-data'
+
+const PAGES = [
+    { to: '/', label: 'About' },
+    { to: '/works', label: 'Works' },
+    { to: '/audiophile', label: 'Audiophile' },
+    { to: '/activities', label: 'Activities' }
+]
+
+const ELSEWHERE = socialLinks.filter(link => ['GitHub', 'LinkedIn', 'Email'].includes(link.name))
+
+const linkClasses =
+    'inline-flex min-h-8 items-center rounded font-rounded text-[15px] font-semibold text-accent underline-offset-2 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-ring'
+
+/** Site footer on sunken paper: who this is, page navigation and elsewhere links, copyright. */
 export default function Footer() {
     const year = new Date().getFullYear()
 
     return (
-        <footer className="mt-8 pb-8 text-center">
-            <div className="mb-3 text-ghibli-forest-green opacity-35 dark:text-[#4a6741]">
-                <svg
-                    viewBox="0 0 400 40"
-                    className="mx-auto block h-10 w-full max-w-[400px]"
-                    preserveAspectRatio="xMidYMax meet"
-                    aria-hidden="true"
+        <footer className="border-t border-line bg-surface-sunken">
+            <Container size="page" className="py-12">
+                <div className="flex flex-wrap justify-between gap-x-12 gap-y-8">
+                    <div className="max-w-[32ch] basis-64">
+                        <p className="flex items-center gap-2.5 font-rounded text-lg font-extrabold text-ink">
+                            <SprigLeaf aria-hidden="true" className="text-accent" /> Jura69
+                        </p>
+                        <p className="mt-2 font-rounded text-sm leading-relaxed text-ink-muted">
+                            Trương Tuấn Lộc — full-stack developer building AI agent platforms.
+                        </p>
+                    </div>
+
+                    <nav aria-label="Footer" className="grid grid-cols-2 gap-x-14 gap-y-8 sm:flex">
+                        <div>
+                            <p className="eyebrow text-ink-muted">Pages</p>
+                            <ul className="mt-2.5 flex list-none flex-col gap-0.5 p-0">
+                                {PAGES.map(page => (
+                                    <li key={page.to}>
+                                        <RouterLink to={page.to} className={linkClasses}>
+                                            {page.label}
+                                        </RouterLink>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <p className="eyebrow text-ink-muted">Elsewhere</p>
+                            <ul className="mt-2.5 flex list-none flex-col gap-0.5 p-0">
+                                {ELSEWHERE.map(link => {
+                                    const external = link.href.startsWith('http')
+                                    return (
+                                        <li key={link.name}>
+                                            <a
+                                                href={link.href}
+                                                className={linkClasses}
+                                                {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                                            >
+                                                {link.name}
+                                            </a>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+
+                {/* Year is baked in at build time; a client in a newer year keeps it until the next build */}
+                <p
+                    className="mt-10 border-t border-line-strong pt-5 font-rounded text-sm text-ink-muted"
+                    suppressHydrationWarning
                 >
-                    {/* Trees - left group */}
-                    <polygon points="30,40 40,8 50,40" fill="currentColor" />
-                    <polygon points="45,40 55,14 65,40" fill="currentColor" />
-                    <polygon points="20,40 32,18 44,40" fill="currentColor" />
-                    {/* Trees - center group */}
-                    <polygon points="150,40 162,5 174,40" fill="currentColor" />
-                    <polygon points="165,40 175,12 185,40" fill="currentColor" />
-                    <polygon points="180,40 195,2 210,40" fill="currentColor" />
-                    <polygon points="205,40 215,10 225,40" fill="currentColor" />
-                    <polygon points="140,40 155,15 170,40" fill="currentColor" />
-                    {/* Trees - right group */}
-                    <polygon points="330,40 342,10 354,40" fill="currentColor" />
-                    <polygon points="350,40 360,6 370,40" fill="currentColor" />
-                    <polygon points="360,40 372,16 384,40" fill="currentColor" />
-                    {/* Ground line */}
-                    <rect x="0" y="38" width="400" height="2" fill="currentColor" rx="1" />
-                </svg>
-            </div>
-            {/* Year is baked in at build time; a client in a newer year keeps it until the next build */}
-            <p className="font-rounded text-sm text-ink-muted opacity-50" suppressHydrationWarning>
-                <SprigLeaf className="inline-block align-[-0.3em] text-accent" /> &copy; {year} Jura69. All Rights
-                Reserved. <SprigLeaf className="inline-block align-[-0.3em] text-accent -scale-x-100" />
-            </p>
+                    &copy; {year} Jura69. All rights reserved.
+                </p>
+            </Container>
         </footer>
     )
 }
