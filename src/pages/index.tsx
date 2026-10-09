@@ -1,16 +1,17 @@
 import SEO from '../../components/seo'
 import { PersonSchema, WebsiteSchema, ProfilePageSchema } from '../../components/json-ld'
 import HeroDawn from '../../components/home/hero-dawn'
+import SelectedWork from '../../components/home/selected-work'
 import AboutMorning from '../../components/home/about-morning'
 import SkillsBento from '../../components/home/skills-bento'
 import ExperienceDusk from '../../components/home/experience-dusk'
 import NightContact from '../../components/home/night-contact'
 
 /**
- * Homepage — a day→night scroll narrative composed of five scenes over the
- * fixed ambient scene: dawn hero, morning about, midday skills, dusk
- * experience, night contact. Sections are full-bleed (the sky breathes at the
- * margins); each owns an inner ~1100px column.
+ * Homepage — a day→night scroll narrative over the fixed ambient scene: the dawn hero, then five
+ * numbered chapters — 01 Morning selected work, 02 Noon about, 03 Afternoon skills, 04 Dusk
+ * journey, 05 Night contact. Proof comes before biography. Sections are full-bleed (the sky
+ * breathes at the margins); each owns a Container size="page" column.
  */
 export default function Home() {
     return (
@@ -26,6 +27,7 @@ export default function Home() {
             <ProfilePageSchema />
 
             <HeroDawn />
+            <SelectedWork />
             <AboutMorning />
             <SkillsBento />
             <ExperienceDusk />

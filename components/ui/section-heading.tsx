@@ -5,47 +5,35 @@ import { DividerVine } from '../icons/kit-dividers'
 interface SectionHeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
     as?: 'h1' | 'h2' | 'h3'
     children: React.ReactNode
-    /** Decorative kit ornament rendered after the text (replaces the old trailing emoji). */
+    /** Label above the heading: a chapter ("01 · Morning") or a kind ("Beyond code"). */
+    eyebrow: React.ReactNode
+    /** Decorative kit ornament rendered after the text. */
     ornament?: IconComponent
-    /** Centers the brush divider under the heading (for headings inside a text-center block). */
+    /** Centers the block and its brush divider. */
     align?: 'start' | 'center'
-    /** Chapter label above the heading ("01 · Morning"). Opts into the design-system scale. */
-    eyebrow?: React.ReactNode
 }
 
-/** Section title + hand-drawn vine divider underneath (sibling, so heading text stays clean). */
+/**
+ * Section header: eyebrow, heading on the section scale, hand-drawn vine divider underneath
+ * (a sibling, so the heading text stays clean). Left-aligned by default.
+ */
 export default function SectionHeading({
-    as: Tag = 'h3',
+    as: Tag = 'h2',
     className,
     children,
+    eyebrow,
     ornament: Ornament,
     align = 'start',
-    eyebrow,
     ...props
 }: SectionHeadingProps) {
-    if (eyebrow !== undefined) {
-        return (
-            <div className={cn(align === 'center' && 'text-center')}>
-                <p className="eyebrow">{eyebrow}</p>
-                <Tag className={cn('mt-2 font-rounded text-section font-extrabold text-ink', className)} {...props}>
-                    {children}
-                    {Ornament && <Ornament className="ml-2 inline-block size-[0.9em] align-[-0.15em] text-accent" />}
-                </Tag>
-                <DividerVine className={cn('mt-3 block h-3.5 w-32 text-accent', align === 'center' && 'mx-auto')} />
-            </div>
-        )
-    }
-
     return (
-        <>
-            <Tag
-                className={cn('mt-3 mb-1 font-rounded text-xl font-bold tracking-tight text-ink', className)}
-                {...props}
-            >
+        <div className={align === 'center' ? 'text-center' : undefined}>
+            <p className="eyebrow">{eyebrow}</p>
+            <Tag className={cn('mt-2 font-rounded text-section font-extrabold text-ink', className)} {...props}>
                 {children}
-                {Ornament && <Ornament className="ml-2 inline-block size-[1.15em] align-[-0.2em] text-accent" />}
+                {Ornament && <Ornament className="ml-2 inline-block size-[0.9em] align-[-0.15em] text-accent" />}
             </Tag>
-            <DividerVine className={cn('mb-4 block h-3.5 w-32 text-accent', align === 'center' && 'mx-auto')} />
-        </>
+            <DividerVine className={cn('mt-3 block h-3.5 w-32 text-accent', align === 'center' && 'mx-auto')} />
+        </div>
     )
 }

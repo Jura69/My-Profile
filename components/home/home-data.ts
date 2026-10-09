@@ -41,6 +41,7 @@ import {
 import { Camera, MusicNotes, OpenBook, Sakura } from '../icons/kit-icons-hobbies'
 import type { IconComponent } from '../icons/kit-icon-base'
 import type { BadgeTone } from '../ui/badge'
+import type { ProjectId } from '../works/works-data'
 
 /**
  * Homepage content data — ported verbatim from the legacy `src/pages/index.tsx`.
@@ -271,3 +272,9 @@ export const techIconMap: Record<string, { icon: IconType; color: string }> = {
     AWS: { icon: SiAmazonwebservices, color: '#FF9900' },
     SQL: { icon: DiDatabase, color: '#00758F' }
 }
+
+/** Home "Selected work": the flagship first, then the two compact cards (ids typed against works-data). */
+export const selectedWork: [ProjectId, ProjectId, ProjectId] = ['ai-center', 'planogram', 'ocr-cccd']
+
+/** Client brands named under Selected work (owner-approved: client names may appear publicly). */
+export const featuredBrands = ['BAT', 'Castrol', 'Mondelez']

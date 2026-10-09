@@ -8,7 +8,8 @@ import { execFileSync } from 'node:child_process'
  */
 
 const LISTING_SOURCES = {
-    '/': ['src/pages/index.tsx', 'components/home'],
+    // Home shows the selected projects' titles, blurbs and covers from works-data
+    '/': ['src/pages/index.tsx', 'components/home', 'components/works/works-data.ts'],
     '/works': ['src/pages/works.tsx', 'components/works/works-data.ts'],
     '/activities': ['src/pages/activities.tsx', 'components/works/works-data.ts'],
     '/audiophile': ['src/pages/audiophile.tsx', 'components/works/works-data.ts']

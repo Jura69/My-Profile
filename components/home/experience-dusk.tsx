@@ -1,33 +1,44 @@
 import { useRef } from 'react'
-import { ChevronRight } from '../icons/kit-icons-interface'
+import { Download } from '../icons/kit-icons-interface'
+import Container from '../ui/container'
 import Reveal from '../ui/reveal'
 import SectionHeading from '../ui/section-heading'
 import { buttonClasses } from '../ui/button-styles'
 import { experiences, splitPeriod } from './home-data'
-import { Acorn } from '../icons/kit-ornaments'
 import JourneyCard from './journey-card'
 import JourneyTrail, { JOURNEY_NODE_ATTR } from './journey-trail'
 
 const EASE_OUT = [0.22, 1, 0.36, 1] as const
 
 /**
- * Scene 4 — dusk. Work history as a forest trail: a meandering path runs down
+ * Scene 5 — dusk. Work history as a forest trail: a meandering path runs down
  * a narrow lane (left edge on phones) and a seed lantern walks it with the
  * reader, lighting each milestone it reaches (JourneyTrail). Desktop reads
  * left→right as period | trail | card, so the cards keep the full width;
- * cards glide in from the right, periods from the left.
+ * cards glide in from the right, periods from the left. The full CV sits in the header row.
+ * overflow-x-clip: cards wait 32px to the right of their slot until revealed, which must not
+ * widen the page.
  */
 export default function ExperienceDusk() {
     const listRef = useRef<HTMLDivElement>(null)
 
     return (
-        <section data-section="work" className="w-full px-4 py-16 md:py-24">
-            <div className="mx-auto max-w-[1100px]">
-                <div className="text-center">
-                    <SectionHeading as="h2" ornament={Acorn} align="center">
-                        My Journey
-                    </SectionHeading>
-                </div>
+        <section data-section="journey" className="w-full overflow-x-clip py-16 md:py-24">
+            <Container size="page">
+                <Reveal>
+                    <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
+                        <SectionHeading as="h2" eyebrow="04 · Dusk">
+                            My journey
+                        </SectionHeading>
+                        <a
+                            href="/files/CV.pdf"
+                            download="TuanLoc_CV.pdf"
+                            className={buttonClasses('outline', 'md', 'h-11 bg-surface-elevated')}
+                        >
+                            <Download aria-hidden="true" /> Full CV (PDF)
+                        </a>
+                    </div>
+                </Reveal>
 
                 {/* Trail container: the SVG sits under the list (later positioned siblings paint on top) */}
                 <div ref={listRef} className="relative mt-10">
@@ -96,15 +107,7 @@ export default function ExperienceDusk() {
                         })}
                     </ol>
                 </div>
-
-                <Reveal delay={0.1}>
-                    <div className="mt-14 text-center">
-                        <a href="/files/CV.pdf" download="TuanLoc_CV.pdf" className={buttonClasses('solid', 'lg')}>
-                            Download Full CV <ChevronRight aria-hidden="true" />
-                        </a>
-                    </div>
-                </Reveal>
-            </div>
+            </Container>
         </section>
     )
 }

@@ -1,65 +1,63 @@
+import Card from '../ui/card'
+import Chip from '../ui/chip'
+import Container from '../ui/container'
 import Reveal from '../ui/reveal'
 import SectionHeading from '../ui/section-heading'
 import type { BadgeTone } from '../ui/badge'
 import { skillGroups, type SkillGroup } from './home-data'
-import { SprigLeaf } from '../icons/kit-ornaments'
 
-const toneText: Record<BadgeTone, string> = {
-    frontend: 'text-skill-frontend-ink',
-    backend: 'text-skill-backend-ink',
-    ai: 'text-skill-ai-ink',
-    tools: 'text-skill-tools-ink',
-    accent: 'text-accent',
-    neutral: 'text-ink-muted'
+const toneDot: Record<BadgeTone, string> = {
+    frontend: 'bg-skill-frontend',
+    backend: 'bg-skill-backend',
+    ai: 'bg-skill-ai',
+    tools: 'bg-skill-tools',
+    accent: 'bg-accent',
+    neutral: 'bg-ink-muted'
 }
 
 function GroupCard({ group }: { group: SkillGroup }) {
     return (
-        <div className="h-full rounded-2xl border border-line bg-surface-elevated/70 p-5 backdrop-blur-sm">
-            <h3 className={`mb-4 font-rounded text-sm font-bold tracking-wide uppercase ${toneText[group.tone]}`}>
-                {group.title}
-            </h3>
-            <ul className="flex list-none flex-wrap gap-2">
-                {group.skills.map(skill => {
-                    const Icon = skill.icon
-                    return (
-                        <li
-                            key={skill.label}
-                            className="inline-flex items-center gap-2 rounded-xl border border-line bg-surface/60 px-3 py-2 text-sm font-medium text-ink transition-transform duration-200 hover:-translate-y-0.5 hover:border-accent/40"
-                        >
-                            <Icon className="shrink-0 text-lg" style={{ color: skill.color }} aria-hidden="true" />
-                            {skill.label}
-                        </li>
-                    )
-                })}
+        <Card className="h-full p-6">
+            <div className="flex items-center justify-between gap-3">
+                <h3 className="flex items-center gap-2.5 font-rounded text-lg font-extrabold text-ink">
+                    <span aria-hidden="true" className={`size-3 rounded-full ${toneDot[group.tone]}`} />
+                    {group.title}
+                </h3>
+                <span className="font-rounded text-[13px] font-bold text-ink-muted">{group.skills.length} skills</span>
+            </div>
+            <ul className="mt-[18px] flex list-none flex-wrap gap-2 p-0">
+                {group.skills.map(skill => (
+                    <Chip key={skill.label} icon={skill.icon} color={skill.color}>
+                        {skill.label}
+                    </Chip>
+                ))}
             </ul>
-        </div>
+        </Card>
     )
 }
 
 /**
- * Scene 3 — midday. Skills as a responsive bento (1 col mobile, 2 col sm,
- * 6-col bento on lg). Cards reveal with a 0.06s stagger; skill pills lift
- * subtly on hover (CSS only — no continuous animation, no 3D tilt).
+ * Scene 4 — afternoon. Skills as four equal paper cards (2 columns from md), each with its tone dot,
+ * a count and one chip per skill. Cards reveal with a short stagger.
  */
 export default function SkillsBento() {
     return (
-        <section data-section="skills" className="w-full px-4 py-16 md:py-20">
-            <div className="mx-auto max-w-[1100px]">
+        <section data-section="skills" className="w-full py-16 md:py-24">
+            <Container size="page">
                 <Reveal>
-                    <SectionHeading as="h2" ornament={SprigLeaf}>
-                        Skills &amp; Technologies
+                    <SectionHeading as="h2" eyebrow="03 · Afternoon">
+                        Skills &amp; technologies
                     </SectionHeading>
                 </Reveal>
 
-                <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
+                <div className="mt-10 grid gap-6 md:grid-cols-2">
                     {skillGroups.map((group, i) => (
-                        <Reveal key={group.title} delay={i * 0.06} className="lg:col-span-3">
+                        <Reveal key={group.title} delay={i * 0.06}>
                             <GroupCard group={group} />
                         </Reveal>
                     ))}
                 </div>
-            </div>
+            </Container>
         </section>
     )
 }
