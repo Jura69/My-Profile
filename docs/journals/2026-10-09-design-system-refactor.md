@@ -27,5 +27,5 @@ pager, a transparent-to-paper navbar and a navigational footer.
 
 ## Open
 
-Self-host fonts and restore 800? JourneyCard role contrast (2.8:1, pre-existing). `/audiophile` and `/activities`
-jump from H1 to H3 (pre-existing).
+Owner kept the heavy weight at 700. JourneyCard role contrast fixed in a follow-up (55% mix with `--ink`).
+Still open: `/audiophile` and `/activities` jump from H1 to H3 (pre-existing).
