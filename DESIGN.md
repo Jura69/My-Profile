@@ -63,7 +63,10 @@ textures, imagery and AI prompt anatomy — lives in
   sky shows at the margins. Section rhythm `py-16 md:py-24`.
 - The fixed navbar is 72 px: `main` uses `pt-18`, anchors use `scroll-padding-top`. It is transparent over
   the sky at the top of a page and turns solid paper once scrolled (synced on mount for deep links).
-- Verify every UI change at 1440×900, 768×1024 and 375×812 (see [REVIEW.md](REVIEW.md)).
+- Size the first screen by height as well as width: short laptops (13–15" at 125–150% scale) show only
+  ~650–790 px. The `short` variant (lg and ≤ 820 px tall) tightens vertical rhythm only.
+- Verify every UI change at 1280×650, 1440×790, 1920×950, 768×1024 and 375×812 (inner viewports; full
+  matrix and fold gate in [REVIEW.md](REVIEW.md)).
 
 ## Components
 

@@ -5,9 +5,16 @@ Use for every pull request that touches UI, content, routes or the build. Design
 
 ## Evidence required
 
-- UI changes ship with screenshots of each changed page at **1440×900, 768×1024 and
-  375×812**, light and dark where colors differ. No horizontal overflow, clipped text,
-  overlap or broken images.
+- UI changes ship with screenshots of each changed page at **1280×650, 1440×790, 1920×950,
+  768×1024 and 375×812**, light and dark where colors differ. No horizontal overflow, clipped
+  text, overlap or broken images. These are inner browser viewports, not screen sizes: a 13"
+  laptop at 150% scale shows about 1280×650, a MacBook Air about 1440×790.
+- The first screen must fit. On the full desktop matrix (1280×650, 1280×720, 1366×650,
+  1440×790, 1536×730, 1920×950, 1024×650) the Home H1, both CTAs, stats, spirit and
+  "Now building" card end above the fold; on 375×812 the spirit, H1 and first CTA do. On the
+  short desktops, page headers show the H1 and the lead above the fold. Gate (maintainer-local,
+  `plans/` is git-ignored): `plans/261009-0940-short-viewport-fit/tools/viewport-fold-gate.mjs`
+  against `yarn preview`, light and `--dark`; it exits 1 on failure.
 - `yarn build` and `yarn lint` pass (0 errors, 0 warnings). The build runs the prerender; it
   fails loudly if a listed route renders the 404 page or has no `<h1>`.
 

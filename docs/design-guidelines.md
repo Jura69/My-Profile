@@ -1,7 +1,7 @@
 # Design Guidelines — "A Day in the Forest" UI Kit
 
 **Status:** Applied (2026-10-01) — kit đã được áp dụng vào code; mục nào lệch spec gốc có ghi chú "Áp dụng" tại chỗ
-**Last Updated:** 2026-10-09 (design-system refactor: type tokens, `Container`, scrim, `PageHeader`, detail layout)
+**Last Updated:** 2026-10-09 (design-system refactor: type tokens, `Container`, scrim, `PageHeader`, detail layout; height-aware first screen + `short` variant)
 **Token source hiện tại:** [`src/styles/global.css`](../src/styles/global.css) · sky narrative: [`components/scene/zone-data.ts`](../components/scene/zone-data.ts)
 **Review folder:** `design/ui-kit-review/` (mở `index.html`)
 
@@ -181,7 +181,7 @@ tailwind-merge coi `text-section` là màu và xóa nó khi đứng cạnh `text
 
 | Role | Utility / class | Size (mobile → desktop) | Weight | Line-height | Tracking |
 |---|---|---|---|---|---|
-| Display (H1 hero, câu giá trị) | `text-display` | 42 → 84px | extrabold | 1.03 | -0.03em |
+| Display (H1 hero, câu giá trị) | `text-display` | 42 → 84px, theo cả chiều cao: `clamp(42px, min(6vw, 9.5svh), 84px)` | extrabold | 1.03 | -0.03em |
 | H1 page (banner, cover, header phẳng) | `text-page-title` | 36 → 56px | extrabold | 1.05 | -0.02em |
 | H2 section | `text-section` | 28 → 36px | extrabold | 1.15 | -0.01em |
 | H2 trong panel / trang chi tiết | `text-xl` / `text-2xl` | 20 / 24px | extrabold | 1.25 | 0 |
@@ -194,6 +194,12 @@ tailwind-merge coi `text-section` là màu và xóa nó khi đứng cạnh `text
 **Weight "extrabold":** markup dùng `font-extrabold` đúng như canvas (800), nhưng token `--font-weight-extrabold` đang map về
 **700**: một file 800 thật cộng ~0.9s LCP trên Slow 4G (đo bằng `vitals-breakdown.mjs`). Muốn khôi phục 800: xóa dòng token
 trong `global.css` và thêm 800 vào URL font trong `index.html` (nên làm khi self-host font).
+
+**Màn hình đầu phải vừa cả theo chiều cao.** Laptop 13–15" ở scale 125–150% chỉ còn ~650–790px cao (1280×650,
+1440×790), nên cỡ hero lấy số nhỏ hơn giữa chiều rộng và chiều cao (`9.5svh` thắng trên màn thấp và rộng; điện thoại,
+tablet vẫn theo `6vw`). Ô spirit cũng vậy: `lg:size-[min(440px,52svh)]`, cố định theo viewport nên đổi sang 3D không gây
+layout shift. Variant **`short`** (`global.css`: lg **và** cao ≤ 820px) **chỉ siết nhịp dọc** (padding, margin) — không
+đổi layout, cỡ hay thứ tự. Gate đo màn hình đầu: xem [REVIEW.md](../REVIEW.md).
 
 - Prose tối đa ~65ch; không justify (tránh khe hở chữ) — **ngoại lệ:** bio ở About dùng `text-justify` (quyết định của user, commit `1b8dc72`); số liệu dùng `tabular-nums`.
 - Heading section có thể kèm 1 ornament SVG (lá/đom đóm) đặt **sau** chữ — xem §6.3.
@@ -209,7 +215,7 @@ trong `global.css` và thêm 800 vào URL font trong `index.html` (nên làm khi
 | radius-lg | 16px (`rounded-2xl`) | card |
 | radius-pill | 9999px | badge, chip, toggle |
 | spacing base | 4px scale Tailwind | |
-| section rhythm | `py-16 md:py-24` | mọi section Home và khối "Off the clock"; header trang `pt-8 md:pt-14` |
+| section rhythm | `py-16 md:py-24` | mọi section Home và khối "Off the clock"; header trang `pt-8 md:pt-14 short:pt-6`; hero Home siết `short:` (pt-4, mt-3/mt-5) |
 | container | `Container` (`components/ui/container.tsx`) = 1100px, gutter `px-4 sm:px-6 lg:px-8` | **một** cột cho navbar, footer, section, trang danh sách và chi tiết; prose tối đa 68ch |
 
 **Elevation = giấy chồng giấy, không phải bóng đen.** Shadow tint theo màu nền:
@@ -354,7 +360,9 @@ Icon `sun`/`moon` mới; chuyển icon bằng crossfade + rotate 30° (Motion), 
 (`Breadcrumb`, link ≥ 32px, mục cuối `aria-current`) → tranh có eyebrow vàng + H1 `text-page-title` trắng đè trên `.cover-scrim`
 → lead `text-lead`. Tranh là banner ngày/đêm (works, audiophile, activities) hoặc cover dự án 2.4:1 (16 trang works,
 `coverPosition` khi chủ thể bị cắt; điện thoại nhận bản 640w vì cover là LCP); không tranh (audiophile chi tiết, YTC) = eyebrow +
-H1 phẳng cùng thang. Khung có `min-h` 240/260px để H1 hai dòng + eyebrow vẫn nằm trong dải scrim ở 375px.
+H1 phẳng cùng thang. Khung có `min-h` 240/260px để H1 hai dòng + eyebrow vẫn nằm trong dải scrim ở 375px. Trên desktop thấp khung bị chặn
+`short:max-h-[52svh]` (ảnh `object-cover` chỉ cắt thêm tranh, H1 vẫn neo đáy) để lead nằm trên mép màn hình ở 1280×650;
+crop 16 cover và contrast chữ đã đo lại ở khung 1036×338.
 
 **`.cover-scrim`** — scrim duy nhất cho chữ trên tranh: đặt trên **khối chữ neo đáy** kèm `pt-24`; gradient
 .85 ở đáy → .7 tại mép trên của chữ → mờ hết trong 6rem phía trên. Dải đậm luôn phủ chữ dù tiêu đề xuống mấy dòng.
@@ -424,7 +432,7 @@ Mỗi cover là 1 cảnh gouache ẩn dụ cho domain dự án. Không chữ, kh
 
 **Tiêu đề trên banner/cover** (quyết định của chủ sở hữu: tiêu đề đè lên tranh là có chủ đích): eyebrow + `<h1>` +
 ornament ở góc dưới-trái qua `PageHeader` (§7.7), chữ trắng `text-page-title` trên `.cover-scrim` + text-shadow nhẹ.
-Đo bằng `cover-contrast.cjs` trên 3 banner × ngày/đêm và 16 cover (375 + 1440): tiêu đề p5 ≥ 6.8:1, eyebrow vàng ≥ 5.5:1.
+Đo bằng `cover-contrast.cjs` trên 3 banner × ngày/đêm và 16 cover (375 + 1440, cover thêm khung thấp 1280 bằng `SHORT=338`): tiêu đề p5 ≥ 6.8:1, eyebrow vàng ≥ 5.5:1.
 404 không có tiêu đề overlay (khung banner cũ).
 
 ---
