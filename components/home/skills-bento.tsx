@@ -54,7 +54,7 @@ export default function SkillsBento() {
 
                 <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-6">
                     {skillGroups.map((group, i) => (
-                        <Reveal key={group.title} delay={i * 0.06} className={group.span}>
+                        <Reveal key={group.title} delay={i * 0.06} className="lg:col-span-3">
                             <GroupCard group={group} />
                         </Reveal>
                     ))}

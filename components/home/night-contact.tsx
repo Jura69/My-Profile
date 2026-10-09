@@ -1,21 +1,11 @@
-import { IoLogoGithub, IoLogoLinkedin, IoLogoFacebook, IoLogoInstagram, IoLogoGoogle } from 'react-icons/io5'
-import type { IconType } from 'react-icons'
 import { Mail } from '../icons/kit-icons-interface'
 import Reveal from '../ui/reveal'
 import SectionHeading from '../ui/section-heading'
 import { ButtonLink } from '../ui/button'
 import { buttonClasses } from '../ui/button-styles'
-import { hobbies, socialLinks, type SocialLink } from './home-data'
+import { hobbies, socialIcon, socialLinks } from './home-data'
 import { LeafHeart, PaperLantern } from '../icons/kit-ornaments'
 import SpiritStill from '../ui/spirit-still'
-
-const socialIcon: Record<SocialLink['icon'], IconType> = {
-    github: IoLogoGithub,
-    linkedin: IoLogoLinkedin,
-    facebook: IoLogoFacebook,
-    instagram: IoLogoInstagram,
-    google: IoLogoGoogle
-}
 
 /**
  * Scene 5 — night. Things-I-love pills and the contact block. Sits at the

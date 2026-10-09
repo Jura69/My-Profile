@@ -27,6 +27,7 @@ import {
     SiAmazonwebservices
 } from 'react-icons/si'
 import { DiMsqlServer, DiDatabase } from 'react-icons/di'
+import { IoLogoGithub, IoLogoLinkedin, IoLogoFacebook, IoLogoInstagram, IoLogoGoogle } from 'react-icons/io5'
 import {
     Building,
     Terminal,
@@ -57,20 +58,15 @@ export interface SkillGroup {
     title: string
     /** Badge/accent tone key from the design tokens. */
     tone: BadgeTone
-    /** Bento column span at the lg breakpoint — co-located so the grid is
-     *  fully data-driven (no title-string lookup that could silently drop a card). */
-    span: string
     skills: Skill[]
 }
 
-// Order IS the bento layout: row 1 leads with AI (3) beside Frontend (3) —
-// the AI card comes first so operating-AI experience opens the section;
-// row 2 pairs Backend (3) with DevOps (3), filling a 6-col grid.
+// Order is the reading order of the 2-column grid: AI comes first so operating-AI experience
+// opens the section, beside Frontend; Backend and DevOps follow.
 export const skillGroups: SkillGroup[] = [
     {
         title: 'AI & Agent Engineering',
         tone: 'ai',
-        span: 'lg:col-span-3',
         skills: [
             // Core six only — mirrors the bio verbatim: operating AI leads,
             // agent-building follows, classic ML anchor last.
@@ -85,7 +81,6 @@ export const skillGroups: SkillGroup[] = [
     {
         title: 'Frontend',
         tone: 'frontend',
-        span: 'lg:col-span-3',
         skills: [
             { icon: SiReact, label: 'React.js', color: '#61DAFB' },
             { icon: SiNextdotjs, label: 'Next.js', color: '#808080' },
@@ -100,7 +95,6 @@ export const skillGroups: SkillGroup[] = [
     {
         title: 'Backend',
         tone: 'backend',
-        span: 'lg:col-span-3',
         skills: [
             { icon: SiNodedotjs, label: 'Node.js', color: '#339933' },
             { icon: SiSharp, label: 'C#', color: '#512BD4' },
@@ -115,7 +109,6 @@ export const skillGroups: SkillGroup[] = [
     {
         title: 'DevOps',
         tone: 'tools',
-        span: 'lg:col-span-3',
         skills: [
             // Server stack actually run in production (GPU-server + AI-platform deploy runbooks).
             { icon: SiDocker, label: 'Docker & Compose', color: '#2496ED' },
@@ -229,23 +222,39 @@ export const hobbies: Hobby[] = [
 ]
 
 export interface SocialLink {
+    /** Network name, shown as the row label (contact card, footer). */
+    name: 'GitHub' | 'LinkedIn' | 'Facebook' | 'Instagram' | 'Email'
+    /** Handle or address, shown as the row value. */
     label: string
     href: string
-    /** Brand logo key; the consuming component resolves it to the matching react-icons/io5 logo. */
+    /** Brand logo key, resolved through `socialIcon`. */
     icon: 'github' | 'linkedin' | 'facebook' | 'instagram' | 'google'
 }
 
+/** Brand logo for each social link (react-icons/io5). */
+export const socialIcon: Record<SocialLink['icon'], IconType> = {
+    github: IoLogoGithub,
+    linkedin: IoLogoLinkedin,
+    facebook: IoLogoFacebook,
+    instagram: IoLogoInstagram,
+    google: IoLogoGoogle
+}
+
 export const socialLinks: SocialLink[] = [
-    { label: '@Jura69', href: 'https://github.com/Jura69', icon: 'github' },
+    { name: 'GitHub', label: '@Jura69', href: 'https://github.com/Jura69', icon: 'github' },
     {
+        name: 'LinkedIn',
         label: 'Trương Tuấn Lộc',
         href: 'https://www.linkedin.com/in/tu%E1%BA%A5n-l%E1%BB%99c-b24b391ab/',
         icon: 'linkedin'
     },
-    { label: '@Trương Tuấn Lộc', href: 'https://www.facebook.com/loc.truongtuanMT', icon: 'facebook' },
-    { label: '@_midori_neko_', href: 'https://www.instagram.com/_midori_neko_/', icon: 'instagram' },
-    { label: 'Loctruongtuan@gmail.com', href: 'mailto:Loctruongtuan@gmail.com', icon: 'google' }
+    { name: 'Facebook', label: '@Trương Tuấn Lộc', href: 'https://www.facebook.com/loc.truongtuanMT', icon: 'facebook' },
+    { name: 'Instagram', label: '@_midori_neko_', href: 'https://www.instagram.com/_midori_neko_/', icon: 'instagram' },
+    { name: 'Email', label: 'Loctruongtuan@gmail.com', href: 'mailto:Loctruongtuan@gmail.com', icon: 'google' }
 ]
+
+/** Profile URL for the navbar and footer GitHub links — derived so it never drifts from socialLinks. */
+export const GITHUB_URL = socialLinks.find(link => link.name === 'GitHub')!.href
 
 export const techIconMap: Record<string, { icon: IconType; color: string }> = {
     'AI Agents': { icon: SiClaude, color: '#D97757' },
