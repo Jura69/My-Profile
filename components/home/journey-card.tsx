@@ -19,7 +19,12 @@ export default function JourneyCard({ entry }: { entry: ExperienceEntry }) {
                 style={{ background: `linear-gradient(90deg, ${entry.color}, ${entry.color}00)` }}
             />
             <h3 className="font-rounded text-lg font-bold text-ink">{entry.company}</h3>
-            <p className="mt-0.5 text-sm font-semibold" style={{ color: entry.color }}>
+            {/* Milestone hue pulled 45% toward --ink: the raw timeline colours are 2.3–2.9:1 on paper,
+                the mix keeps the hue and reads ≥ 4.7:1 in light and ≥ 7.3:1 in dark */}
+            <p
+                className="mt-0.5 text-sm font-semibold"
+                style={{ color: `color-mix(in srgb, ${entry.color} 55%, var(--ink))` }}
+            >
                 {entry.role}
             </p>
             <p className="mt-2 text-xs font-semibold text-ink-muted md:hidden">
