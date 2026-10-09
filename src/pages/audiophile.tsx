@@ -1,7 +1,8 @@
 import SEO from '../../components/seo'
 import { BreadcrumbSchema } from '../../components/json-ld'
+import Container from '../../components/ui/container'
+import PageHeader from '../../components/ui/page-header'
 import Reveal from '../../components/ui/reveal'
-import PageBanner from '../../components/ui/page-banner'
 import ProjectCard from '../../components/works/project-card'
 import { audioGear } from '../../components/works/works-data'
 import { Headphones } from '../../components/icons/kit-icons-topics'
@@ -20,25 +21,30 @@ const Audiophile = () => (
             ]}
         />
 
-        <section className="w-full px-4 py-8">
-            <div className="mx-auto max-w-[1100px]">
-                <PageBanner
-                    page="audiophile"
-                    alt="Painted window view over a river valley with a record player and headphones"
-                    title="My Audio Devices"
-                    ornament={Headphones}
-                    className="mb-8"
-                    imgClassName="object-[75%_50%]"
-                />
+        <PageHeader
+            crumbs={[{ label: 'Home', to: '/' }, { label: 'Audiophile' }]}
+            eyebrow={`Off the clock · ${audioGear.length} devices`}
+            title="My audio devices"
+            ornament={Headphones}
+            media={{
+                kind: 'banner',
+                page: 'audiophile',
+                alt: 'Painted window view over a river valley with a record player and headphones',
+                imgClassName: 'object-[75%_50%]'
+            }}
+            lead="IEMs and DAC/AMPs I listen with every day — specs and short impressions."
+        />
 
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <section aria-label="Devices" className="w-full pt-10 pb-16 md:pb-24">
+            <Container size="page">
+                <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-5">
                     {audioGear.map((device, i) => (
                         <Reveal key={device.id} delay={0.05 + i * 0.05} className="h-full">
                             <ProjectCard project={device} to={`/audiophile/${device.id}`} />
                         </Reveal>
                     ))}
                 </div>
-            </div>
+            </Container>
         </section>
     </>
 )

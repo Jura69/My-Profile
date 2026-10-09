@@ -4,9 +4,9 @@ import { cn } from '../../lib/cn'
 import { coverSrcSet, type CardItem } from './works-data'
 
 /**
- * Compact project card — thumbnail, title, one-line blurb. Used for the
- * non-flagship personal work and the enterprise grid, and reused by the
- * audiophile/activities listings via `to`. Transform-only hover, no CLS.
+ * Compact grid card — thumbnail, title, optional one-line blurb. Used by the audiophile and
+ * activities listings via `to` (Works lists use ProjectRowCard). Transform-only hover, no CLS.
+ * The link is named by the title, so the thumbnail is decorative (alt="").
  */
 export default function ProjectCard({ project, to }: { project: CardItem; to?: string }) {
     return (
@@ -27,7 +27,7 @@ export default function ProjectCard({ project, to }: { project: CardItem; to?: s
                         src={project.thumbnail}
                         srcSet={project.cover && coverSrcSet(project.cover)}
                         sizes={project.cover && '(min-width:1024px) 260px, (min-width:640px) 50vw, 100vw'}
-                        alt={project.title}
+                        alt=""
                         loading="lazy"
                         width={480}
                         height={270}

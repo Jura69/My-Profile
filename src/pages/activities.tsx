@@ -1,7 +1,8 @@
 import SEO from '../../components/seo'
 import { BreadcrumbSchema } from '../../components/json-ld'
+import Container from '../../components/ui/container'
+import PageHeader from '../../components/ui/page-header'
 import Reveal from '../../components/ui/reveal'
-import PageBanner from '../../components/ui/page-banner'
 import ProjectCard from '../../components/works/project-card'
 import { activities } from '../../components/works/works-data'
 import { Campfire } from '../../components/icons/kit-icons-topics'
@@ -20,16 +21,17 @@ const Activities = () => (
             ]}
         />
 
-        <section className="w-full px-4 py-8">
-            <div className="mx-auto max-w-[1100px]">
-                <PageBanner
-                    page="activities"
-                    alt="Painted hillside festival ground with bunting and a wooden stage"
-                    title="My Activities"
-                    ornament={Campfire}
-                    className="mb-8"
-                />
+        <PageHeader
+            crumbs={[{ label: 'Home', to: '/' }, { label: 'Activities' }]}
+            eyebrow="Beyond code"
+            title="My activities"
+            ornament={Campfire}
+            media={{ kind: 'banner', page: 'activities', alt: 'Painted hillside festival ground with bunting and a wooden stage' }}
+            lead="Clubs and events from my years at Nha Trang University."
+        />
 
+        <section aria-label="Activities" className="w-full pt-10 pb-16 md:pb-24">
+            <Container size="page">
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                     {activities.map((activity, i) => (
                         <Reveal key={activity.id} delay={0.05 + i * 0.05} className="h-full">
@@ -37,7 +39,7 @@ const Activities = () => (
                         </Reveal>
                     ))}
                 </div>
-            </div>
+            </Container>
         </section>
     </>
 )

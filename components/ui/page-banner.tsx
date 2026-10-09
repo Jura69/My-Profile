@@ -181,8 +181,10 @@ export default function PageBanner({
                     ? [
                           'relative overflow-hidden rounded-[20px] border border-line bg-surface-sunken',
                           frameClasses[aspect],
-                          // Room for a 2-line H1 + eyebrow inside the strong scrim band on phones
-                          aspect === 'cover' ? 'min-h-[260px]' : 'min-h-[240px]'
+                          // Room for a 2-line H1 + eyebrow on phones. min-w-0: otherwise the min-height is
+                          // transferred through the aspect ratio into a min-width and the frame overflows.
+                          aspect === 'cover' ? 'min-h-[260px]' : 'min-h-[240px]',
+                          'w-full min-w-0'
                       ]
                     : 'relative aspect-[2/1] overflow-hidden rounded-2xl border border-line bg-surface-sunken sm:aspect-[3/1]',
                 className

@@ -47,7 +47,18 @@ function parse(html) {
 
 const hasHeading = node => !!node.children?.some(c => /^h[1-6]$/.test(c.tag) || hasHeading(c))
 
-const textOf = node => (node.text ?? node.children?.map(textOf).join('') ?? '').replace(/\s+/g, ' ').trim()
+/** Plain text of a subtree for labels: decorative (aria-hidden) parts are skipped, and runs from
+ *  separate elements are joined with a space (a tab "Enterprise" + its sr-only "(12 projects)")
+ *  while adjacent text nodes (React splits `({n} projects)` into three) join as written. */
+const textOf = node => {
+    if (node.text !== undefined) return node.text
+    if (node.attrs?.['aria-hidden'] === 'true') return ''
+    return (node.children ?? [])
+        .map(child => (child.text !== undefined ? child.text : ` ${textOf(child)} `))
+        .join('')
+        .replace(/\s+/g, ' ')
+        .trim()
+}
 
 function collectTabLabels(node, labels = {}) {
     if (node.attrs?.role === 'tab' && node.attrs.id) labels[node.attrs.id] = textOf(node)

@@ -1,8 +1,8 @@
 /**
- * Single source for the Works listing (ported from the old Chakra works.tsx).
- * `featured` flips a project onto a large FeaturedProjectCard within its own
- * `category` section — "Personal Projects" or "Enterprise @ Creasia".
- * To promote/demote a flagship, just toggle `featured` here.
+ * Single source for the Works listing, Home "Selected work", detail-page headers and pagers, the
+ * prerendered routes and the sitemap. `category` picks the Works tab ("Enterprise" or "Personal");
+ * `featured` puts a project on a large FeaturedProjectCard under "Flagship work" in its tab, the
+ * rest become row cards. To promote/demote a flagship, just toggle `featured` here.
  */
 /** Minimal shape a compact ProjectCard needs — also satisfied by the
  *  audiophile/activities listings (phase 5) which reuse ProjectCard via `to`. */
