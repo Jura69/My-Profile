@@ -37,7 +37,9 @@ const TWIN_NAME = 'Trương Tuấn Lộc (Jura69) – Full-stack Developer'
  * Scene 1 of the day→night homepage: dawn hero on the ambient sky. Desktop is split — the value
  * line, proof and CTAs on the left; the Mầm Đèn spirit (3D, 2D fallback) and the "Now building"
  * card on the right. Phones stack spirit → text → card. One node per grid area, in reading order
- * (text, spirit, card): the grid only moves the spirit up visually on phones.
+ * (text, spirit, card): the grid only moves the spirit up visually on phones. Sizing is height-aware
+ * on desktop (display type and spirit cell scale with svh, `short:` tightens vertical rhythm) so the
+ * whole hero fits above the fold on short laptop viewports.
  */
 export default function HeroDawn() {
     // Server HTML carries the 2D spirit (visible without JS); the 3D canvas loads after hydration.
@@ -47,7 +49,7 @@ export default function HeroDawn() {
         <section data-section="hero" className="relative flex flex-col pb-24 lg:min-h-[calc(100svh-4.5rem)] lg:pb-20">
             <Container
                 size="page"
-                className="grid [grid-template-areas:'spirit'_'text'_'card'] flex-1 gap-x-10 gap-y-6 pt-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(440px,1fr)] lg:grid-rows-[1fr_auto] lg:gap-y-4 lg:pt-8 lg:[grid-template-areas:'text_spirit'_'text_card']"
+                className="grid [grid-template-areas:'spirit'_'text'_'card'] flex-1 gap-x-10 gap-y-6 pt-4 lg:grid-cols-[minmax(0,1.3fr)_minmax(min(440px,52svh),1fr)] lg:grid-rows-[1fr_auto] lg:gap-y-4 lg:pt-8 short:pt-4 lg:[grid-template-areas:'text_spirit'_'text_card']"
             >
                 <div className="[grid-area:text] lg:self-start">
                     <p
@@ -68,20 +70,20 @@ export default function HeroDawn() {
                     <h1
                         data-twin-name={TWIN_NAME}
                         {...riseIn(0.15)}
-                        className="hero-rise mt-5 font-rounded text-display font-extrabold text-balance text-ink"
+                        className="hero-rise mt-5 short:mt-3 font-rounded text-display font-extrabold text-balance text-ink"
                     >
                         I build enterprise <span className="hero-highlight">AI agent platforms</span>.
                     </h1>
 
                     <p
                         {...riseIn(0.3)}
-                        className="hero-rise mt-5 max-w-[46ch] font-rounded text-lead text-ink-muted"
+                        className="hero-rise mt-5 short:mt-3 max-w-[46ch] font-rounded text-lead text-ink-muted"
                     >
                         Multi-channel assistants, agent orchestration, computer vision and OCR — shipped full-stack on
                         React, C# and Node.js.
                     </p>
 
-                    <div {...riseIn(0.45)} className="hero-rise mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                    <div {...riseIn(0.45)} className="hero-rise mt-8 short:mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                         <MotionRouterLink
                             to="/works"
                             className={buttonClasses('solid', 'lg')}
@@ -101,11 +103,11 @@ export default function HeroDawn() {
                         </motion.a>
                     </div>
 
-                    <HeroProofStats {...riseIn(0.6)} className="hero-rise mt-10 lg:mt-9" />
+                    <HeroProofStats {...riseIn(0.6)} className="hero-rise mt-10 lg:mt-9 short:mt-5" />
                 </div>
 
                 {/* Spirit: fixed cell so the 3D swap never shifts layout */}
-                <div className="relative mx-auto size-[220px] [grid-area:spirit] sm:size-[300px] lg:size-[440px] lg:self-end">
+                <div className="relative mx-auto size-[220px] [grid-area:spirit] sm:size-[300px] lg:size-[min(440px,52svh)] lg:self-end">
                     {/* Night: the lantern lights the scene. Its radius stays inside the cell, away from the text. */}
                     <div
                         aria-hidden="true"
