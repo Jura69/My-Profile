@@ -35,7 +35,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 
 6. **Content Platform** - Provide structure for future content expansion (blog, tutorials, case studies)
 
-7. **Personal Branding** - Establish "Jura69" as recognizable technical brand with unique forest-spirit identity (original mascot "Mầm Đèn")
+7. **Personal Branding** - Establish "Jura69" as recognizable technical brand with unique forest-spirit identity (original mascot "Lumo")
 
 8. **Audiophile Community** - Share audio equipment reviews and connect with enthusiast community
 
@@ -107,7 +107,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 **Trigger:** Google search "React portfolio Nha Trang" or similar
 **Flow:**
 1. Click search result → Lands on homepage
-2. Sees the 3D Mầm Đèn spirit (reacts to a tap/click)
+2. Sees the 3D Lumo spirit (reacts to a tap/click)
 3. Scrolls through animated skill badges
 4. Toggles dark/light mode
 5. Explores audiophile section out of curiosity
@@ -150,13 +150,13 @@ Create a modern, high-performance portfolio website that showcases professional 
 **Priority:** P0 (Critical)
 
 **Requirements:**
-- Display animated hero section (day→night scroll narrative with the 3D Mầm Đèn spirit)
+- Display animated hero section (day→night scroll narrative with the 3D Lumo spirit)
 - Show "About Me" section with bio and stat pills
 - Present 28 skills in 4 groups (AI & Agent Engineering, Frontend, Backend, DevOps) in a bento grid
 - Show work experience timeline with 4 entries (3 positions + education)
 - Include CV download button (opens /files/CV.pdf)
 - Display social links (GitHub, LinkedIn, Facebook, Instagram, Email)
-- Implement the 3D Mầm Đèn spirit: procedural (no model file), day/night lighting, small pointer reaction, 2D fallback when WebGL fails or is unavailable
+- Implement the 3D Lumo spirit: procedural (no model file), day/night lighting, small pointer reaction, 2D fallback when WebGL fails or is unavailable
 - Support dark/light mode toggle
 
 **Acceptance Criteria:**
@@ -397,7 +397,7 @@ Create a modern, high-performance portfolio website that showcases professional 
 - Dark/light mode: new visitors follow OS prefers-color-scheme, toggle choice persists
 - Ghibli-inspired design tokens (grass teal, forest green, warm parchment)
 - Smooth page transitions (Motion 12) + GSAP day→night scroll scenes
-- Interactive 3D Mầm Đèn forest spirit (original, procedural)
+- Interactive 3D Lumo forest spirit (original, procedural)
 - Scroll-triggered reveals and hover micro-interactions
 
 **Content:**
@@ -477,7 +477,7 @@ Design for smallest screen first, scale up. Never assume desktop viewport.
 Technical depth without jargon overload. Scannable headings, short paragraphs, visual hierarchy.
 
 ### 6. Ghibli-Inspired Aesthetic
-Warm, inviting colors. Organic shapes. Whimsical but professional. Mầm Đèn (original forest spirit) as brand mascot.
+Warm, inviting colors. Organic shapes. Whimsical but professional. Lumo (original forest spirit) as brand mascot.
 
 ### 7. Zero-Config Simplicity
 No build configuration gymnastics. Standard Vite + React patterns. Clear file structure.

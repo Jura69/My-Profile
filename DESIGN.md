@@ -1,7 +1,7 @@
 # DESIGN.md — Jura69 portfolio
 
 **Brand essence:** a day in a hand-painted forest — a warm, knowledgeable developer's sketchbook,
-guided by Mầm Đèn, the site's own seed-lantern spirit.
+guided by Lumo, the site's own seed-lantern spirit.
 
 This file is the entry point for visual and interaction decisions. The full system — gouache art
 rules, color scales, semantic tokens, contrast table, type scale, iconography, components,
@@ -14,7 +14,7 @@ textures, imagery and AI prompt anatomy — lives in
 
 - Gouache background art on parchment; UI pieces are paper, wood and leaves laid on the scene.
 - Light mode = daylight through leaves; dark mode = moonlight plus warm lantern points.
-- Signature elements: Mầm Đèn (3D hero, 2D navbar logo, stills on 404/contact/OG), the
+- Signature elements: Lumo (3D hero, 2D navbar logo, stills on 404/contact/OG), the
   cumulus sky, the journey trail with its walking lantern.
 - One family: M PLUS Rounded 1c. One accent per theme (moss `#3d6a4b` / spirit-teal `#98d8c8`).
 - Avoid: glassmorphism (no `backdrop-blur` on UI surfaces), neon, glossy PBR 3D, stock photos, emoji,
@@ -26,7 +26,7 @@ textures, imagery and AI prompt anatomy — lives in
   line above it with the avatar, and stays in `<title>`, the OG card and the markdown twin / llms name
   (the H1 carries `data-twin-name`, read by `scripts/prerender-routes.mjs`).
 - Desktop hero is split: text, CTAs, proof stats (2+ yrs / 15+ / 10+, deliberate floors) on the left;
-  Mầm Đèn and a "Now building" card on the right. Phones stack spirit → text → card.
+  Lumo and a "Now building" card on the right. Phones stack spirit → text → card.
 - Proof before biography: "Selected work" (01 · Morning) comes right after the hero, with the client
   brands line (BAT, Castrol, Mondelez). Chapters then run 02 Noon About → 03 Afternoon Skills →
   04 Dusk Journey → 05 Night Say hello.

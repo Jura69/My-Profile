@@ -352,7 +352,7 @@ HeroDawn (components/home/hero-dawn.tsx)
 
 **Why this shape**
 
-- **Procedural, not a model.** The hero character "Mầm Đèn" is original and built
+- **Procedural, not a model.** The hero character "Lumo" is original and built
   from code-generated geometry, so there is no GLB, no Draco decoder and no
   external CDN request (the previous third-party model cost 1.5MB).
 - **Raw three, lazy.** `three` and the stage sit behind `React.lazy`, so the hero
@@ -398,7 +398,7 @@ Poses live in `STILL_POSES` (`spirit-expression.ts`; tree-shaken from the hero c
 changing the spirit's look. `components/ui/spirit-still.tsx` swaps the day/night file by theme class
 (the hidden one is lazy + `display:none`, so it is not fetched); no three.js at runtime.
 
-`SpiritIcon` (same file as `SpiritIllustration`, `components/icons/spirit-mam-den.tsx`)
+`SpiritIcon` (same file as `SpiritIllustration`, `components/icons/spirit-lumo.tsx`)
 is also the navbar logo, so the 2D art is an authority surface shared by hero
 fallback and navbar.
 

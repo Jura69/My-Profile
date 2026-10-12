@@ -19,7 +19,7 @@
 - **Responsive Design** - Mobile-first, optimized for all devices
 - **Dark/Light Mode** - New visitors follow the OS `prefers-color-scheme`; the toggle choice persists in localStorage
 - **Smooth Animations** - Motion page transitions and GSAP scroll effects
-- **3D Graphics** - Original forest spirit "Mầm Đèn" built procedurally in Three.js (painted toon look, no model file), with a 2D fallback
+- **3D Graphics** - Original forest spirit "Lumo" built procedurally in Three.js (painted toon look, no model file), with a 2D fallback
 - **Ghibli-Inspired Theme** - Warm, professional aesthetic with a day→night scroll narrative
 
 ### Content
@@ -133,7 +133,7 @@ The dev server client-renders; prerendering and hydration only happen in `yarn b
 │   ├── home/                    # Homepage scenes + home-data.ts (skills, experience, socials)
 │   ├── works/                   # Cards + works-data.ts (projects, activities, audio gear)
 │   ├── scene/                   # Ambient scene system (GSAP, Lenis, particles)
-│   ├── icons/                   # Custom kit SVG icons/ornaments (kit-*.tsx) + spirit-mam-den.tsx (navbar logo, hero fallback)
+│   ├── icons/                   # Custom kit SVG icons/ornaments (kit-*.tsx) + spirit-lumo.tsx (navbar logo, hero fallback)
 │   ├── spirit/                  # Hero 3D spirit (raw three: stage, painted material, spirit, moss island)
 │   ├── seo.tsx                  # Per-page meta + markdown alternate link
 │   └── json-ld.tsx              # JSON-LD structured data
@@ -144,7 +144,7 @@ The dev server client-renders; prerendering and hydration only happen in `yarn b
 │   ├── prerender/               # Helpers: HTML→markdown, git content dates, discovery files
 │   ├── vite-plugin-preview-vercel-parity.ts # Makes `vite preview` match Vercel (headers, 404)
 │   ├── generate-og-images.mjs   # Per-project social cards → public/images/og/
-│   └── render-spirit-stills.mjs # Renders Mầm Đèn stills + OG image from the hero scene
+│   └── render-spirit-stills.mjs # Renders Lumo stills + OG image from the hero scene
 ├── public/                      # Static assets
 │   ├── images/                  # WebP images: works covers, banners, ui textures, spirit stills (+ og-image-spirit.jpg, og/<id>.jpg)
 │   ├── apple-touch-icon.png
@@ -178,7 +178,7 @@ Edit `src/styles/global.css` (Tailwind 4 theme tokens):
 ```
 
 ### Change the Hero 3D Spirit
-The spirit has no model file: it is built in code. Edit `components/spirit/forest-spirit.ts` (shape, motion, gaze), `components/spirit/seed-lantern.ts` (lantern glow/light), `components/spirit/moss-island.ts` (ground), and `components/spirit/spirit-lighting.ts` (day/night light). Keep the 2D art in `components/icons/spirit-mam-den.tsx` in sync — it is the loading placeholder, the no-WebGL fallback and the navbar logo. Then re-render the stills used on the 404 page, the contact section and the OG image: `node scripts/render-spirit-stills.mjs` (needs Chrome; set `CHROME_PATH` off Windows).
+The spirit has no model file: it is built in code. Edit `components/spirit/forest-spirit.ts` (shape, motion, gaze), `components/spirit/seed-lantern.ts` (lantern glow/light), `components/spirit/moss-island.ts` (ground), and `components/spirit/spirit-lighting.ts` (day/night light). Keep the 2D art in `components/icons/spirit-lumo.tsx` in sync — it is the loading placeholder, the no-WebGL fallback and the navbar logo. Then re-render the stills used on the 404 page, the contact section and the OG image: `node scripts/render-spirit-stills.mjs` (needs Chrome; set `CHROME_PATH` off Windows).
 
 ---
 
@@ -247,7 +247,7 @@ MIT License - see [LICENSE](LICENSE) file
 ## Credits
 
 - **Design Inspiration** - [Takuya Matsuyama](https://www.craftz.dog/)
-- **3D Spirit** - "Mầm Đèn", an original character built for this site (no third-party model)
+- **3D Spirit** - "Lumo", an original character built for this site (no third-party model)
 - **Icons** - custom kit SVGs; tech and social brand logos from [React Icons](https://react-icons.github.io/react-icons/)
 - **Font** - [M PLUS Rounded 1c](https://fonts.google.com/specimen/M+PLUS+Rounded+1c)
 

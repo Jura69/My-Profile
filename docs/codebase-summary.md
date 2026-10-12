@@ -59,7 +59,7 @@ My-Profile/
 │   │                         #   use-scroll-progress, svg/{hills,moon}
 │   ├── icons/                # kit-icon-base (IconComponent type), kit-icons-interface,
 │   │                         #   kit-icons-topics, kit-ornaments, kit-dividers (inline SVG),
-│   │                         #   spirit-mam-den (SpiritIcon navbar logo + SpiritIllustration)
+│   │                         #   spirit-lumo (SpiritIcon navbar logo + SpiritIllustration)
 │   ├── spirit/               # Hero 3D (raw three): spirit-canvas (React mount),
 │   │                         #   spirit-stage (renderer/loop), spirit-scene (content), forest-spirit,
 │   │                         #   seed-lantern, moss-island, fireflies, painted-material, spirit-lighting,
@@ -81,13 +81,13 @@ My-Profile/
 │   ├── vite-plugin-preview-vercel-parity.ts # `vite preview` = vercel.json headers + real 404
 │   ├── generate-og-images.mjs  # works covers → public/images/og/<id>.jpg (1200×630)
 │   ├── optimize-images.mjs     # One-off sharp-based image pipeline
-│   ├── render-spirit-stills.mjs # Renders Mầm Đèn stills + OG from the hero scene (Vite + CDP + sharp)
+│   ├── render-spirit-stills.mjs # Renders Lumo stills + OG from the hero scene (Vite + CDP + sharp)
 │   └── spirit-stills/          # Render page for the script above (dev server only, not built)
 ├── public/                   # apple-touch-icon.png, cv.html, favicon.ico,
 │   │                         #   robots.txt, files/CV.pdf
 │   └── images/               # WebP (exceptions: og-image-*.jpg, og/*.jpg, apple-touch-icon.png)
 │       ├── og/               # Per-project social cards <id>.jpg (generated)
-│       ├── spirit/           # Rendered Mầm Đèn stills (404 puzzled, contact sleepy; day/night)
+│       ├── spirit/           # Rendered Lumo stills (404 puzzled, contact sleepy; day/night)
 │       ├── ui/               # Kit materials (paper grain, button wash, brush mask, wreath)
 │       ├── banners/          # <page>-<day|night>-{800,1600,2400}.webp
 │       └── works/            # <id>-cover-{480,640,1280}.webp

@@ -23,7 +23,7 @@ Feature Categories:
 ├── Core Website (100%) ✅  homepage scenes · projects · activities · audio reviews
 ├── Performance   (100%) ✅  lazy routes · vendor chunks · WebP · procedural 3D (no model file)
 ├── SEO / AX      (100%) ✅  prerendered HTML · per-page meta + social cards · JSON-LD · sitemap · markdown twins + llms.txt
-├── Design        (100%) ✅  system-preference theme · day→night scenes · 3D Mầm Đèn spirit
+├── Design        (100%) ✅  system-preference theme · day→night scenes · 3D Lumo spirit
 └── Future Enhancements 🔨  blog · contact form · PWA · CMS (below)
 ```
 
