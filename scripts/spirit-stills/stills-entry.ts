@@ -1,5 +1,5 @@
 /**
- * Renders one Mầm Đèn still with the hero's own scene (`spirit-scene.ts`): same geometry, painted
+ * Renders one Lumo still with the hero's own scene (`spirit-scene.ts`): same geometry, painted
  * materials, light rig and camera, posed through the expression layer and drawn once in the rest pose.
  * Query: shot=still|og, pose=<STILL_POSES key>, night=0..1 (light-rig mix), size=<px> (still only).
  * Sets `window.__stillReady` once the frame is on the canvas (fonts loaded too for the OG card).

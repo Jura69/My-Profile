@@ -1,5 +1,5 @@
 /**
- * Expression layer for Mầm Đèn: overrides blended on top of the procedural rig in `forest-spirit.ts`.
+ * Expression layer for Lumo: overrides blended on top of the procedural rig in `forest-spirit.ts`.
  * Two sources feed it — a transient reaction to a theme switch (live hero) and fixed named poses
  * (the stills rendered by `scripts/render-spirit-stills.mjs`). Pure math, no three objects.
  */

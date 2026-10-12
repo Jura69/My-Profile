@@ -39,7 +39,7 @@ function trailPath(points: { x: number; y: number }[], amp: number) {
 
 /**
  * Scroll-drawn trail for the journey timeline, rendered behind the milestone
- * markers of `containerRef`. A seed lantern (the Mầm Đèn motif) walks the path
+ * markers of `containerRef`. A seed lantern (the Lumo motif) walks the path
  * at the reading line; the trail above it is inked in and every milestone it
  * reaches lights up.
  *

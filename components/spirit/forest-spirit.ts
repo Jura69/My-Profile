@@ -1,5 +1,5 @@
 /**
- * "Mầm Đèn" — the site's original forest spirit (silhouette C, chosen 2026-10-01).
+ * "Lumo" — the site's original forest spirit (silhouette C, chosen 2026-10-01).
  * Body plan: squat mossy pebble on four root nubs (support polygon under the centre of mass), two
  * low dot eyes facing +Z, one sprout stalk rising from the moss and arcing forward with a glowing seed
  * hanging at its tip (`seed-lantern.ts` owns the glow, light, pool and pendulum). Rig = group transforms:

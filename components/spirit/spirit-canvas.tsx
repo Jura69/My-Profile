@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { useTheme } from '../../providers/use-theme'
 import { useScene } from '../scene/use-scene'
-import { SpiritIllustration } from '../icons/spirit-mam-den'
+import { SpiritIllustration } from '../icons/spirit-lumo'
 import { cn } from '../../lib/cn'
 import { createSpiritStage, type SpiritStage } from './spirit-stage'
 
 type Status = 'loading' | 'ready' | 'failed'
 
 /**
- * React mount for the hero's 3D Mầm Đèn (loaded only via React.lazy from HeroDawn, so three stays
+ * React mount for the hero's 3D Lumo (loaded only via React.lazy from HeroDawn, so three stays
  * out of the entry chunk). The 2D illustration holds the cell until the stage's first frame, then the
  * canvas fades in over it; any WebGL failure swaps back to the illustration for good.
  * Decorative: the canvas is aria-hidden with no tab stop; the pointer reaction is a bonus, not a control.

@@ -1,5 +1,5 @@
 /**
- * The seed lantern hanging from Mầm Đèn's sprout. Reads as a glowing translucent pod, not a sticker:
+ * The seed lantern hanging from Lumo's sprout. Reads as a glowing translucent pod, not a sticker:
  * - emissive is a view-facing gradient (warm cream core → amber rim) instead of one flat colour;
  * - a soft camera-facing halo, a warm light pool on the moss that follows the swinging seed, and a
  *   warm PointLight (decay 2) for the body/moss — all scaled by `glow` (0 day fruit → 1 night lantern);

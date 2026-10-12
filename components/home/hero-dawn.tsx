@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router'
 import { ArrowRight, ChevronDown, Download } from '../icons/kit-icons-interface'
 import { buttonClasses } from '../ui/button-styles'
 import Container from '../ui/container'
-import { SpiritIllustration } from '../icons/spirit-mam-den'
+import { SpiritIllustration } from '../icons/spirit-lumo'
 import { useHydrated } from '../../lib/use-hydrated'
 import HeroProofStats from './hero-proof-stats'
 import HeroNowBuilding from './hero-now-building'
@@ -35,7 +35,7 @@ const TWIN_NAME = 'Trương Tuấn Lộc (Jura69) – Full-stack Developer'
 
 /**
  * Scene 1 of the day→night homepage: dawn hero on the ambient sky. Desktop is split — the value
- * line, proof and CTAs on the left; the Mầm Đèn spirit (3D, 2D fallback) and the "Now building"
+ * line, proof and CTAs on the left; the Lumo spirit (3D, 2D fallback) and the "Now building"
  * card on the right. Phones stack spirit → text → card. One node per grid area, in reading order
  * (text, spirit, card): the grid only moves the spirit up visually on phones. Sizing is height-aware
  * on desktop (display type and spirit cell scale with svh, `short:` tightens vertical rhythm) so the

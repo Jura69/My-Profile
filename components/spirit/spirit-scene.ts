@@ -1,5 +1,5 @@
 /**
- * Content of the hero spirit stage (CPU-side, no renderer): camera, Mầm Đèn on its floating moss
+ * Content of the hero spirit stage (CPU-side, no renderer): camera, Lumo on its floating moss
  * island, fireflies/pollen, and the day↔night light rig. `spirit-stage.ts` owns the WebGL lifecycle
  * and calls `animate` once per drawn frame. The island + spirit float as one root: a slow bob and a
  * faint rock, so the diorama reads as hanging in the sky rather than pinned to it.

@@ -1,5 +1,5 @@
 /**
- * Mầm Đèn's two dot eyes, low on the front of the pebble. Open: an ink pupil with a white glint that
+ * Lumo's two dot eyes, low on the front of the pebble. Open: an ink pupil with a white glint that
  * squashes vertically for blinks and widens past 1. Shut (openness < 0.3): a drooping ink lid arc,
  * which still reads at thumbnail size where a squashed dot vanishes (blinks, sleepy stills).
  */

@@ -6,7 +6,7 @@ type StillPose = 'puzzled' | 'sleepy'
 const RENDER_PX: Record<StillPose, number> = { puzzled: 480, sleepy: 384 }
 
 /**
- * A posed Mầm Đèn still rendered from the hero's 3D scene (no three.js at runtime). Day and night
+ * A posed Lumo still rendered from the hero's 3D scene (no three.js at runtime). Day and night
  * renders swap with the theme class; the hidden one is lazy and display:none, so it is not fetched
  * until the theme flips. Decorative only.
  */

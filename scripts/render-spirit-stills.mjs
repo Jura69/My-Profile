@@ -1,5 +1,5 @@
 /**
- * Render the Mầm Đèn stills (404, night contact, OG card) from the hero's own three.js scene, so
+ * Render the Lumo stills (404, night contact, OG card) from the hero's own three.js scene, so
  * the images stay in step with the live spirit. Starts a Vite dev server for
  * `scripts/spirit-stills/index.html`, drives headless Chrome over raw CDP (no puppeteer), then
  * encodes with sharp into public/images/.

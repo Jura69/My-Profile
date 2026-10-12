@@ -1,7 +1,7 @@
 import { useId } from 'react'
 
 /**
- * Mầm Đèn — the site's original forest spirit: a mossy pebble on root nubs, with a
+ * Lumo — the site's original forest spirit: a mossy pebble on root nubs, with a
  * curled sprout stalk carrying a seed lantern in front. Two renderings share one path set
  * (viewBox 0 0 200 200, ground at y≈185):
  *  - `SpiritIllustration`: full-colour art on a moss island; hero placeholder/fallback for

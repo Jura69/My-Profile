@@ -7,7 +7,7 @@ import SpiritStill from '../ui/spirit-still'
 
 /**
  * 404 page — a Ghibli-lite "lost in the forest" moment with a painted day/night
- * forest-path banner, Mầm Đèn stepping out of it looking around, and a route home.
+ * forest-path banner, Lumo stepping out of it looking around, and a route home.
  * Rendered by the `*` route in app.tsx.
  */
 export default function NotFound() {

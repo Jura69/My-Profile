@@ -11,7 +11,7 @@ import { hobbies, socialIcon, socialLinks } from './home-data'
 /**
  * Scene 6 — night. "Say hello": the contact card (every social link as a labelled row, plus the
  * page's closing solid CTA) beside the things-I-love card. Sits at the bottom of the page, so the
- * ambient scene's fireflies are lit here. The page ends on Mầm Đèn dozing — the day is over.
+ * ambient scene's fireflies are lit here. The page ends on Lumo dozing — the day is over.
  */
 export default function NightContact() {
     return (
